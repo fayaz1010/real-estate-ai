@@ -1,14 +1,110 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  --color-primary: #161d23;
+  --color-primary-light: #576e6a;
+  --color-primary-dark: #0a1628;
+  --color-secondary: #576e6a;
+  --color-accent: #e5b80b;
+  --color-background: #ffffff;
+  --color-surface: #f0f9ff;
+  --color-surface-elevated: #ffffff;
+  --color-text-primary: #161d23;
+  --color-text-secondary: #576e6a;
+  --color-text-muted: #a1a1aa;
+  --color-border: #d1d5db;
+  --color-success: #16a34a;
+  --color-warning: #f59e0b;
+  --color-error: #dc2626;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+  color: var(--color-text-primary);
+  background-color: var(--color-background);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Space Grotesk", sans-serif;
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  letter-spacing: -0.02em;
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-realestate-primary text-white font-inter font-medium px-6 py-3 rounded-lg
+           hover:bg-realestate-primary/90 transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-realestate-accent focus:ring-offset-2;
+  }
+
+  .btn-accent {
+    @apply bg-realestate-accent text-realestate-primary font-inter font-semibold px-6 py-3 rounded-lg
+           hover:bg-realestate-accent/90 transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-realestate-accent focus:ring-offset-2;
+  }
+
+  .btn-outline {
+    @apply border border-realestate-primary text-realestate-primary font-inter font-medium px-6 py-3 rounded-lg
+           hover:bg-realestate-primary hover:text-white transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-realestate-primary focus:ring-offset-2;
+  }
+
+  .card {
+    @apply bg-white rounded-lg shadow-realestate-sm border border-gray-100 p-6
+           hover:shadow-realestate-md transition-shadow duration-200;
+  }
+
+  .card-elevated {
+    @apply bg-white rounded-lg shadow-realestate-md border border-gray-100 p-6
+           hover:shadow-realestate-lg transition-shadow duration-200;
+  }
+
+  .section-container {
+    @apply max-w-container mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .text-display {
+    @apply font-space-grotesk font-bold tracking-tight;
+  }
+
+  .text-heading {
+    @apply font-space-grotesk font-semibold;
+  }
+}
+
+@layer utilities {
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
 }

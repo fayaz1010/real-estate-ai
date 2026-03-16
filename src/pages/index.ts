@@ -1,0 +1,10 @@
+export { HomePage } from "./HomePage";
+export { default as PricingPage } from "./PricingPage";
+export { AboutPage } from "./AboutPage";
+export { ContactPage } from "./ContactPage";
+export { default as AuthPage } from "./AuthPage";
+export { default as DashboardPage } from "./DashboardPage";
+export { default as InspectionsPage } from "./InspectionsPage";
+export { default as ApplicationsPage } from "./ApplicationsPage";
+export { default as AdminPage } from "./AdminPage";
+export { PropertiesPage } from "./PropertiesPage";

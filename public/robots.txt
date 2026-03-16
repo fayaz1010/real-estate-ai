@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /dashboard
+Disallow: /admin
+Disallow: /inspections
+Disallow: /applications
 Disallow: /profile-setup
-Sitemap: https://propmanage.com/sitemap.xml
+Sitemap: https://realestate-ai.com/sitemap.xml
