@@ -224,7 +224,7 @@ const NAV_ITEMS = [
   { label: "Leases", icon: FileText, href: "/dashboard/leases", active: false },
   { label: "Payments", icon: CreditCard, href: "/dashboard/payments", active: false },
   { label: "Maintenance", icon: Tool, href: "/dashboard/maintenance", active: false },
-  { label: "Reports", icon: BarChart3, href: "/dashboard/reports", active: false },
+  { label: "Reports", icon: BarChart, href: "/dashboard/reports", active: false },
   { label: "Settings", icon: Settings, href: "/dashboard/settings", active: false },
 ];
 

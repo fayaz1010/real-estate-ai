@@ -62,7 +62,7 @@ const checklistItems = [
     priority: "Essential",
   },
   {
-    icon: Scale,
+    icon: BarChart,
     title: "Fair Housing Compliance",
     description: "Ensure your screening criteria comply with federal, state, and local fair housing laws. Apply the same standards to every applicant.",
     priority: "Essential",
@@ -83,7 +83,7 @@ const painPoints = [
       "A single eviction can cost $5,000 to $10,000 in legal fees, lost rent, and property damage. Thorough screening is your best insurance.",
   },
   {
-    icon: Scale,
+    icon: BarChart,
     title: "Fair Housing Is Complex",
     description:
       "Navigating federal, state, and local fair housing regulations is challenging. Inconsistent screening processes expose you to legal risk.",
@@ -92,7 +92,7 @@ const painPoints = [
 
 const aiFeatures = [
   {
-    icon: Brain,
+    icon: Cpu,
     title: "AI Risk Scoring",
     description:
       "Our machine learning model analyzes hundreds of data points beyond the credit score to predict tenant reliability with 94% accuracy. You get a single, actionable risk score for every applicant.",
@@ -110,7 +110,7 @@ const aiFeatures = [
       "Our system applies the same objective criteria to every applicant automatically. You define your standards once and the AI enforces them consistently, reducing legal exposure.",
   },
   {
-    icon: BadgeCheck,
+    icon: CheckCircle,
     title: "Comprehensive Reports",
     description:
       "Every screening includes credit report, criminal background, eviction history, identity verification, and income analysis in a single, easy-to-read dashboard.",
