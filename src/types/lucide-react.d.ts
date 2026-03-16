@@ -299,6 +299,11 @@ declare module "lucide-react" {
   export const ZoomIn: ComponentType<LucideProps>;
   export const ZoomOut: ComponentType<LucideProps>;
 
+  // Additional icons available in lucide-react v0.294.0
+  export const Building: ComponentType<LucideProps>;
+  export const Building2: ComponentType<LucideProps>;
+  export const ClipboardList: ComponentType<LucideProps>;
+
   // Add more icons as needed
 
   // Lucide icon context for dynamic icon rendering
