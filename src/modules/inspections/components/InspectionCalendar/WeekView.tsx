@@ -1,10 +1,12 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionCalendar/WeekView.tsx
 // TODO: Add your implementation here
 
-import React from 'react';
-import { useInspectionCalendar } from '../../hooks/useInspectionCalendar';
-import { TimeSlot } from './TimeSlot';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useInspectionCalendar } from "../../hooks/useInspectionCalendar";
+
+import { TimeSlot } from "./TimeSlot";
 
 export const WeekView: React.FC = () => {
   const navigate = useNavigate();
@@ -22,7 +24,7 @@ export const WeekView: React.FC = () => {
   };
 
   const formatHour = (hour: number): string => {
-    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const ampm = hour >= 12 ? "PM" : "AM";
     const displayHour = hour % 12 || 12;
     return `${displayHour} ${ampm}`;
   };
@@ -37,22 +39,23 @@ export const WeekView: React.FC = () => {
             <div
               key={day.date.toISOString()}
               className={`text-center py-2 rounded-lg ${
-                day.isToday ? 'bg-blue-100' : ''
+                day.isToday ? "bg-blue-100" : ""
               }`}
             >
               <div className="text-sm font-semibold text-gray-900">
-                {day.date.toLocaleDateString('en-US', { weekday: 'short' })}
+                {day.date.toLocaleDateString("en-US", { weekday: "short" })}
               </div>
               <div
                 className={`text-2xl font-bold ${
-                  day.isToday ? 'text-blue-600' : 'text-gray-900'
+                  day.isToday ? "text-blue-600" : "text-gray-900"
                 }`}
               >
                 {day.date.getDate()}
               </div>
               {day.inspections.length > 0 && (
                 <div className="text-xs text-gray-500 mt-1">
-                  {day.inspections.length} inspection{day.inspections.length > 1 ? 's' : ''}
+                  {day.inspections.length} inspection
+                  {day.inspections.length > 1 ? "s" : ""}
                 </div>
               )}
             </div>
@@ -62,7 +65,10 @@ export const WeekView: React.FC = () => {
         {/* Time Grid */}
         <div className="space-y-0">
           {hours.map((hour) => (
-            <div key={hour} className="grid grid-cols-8 gap-2 border-t border-gray-200">
+            <div
+              key={hour}
+              className="grid grid-cols-8 gap-2 border-t border-gray-200"
+            >
               {/* Hour Label */}
               <div className="text-sm text-gray-600 py-3 text-right pr-2">
                 {formatHour(hour)}
@@ -83,7 +89,9 @@ export const WeekView: React.FC = () => {
                           <TimeSlot
                             key={inspection.id}
                             inspection={inspection}
-                            onClick={() => navigate(`/inspections/${inspection.id}`)}
+                            onClick={() =>
+                              navigate(`/inspections/${inspection.id}`)
+                            }
                           />
                         ))}
                       </div>
@@ -98,9 +106,11 @@ export const WeekView: React.FC = () => {
         {/* Empty State */}
         {weekDays.every((day) => day.inspections.length === 0) && (
           <div className="text-center py-12">
-            <p className="text-gray-500 mb-2">No inspections scheduled this week</p>
+            <p className="text-gray-500 mb-2">
+              No inspections scheduled this week
+            </p>
             <button
-              onClick={() => navigate('/properties')}
+              onClick={() => navigate("/properties")}
               className="text-blue-600 hover:underline text-sm"
             >
               Browse properties to schedule an inspection

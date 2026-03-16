@@ -1,21 +1,22 @@
 // FILE PATH: src/modules/auth/hooks/useAuth.ts
 // Module 1.1: User Authentication & Management - Authentication Hook
 
-import { useEffect, useCallback } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { 
-  login, 
-  register, 
-  logout, 
-  loadUser, 
+import { useEffect, useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import type { AppDispatch, RootState } from "../../../store";
+import {
+  login,
+  register,
+  logout,
+  loadUser,
   refreshAuth,
-  clearError 
-} from '../store/authSlice';
-import { tokenManager } from '../utils/tokenManager';
-import { hasPermission } from '../utils/rolePermissions';
-import { Permission } from '../utils/rolePermissions';
-import { LoginCredentials, RegisterData } from '../types/auth.types';
-import type { AppDispatch, RootState } from '../../../store';
+  clearError,
+} from "../store/authSlice";
+import { LoginCredentials, RegisterData } from "../types/auth.types";
+import { hasPermission } from "../utils/rolePermissions";
+import { Permission } from "../utils/rolePermissions";
+import { tokenManager } from "../utils/tokenManager";
 
 export const useAuth = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -38,7 +39,7 @@ export const useAuth = () => {
     // Check token expiry every minute
     const interval = setInterval(() => {
       const timeUntilExpiry = tokenManager.getTimeUntilExpiry();
-      
+
       // Refresh token if less than 5 minutes remaining
       if (timeUntilExpiry > 0 && timeUntilExpiry < 300) {
         dispatch(refreshAuth());
@@ -51,16 +52,22 @@ export const useAuth = () => {
   /**
    * Login user
    */
-  const handleLogin = useCallback(async (credentials: LoginCredentials) => {
-    return dispatch(login(credentials)).unwrap();
-  }, [dispatch]);
+  const handleLogin = useCallback(
+    async (credentials: LoginCredentials) => {
+      return dispatch(login(credentials)).unwrap();
+    },
+    [dispatch],
+  );
 
   /**
    * Register new user
    */
-  const handleRegister = useCallback(async (registerData: RegisterData) => {
-    return dispatch(register(registerData)).unwrap();
-  }, [dispatch]);
+  const handleRegister = useCallback(
+    async (registerData: RegisterData) => {
+      return dispatch(register(registerData)).unwrap();
+    },
+    [dispatch],
+  );
 
   /**
    * Logout user
@@ -86,25 +93,38 @@ export const useAuth = () => {
   /**
    * Check if user has specific permission
    */
-  const checkPermission = useCallback((permission: Permission): boolean => {
-    return auth.user ? hasPermission(auth.user.role, permission) : false;
-  }, [auth.user]);
+  const checkPermission = useCallback(
+    (permission: Permission): boolean => {
+      return auth.user ? hasPermission(auth.user.role, permission) : false;
+    },
+    [auth.user],
+  );
 
   /**
    * Check if user has any of the specified permissions
    */
-  const checkAnyPermission = useCallback((permissions: Permission[]): boolean => {
-    if (!auth.user) return false;
-    return permissions.some(permission => hasPermission(auth.user!.role, permission));
-  }, [auth.user]);
+  const checkAnyPermission = useCallback(
+    (permissions: Permission[]): boolean => {
+      if (!auth.user) return false;
+      return permissions.some((permission) =>
+        hasPermission(auth.user!.role, permission),
+      );
+    },
+    [auth.user],
+  );
 
   /**
    * Check if user has all of the specified permissions
    */
-  const checkAllPermissions = useCallback((permissions: Permission[]): boolean => {
-    if (!auth.user) return false;
-    return permissions.every(permission => hasPermission(auth.user!.role, permission));
-  }, [auth.user]);
+  const checkAllPermissions = useCallback(
+    (permissions: Permission[]): boolean => {
+      if (!auth.user) return false;
+      return permissions.every((permission) =>
+        hasPermission(auth.user!.role, permission),
+      );
+    },
+    [auth.user],
+  );
 
   return {
     // State

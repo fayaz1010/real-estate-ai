@@ -3,9 +3,10 @@
 // Module 1.3: Inspection Booking & Scheduling System - Custom Hooks
 // ============================================================================
 
-import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import type { RootState } from '../../../store';
+import { useCallback } from "react";
+
+import type { RootState } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {
   fetchInspections,
   createInspection,
@@ -18,19 +19,19 @@ import {
   setFilters,
   setCurrentPage,
   setCurrentInspection as setCurrentInspectionAction,
-} from '../store/inspectionSlice';
+} from "../store/inspectionSlice";
 import {
   selectInspections,
   selectCurrentInspection,
   selectInspectionLoading,
   selectInspectionError,
   selectInspectionPagination,
-} from '../store/inspectionSlice';
+} from "../store/inspectionSlice";
 import {
   Inspection,
   InspectionBookingRequest,
   InspectionStatus,
-} from '../types/inspection.types';
+} from "../types/inspection.types";
 
 export const useInspections = () => {
   const dispatch = useAppDispatch();
@@ -38,7 +39,9 @@ export const useInspections = () => {
   const currentInspection = useAppSelector(selectCurrentInspection);
   const isLoading = useAppSelector(selectInspectionLoading);
   const error = useAppSelector(selectInspectionError);
-  const { currentPage, totalPages, totalInspections } = useAppSelector(selectInspectionPagination);
+  const { currentPage, totalPages, totalInspections } = useAppSelector(
+    selectInspectionPagination,
+  );
 
   // Load inspections with optional filters
   const loadInspections = useCallback(
@@ -53,25 +56,27 @@ export const useInspections = () => {
         const result = await dispatch(fetchInspections(params || {})).unwrap();
         return result;
       } catch (err) {
-        console.error('Failed to load inspections:', err);
+        console.error("Failed to load inspections:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Create new inspection
   const createNewInspection = useCallback(
     async (bookingRequest: InspectionBookingRequest) => {
       try {
-        const inspection = await dispatch(createInspection(bookingRequest)).unwrap();
+        const inspection = await dispatch(
+          createInspection(bookingRequest),
+        ).unwrap();
         return inspection;
       } catch (err) {
-        console.error('Failed to create inspection:', err);
+        console.error("Failed to create inspection:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Update inspection status
@@ -79,29 +84,31 @@ export const useInspections = () => {
     async (id: string, status: InspectionStatus, notes?: string) => {
       try {
         const inspection = await dispatch(
-          updateInspectionStatus({ id, status, notes })
+          updateInspectionStatus({ id, status, notes }),
         ).unwrap();
         return inspection;
       } catch (err) {
-        console.error('Failed to update inspection status:', err);
+        console.error("Failed to update inspection status:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Cancel inspection
   const cancel = useCallback(
     async (id: string, reason: string) => {
       try {
-        const inspection = await dispatch(cancelInspection({ id, reason })).unwrap();
+        const inspection = await dispatch(
+          cancelInspection({ id, reason }),
+        ).unwrap();
         return inspection;
       } catch (err) {
-        console.error('Failed to cancel inspection:', err);
+        console.error("Failed to cancel inspection:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Reschedule inspection
@@ -109,53 +116,60 @@ export const useInspections = () => {
     async (id: string, newDate: string, newTime: string, reason?: string) => {
       try {
         const inspection = await dispatch(
-          rescheduleInspection({ id, newDate, newTime, reason })
+          rescheduleInspection({ id, newDate, newTime, reason }),
         ).unwrap();
         return inspection;
       } catch (err) {
-        console.error('Failed to reschedule inspection:', err);
+        console.error("Failed to reschedule inspection:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Check in to inspection
   const checkIn = useCallback(
-    async (id: string, location: { lat: number; lng: number }, photo?: string) => {
+    async (
+      id: string,
+      location: { lat: number; lng: number },
+      photo?: string,
+    ) => {
       try {
         const inspection = await dispatch(
-          checkInInspection({ id, location, photo })
+          checkInInspection({ id, location, photo }),
         ).unwrap();
         return inspection;
       } catch (err) {
-        console.error('Failed to check in:', err);
+        console.error("Failed to check in:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Check out from inspection
   const checkOut = useCallback(
-    async (id: string, feedback: {
-      rating: 1 | 2 | 3 | 4 | 5;
-      comment?: string;
-      likedFeatures: string[];
-      concerns: string[];
-      interestedInApplying: boolean;
-    }) => {
+    async (
+      id: string,
+      feedback: {
+        rating: 1 | 2 | 3 | 4 | 5;
+        comment?: string;
+        likedFeatures: string[];
+        concerns: string[];
+        interestedInApplying: boolean;
+      },
+    ) => {
       try {
         const inspection = await dispatch(
-          checkOutInspection({ id, feedback })
+          checkOutInspection({ id, feedback }),
         ).unwrap();
         return inspection;
       } catch (err) {
-        console.error('Failed to check out:', err);
+        console.error("Failed to check out:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Set filters
@@ -163,7 +177,7 @@ export const useInspections = () => {
     (filters: Parameters<typeof setFilters>[0]) => {
       dispatch(setFilters(filters));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Set current page
@@ -171,7 +185,7 @@ export const useInspections = () => {
     (page: number) => {
       dispatch(setCurrentPage(page));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Set current inspection
@@ -179,7 +193,7 @@ export const useInspections = () => {
     (inspection: Parameters<typeof setCurrentInspectionAction>[0]) => {
       dispatch(setCurrentInspectionAction(inspection));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Clear error
@@ -220,17 +234,20 @@ export const useInspection = (inspectionId?: string) => {
   const currentInspection = useAppSelector(selectCurrentInspection);
   const isLoading = useAppSelector(selectInspectionLoading);
 
-  const inspection = inspectionId
-    ? useAppSelector((state) =>
-        state.inspections.inspections.find((i: Inspection) => i.id === inspectionId)
-      )
-    : currentInspection;
+  const inspectionById = useAppSelector((state) =>
+    inspectionId
+      ? state.inspections.inspections.find(
+          (i: Inspection) => i.id === inspectionId,
+        )
+      : undefined,
+  );
+  const inspection = inspectionId ? inspectionById : currentInspection;
 
   const setCurrentInspection = useCallback(
     (inspectionParam: any) => {
       dispatch(setCurrentInspectionAction(inspectionParam));
     },
-    [dispatch]
+    [dispatch],
   );
 
   return {
@@ -243,7 +260,7 @@ export const useInspection = (inspectionId?: string) => {
 // Hook for property-specific inspections
 export const usePropertyInspections = (propertyId: string) => {
   const inspections = useAppSelector((state) =>
-    state.inspections.inspections.filter((i) => i.propertyId === propertyId)
+    state.inspections.inspections.filter((i) => i.propertyId === propertyId),
   );
 
   return {
@@ -255,7 +272,9 @@ export const usePropertyInspections = (propertyId: string) => {
 // Hook for inspections by status
 export const useInspectionsByStatus = (status: InspectionStatus) => {
   const inspections = useAppSelector((state: RootState) =>
-    state.inspections.inspections.filter((i: Inspection) => i.status === status)
+    state.inspections.inspections.filter(
+      (i: Inspection) => i.status === status,
+    ),
   );
 
   return {

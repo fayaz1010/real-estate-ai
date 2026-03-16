@@ -1,8 +1,17 @@
 // FILE PATH: src/components/PropertyIntelligence.tsx
 // Property intelligence widget showing market trends and neighborhood insights
 
-import React, { useState, useEffect } from 'react';
-import { TrendingUp, TrendingDown, MapPin, Home, Users, DollarSign, BarChart, Info } from 'lucide-react';
+import {
+  TrendingUp,
+  TrendingDown,
+  MapPin,
+  Home,
+  Users,
+  DollarSign,
+  BarChart,
+  Info,
+} from "lucide-react";
+import React, { useState, useEffect } from "react";
 
 interface PropertyIntelligenceProps {
   property: {
@@ -21,7 +30,7 @@ interface PropertyIntelligenceProps {
       bedrooms: number;
       bathrooms: number;
     };
-    listingType: 'sale' | 'rent';
+    listingType: "sale" | "rent";
   };
   className?: string;
 }
@@ -33,7 +42,7 @@ interface MarketData {
     priceChange: number;
     daysOnMarket: number;
     walkScore?: number;
-    crimeRate: 'low' | 'medium' | 'high';
+    crimeRate: "low" | "medium" | "high";
   };
   marketTrends: {
     pricePerSqft: number;
@@ -45,7 +54,7 @@ interface MarketData {
   };
   propertyValue: {
     estimatedValue: number;
-    confidence: 'low' | 'medium' | 'high';
+    confidence: "low" | "medium" | "high";
     lastUpdated: string;
   };
   nearbyAmenities: {
@@ -58,7 +67,7 @@ interface MarketData {
 
 export const PropertyIntelligence: React.FC<PropertyIntelligenceProps> = ({
   property,
-  className = ''
+  className = "",
 }) => {
   const [marketData, setMarketData] = useState<MarketData | null>(null);
   const [loading, setLoading] = useState(true);
@@ -76,10 +85,14 @@ export const PropertyIntelligence: React.FC<PropertyIntelligenceProps> = ({
           priceChange: (Math.random() - 0.5) * 20, // -10% to +10% change
           daysOnMarket: Math.floor(Math.random() * 60) + 15, // 15-75 days
           walkScore: Math.floor(Math.random() * 40) + 60, // 60-100 walk score
-          crimeRate: ['low', 'medium', 'high'][Math.floor(Math.random() * 3)] as 'low' | 'medium' | 'high',
+          crimeRate: ["low", "medium", "high"][
+            Math.floor(Math.random() * 3)
+          ] as "low" | "medium" | "high",
         },
         marketTrends: {
-          pricePerSqft: property.pricing.pricePerSqft || (property.pricing.price / property.details.sqft),
+          pricePerSqft:
+            property.pricing.pricePerSqft ||
+            property.pricing.price / property.details.sqft,
           pricePerSqftChange: (Math.random() - 0.5) * 10, // -5% to +5% change
           inventory: Math.floor(Math.random() * 100) + 50, // 50-150 homes for sale
           inventoryChange: (Math.random() - 0.5) * 20, // -10% to +10% change
@@ -88,8 +101,12 @@ export const PropertyIntelligence: React.FC<PropertyIntelligenceProps> = ({
         },
         propertyValue: {
           estimatedValue: property.pricing.price * (0.95 + Math.random() * 0.1),
-          confidence: ['low', 'medium', 'high'][Math.floor(Math.random() * 3)] as 'low' | 'medium' | 'high',
-          lastUpdated: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
+          confidence: ["low", "medium", "high"][
+            Math.floor(Math.random() * 3)
+          ] as "low" | "medium" | "high",
+          lastUpdated: new Date(
+            Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000,
+          ).toISOString(),
         },
         nearbyAmenities: {
           schools: Math.floor(Math.random() * 5) + 3,
@@ -110,16 +127,16 @@ export const PropertyIntelligence: React.FC<PropertyIntelligenceProps> = ({
   }, [property]);
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
   };
 
   const formatPercent = (change: number) => {
-    const sign = change >= 0 ? '+' : '';
+    const sign = change >= 0 ? "+" : "";
     return `${sign}${change.toFixed(1)}%`;
   };
 
@@ -159,14 +176,18 @@ export const PropertyIntelligence: React.FC<PropertyIntelligenceProps> = ({
       {/* Property Value Estimate */}
       <div className="mb-6 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200">
         <div className="flex items-center justify-between mb-2">
-          <h4 className="font-semibold text-blue-900">Property Value Estimate</h4>
-          <span className={`px-2 py-1 text-xs rounded-full ${
-            marketData.propertyValue.confidence === 'high'
-              ? 'bg-green-100 text-green-800'
-              : marketData.propertyValue.confidence === 'medium'
-              ? 'bg-yellow-100 text-yellow-800'
-              : 'bg-red-100 text-red-800'
-          }`}>
+          <h4 className="font-semibold text-blue-900">
+            Property Value Estimate
+          </h4>
+          <span
+            className={`px-2 py-1 text-xs rounded-full ${
+              marketData.propertyValue.confidence === "high"
+                ? "bg-green-100 text-green-800"
+                : marketData.propertyValue.confidence === "medium"
+                  ? "bg-yellow-100 text-yellow-800"
+                  : "bg-red-100 text-red-800"
+            }`}
+          >
             {marketData.propertyValue.confidence} confidence
           </span>
         </div>
@@ -174,7 +195,8 @@ export const PropertyIntelligence: React.FC<PropertyIntelligenceProps> = ({
           {formatCurrency(marketData.propertyValue.estimatedValue)}
         </p>
         <p className="text-sm text-blue-700">
-          Last updated: {new Date(marketData.propertyValue.lastUpdated).toLocaleDateString()}
+          Last updated:{" "}
+          {new Date(marketData.propertyValue.lastUpdated).toLocaleDateString()}
         </p>
       </div>
 
@@ -207,10 +229,15 @@ export const PropertyIntelligence: React.FC<PropertyIntelligenceProps> = ({
           )}
           <div className="text-center p-3 bg-gray-50 rounded-lg">
             <p className="text-sm text-gray-600 mb-1">Crime Rate</p>
-            <p className={`text-lg font-bold capitalize ${
-              marketData.neighborhood.crimeRate === 'low' ? 'text-green-600' :
-              marketData.neighborhood.crimeRate === 'medium' ? 'text-yellow-600' : 'text-red-600'
-            }`}>
+            <p
+              className={`text-lg font-bold capitalize ${
+                marketData.neighborhood.crimeRate === "low"
+                  ? "text-green-600"
+                  : marketData.neighborhood.crimeRate === "medium"
+                    ? "text-yellow-600"
+                    : "text-red-600"
+              }`}
+            >
               {marketData.neighborhood.crimeRate}
             </p>
           </div>
@@ -233,9 +260,13 @@ export const PropertyIntelligence: React.FC<PropertyIntelligenceProps> = ({
               <p className="font-medium text-gray-900">
                 ${marketData.marketTrends.pricePerSqft.toFixed(0)}
               </p>
-              <div className={`flex items-center text-xs ${
-                marketData.marketTrends.pricePerSqftChange >= 0 ? 'text-green-600' : 'text-red-600'
-              }`}>
+              <div
+                className={`flex items-center text-xs ${
+                  marketData.marketTrends.pricePerSqftChange >= 0
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
                 {marketData.marketTrends.pricePerSqftChange >= 0 ? (
                   <TrendingUp size={12} className="mr-1" />
                 ) : (
@@ -255,9 +286,13 @@ export const PropertyIntelligence: React.FC<PropertyIntelligenceProps> = ({
               <p className="font-medium text-gray-900">
                 {marketData.marketTrends.inventory}
               </p>
-              <div className={`flex items-center text-xs ${
-                marketData.marketTrends.inventoryChange >= 0 ? 'text-green-600' : 'text-red-600'
-              }`}>
+              <div
+                className={`flex items-center text-xs ${
+                  marketData.marketTrends.inventoryChange >= 0
+                    ? "text-green-600"
+                    : "text-red-600"
+                }`}
+              >
                 {marketData.marketTrends.inventoryChange >= 0 ? (
                   <TrendingUp size={12} className="mr-1" />
                 ) : (
@@ -279,19 +314,27 @@ export const PropertyIntelligence: React.FC<PropertyIntelligenceProps> = ({
         <div className="grid grid-cols-2 gap-3">
           <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
             <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-            <span className="text-sm text-gray-700">{marketData.nearbyAmenities.schools} Schools</span>
+            <span className="text-sm text-gray-700">
+              {marketData.nearbyAmenities.schools} Schools
+            </span>
           </div>
           <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
             <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span className="text-sm text-gray-700">{marketData.nearbyAmenities.parks} Parks</span>
+            <span className="text-sm text-gray-700">
+              {marketData.nearbyAmenities.parks} Parks
+            </span>
           </div>
           <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
             <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-            <span className="text-sm text-gray-700">{marketData.nearbyAmenities.restaurants} Restaurants</span>
+            <span className="text-sm text-gray-700">
+              {marketData.nearbyAmenities.restaurants} Restaurants
+            </span>
           </div>
           <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
             <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-            <span className="text-sm text-gray-700">{marketData.nearbyAmenities.shopping} Shopping</span>
+            <span className="text-sm text-gray-700">
+              {marketData.nearbyAmenities.shopping} Shopping
+            </span>
           </div>
         </div>
       </div>
@@ -301,12 +344,25 @@ export const PropertyIntelligence: React.FC<PropertyIntelligenceProps> = ({
         <div className="flex items-start gap-2">
           <Info size={16} className="text-blue-600 mt-0.5 flex-shrink-0" />
           <div>
-            <h5 className="font-medium text-gray-900 text-sm mb-1">Market Insights</h5>
+            <h5 className="font-medium text-gray-900 text-sm mb-1">
+              Market Insights
+            </h5>
             <p className="text-xs text-gray-600 mb-2">
-              This property is priced {Math.abs(marketData.neighborhood.medianPrice - property.pricing.price) < property.pricing.price * 0.05 ? 'competitively' : 'above average'} for the neighborhood.
+              This property is priced{" "}
+              {Math.abs(
+                marketData.neighborhood.medianPrice - property.pricing.price,
+              ) <
+              property.pricing.price * 0.05
+                ? "competitively"
+                : "above average"}{" "}
+              for the neighborhood.
             </p>
             <p className="text-xs text-gray-600">
-              The local market shows {marketData.marketTrends.pricePerSqftChange > 0 ? 'increasing' : 'stable'} prices with {marketData.marketTrends.inventory} active listings.
+              The local market shows{" "}
+              {marketData.marketTrends.pricePerSqftChange > 0
+                ? "increasing"
+                : "stable"}{" "}
+              prices with {marketData.marketTrends.inventory} active listings.
             </p>
           </div>
         </div>

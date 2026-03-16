@@ -1,10 +1,11 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/Availability/RecurringSchedule.tsx
 // TODO: Add your implementation here
 
-import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, Clock, Calendar, Power } from 'lucide-react';
-import { useAvailability } from '../../hooks/useAvailability';
-import { RecurringSchedule as RecurringScheduleType } from '../../types/inspection.types';
+import { Plus, Edit, Trash2, Clock, Calendar, Power } from "lucide-react";
+import React, { useState, useEffect } from "react";
+
+import { useAvailability } from "../../hooks/useAvailability";
+import { RecurringSchedule as RecurringScheduleType } from "../../types/inspection.types";
 
 interface RecurringScheduleProps {
   propertyId: string;
@@ -26,23 +27,23 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     daysOfWeek: [] as number[],
-    startTime: '09:00',
-    endTime: '17:00',
+    startTime: "09:00",
+    endTime: "17:00",
     slotDuration: 30,
     bufferTime: 0,
-    startDate: new Date().toISOString().split('T')[0],
-    endDate: '',
+    startDate: new Date().toISOString().split("T")[0],
+    endDate: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const daysOfWeek = [
-    { value: 0, label: 'Sunday' },
-    { value: 1, label: 'Monday' },
-    { value: 2, label: 'Tuesday' },
-    { value: 3, label: 'Wednesday' },
-    { value: 4, label: 'Thursday' },
-    { value: 5, label: 'Friday' },
-    { value: 6, label: 'Saturday' },
+    { value: 0, label: "Sunday" },
+    { value: 1, label: "Monday" },
+    { value: 2, label: "Tuesday" },
+    { value: 3, label: "Wednesday" },
+    { value: 4, label: "Thursday" },
+    { value: 5, label: "Friday" },
+    { value: 6, label: "Saturday" },
   ];
 
   const handleDayToggle = (day: number) => {
@@ -61,10 +62,10 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
     // Validation
     const newErrors: Record<string, string> = {};
     if (formData.daysOfWeek.length === 0) {
-      newErrors.daysOfWeek = 'Select at least one day';
+      newErrors.daysOfWeek = "Select at least one day";
     }
     if (formData.startTime >= formData.endTime) {
-      newErrors.endTime = 'End time must be after start time';
+      newErrors.endTime = "End time must be after start time";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -75,7 +76,7 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
     try {
       const scheduleData = {
         propertyId,
-        landlordId: 'current-user-id', // Replace with actual user ID
+        landlordId: "current-user-id", // Replace with actual user ID
         ...formData,
         excludedDates: [],
         isActive: true,
@@ -92,15 +93,15 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
       setEditingId(null);
       setFormData({
         daysOfWeek: [],
-        startTime: '09:00',
-        endTime: '17:00',
+        startTime: "09:00",
+        endTime: "17:00",
         slotDuration: 30,
         bufferTime: 0,
-        startDate: new Date().toISOString().split('T')[0],
-        endDate: '',
+        startDate: new Date().toISOString().split("T")[0],
+        endDate: "",
       });
     } catch (error) {
-      setErrors({ submit: 'Failed to save schedule. Please try again.' });
+      setErrors({ submit: "Failed to save schedule. Please try again." });
     }
   };
 
@@ -113,17 +114,17 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
       slotDuration: schedule.slotDuration,
       bufferTime: schedule.bufferTime,
       startDate: schedule.startDate,
-      endDate: schedule.endDate || '',
+      endDate: schedule.endDate || "",
     });
     setShowForm(true);
   };
 
   const handleDelete = async (scheduleId: string) => {
-    if (window.confirm('Are you sure you want to delete this schedule?')) {
+    if (window.confirm("Are you sure you want to delete this schedule?")) {
       try {
         await deleteSchedule(scheduleId);
       } catch (error) {
-        alert('Failed to delete schedule');
+        alert("Failed to delete schedule");
       }
     }
   };
@@ -132,7 +133,7 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
     try {
       await toggleSchedule(scheduleId, !currentStatus);
     } catch (error) {
-      alert('Failed to toggle schedule');
+      alert("Failed to toggle schedule");
     }
   };
 
@@ -179,20 +180,20 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
               key={schedule.id}
               className={`p-6 rounded-lg border-2 ${
                 schedule.isActive
-                  ? 'border-green-200 bg-green-50'
-                  : 'border-gray-200 bg-gray-50'
+                  ? "border-green-200 bg-green-50"
+                  : "border-gray-200 bg-gray-50"
               }`}
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div
                     className={`p-2 rounded-lg ${
-                      schedule.isActive ? 'bg-green-100' : 'bg-gray-200'
+                      schedule.isActive ? "bg-green-100" : "bg-gray-200"
                     }`}
                   >
                     <Clock
                       className={`w-5 h-5 ${
-                        schedule.isActive ? 'text-green-600' : 'text-gray-500'
+                        schedule.isActive ? "text-green-600" : "text-gray-500"
                       }`}
                     />
                   </div>
@@ -200,7 +201,7 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
                     <h4 className="font-semibold text-gray-900 mb-1">
                       {schedule.daysOfWeek
                         .map((day) => daysOfWeek[day].label.slice(0, 3))
-                        .join(', ')}
+                        .join(", ")}
                     </h4>
                     <p className="text-sm text-gray-600">
                       {schedule.startTime} - {schedule.endTime}
@@ -213,10 +214,10 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
                     onClick={() => handleToggle(schedule.id, schedule.isActive)}
                     className={`p-2 rounded-lg transition-colors ${
                       schedule.isActive
-                        ? 'text-green-600 hover:bg-green-100'
-                        : 'text-gray-400 hover:bg-gray-200'
+                        ? "text-green-600 hover:bg-green-100"
+                        : "text-gray-400 hover:bg-gray-200"
                     }`}
-                    title={schedule.isActive ? 'Disable' : 'Enable'}
+                    title={schedule.isActive ? "Disable" : "Enable"}
                   >
                     <Power className="w-5 h-5" />
                   </button>
@@ -259,7 +260,7 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
                   <p className="font-medium text-gray-900">
                     {schedule.endDate
                       ? new Date(schedule.endDate).toLocaleDateString()
-                      : 'Ongoing'}
+                      : "Ongoing"}
                   </p>
                 </div>
               </div>
@@ -273,7 +274,7 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
           <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
             <h3 className="text-xl font-semibold text-gray-900 mb-6">
-              {editingId ? 'Edit Schedule' : 'Add Recurring Schedule'}
+              {editingId ? "Edit Schedule" : "Add Recurring Schedule"}
             </h3>
 
             <form onSubmit={handleSubmit}>
@@ -292,8 +293,8 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
                         p-3 rounded-lg border-2 text-sm font-medium transition-colors
                         ${
                           formData.daysOfWeek.includes(day.value)
-                            ? 'border-blue-600 bg-blue-50 text-blue-700'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? "border-blue-600 bg-blue-50 text-blue-700"
+                            : "border-gray-200 hover:border-gray-300"
                         }
                       `}
                     >
@@ -302,7 +303,9 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
                   ))}
                 </div>
                 {errors.daysOfWeek && (
-                  <p className="mt-1 text-sm text-red-600">{errors.daysOfWeek}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.daysOfWeek}
+                  </p>
                 )}
               </div>
 
@@ -336,7 +339,9 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
                     required
                   />
                   {errors.endTime && (
-                    <p className="mt-1 text-sm text-red-600">{errors.endTime}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.endTime}
+                    </p>
                   )}
                 </div>
               </div>
@@ -397,7 +402,7 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
                     onChange={(e) =>
                       setFormData({ ...formData, startDate: e.target.value })
                     }
-                    min={new Date().toISOString().split('T')[0]}
+                    min={new Date().toISOString().split("T")[0]}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
                   />
@@ -439,7 +444,7 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
                   type="submit"
                   className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                  {editingId ? 'Update Schedule' : 'Create Schedule'}
+                  {editingId ? "Update Schedule" : "Create Schedule"}
                 </button>
               </div>
             </form>
@@ -449,4 +454,3 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
     </div>
   );
 };
-

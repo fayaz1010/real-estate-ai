@@ -1,16 +1,19 @@
 // FILE PATH: src/components/BrowsingHistory.tsx
 // Component for displaying recent searches and viewed properties for non-signed-in users
 
-import React from 'react';
-import { Clock, Eye, Search, X, TrendingUp, MapPin } from 'lucide-react';
-import { useBrowsingHistory } from '../hooks/useBrowsingHistory';
-import { formatCurrency } from '../lib/utils';
+import { Clock, Eye, Search, X, TrendingUp, MapPin } from "lucide-react";
+import React from "react";
+
+import { useBrowsingHistory } from "../hooks/useBrowsingHistory";
+import { formatCurrency } from "../lib/utils";
 
 interface BrowsingHistoryProps {
   className?: string;
 }
 
-export const BrowsingHistory: React.FC<BrowsingHistoryProps> = ({ className = '' }) => {
+export const BrowsingHistory: React.FC<BrowsingHistoryProps> = ({
+  className = "",
+}) => {
   const {
     recentSearches,
     viewedProperties,
@@ -26,19 +29,21 @@ export const BrowsingHistory: React.FC<BrowsingHistoryProps> = ({ className = ''
     const hours = Math.floor(diff / 3600000);
     const days = Math.floor(diff / 86400000);
 
-    if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
-    if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    return 'Just now';
+    if (days > 0) return `${days} day${days > 1 ? "s" : ""} ago`;
+    if (hours > 0) return `${hours} hour${hours > 1 ? "s" : ""} ago`;
+    if (minutes > 0) return `${minutes} minute${minutes > 1 ? "s" : ""} ago`;
+    return "Just now";
   };
 
   const handleSearchClick = (query: string) => {
     // Dispatch search event or navigate to search results
-    window.dispatchEvent(new CustomEvent('browse-search', { detail: query }));
+    window.dispatchEvent(new CustomEvent("browse-search", { detail: query }));
   };
 
   const handlePropertyClick = (propertyId: string) => {
-    window.dispatchEvent(new CustomEvent('browse-property', { detail: propertyId }));
+    window.dispatchEvent(
+      new CustomEvent("browse-property", { detail: propertyId }),
+    );
   };
 
   if (recentSearches.length === 0 && viewedProperties.length === 0) {
@@ -78,9 +83,14 @@ export const BrowsingHistory: React.FC<BrowsingHistoryProps> = ({ className = ''
                 onClick={() => handleSearchClick(search.query)}
                 className="w-full text-left p-3 rounded-lg hover:bg-gray-50 transition flex items-center gap-3 group"
               >
-                <Search size={16} className="text-gray-400 group-hover:text-blue-600 flex-shrink-0" />
+                <Search
+                  size={16}
+                  className="text-gray-400 group-hover:text-blue-600 flex-shrink-0"
+                />
                 <div className="flex-1 min-w-0">
-                  <p className="text-gray-900 font-medium truncate">{search.query}</p>
+                  <p className="text-gray-900 font-medium truncate">
+                    {search.query}
+                  </p>
                   <div className="flex items-center gap-2 text-xs text-gray-500">
                     <span>{formatTimeAgo(search.timestamp)}</span>
                     {search.resultCount && (
@@ -133,14 +143,16 @@ export const BrowsingHistory: React.FC<BrowsingHistoryProps> = ({ className = ''
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-blue-600 font-bold text-sm">
                         {formatCurrency(property.price)}
-                        {property.listingType === 'rent' && '/mo'}
+                        {property.listingType === "rent" && "/mo"}
                       </span>
-                      <span className={`px-2 py-0.5 rounded-full text-xs ${
-                        property.listingType === 'rent'
-                          ? 'bg-blue-100 text-blue-800'
-                          : 'bg-green-100 text-green-800'
-                      }`}>
-                        {property.listingType === 'rent' ? 'Rent' : 'Sale'}
+                      <span
+                        className={`px-2 py-0.5 rounded-full text-xs ${
+                          property.listingType === "rent"
+                            ? "bg-blue-100 text-blue-800"
+                            : "bg-green-100 text-green-800"
+                        }`}
+                      >
+                        {property.listingType === "rent" ? "Rent" : "Sale"}
                       </span>
                     </div>
                     <p className="text-xs text-gray-500 mt-1">

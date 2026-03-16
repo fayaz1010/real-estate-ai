@@ -1,54 +1,68 @@
 // FILE PATH: src/modules/properties/components/PropertySearch/SearchFilters.tsx
 // Module 1.2: Property Listings Management - Search Filters Sidebar
 
-import React, { useState } from 'react';
-import { SearchFilters as SearchFiltersType } from '../../types/property.types';
-import { usePropertySearch } from '../../hooks/usePropertySearch';
-import { searchFilterUtils } from '../../utils/searchFilters';
-import { Sliders as SlidersHorizontal, X, DollarSign, Home, Droplet, Maximize, Calendar, Filter } from 'lucide-react';
+import {
+  Sliders as SlidersHorizontal,
+  X,
+  DollarSign,
+  Home,
+  Droplet,
+  Maximize,
+  Calendar,
+  Filter,
+} from "lucide-react";
+import React, { useState } from "react";
+
+import { usePropertySearch } from "../../hooks/usePropertySearch";
+import { SearchFilters as SearchFiltersType } from "../../types/property.types";
+import { searchFilterUtils } from "../../utils/searchFilters";
 
 interface SearchFiltersProps {
   onClose?: () => void;
   isMobile?: boolean;
 }
 
-export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile = false }) => {
+export const SearchFilters: React.FC<SearchFiltersProps> = ({
+  onClose,
+  isMobile = false,
+}) => {
   const { filters, updateFilters, resetFilters } = usePropertySearch();
-  const [localFilters, setLocalFilters] = useState<Partial<SearchFiltersType>>(filters);
+  const [localFilters, setLocalFilters] =
+    useState<Partial<SearchFiltersType>>(filters);
 
   const propertyTypes = [
-    { value: 'apartment', label: 'Apartment', icon: '🏢' },
-    { value: 'house', label: 'House', icon: '🏠' },
-    { value: 'condo', label: 'Condo', icon: '🏘️' },
-    { value: 'townhouse', label: 'Townhouse', icon: '🏡' },
-    { value: 'studio', label: 'Studio', icon: '🚪' },
-    { value: 'commercial', label: 'Commercial', icon: '🏬' }
+    { value: "apartment", label: "Apartment", icon: "🏢" },
+    { value: "house", label: "House", icon: "🏠" },
+    { value: "condo", label: "Condo", icon: "🏘️" },
+    { value: "townhouse", label: "Townhouse", icon: "🏡" },
+    { value: "studio", label: "Studio", icon: "🚪" },
+    { value: "commercial", label: "Commercial", icon: "🏬" },
   ];
 
   const bedroomOptions = [
-    { value: 0, label: 'Studio' },
-    { value: 1, label: '1+' },
-    { value: 2, label: '2+' },
-    { value: 3, label: '3+' },
-    { value: 4, label: '4+' },
-    { value: 5, label: '5+' }
+    { value: 0, label: "Studio" },
+    { value: 1, label: "1+" },
+    { value: 2, label: "2+" },
+    { value: 3, label: "3+" },
+    { value: 4, label: "4+" },
+    { value: 5, label: "5+" },
   ];
 
   const bathroomOptions = [
-    { value: 1, label: '1+' },
-    { value: 1.5, label: '1.5+' },
-    { value: 2, label: '2+' },
-    { value: 2.5, label: '2.5+' },
-    { value: 3, label: '3+' },
-    { value: 4, label: '4+' }
+    { value: 1, label: "1+" },
+    { value: 1.5, label: "1.5+" },
+    { value: 2, label: "2+" },
+    { value: 2.5, label: "2.5+" },
+    { value: 3, label: "3+" },
+    { value: 4, label: "4+" },
   ];
 
   const togglePropertyType = (type: string) => {
     const currentTypes = localFilters.propertyType || [];
     const newTypes = currentTypes.includes(type as any)
-      ? currentTypes.filter(t => t !== type)
+      ? currentTypes.filter((t) => t !== type)
       : [...currentTypes, type as any];
-    
+
     setLocalFilters({ ...localFilters, propertyType: newTypes });
   };
 
@@ -63,10 +77,13 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
     onClose?.();
   };
 
-  const activeFilterCount = searchFilterUtils.getActiveFilterCount(localFilters);
+  const activeFilterCount =
+    searchFilterUtils.getActiveFilterCount(localFilters);
 
   return (
-    <div className={`bg-white ${isMobile ? 'h-full overflow-y-auto' : 'rounded-lg shadow-lg'}`}>
+    <div
+      className={`bg-white ${isMobile ? "h-full overflow-y-auto" : "rounded-lg shadow-lg"}`}
+    >
       {/* Header */}
       <div className="sticky top-0 bg-white border-b px-6 py-4 z-10">
         <div className="flex items-center justify-between">
@@ -80,7 +97,10 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
             )}
           </div>
           {isMobile && (
-            <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg">
+            <button
+              onClick={onClose}
+              className="p-2 hover:bg-gray-100 rounded-lg"
+            >
               <X size={20} />
             </button>
           )}
@@ -96,21 +116,25 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
           </label>
           <div className="grid grid-cols-2 gap-3">
             <button
-              onClick={() => setLocalFilters({ ...localFilters, listingType: 'rent' })}
+              onClick={() =>
+                setLocalFilters({ ...localFilters, listingType: "rent" })
+              }
               className={`px-4 py-3 border-2 rounded-lg font-medium transition ${
-                localFilters.listingType === 'rent'
-                  ? 'border-blue-600 bg-blue-50 text-blue-700'
-                  : 'border-gray-200 hover:border-gray-300'
+                localFilters.listingType === "rent"
+                  ? "border-blue-600 bg-blue-50 text-blue-700"
+                  : "border-gray-200 hover:border-gray-300"
               }`}
             >
               For Rent
             </button>
             <button
-              onClick={() => setLocalFilters({ ...localFilters, listingType: 'sale' })}
+              onClick={() =>
+                setLocalFilters({ ...localFilters, listingType: "sale" })
+              }
               className={`px-4 py-3 border-2 rounded-lg font-medium transition ${
-                localFilters.listingType === 'sale'
-                  ? 'border-blue-600 bg-blue-50 text-blue-700'
-                  : 'border-gray-200 hover:border-gray-300'
+                localFilters.listingType === "sale"
+                  ? "border-blue-600 bg-blue-50 text-blue-700"
+                  : "border-gray-200 hover:border-gray-300"
               }`}
             >
               For Sale
@@ -129,8 +153,13 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
               <input
                 type="number"
                 placeholder="Min"
-                value={localFilters.priceMin || ''}
-                onChange={(e) => setLocalFilters({ ...localFilters, priceMin: Number(e.target.value) || undefined })}
+                value={localFilters.priceMin || ""}
+                onChange={(e) =>
+                  setLocalFilters({
+                    ...localFilters,
+                    priceMin: Number(e.target.value) || undefined,
+                  })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -138,8 +167,13 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
               <input
                 type="number"
                 placeholder="Max"
-                value={localFilters.priceMax || ''}
-                onChange={(e) => setLocalFilters({ ...localFilters, priceMax: Number(e.target.value) || undefined })}
+                value={localFilters.priceMax || ""}
+                onChange={(e) =>
+                  setLocalFilters({
+                    ...localFilters,
+                    priceMax: Number(e.target.value) || undefined,
+                  })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -159,8 +193,8 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
                 onClick={() => togglePropertyType(type.value)}
                 className={`px-3 py-2 border-2 rounded-lg font-medium transition text-left ${
                   localFilters.propertyType?.includes(type.value as any)
-                    ? 'border-blue-600 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? "border-blue-600 bg-blue-50 text-blue-700"
+                    : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 <span className="mr-2">{type.icon}</span>
@@ -180,11 +214,16 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
             {bedroomOptions.map((option) => (
               <button
                 key={option.value}
-                onClick={() => setLocalFilters({ ...localFilters, bedroomsMin: option.value })}
+                onClick={() =>
+                  setLocalFilters({
+                    ...localFilters,
+                    bedroomsMin: option.value,
+                  })
+                }
                 className={`px-3 py-2 border-2 rounded-lg font-medium transition ${
                   localFilters.bedroomsMin === option.value
-                    ? 'border-blue-600 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? "border-blue-600 bg-blue-50 text-blue-700"
+                    : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 {option.label}
@@ -203,11 +242,16 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
             {bathroomOptions.map((option) => (
               <button
                 key={option.value}
-                onClick={() => setLocalFilters({ ...localFilters, bathroomsMin: option.value })}
+                onClick={() =>
+                  setLocalFilters({
+                    ...localFilters,
+                    bathroomsMin: option.value,
+                  })
+                }
                 className={`px-3 py-2 border-2 rounded-lg font-medium transition ${
                   localFilters.bathroomsMin === option.value
-                    ? 'border-blue-600 bg-blue-50 text-blue-700'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? "border-blue-600 bg-blue-50 text-blue-700"
+                    : "border-gray-200 hover:border-gray-300"
                 }`}
               >
                 {option.label}
@@ -226,15 +270,25 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
             <input
               type="number"
               placeholder="Min sqft"
-              value={localFilters.sqftMin || ''}
-              onChange={(e) => setLocalFilters({ ...localFilters, sqftMin: Number(e.target.value) || undefined })}
+              value={localFilters.sqftMin || ""}
+              onChange={(e) =>
+                setLocalFilters({
+                  ...localFilters,
+                  sqftMin: Number(e.target.value) || undefined,
+                })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
             <input
               type="number"
               placeholder="Max sqft"
-              value={localFilters.sqftMax || ''}
-              onChange={(e) => setLocalFilters({ ...localFilters, sqftMax: Number(e.target.value) || undefined })}
+              value={localFilters.sqftMax || ""}
+              onChange={(e) =>
+                setLocalFilters({
+                  ...localFilters,
+                  sqftMax: Number(e.target.value) || undefined,
+                })
+              }
               className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
           </div>
@@ -246,7 +300,12 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
             <input
               type="checkbox"
               checked={localFilters.petFriendly || false}
-              onChange={(e) => setLocalFilters({ ...localFilters, petFriendly: e.target.checked })}
+              onChange={(e) =>
+                setLocalFilters({
+                  ...localFilters,
+                  petFriendly: e.target.checked,
+                })
+              }
               className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
             />
             <span className="text-sm text-gray-700">Pet Friendly</span>
@@ -256,7 +315,12 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
             <input
               type="checkbox"
               checked={localFilters.furnished || false}
-              onChange={(e) => setLocalFilters({ ...localFilters, furnished: e.target.checked })}
+              onChange={(e) =>
+                setLocalFilters({
+                  ...localFilters,
+                  furnished: e.target.checked,
+                })
+              }
               className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
             />
             <span className="text-sm text-gray-700">Furnished</span>
@@ -266,7 +330,9 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
             <input
               type="checkbox"
               checked={localFilters.parking || false}
-              onChange={(e) => setLocalFilters({ ...localFilters, parking: e.target.checked })}
+              onChange={(e) =>
+                setLocalFilters({ ...localFilters, parking: e.target.checked })
+              }
               className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
             />
             <span className="text-sm text-gray-700">Parking Available</span>
@@ -281,8 +347,13 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({ onClose, isMobile 
           </label>
           <input
             type="date"
-            value={localFilters.availableFrom || ''}
-            onChange={(e) => setLocalFilters({ ...localFilters, availableFrom: e.target.value })}
+            value={localFilters.availableFrom || ""}
+            onChange={(e) =>
+              setLocalFilters({
+                ...localFilters,
+                availableFrom: e.target.value,
+              })
+            }
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
           />
         </div>

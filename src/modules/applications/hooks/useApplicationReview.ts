@@ -1,29 +1,37 @@
 ﻿// PLACEHOLDER FILE: hooks\useApplicationReview.ts
 // TODO: Add your implementation here
-import { useCallback, useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback, useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { RootState, AppDispatch } from "../../../store";
+import { applicationService } from "../services/applicationService";
 import {
   fetchPropertyApplications,
   approveApplication,
   rejectApplication,
   fetchApplicationSummary,
-} from '../store/applicationSlice';
-import { Application, ApplicationFilters, ApplicationStatus } from '../types/application.types';
-import { calculateApplicationScore, getScoreRating } from '../utils/scoringAlgorithm';
-import { RootState, AppDispatch } from '../../../store';
-import { applicationService } from '../services/applicationService';
+} from "../store/applicationSlice";
+import {
+  Application,
+  ApplicationFilters,
+  ApplicationStatus,
+} from "../types/application.types";
+import {
+  calculateApplicationScore,
+  getScoreRating,
+} from "../utils/scoringAlgorithm";
 
 export const useApplicationReview = (propertyId?: string) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const { applications, summary, loading, error } = useSelector(
-    (state: RootState) => state.applications
+    (state: RootState) => state.applications,
   );
 
-  const [sortBy, setSortBy] = useState<'score' | 'date' | 'name'>('score');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [sortBy, setSortBy] = useState<"score" | "date" | "name">("score");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [filterStatus, setFilterStatus] = useState<ApplicationStatus[]>([]);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch applications on mount
   useEffect(() => {
@@ -39,68 +47,71 @@ export const useApplicationReview = (propertyId?: string) => {
       if (!propertyId) return;
       await dispatch(fetchPropertyApplications({ propertyId, filters }));
     },
-    [propertyId, dispatch]
+    [propertyId, dispatch],
   );
 
   // Approve application
   const approve = useCallback(
     async (applicationId: string, conditions?: string[]) => {
-      const result = await dispatch(approveApplication({ applicationId, conditions }));
+      const result = await dispatch(
+        approveApplication({ applicationId, conditions }),
+      );
       return result.payload as Application;
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Reject application
   const reject = useCallback(
     async (applicationId: string, reason: string) => {
-      const result = await dispatch(rejectApplication({ applicationId, reason }));
+      const result = await dispatch(
+        rejectApplication({ applicationId, reason }),
+      );
       return result.payload as Application;
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Request more information
   const requestMoreInfo = useCallback(
-    async (applicationId: string, message: string, requiredFields: string[]) => {
-      return await applicationService.requestMoreInfo(applicationId, message, requiredFields);
+    async (
+      applicationId: string,
+      message: string,
+      requiredFields: string[],
+    ) => {
+      return await applicationService.requestMoreInfo(
+        applicationId,
+        message,
+        requiredFields,
+      );
     },
-    []
+    [],
   );
 
   // Add landlord notes
-  const addNotes = useCallback(
-    async (applicationId: string, notes: string) => {
-      return await applicationService.addLandlordNotes(applicationId, notes);
-    },
-    []
-  );
+  const addNotes = useCallback(async (applicationId: string, notes: string) => {
+    return await applicationService.addLandlordNotes(applicationId, notes);
+  }, []);
 
   // Compare applications
-  const compare = useCallback(
-    async (applicationIds: string[]) => {
-      return await applicationService.compareApplications(applicationIds);
-    },
-    []
-  );
+  const compare = useCallback(async (applicationIds: string[]) => {
+    return await applicationService.compareApplications(applicationIds);
+  }, []);
 
   // Export application
-  const exportPDF = useCallback(
-    async (applicationId: string) => {
-      const blob = await applicationService.exportApplicationPDF(applicationId);
-      
-      // Create download link
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `application-${applicationId}.pdf`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    },
-    []
-  );
+  const exportPDF = useCallback(async (applicationId: string) => {
+    const blob = await applicationService.exportApplicationPDF(applicationId);
+
+    // Create download link
+    const url = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `application-${applicationId}.pdf`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
+  }, []);
 
   // Filter and sort applications
   const filteredApplications = useCallback(() => {
@@ -108,14 +119,15 @@ export const useApplicationReview = (propertyId?: string) => {
 
     // Filter by status
     if (filterStatus.length > 0) {
-      filtered = filtered.filter(app => filterStatus.includes(app.status));
+      filtered = filtered.filter((app) => filterStatus.includes(app.status));
     }
 
     // Filter by search query
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(app => {
-        const fullName = `${app.personalInfo.firstName} ${app.personalInfo.lastName}`.toLowerCase();
+      filtered = filtered.filter((app) => {
+        const fullName =
+          `${app.personalInfo.firstName} ${app.personalInfo.lastName}`.toLowerCase();
         const email = app.personalInfo.email.toLowerCase();
         return fullName.includes(query) || email.includes(query);
       });
@@ -126,20 +138,22 @@ export const useApplicationReview = (propertyId?: string) => {
       let comparison = 0;
 
       switch (sortBy) {
-        case 'score':
+        case "score":
           comparison = a.score - b.score;
           break;
-        case 'date':
-          comparison = new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        case "date":
+          comparison =
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
           break;
-        case 'name':
+        case "name": {
           const nameA = `${a.personalInfo.firstName} ${a.personalInfo.lastName}`;
           const nameB = `${b.personalInfo.firstName} ${b.personalInfo.lastName}`;
           comparison = nameA.localeCompare(nameB);
           break;
+        }
       }
 
-      return sortOrder === 'asc' ? comparison : -comparison;
+      return sortOrder === "asc" ? comparison : -comparison;
     });
 
     return filtered;
@@ -148,9 +162,9 @@ export const useApplicationReview = (propertyId?: string) => {
   // Get applications by status
   const getByStatus = useCallback(
     (status: ApplicationStatus) => {
-      return applications.filter(app => app.status === status);
+      return applications.filter((app) => app.status === status);
     },
-    [applications]
+    [applications],
   );
 
   // Get top applications
@@ -160,16 +174,16 @@ export const useApplicationReview = (propertyId?: string) => {
         .sort((a, b) => b.score - a.score)
         .slice(0, limit);
     },
-    [applications]
+    [applications],
   );
 
   // Get applications needing attention
   const getNeedingAttention = useCallback(() => {
     return applications.filter(
-      app =>
-        app.status === 'submitted' ||
-        app.status === 'under_review' ||
-        app.status === 'verification_pending'
+      (app) =>
+        app.status === "submitted" ||
+        app.status === "under_review" ||
+        app.status === "verification_pending",
     );
   }, [applications]);
 
@@ -189,16 +203,23 @@ export const useApplicationReview = (propertyId?: string) => {
 
     const total = applications.length;
     const averageScore = Math.round(
-      applications.reduce((sum, app) => sum + app.score, 0) / total
+      applications.reduce((sum, app) => sum + app.score, 0) / total,
     );
-    const strongApplicants = applications.filter(app => app.score >= 90).length;
+    const strongApplicants = applications.filter(
+      (app) => app.score >= 90,
+    ).length;
     const needingReview = getNeedingAttention().length;
     const approved = applications.filter(
-      app => app.status === 'approved' || app.status === 'approved_with_conditions'
+      (app) =>
+        app.status === "approved" || app.status === "approved_with_conditions",
     ).length;
-    const rejected = applications.filter(app => app.status === 'rejected').length;
+    const rejected = applications.filter(
+      (app) => app.status === "rejected",
+    ).length;
     const approvalRate =
-      approved + rejected > 0 ? Math.round((approved / (approved + rejected)) * 100) : 0;
+      approved + rejected > 0
+        ? Math.round((approved / (approved + rejected)) * 100)
+        : 0;
 
     return {
       total,
@@ -220,7 +241,7 @@ export const useApplicationReview = (propertyId?: string) => {
       weak: 0, // <60
     };
 
-    applications.forEach(app => {
+    applications.forEach((app) => {
       if (app.score >= 90) distribution.strong++;
       else if (app.score >= 75) distribution.good++;
       else if (app.score >= 60) distribution.fair++;
@@ -233,18 +254,18 @@ export const useApplicationReview = (propertyId?: string) => {
   // Bulk actions
   const bulkApprove = useCallback(
     async (applicationIds: string[]) => {
-      const promises = applicationIds.map(id => approve(id));
+      const promises = applicationIds.map((id) => approve(id));
       return await Promise.all(promises);
     },
-    [approve]
+    [approve],
   );
 
   const bulkReject = useCallback(
     async (applicationIds: string[], reason: string) => {
-      const promises = applicationIds.map(id => reject(id, reason));
+      const promises = applicationIds.map((id) => reject(id, reason));
       return await Promise.all(promises);
     },
-    [reject]
+    [reject],
   );
 
   return {
@@ -254,11 +275,11 @@ export const useApplicationReview = (propertyId?: string) => {
     summary,
     statistics: getStatistics(),
     scoreDistribution: getScoreDistribution(),
-    
+
     // UI state
     loading,
     error,
-    
+
     // Filters
     sortBy,
     setSortBy,
@@ -268,7 +289,7 @@ export const useApplicationReview = (propertyId?: string) => {
     setFilterStatus,
     searchQuery,
     setSearchQuery,
-    
+
     // Actions
     fetchWithFilters,
     approve,
@@ -279,7 +300,7 @@ export const useApplicationReview = (propertyId?: string) => {
     exportPDF,
     bulkApprove,
     bulkReject,
-    
+
     // Helpers
     getByStatus,
     getTopApplications,

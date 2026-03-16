@@ -1,19 +1,19 @@
-
 // ============================================================================
 // FILE: src/modules/auth/components/ForgotPassword.tsx
 // ============================================================================
 
-import React, { useState } from 'react';
-import { authService } from '../services/authService';
-import { validators } from '../utils/validation';
-import { Mail, AlertCircle, CheckCircle, ArrowLeft } from 'lucide-react';
+import { Mail, AlertCircle, CheckCircle, ArrowLeft } from "lucide-react";
+import React, { useState } from "react";
+
+import { authService } from "../services/authService";
+import { validators } from "../utils/validation";
 
 interface ForgotPasswordProps {
   onBack?: () => void;
 }
 
 export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
@@ -23,7 +23,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
     setError(null);
 
     if (!validators.email(email)) {
-      setError('Please enter a valid email address');
+      setError("Please enter a valid email address");
       return;
     }
 
@@ -47,9 +47,11 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
             <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
               <CheckCircle className="text-green-600" size={32} />
             </div>
-            <h2 className="text-2xl font-bold text-gray-800 mb-2">Check Your Email</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-2">
+              Check Your Email
+            </h2>
             <p className="text-gray-600 mb-6">
-              We've sent password reset instructions to <strong>{email}</strong>
+              We&apos;ve sent password reset instructions to <strong>{email}</strong>
             </p>
             <button
               onClick={onBack}
@@ -74,9 +76,12 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
           Back to Login
         </button>
 
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Reset Password</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+          Reset Password
+        </h2>
         <p className="text-gray-600 mb-6">
-          Enter your email address and we'll send you instructions to reset your password.
+          Enter your email address and we&apos;ll send you instructions to reset your
+          password.
         </p>
 
         {error && (
@@ -92,7 +97,10 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+              <Mail
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={18}
+              />
               <input
                 type="email"
                 value={email}
@@ -109,7 +117,7 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
             disabled={isLoading}
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition"
           >
-            {isLoading ? 'Sending...' : 'Send Reset Link'}
+            {isLoading ? "Sending..." : "Send Reset Link"}
           </button>
         </form>
       </div>

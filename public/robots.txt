@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /profile-setup
+Sitemap: https://propmanage.com/sitemap.xml

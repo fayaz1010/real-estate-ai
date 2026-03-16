@@ -1,15 +1,19 @@
 // FILE PATH: src/modules/auth/utils/tokenManager.ts
 // Module 1.1: User Authentication & Management - Token Management Utility
 
-const ACCESS_TOKEN_KEY = 'access_token';
-const REFRESH_TOKEN_KEY = 'refresh_token';
-const TOKEN_EXPIRY_KEY = 'token_expiry';
+const ACCESS_TOKEN_KEY = "access_token";
+const REFRESH_TOKEN_KEY = "refresh_token";
+const TOKEN_EXPIRY_KEY = "token_expiry";
 
 export const tokenManager = {
   /**
    * Store authentication tokens in localStorage
    */
-  setTokens: (accessToken: string, refreshToken: string, expiresIn: number): void => {
+  setTokens: (
+    accessToken: string,
+    refreshToken: string,
+    expiresIn: number,
+  ): void => {
     localStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
     localStorage.setItem(REFRESH_TOKEN_KEY, refreshToken);
     const expiryTime = Date.now() + expiresIn * 1000;
@@ -73,5 +77,5 @@ export const tokenManager = {
     const accessToken = tokenManager.getAccessToken();
     const refreshToken = tokenManager.getRefreshToken();
     return !!(accessToken && refreshToken);
-  }
+  },
 };

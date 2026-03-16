@@ -1,10 +1,11 @@
 // FILE PATH: src/modules/auth/services/userService.ts
 // Module 1.1: User Authentication & Management - User Profile Service
 
-import { tokenManager } from '../utils/tokenManager';
-import { User } from '../types/auth.types';
+import { User } from "../types/auth.types";
+import { tokenManager } from "../utils/tokenManager";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4041/api';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:4041/api";
 
 class UserService {
   /**
@@ -12,17 +13,17 @@ class UserService {
    */
   async updateProfile(updates: Partial<User>): Promise<User> {
     const response = await fetch(`${API_BASE_URL}/users/profile`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
         ...tokenManager.getAuthHeader(),
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(updates)
+      body: JSON.stringify(updates),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Failed to update profile');
+      throw new Error(error.message || "Failed to update profile");
     }
 
     return response.json();
@@ -33,17 +34,17 @@ class UserService {
    */
   async uploadAvatar(file: File): Promise<{ avatarUrl: string }> {
     const formData = new FormData();
-    formData.append('avatar', file);
+    formData.append("avatar", file);
 
     const response = await fetch(`${API_BASE_URL}/users/avatar`, {
-      method: 'POST',
+      method: "POST",
       headers: tokenManager.getAuthHeader(),
-      body: formData
+      body: formData,
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Failed to upload avatar');
+      throw new Error(error.message || "Failed to upload avatar");
     }
 
     return response.json();
@@ -52,19 +53,22 @@ class UserService {
   /**
    * Change user password
    */
-  async changePassword(currentPassword: string, newPassword: string): Promise<void> {
+  async changePassword(
+    currentPassword: string,
+    newPassword: string,
+  ): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/users/change-password`, {
-      method: 'POST',
+      method: "POST",
       headers: {
         ...tokenManager.getAuthHeader(),
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ currentPassword, newPassword })
+      body: JSON.stringify({ currentPassword, newPassword }),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Failed to change password');
+      throw new Error(error.message || "Failed to change password");
     }
   }
 
@@ -76,17 +80,20 @@ class UserService {
     smsNotifications?: boolean;
     pushNotifications?: boolean;
   }): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/users/notification-preferences`, {
-      method: 'PATCH',
-      headers: {
-        ...tokenManager.getAuthHeader(),
-        'Content-Type': 'application/json'
+    const response = await fetch(
+      `${API_BASE_URL}/users/notification-preferences`,
+      {
+        method: "PATCH",
+        headers: {
+          ...tokenManager.getAuthHeader(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(preferences),
       },
-      body: JSON.stringify(preferences)
-    });
+    );
 
     if (!response.ok) {
-      throw new Error('Failed to update notification preferences');
+      throw new Error("Failed to update notification preferences");
     }
   }
 
@@ -99,16 +106,16 @@ class UserService {
     taxId?: string;
   }): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/users/landlord-profile`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
         ...tokenManager.getAuthHeader(),
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(updates)
+      body: JSON.stringify(updates),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update landlord profile');
+      throw new Error("Failed to update landlord profile");
     }
   }
 
@@ -123,16 +130,16 @@ class UserService {
     numberOfOccupants?: number;
   }): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/users/tenant-profile`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
         ...tokenManager.getAuthHeader(),
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(updates)
+      body: JSON.stringify(updates),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update tenant profile');
+      throw new Error("Failed to update tenant profile");
     }
   }
 
@@ -147,16 +154,16 @@ class UserService {
     specializations?: string[];
   }): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/users/agent-profile`, {
-      method: 'PATCH',
+      method: "PATCH",
       headers: {
         ...tokenManager.getAuthHeader(),
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(updates)
+      body: JSON.stringify(updates),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to update agent profile');
+      throw new Error("Failed to update agent profile");
     }
   }
 
@@ -165,17 +172,17 @@ class UserService {
    */
   async deleteAccount(password: string): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/users/account`, {
-      method: 'DELETE',
+      method: "DELETE",
       headers: {
         ...tokenManager.getAuthHeader(),
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ password })
+      body: JSON.stringify({ password }),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Failed to delete account');
+      throw new Error(error.message || "Failed to delete account");
     }
 
     tokenManager.clearTokens();
@@ -188,12 +195,12 @@ class UserService {
     const response = await fetch(
       `${API_BASE_URL}/users/activity-log?page=${page}&limit=${limit}`,
       {
-        headers: tokenManager.getAuthHeader()
-      }
+        headers: tokenManager.getAuthHeader(),
+      },
     );
 
     if (!response.ok) {
-      throw new Error('Failed to fetch activity log');
+      throw new Error("Failed to fetch activity log");
     }
 
     return response.json();

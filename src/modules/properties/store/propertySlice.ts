@@ -1,57 +1,65 @@
 // FILE PATH: src/modules/properties/store/propertySlice.ts
 // Module 1.2: Property Listings Management - Property Redux Slice
 
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { propertyService } from '../services/propertyService';
-import { Property, PropertyState, SearchFilters } from '../types/property.types';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+
+import { propertyService } from "../services/propertyService";
+import {
+  Property,
+  PropertyState,
+  SearchFilters,
+} from "../types/property.types";
 
 // Async thunks
 export const fetchProperties = createAsyncThunk(
-  'properties/fetchProperties',
+  "properties/fetchProperties",
   async (filters: SearchFilters | undefined, { rejectWithValue }) => {
     try {
       return await propertyService.getProperties(filters);
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const fetchPropertyById = createAsyncThunk(
-  'properties/fetchPropertyById',
+  "properties/fetchPropertyById",
   async (id: string, { rejectWithValue }) => {
     try {
       return await propertyService.getPropertyById(id);
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const createProperty = createAsyncThunk(
-  'properties/createProperty',
+  "properties/createProperty",
   async (propertyData: any, { rejectWithValue }) => {
     try {
       return await propertyService.createProperty(propertyData);
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const updateProperty = createAsyncThunk(
-  'properties/updateProperty',
-  async ({ id, updates }: { id: string; updates: Partial<Property> }, { rejectWithValue }) => {
+  "properties/updateProperty",
+  async (
+    { id, updates }: { id: string; updates: Partial<Property> },
+    { rejectWithValue },
+  ) => {
     try {
       return await propertyService.updateProperty(id, updates);
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const deleteProperty = createAsyncThunk(
-  'properties/deleteProperty',
+  "properties/deleteProperty",
   async (id: string, { rejectWithValue }) => {
     try {
       await propertyService.deleteProperty(id);
@@ -59,7 +67,7 @@ export const deleteProperty = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 const initialState: PropertyState = {
@@ -71,11 +79,11 @@ const initialState: PropertyState = {
   totalPages: 1,
   totalCount: 0,
   favorites: [],
-  comparison: []
+  comparison: [],
 };
 
 const propertySlice = createSlice({
-  name: 'properties',
+  name: "properties",
   initialState,
   reducers: {
     clearError: (state) => {
@@ -90,19 +98,22 @@ const propertySlice = createSlice({
       }
     },
     removeFromFavorites: (state, action: PayloadAction<string>) => {
-      state.favorites = state.favorites.filter(id => id !== action.payload);
+      state.favorites = state.favorites.filter((id) => id !== action.payload);
     },
     addToComparison: (state, action: PayloadAction<string>) => {
-      if (state.comparison.length < 4 && !state.comparison.includes(action.payload)) {
+      if (
+        state.comparison.length < 4 &&
+        !state.comparison.includes(action.payload)
+      ) {
         state.comparison.push(action.payload);
       }
     },
     removeFromComparison: (state, action: PayloadAction<string>) => {
-      state.comparison = state.comparison.filter(id => id !== action.payload);
+      state.comparison = state.comparison.filter((id) => id !== action.payload);
     },
     clearComparison: (state) => {
       state.comparison = [];
-    }
+    },
   },
   extraReducers: (builder) => {
     // Fetch properties
@@ -144,7 +155,9 @@ const propertySlice = createSlice({
 
     // Update property
     builder.addCase(updateProperty.fulfilled, (state, action) => {
-      const index = state.properties.findIndex(p => p.id === action.payload.id);
+      const index = state.properties.findIndex(
+        (p) => p.id === action.payload.id,
+      );
       if (index !== -1) {
         state.properties[index] = action.payload;
       }
@@ -155,13 +168,15 @@ const propertySlice = createSlice({
 
     // Delete property
     builder.addCase(deleteProperty.fulfilled, (state, action) => {
-      state.properties = state.properties.filter(p => p.id !== action.payload);
+      state.properties = state.properties.filter(
+        (p) => p.id !== action.payload,
+      );
       state.totalCount--;
       if (state.selectedProperty?.id === action.payload) {
         state.selectedProperty = null;
       }
     });
-  }
+  },
 });
 
 export const {
@@ -171,19 +186,27 @@ export const {
   removeFromFavorites,
   addToComparison,
   removeFromComparison,
-  clearComparison
+  clearComparison,
 } = propertySlice.actions;
 
 // Selectors
-export const selectAllProperties = (state: { properties: PropertyState }) => state.properties.properties;
-export const selectPropertyById = (state: { properties: PropertyState }, id: string) =>
-  state.properties.properties.find(p => p.id === id);
-export const selectSelectedProperty = (state: { properties: PropertyState }) => state.properties.selectedProperty;
-export const selectPropertiesLoading = (state: { properties: PropertyState }) => state.properties.isLoading;
-export const selectPropertiesError = (state: { properties: PropertyState }) => state.properties.error;
-export const selectFavorites = (state: { properties: PropertyState }) => state.properties.favorites;
-export const selectComparison = (state: { properties: PropertyState }) => state.properties.comparison;
-export const selectPagination = (state: { properties: PropertyState}) => ({
+export const selectAllProperties = (state: { properties: PropertyState }) =>
+  state.properties.properties;
+export const selectPropertyById = (
+  state: { properties: PropertyState },
+  id: string,
+) => state.properties.properties.find((p) => p.id === id);
+export const selectSelectedProperty = (state: { properties: PropertyState }) =>
+  state.properties.selectedProperty;
+export const selectPropertiesLoading = (state: { properties: PropertyState }) =>
+  state.properties.isLoading;
+export const selectPropertiesError = (state: { properties: PropertyState }) =>
+  state.properties.error;
+export const selectFavorites = (state: { properties: PropertyState }) =>
+  state.properties.favorites;
+export const selectComparison = (state: { properties: PropertyState }) =>
+  state.properties.comparison;
+export const selectPagination = (state: { properties: PropertyState }) => ({
   currentPage: state.properties.currentPage,
   totalPages: state.properties.totalPages,
   totalCount: state.properties.totalCount,

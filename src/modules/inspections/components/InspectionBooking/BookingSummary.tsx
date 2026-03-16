@@ -1,36 +1,40 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionBooking/BookingSummary.tsx
 // TODO: Add your implementation here
 
-import React from 'react';
-import { Calendar, Clock, Home, Users, MapPin } from 'lucide-react';
-import { InspectionType, InspectionAttendee } from '../../types/inspection.types';
+import { Calendar, Clock, Home, Users, MapPin } from "lucide-react";
+import React from "react";
+
+import {
+  InspectionType,
+  InspectionAttendee,
+} from "../../types/inspection.types";
 
 interface BookingSummaryProps {
   propertyId: string | null;
   type: InspectionType | null;
   preferredDate: string | null;
   preferredTimeSlot: string | null;
-  attendees: Omit<InspectionAttendee, 'id'>[];
+  attendees: Omit<InspectionAttendee, "id">[];
 }
 
 // Mock property - replace with actual API data
 const mockProperty = {
-  id: '1',
-  title: 'Modern Downtown Apartment',
+  id: "1",
+  title: "Modern Downtown Apartment",
   address: {
-    street: '123 Main St',
-    city: 'San Francisco',
-    state: 'CA',
-    zipCode: '94102',
+    street: "123 Main St",
+    city: "San Francisco",
+    state: "CA",
+    zipCode: "94102",
   },
-  image: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400',
+  image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400",
 };
 
 const inspectionTypeLabels: Record<InspectionType, string> = {
-  in_person: 'In-Person Tour',
-  virtual: 'Virtual Tour',
-  open_house: 'Open House',
-  self_guided: 'Self-Guided Tour',
+  in_person: "In-Person Tour",
+  virtual: "Virtual Tour",
+  open_house: "Open House",
+  self_guided: "Self-Guided Tour",
 };
 
 export const BookingSummary: React.FC<BookingSummaryProps> = ({
@@ -42,18 +46,18 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
 }) => {
   const formatDate = (dateStr: string): string => {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    return date.toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   const formatTime = (time: string): string => {
-    const [hours, minutes] = time.split(':');
+    const [hours, minutes] = time.split(":");
     const hour = parseInt(hours);
-    const ampm = hour >= 12 ? 'PM' : 'AM';
+    const ampm = hour >= 12 ? "PM" : "AM";
     const formattedHour = hour % 12 || 12;
     return `${formattedHour}:${minutes} ${ampm}`;
   };
@@ -97,7 +101,9 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
             </div>
             <div>
               <p className="text-sm text-gray-600">Inspection Type</p>
-              <p className="font-medium text-gray-900">{inspectionTypeLabels[type]}</p>
+              <p className="font-medium text-gray-900">
+                {inspectionTypeLabels[type]}
+              </p>
             </div>
           </div>
         </div>
@@ -113,7 +119,9 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
               </div>
               <div>
                 <p className="text-sm text-gray-600">Date</p>
-                <p className="font-medium text-gray-900">{formatDate(preferredDate)}</p>
+                <p className="font-medium text-gray-900">
+                  {formatDate(preferredDate)}
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -143,7 +151,9 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
           <div className="flex-1">
             <p className="text-sm text-gray-600 mb-1">Attendees</p>
             <p className="font-medium text-gray-900">
-              You {attendees.length > 0 && `+ ${attendees.length} other${attendees.length > 1 ? 's' : ''}`}
+              You{" "}
+              {attendees.length > 0 &&
+                `+ ${attendees.length} other${attendees.length > 1 ? "s" : ""}`}
             </p>
             {attendees.length > 0 && (
               <ul className="mt-2 space-y-1">
@@ -161,8 +171,9 @@ export const BookingSummary: React.FC<BookingSummaryProps> = ({
       {/* Note */}
       <div className="mt-4 pt-4 border-t border-gray-200">
         <p className="text-xs text-gray-500">
-          <strong>Note:</strong> Your inspection request will be sent to the landlord for
-          confirmation. You'll receive an email once it's confirmed.
+          <strong>Note:</strong> Your inspection request will be sent to the
+          landlord for confirmation. You&apos;ll receive an email once it&apos;s
+          confirmed.
         </p>
       </div>
     </div>

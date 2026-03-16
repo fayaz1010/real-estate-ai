@@ -1,64 +1,78 @@
 ﻿// PLACEHOLDER FILE: components\CoApplicants\CoApplicantInvite.tsx
 // TODO: Add your implementation here
 
-import React, { useState } from 'react';
-import { UserPlus, Mail, Send, CheckCircle, X } from 'lucide-react';
-import { useApplication } from '../../hooks/useApplication';
-import { applicationService } from '../../services/applicationService';
+import { UserPlus, Mail, Send, CheckCircle, X } from "lucide-react";
+import React, { useState } from "react";
+
+import { useApplication } from "../../hooks/useApplication";
+import { applicationService } from "../../services/applicationService";
 
 interface CoApplicantInviteProps {
   applicationId: string;
   onInviteSent?: () => void;
 }
 
-const CoApplicantInvite: React.FC<CoApplicantInviteProps> = ({ applicationId, onInviteSent }) => {
+const CoApplicantInvite: React.FC<CoApplicantInviteProps> = ({
+  applicationId,
+  onInviteSent,
+}) => {
   const { application } = useApplication(applicationId);
-  const [email, setEmail] = useState('');
-  const [relationship, setRelationship] = useState<'spouse' | 'partner' | 'roommate' | 'family' | 'other'>('roommate');
+  const [email, setEmail] = useState("");
+  const [relationship, setRelationship] = useState<
+    "spouse" | "partner" | "roommate" | "family" | "other"
+  >("roommate");
   const [sending, setSending] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
   const coApplicants = application?.coApplicants || [];
 
   const handleInvite = async () => {
-    if (!email || !email.includes('@')) {
-      alert('Please enter a valid email address');
+    if (!email || !email.includes("@")) {
+      alert("Please enter a valid email address");
       return;
     }
 
-    if (coApplicants.some(ca => ca.email.toLowerCase() === email.toLowerCase())) {
-      alert('This email has already been invited');
+    if (
+      coApplicants.some((ca) => ca.email.toLowerCase() === email.toLowerCase())
+    ) {
+      alert("This email has already been invited");
       return;
     }
 
     setSending(true);
     try {
-      await applicationService.inviteCoApplicant(applicationId, email, relationship);
+      await applicationService.inviteCoApplicant(
+        applicationId,
+        email,
+        relationship,
+      );
       setShowSuccess(true);
-      setEmail('');
+      setEmail("");
       setTimeout(() => setShowSuccess(false), 3000);
       onInviteSent?.();
     } catch (error) {
-      alert('Failed to send invitation');
+      alert("Failed to send invitation");
     } finally {
       setSending(false);
     }
   };
 
   const handleRemove = async (coApplicantId: string) => {
-    if (!confirm('Remove this co-applicant?')) return;
+    if (!confirm("Remove this co-applicant?")) return;
 
     try {
       await applicationService.removeCoApplicant(applicationId, coApplicantId);
     } catch (error) {
-      alert('Failed to remove co-applicant');
+      alert("Failed to remove co-applicant");
     }
   };
 
   return (
     <div className="space-y-6">
       <div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">Invite Co-Applicants</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          Invite Co-Applicants
+        </h3>
         <p className="text-sm text-gray-600">
           Add additional applicants to strengthen your application
         </p>
@@ -97,7 +111,7 @@ const CoApplicantInvite: React.FC<CoApplicantInviteProps> = ({ applicationId, on
             </label>
             <select
               value={relationship}
-              onChange={(e) => setRelationship(e.target.value as any)}
+              onChange={(e) => setRelationship(e.target.value as "spouse" | "partner" | "roommate" | "family" | "other")}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
               <option value="spouse">Spouse</option>
@@ -145,19 +159,25 @@ const CoApplicantInvite: React.FC<CoApplicantInviteProps> = ({ applicationId, on
                   <div>
                     <p className="font-medium text-gray-900">{coApp.email}</p>
                     <p className="text-sm text-gray-600 capitalize">
-                      {coApp.relationship} • {coApp.status.replace('_', ' ')}
+                      {coApp.relationship} • {coApp.status.replace("_", " ")}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                    coApp.status === 'completed' ? 'bg-green-100 text-green-800' :
-                    coApp.status === 'in_progress' ? 'bg-yellow-100 text-yellow-800' :
-                    'bg-gray-100 text-gray-800'
-                  }`}>
-                    {coApp.status === 'completed' ? 'Completed' :
-                     coApp.status === 'in_progress' ? 'In Progress' :
-                     'Invited'}
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-medium ${
+                      coApp.status === "completed"
+                        ? "bg-green-100 text-green-800"
+                        : coApp.status === "in_progress"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : "bg-gray-100 text-gray-800"
+                    }`}
+                  >
+                    {coApp.status === "completed"
+                      ? "Completed"
+                      : coApp.status === "in_progress"
+                        ? "In Progress"
+                        : "Invited"}
                   </span>
                   <button
                     onClick={() => handleRemove(coApp.id)}
@@ -174,11 +194,13 @@ const CoApplicantInvite: React.FC<CoApplicantInviteProps> = ({ applicationId, on
 
       {/* Info */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-semibold text-blue-900 mb-2">About Co-Applicants</h4>
+        <h4 className="font-semibold text-blue-900 mb-2">
+          About Co-Applicants
+        </h4>
         <ul className="text-sm text-blue-800 space-y-1">
           <li>• Co-applicants will receive an email invitation</li>
-          <li>• They'll fill out their own section of the application</li>
-          <li>• All co-applicants' information will be combined</li>
+          <li>• They&apos;ll fill out their own section of the application</li>
+          <li>• All co-applicants&apos; information will be combined</li>
           <li>• Joint responsibility for the lease</li>
         </ul>
       </div>

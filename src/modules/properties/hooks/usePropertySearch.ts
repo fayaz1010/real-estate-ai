@@ -1,8 +1,10 @@
 // FILE PATH: src/modules/properties/hooks/usePropertySearch.ts
 // Custom hook for property search with filters
 
-import { useCallback, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store';
+import { useCallback, useEffect } from "react";
+
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { fetchProperties } from "../store/propertySlice";
 import {
   setFilters,
   setSearchQuery,
@@ -12,9 +14,8 @@ import {
   selectSearchQuery,
   selectSortBy,
   selectFilteredProperties,
-} from '../store/searchSlice';
-import { fetchProperties } from '../store/propertySlice';
-import { SearchFilters, SortOption } from '../types/property.types';
+} from "../store/searchSlice";
+import { SearchFilters, SortOption } from "../types/property.types";
 
 export const usePropertySearch = () => {
   const dispatch = useAppDispatch();
@@ -28,7 +29,7 @@ export const usePropertySearch = () => {
     (query: string) => {
       dispatch(setSearchQuery(query));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Update filters
@@ -36,7 +37,7 @@ export const usePropertySearch = () => {
     (newFilters: Partial<SearchFilters>) => {
       dispatch(setFilters(newFilters));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Update sort option
@@ -44,7 +45,7 @@ export const usePropertySearch = () => {
     (sort: SortOption) => {
       dispatch(setSortBy(sort));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Clear all filters

@@ -1,8 +1,9 @@
 // PLACEHOLDER FILE: src/modules/inspections/hooks/useAvailability.ts
 // TODO: Add your implementation here
 
-import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useCallback } from "react";
+
+import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import {
   fetchAvailableSlots,
   createRecurringSchedule,
@@ -22,11 +23,8 @@ import {
   selectActiveRecurringSchedules,
   selectFutureBlackoutDates,
   clearAvailability,
-} from '../store/availabilitySlice';
-import {
-  RecurringSchedule,
-  BlackoutDate,
-} from '../types/inspection.types';
+} from "../store/availabilitySlice";
+import { RecurringSchedule, BlackoutDate } from "../types/inspection.types";
 
 export const useAvailability = () => {
   const dispatch = useAppDispatch();
@@ -38,36 +36,36 @@ export const useAvailability = () => {
   const activeSchedules = useAppSelector(selectActiveRecurringSchedules);
   const futureBlackouts = useAppSelector(selectFutureBlackoutDates);
 
-  const isLoading = status === 'loading';
-  const isError = status === 'failed';
+  const isLoading = status === "loading";
+  const isError = status === "failed";
 
   // Load available slots
   const loadSlots = useCallback(
     async (propertyId: string, startDate: string, endDate: string) => {
       try {
         await dispatch(
-          fetchAvailableSlots({ propertyId, startDate, endDate })
+          fetchAvailableSlots({ propertyId, startDate, endDate }),
         ).unwrap();
       } catch (err) {
-        console.error('Failed to load available slots:', err);
+        console.error("Failed to load available slots:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Create recurring schedule
   const createSchedule = useCallback(
-    async (data: Omit<RecurringSchedule, 'id' | 'createdAt' | 'updatedAt'>) => {
+    async (data: Omit<RecurringSchedule, "id" | "createdAt" | "updatedAt">) => {
       try {
         const schedule = await dispatch(createRecurringSchedule(data)).unwrap();
         return schedule;
       } catch (err) {
-        console.error('Failed to create recurring schedule:', err);
+        console.error("Failed to create recurring schedule:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Load recurring schedules
@@ -76,11 +74,11 @@ export const useAvailability = () => {
       try {
         await dispatch(fetchRecurringSchedules(propertyId)).unwrap();
       } catch (err) {
-        console.error('Failed to load recurring schedules:', err);
+        console.error("Failed to load recurring schedules:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Update recurring schedule
@@ -88,15 +86,15 @@ export const useAvailability = () => {
     async (id: string, updates: Partial<RecurringSchedule>) => {
       try {
         const schedule = await dispatch(
-          updateRecurringSchedule({ id, updates })
+          updateRecurringSchedule({ id, updates }),
         ).unwrap();
         return schedule;
       } catch (err) {
-        console.error('Failed to update recurring schedule:', err);
+        console.error("Failed to update recurring schedule:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Delete recurring schedule
@@ -105,11 +103,11 @@ export const useAvailability = () => {
       try {
         await dispatch(deleteRecurringSchedule(id)).unwrap();
       } catch (err) {
-        console.error('Failed to delete recurring schedule:', err);
+        console.error("Failed to delete recurring schedule:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Toggle schedule active status
@@ -117,29 +115,29 @@ export const useAvailability = () => {
     async (id: string, isActive: boolean) => {
       try {
         const schedule = await dispatch(
-          toggleRecurringSchedule({ id, isActive })
+          toggleRecurringSchedule({ id, isActive }),
         ).unwrap();
         return schedule;
       } catch (err) {
-        console.error('Failed to toggle recurring schedule:', err);
+        console.error("Failed to toggle recurring schedule:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Create blackout date
   const createBlackout = useCallback(
-    async (data: Omit<BlackoutDate, 'id' | 'createdAt'>) => {
+    async (data: Omit<BlackoutDate, "id" | "createdAt">) => {
       try {
         const blackout = await dispatch(createBlackoutDate(data)).unwrap();
         return blackout;
       } catch (err) {
-        console.error('Failed to create blackout date:', err);
+        console.error("Failed to create blackout date:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Load blackout dates
@@ -148,11 +146,11 @@ export const useAvailability = () => {
       try {
         await dispatch(fetchBlackoutDates(propertyId)).unwrap();
       } catch (err) {
-        console.error('Failed to load blackout dates:', err);
+        console.error("Failed to load blackout dates:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Delete blackout date
@@ -161,11 +159,11 @@ export const useAvailability = () => {
       try {
         await dispatch(deleteBlackoutDate(id)).unwrap();
       } catch (err) {
-        console.error('Failed to delete blackout date:', err);
+        console.error("Failed to delete blackout date:", err);
         throw err;
       }
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Clear all availability data

@@ -1,15 +1,63 @@
-// PLACEHOLDER FILE: src/modules/inspections/services/notificationService.ts
-// TODO: Add your implementation here
+// Notification Service - Frontend client for backend notification API
+import axios from "axios";
 
-import axios from 'axios';
-import { Inspection } from '../types/inspection.types';
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4041/api';
+// Axios instance with auth interceptor
+const api = axios.create({ baseURL: API_URL });
 
-interface NotificationPreferences {
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("accessToken");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// ─── Types ──────────────────────────────────────────────────────────
+
+interface ApiResponse<T = any> {
+  success: boolean;
+  message?: string;
+  data?: T;
+}
+
+export interface NotificationPreferences {
   email: boolean;
   sms: boolean;
   push: boolean;
+  inspectionReminders: boolean;
+  inspectionUpdates: boolean;
+  applicationUpdates: boolean;
+  marketingEmails: boolean;
+}
+
+export interface Notification {
+  id: string;
+  userId: string;
+  type: string;
+  channel: string;
+  status: string;
+  title: string;
+  message: string;
+  data?: Record<string, any>;
+  readAt: string | null;
+  sentAt: string | null;
+  inspectionId?: string;
+  propertyId?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NotificationsResponse {
+  notifications: Notification[];
+  unreadCount: number;
+  pagination: {
+    page: number;
+    limit: number;
+    total: number;
+    pages: number;
+  };
 }
 
 interface NotificationTemplate {
@@ -18,210 +66,217 @@ interface NotificationTemplate {
   variables: Record<string, string>;
 }
 
+// ─── Helper ─────────────────────────────────────────────────────────
+
+function unwrap<T>(response: { data: ApiResponse<T> }): T {
+  if (!response.data.success) {
+    throw new Error(response.data.message || "Request failed");
+  }
+  return response.data.data as T;
+}
+
+// ─── Service ────────────────────────────────────────────────────────
+
 class NotificationService {
-  /**
-   * Send inspection confirmation
-   */
-  async sendInspectionConfirmation(inspectionId: string): Promise<{ success: boolean }> {
-    const response = await axios.post<{ success: boolean }>(
-      `${API_URL}/notifications/inspection/${inspectionId}/confirmation`
+  // ─── User notification inbox ────────────────────────────────────
+
+  async getMyNotifications(
+    page = 1,
+    limit = 20,
+    unreadOnly = false,
+  ): Promise<NotificationsResponse> {
+    const response = await api.get<ApiResponse<NotificationsResponse>>(
+      "/notifications",
+      { params: { page, limit, unreadOnly } },
     );
-    return response.data;
+    return unwrap(response);
   }
 
-  /**
-   * Send reminder notification
-   */
+  async markAsRead(notificationId: string): Promise<Notification> {
+    const response = await api.patch<ApiResponse<Notification>>(
+      `/notifications/${notificationId}/read`,
+    );
+    return unwrap(response);
+  }
+
+  async markAllAsRead(): Promise<{ updated: number }> {
+    const response = await api.post<ApiResponse<{ updated: number }>>(
+      "/notifications/read-all",
+    );
+    return unwrap(response);
+  }
+
+  // ─── Inspection notification triggers ───────────────────────────
+
+  async sendInspectionConfirmation(
+    inspectionId: string,
+  ): Promise<{ success: boolean }> {
+    const response = await api.post<ApiResponse<{ success: boolean }>>(
+      `/notifications/inspection/${inspectionId}/confirmation`,
+    );
+    return unwrap(response);
+  }
+
   async sendReminder(
     inspectionId: string,
-    type: '24h' | '2h' | '30m'
+    type: "24h" | "2h" | "30m",
   ): Promise<{ success: boolean }> {
-    const response = await axios.post<{ success: boolean }>(
-      `${API_URL}/notifications/inspection/${inspectionId}/reminder`,
-      { type }
+    const response = await api.post<ApiResponse<{ success: boolean }>>(
+      `/notifications/inspection/${inspectionId}/reminder`,
+      { type },
     );
-    return response.data;
+    return unwrap(response);
   }
 
-  /**
-   * Send cancellation notification
-   */
   async sendCancellationNotification(
     inspectionId: string,
-    reason: string
+    reason: string,
   ): Promise<{ success: boolean }> {
-    const response = await axios.post<{ success: boolean }>(
-      `${API_URL}/notifications/inspection/${inspectionId}/cancellation`,
-      { reason }
+    const response = await api.post<ApiResponse<{ success: boolean }>>(
+      `/notifications/inspection/${inspectionId}/cancellation`,
+      { reason },
     );
-    return response.data;
+    return unwrap(response);
   }
 
-  /**
-   * Send reschedule notification
-   */
   async sendRescheduleNotification(
     inspectionId: string,
     newDate: string,
-    newTime: string
+    newTime: string,
   ): Promise<{ success: boolean }> {
-    const response = await axios.post<{ success: boolean }>(
-      `${API_URL}/notifications/inspection/${inspectionId}/reschedule`,
-      { newDate, newTime }
+    const response = await api.post<ApiResponse<{ success: boolean }>>(
+      `/notifications/inspection/${inspectionId}/reschedule`,
+      { newDate, newTime },
     );
-    return response.data;
+    return unwrap(response);
   }
 
-  /**
-   * Send check-in notification to landlord
-   */
-  async sendCheckInNotification(inspectionId: string): Promise<{ success: boolean }> {
-    const response = await axios.post<{ success: boolean }>(
-      `${API_URL}/notifications/inspection/${inspectionId}/check-in`
+  async sendCheckInNotification(
+    inspectionId: string,
+  ): Promise<{ success: boolean }> {
+    const response = await api.post<ApiResponse<{ success: boolean }>>(
+      `/notifications/inspection/${inspectionId}/check-in`,
     );
-    return response.data;
+    return unwrap(response);
   }
 
-  /**
-   * Send check-out notification to landlord
-   */
-  async sendCheckOutNotification(inspectionId: string): Promise<{ success: boolean }> {
-    const response = await axios.post<{ success: boolean }>(
-      `${API_URL}/notifications/inspection/${inspectionId}/check-out`
+  async sendCheckOutNotification(
+    inspectionId: string,
+  ): Promise<{ success: boolean }> {
+    const response = await api.post<ApiResponse<{ success: boolean }>>(
+      `/notifications/inspection/${inspectionId}/check-out`,
     );
-    return response.data;
+    return unwrap(response);
   }
 
-  /**
-   * Send follow-up after inspection
-   */
   async sendFollowUp(inspectionId: string): Promise<{ success: boolean }> {
-    const response = await axios.post<{ success: boolean }>(
-      `${API_URL}/notifications/inspection/${inspectionId}/follow-up`
+    const response = await api.post<ApiResponse<{ success: boolean }>>(
+      `/notifications/inspection/${inspectionId}/follow-up`,
     );
-    return response.data;
+    return unwrap(response);
   }
 
-  /**
-   * Send no-show notification
-   */
-  async sendNoShowNotification(inspectionId: string): Promise<{ success: boolean }> {
-    const response = await axios.post<{ success: boolean }>(
-      `${API_URL}/notifications/inspection/${inspectionId}/no-show`
+  async sendNoShowNotification(
+    inspectionId: string,
+  ): Promise<{ success: boolean }> {
+    const response = await api.post<ApiResponse<{ success: boolean }>>(
+      `/notifications/inspection/${inspectionId}/no-show`,
     );
-    return response.data;
+    return unwrap(response);
   }
 
-  /**
-   * Get user's notification preferences
-   */
-  async getNotificationPreferences(userId: string): Promise<NotificationPreferences> {
-    const response = await axios.get<NotificationPreferences>(
-      `${API_URL}/notifications/preferences/${userId}`
+  async scheduleReminders(inspectionId: string): Promise<{ success: boolean }> {
+    const response = await api.post<ApiResponse<{ success: boolean }>>(
+      `/notifications/inspection/${inspectionId}/schedule-reminders`,
     );
-    return response.data;
+    return unwrap(response);
   }
 
-  /**
-   * Update notification preferences
-   */
+  async cancelReminders(inspectionId: string): Promise<{ success: boolean }> {
+    const response = await api.delete<ApiResponse<{ success: boolean }>>(
+      `/notifications/inspection/${inspectionId}/reminders`,
+    );
+    return unwrap(response);
+  }
+
+  // ─── Preferences ───────────────────────────────────────────────
+
+  async getNotificationPreferences(
+    userId: string,
+  ): Promise<NotificationPreferences> {
+    const response = await api.get<ApiResponse<NotificationPreferences>>(
+      `/notifications/preferences/${userId}`,
+    );
+    return unwrap(response);
+  }
+
   async updateNotificationPreferences(
     userId: string,
-    preferences: NotificationPreferences
+    preferences: Partial<NotificationPreferences>,
   ): Promise<NotificationPreferences> {
-    const response = await axios.patch<NotificationPreferences>(
-      `${API_URL}/notifications/preferences/${userId}`,
-      preferences
+    const response = await api.patch<ApiResponse<NotificationPreferences>>(
+      `/notifications/preferences/${userId}`,
+      preferences,
     );
-    return response.data;
+    return unwrap(response);
   }
 
-  /**
-   * Test notification (for development/debugging)
-   */
+  // ─── Admin / utility ───────────────────────────────────────────
+
   async testNotification(
     userId: string,
-    type: 'email' | 'sms' | 'push',
-    template: string
+    type: "email" | "sms" | "push",
+    template: string,
   ): Promise<{ success: boolean }> {
-    const response = await axios.post<{ success: boolean }>(
-      `${API_URL}/notifications/test`,
-      { userId, type, template }
+    const response = await api.post<ApiResponse<{ success: boolean }>>(
+      "/notifications/test",
+      { userId, type, template },
     );
-    return response.data;
+    return unwrap(response);
   }
 
-  /**
-   * Get notification templates
-   */
   async getTemplates(): Promise<Record<string, NotificationTemplate>> {
-    const response = await axios.get<Record<string, NotificationTemplate>>(
-      `${API_URL}/notifications/templates`
-    );
-    return response.data;
+    const response = await api.get<
+      ApiResponse<Record<string, NotificationTemplate>>
+    >("/notifications/templates");
+    return unwrap(response);
   }
 
-  /**
-   * Schedule automatic reminders for inspection
-   */
-  async scheduleReminders(inspectionId: string): Promise<{ success: boolean }> {
-    const response = await axios.post<{ success: boolean }>(
-      `${API_URL}/notifications/inspection/${inspectionId}/schedule-reminders`
-    );
-    return response.data;
+  async batchSendNotifications(params: {
+    inspectionIds: string[];
+    type: "confirmation" | "reminder" | "cancellation";
+  }): Promise<{ success: boolean; failed: string[] }> {
+    const response = await api.post<
+      ApiResponse<{ success: boolean; failed: string[] }>
+    >("/notifications/batch", params);
+    return unwrap(response);
   }
 
-  /**
-   * Cancel scheduled reminders
-   */
-  async cancelReminders(inspectionId: string): Promise<{ success: boolean }> {
-    const response = await axios.delete<{ success: boolean }>(
-      `${API_URL}/notifications/inspection/${inspectionId}/reminders`
-    );
-    return response.data;
-  }
+  // ─── Access code & directions (SMS-dependent, stubbed) ─────────
 
-  /**
-   * Send SMS with access code
-   */
   async sendAccessCode(
     inspectionId: string,
     phoneNumber: string,
-    code: string
+    code: string,
   ): Promise<{ success: boolean }> {
-    const response = await axios.post<{ success: boolean }>(
-      `${API_URL}/notifications/inspection/${inspectionId}/access-code`,
-      { phoneNumber, code }
-    );
-    return response.data;
+    // SMS integration placeholder — requires Twilio or similar service
+    console.warn("SMS access code sending requires SMS provider configuration");
+    return { success: false };
   }
 
-  /**
-   * Send directions to property
-   */
   async sendDirections(
     inspectionId: string,
-    method: 'email' | 'sms'
+    method: "email" | "sms",
   ): Promise<{ success: boolean }> {
-    const response = await axios.post<{ success: boolean }>(
-      `${API_URL}/notifications/inspection/${inspectionId}/directions`,
-      { method }
+    if (method === "sms") {
+      console.warn("SMS directions require SMS provider configuration");
+      return { success: false };
+    }
+    // For email, trigger via the follow-up endpoint as a workaround
+    const response = await api.post<ApiResponse<{ success: boolean }>>(
+      `/notifications/inspection/${inspectionId}/follow-up`,
     );
-    return response.data;
-  }
-
-  /**
-   * Batch send notifications
-   */
-  async batchSendNotifications(params: {
-    inspectionIds: string[];
-    type: 'confirmation' | 'reminder' | 'cancellation';
-  }): Promise<{ success: boolean; failed: string[] }> {
-    const response = await axios.post<{ success: boolean; failed: string[] }>(
-      `${API_URL}/notifications/batch`,
-      params
-    );
-    return response.data;
+    return unwrap(response);
   }
 }
 

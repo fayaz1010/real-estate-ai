@@ -3,8 +3,8 @@
 // Module 1.3: Property Selection Step - Production-Ready Component
 // ============================================================================
 
-import React, { useState } from 'react';
-import { Home, MapPin, Check, Search } from 'lucide-react';
+import { Home, MapPin, Check, Search } from "lucide-react";
+import React, { useState } from "react";
 
 interface PropertySelectionProps {
   onSelect: (propertyId: string) => void;
@@ -22,20 +22,25 @@ interface PropertySelectionProps {
 export const PropertySelection: React.FC<PropertySelectionProps> = ({
   onSelect,
   selectedPropertyId,
-  properties = []
+  properties = [],
 }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredProperties = properties.filter(prop =>
-    prop.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    prop.address.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredProperties = properties.filter(
+    (prop) =>
+      prop.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      prop.address.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Select Property</h2>
-        <p className="text-gray-600">Choose the property you'd like to inspect</p>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          Select Property
+        </h2>
+        <p className="text-gray-600">
+          Choose the property you&apos;d like to inspect
+        </p>
       </div>
 
       {/* Search Bar */}
@@ -58,15 +63,17 @@ export const PropertySelection: React.FC<PropertySelectionProps> = ({
             onClick={() => onSelect(property.id)}
             className={`w-full text-left p-4 border-2 rounded-lg transition-all ${
               selectedPropertyId === property.id
-                ? 'border-blue-600 bg-blue-50'
-                : 'border-gray-200 hover:border-gray-300 bg-white'
+                ? "border-blue-600 bg-blue-50"
+                : "border-gray-200 hover:border-gray-300 bg-white"
             }`}
           >
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <Home className="w-5 h-5 text-gray-600" />
-                  <h3 className="font-semibold text-gray-900">{property.title}</h3>
+                  <h3 className="font-semibold text-gray-900">
+                    {property.title}
+                  </h3>
                   {selectedPropertyId === property.id && (
                     <Check className="w-5 h-5 text-blue-600 ml-auto" />
                   )}
@@ -76,7 +83,9 @@ export const PropertySelection: React.FC<PropertySelectionProps> = ({
                   <span>{property.address}</span>
                 </div>
                 <div className="flex items-center gap-4 text-sm text-gray-700">
-                  <span className="font-semibold text-blue-600">${property.price}/mo</span>
+                  <span className="font-semibold text-blue-600">
+                    ${property.price}/mo
+                  </span>
                   <span>{property.bedrooms} bed</span>
                   <span>{property.bathrooms} bath</span>
                 </div>
@@ -95,4 +104,3 @@ export const PropertySelection: React.FC<PropertySelectionProps> = ({
     </div>
   );
 };
-  

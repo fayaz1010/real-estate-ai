@@ -1,10 +1,17 @@
 ﻿// PLACEHOLDER FILE: utils\documentParser.ts
 // TODO: Add your implementation here
 
-import { Address } from '../types/application.types';
+import { Address } from "../types/application.types";
 
 export interface ParsedDocument {
-  type: 'paystub' | 'id' | 'bank_statement' | 'lease' | 'tax_return' | 'employment_letter' | 'unknown';
+  type:
+    | "paystub"
+    | "id"
+    | "bank_statement"
+    | "lease"
+    | "tax_return"
+    | "employment_letter"
+    | "unknown";
   confidence: number; // 0-100
   extractedData: Record<string, any>;
   rawText?: string;
@@ -19,7 +26,7 @@ export interface PaystubData {
   payPeriodEnd: string;
   payDate: string;
   ytdGrossPay?: number;
-  payFrequency?: 'weekly' | 'biweekly' | 'monthly';
+  payFrequency?: "weekly" | "biweekly" | "monthly";
 }
 
 export interface IDData {
@@ -30,7 +37,7 @@ export interface IDData {
   idNumber: string;
   expirationDate: string;
   address: Partial<Address>;
-  idType: 'drivers_license' | 'passport' | 'state_id';
+  idType: "drivers_license" | "passport" | "state_id";
 }
 
 export interface BankStatementData {
@@ -69,7 +76,7 @@ export interface LeaseData {
  */
 export const parseDocument = async (
   file: File,
-  documentType?: string
+  documentType?: string,
 ): Promise<ParsedDocument> => {
   try {
     // Extract text from document (mock implementation)
@@ -83,24 +90,40 @@ export const parseDocument = async (
     let confidence = 0;
 
     switch (detectedType) {
-      case 'paystub':
+      case "paystub":
         extractedData = parsePaystub(rawText);
-        confidence = calculateConfidence(extractedData, ['employerName', 'grossPay', 'payDate']);
+        confidence = calculateConfidence(extractedData, [
+          "employerName",
+          "grossPay",
+          "payDate",
+        ]);
         break;
 
-      case 'id':
+      case "id":
         extractedData = parseID(rawText);
-        confidence = calculateConfidence(extractedData, ['firstName', 'lastName', 'dateOfBirth', 'idNumber']);
+        confidence = calculateConfidence(extractedData, [
+          "firstName",
+          "lastName",
+          "dateOfBirth",
+          "idNumber",
+        ]);
         break;
 
-      case 'bank_statement':
+      case "bank_statement":
         extractedData = parseBankStatement(rawText);
-        confidence = calculateConfidence(extractedData, ['accountHolderName', 'endingBalance']);
+        confidence = calculateConfidence(extractedData, [
+          "accountHolderName",
+          "endingBalance",
+        ]);
         break;
 
-      case 'lease':
+      case "lease":
         extractedData = parseLease(rawText);
-        confidence = calculateConfidence(extractedData, ['landlordName', 'monthlyRent', 'leaseStartDate']);
+        confidence = calculateConfidence(extractedData, [
+          "landlordName",
+          "monthlyRent",
+          "leaseStartDate",
+        ]);
         break;
 
       default:
@@ -114,9 +137,9 @@ export const parseDocument = async (
       rawText,
     };
   } catch (error) {
-    console.error('Document parsing error:', error);
+    console.error("Document parsing error:", error);
     return {
-      type: 'unknown',
+      type: "unknown",
       confidence: 0,
       extractedData: {},
     };
@@ -133,7 +156,7 @@ const extractTextFromFile = async (file: File): Promise<string> => {
     const reader = new FileReader();
     reader.onload = (e) => {
       // This is a mock - actual implementation would use OCR
-      resolve(e.target?.result as string || '');
+      resolve((e.target?.result as string) || "");
     };
     reader.readAsText(file);
   });
@@ -147,43 +170,46 @@ const detectDocumentType = (text: string): string => {
 
   // Paystub indicators
   if (
-    lowerText.includes('pay stub') ||
-    lowerText.includes('paystub') ||
-    lowerText.includes('earnings statement') ||
-    (lowerText.includes('gross pay') && lowerText.includes('net pay'))
+    lowerText.includes("pay stub") ||
+    lowerText.includes("paystub") ||
+    lowerText.includes("earnings statement") ||
+    (lowerText.includes("gross pay") && lowerText.includes("net pay"))
   ) {
-    return 'paystub';
+    return "paystub";
   }
 
   // ID indicators
   if (
-    lowerText.includes('driver') ||
-    lowerText.includes('license') ||
-    lowerText.includes('passport') ||
-    lowerText.includes('identification card')
+    lowerText.includes("driver") ||
+    lowerText.includes("license") ||
+    lowerText.includes("passport") ||
+    lowerText.includes("identification card")
   ) {
-    return 'id';
+    return "id";
   }
 
   // Bank statement indicators
   if (
-    lowerText.includes('bank statement') ||
-    lowerText.includes('account summary') ||
-    (lowerText.includes('beginning balance') && lowerText.includes('ending balance'))
+    lowerText.includes("bank statement") ||
+    lowerText.includes("account summary") ||
+    (lowerText.includes("beginning balance") &&
+      lowerText.includes("ending balance"))
   ) {
-    return 'bank_statement';
+    return "bank_statement";
   }
 
   // Lease indicators
   if (
-    lowerText.includes('lease agreement') ||
-    lowerText.includes('rental agreement') ||
-    (lowerText.includes('landlord') && lowerText.includes('tenant') && lowerText.includes('rent'))
+    lowerText.includes("lease agreement") ||
+    lowerText.includes("rental agreement") ||
+    (lowerText.includes("landlord") &&
+      lowerText.includes("tenant") &&
+      lowerText.includes("rent"))
   ) {
-    return 'lease';
+    return "lease";
   }
 
-  return 'unknown';
+  return "unknown";
 };
 
 /**
@@ -193,7 +219,9 @@ const parsePaystub = (text: string): Partial<PaystubData> => {
   const data: Partial<PaystubData> = {};
 
   // Extract employer name (usually at top)
-  const employerMatch = text.match(/(?:company|employer)[:|\s]+([A-Za-z\s&.,]+)/i);
+  const employerMatch = text.match(
+    /(?:company|employer)[:|\s]+([A-Za-z\s&.,]+)/i,
+  );
   if (employerMatch) {
     data.employerName = employerMatch[1].trim();
   }
@@ -207,17 +235,19 @@ const parsePaystub = (text: string): Partial<PaystubData> => {
   // Extract gross pay
   const grossPayMatch = text.match(/gross\s*pay[:|\s]+\$?([\d,]+\.?\d*)/i);
   if (grossPayMatch) {
-    data.grossPay = parseFloat(grossPayMatch[1].replace(/,/g, ''));
+    data.grossPay = parseFloat(grossPayMatch[1].replace(/,/g, ""));
   }
 
   // Extract net pay
   const netPayMatch = text.match(/net\s*pay[:|\s]+\$?([\d,]+\.?\d*)/i);
   if (netPayMatch) {
-    data.netPay = parseFloat(netPayMatch[1].replace(/,/g, ''));
+    data.netPay = parseFloat(netPayMatch[1].replace(/,/g, ""));
   }
 
   // Extract pay date
-  const payDateMatch = text.match(/pay\s*date[:|\s]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/i);
+  const payDateMatch = text.match(
+    /pay\s*date[:|\s]+(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})/i,
+  );
   if (payDateMatch) {
     data.payDate = payDateMatch[1];
   }
@@ -225,7 +255,7 @@ const parsePaystub = (text: string): Partial<PaystubData> => {
   // Extract YTD gross pay
   const ytdMatch = text.match(/ytd\s*gross[:|\s]+\$?([\d,]+\.?\d*)/i);
   if (ytdMatch) {
-    data.ytdGrossPay = parseFloat(ytdMatch[1].replace(/,/g, ''));
+    data.ytdGrossPay = parseFloat(ytdMatch[1].replace(/,/g, ""));
   }
 
   return data;
@@ -238,12 +268,12 @@ const parseID = (text: string): Partial<IDData> => {
   const data: Partial<IDData> = {};
 
   // Determine ID type
-  if (text.toLowerCase().includes('driver')) {
-    data.idType = 'drivers_license';
-  } else if (text.toLowerCase().includes('passport')) {
-    data.idType = 'passport';
+  if (text.toLowerCase().includes("driver")) {
+    data.idType = "drivers_license";
+  } else if (text.toLowerCase().includes("passport")) {
+    data.idType = "passport";
   } else {
-    data.idType = 'state_id';
+    data.idType = "state_id";
   }
 
   // Extract name
@@ -253,24 +283,28 @@ const parseID = (text: string): Partial<IDData> => {
     data.firstName = nameParts[0];
     data.lastName = nameParts[nameParts.length - 1];
     if (nameParts.length > 2) {
-      data.middleName = nameParts.slice(1, -1).join(' ');
+      data.middleName = nameParts.slice(1, -1).join(" ");
     }
   }
 
   // Extract DOB
-  const dobMatch = text.match(/(?:dob|date of birth|born)[:|\s]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/i);
+  const dobMatch = text.match(
+    /(?:dob|date of birth|born)[:|\s]+(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})/i,
+  );
   if (dobMatch) {
     data.dateOfBirth = dobMatch[1];
   }
 
   // Extract ID number
-  const idMatch = text.match(/(?:id|license|dl|number)[:|\s#]+([A-Z0-9\-]+)/i);
+  const idMatch = text.match(/(?:id|license|dl|number)[:|\s#]+([A-Z0-9-]+)/i);
   if (idMatch) {
     data.idNumber = idMatch[1];
   }
 
   // Extract expiration
-  const expMatch = text.match(/(?:exp|expiration|expires)[:|\s]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/i);
+  const expMatch = text.match(
+    /(?:exp|expiration|expires)[:|\s]+(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})/i,
+  );
   if (expMatch) {
     data.expirationDate = expMatch[1];
   }
@@ -293,7 +327,9 @@ const parseBankStatement = (text: string): Partial<BankStatementData> => {
   const data: Partial<BankStatementData> = {};
 
   // Extract account holder
-  const holderMatch = text.match(/(?:account holder|name)[:|\s]+([A-Za-z\s]+)/i);
+  const holderMatch = text.match(
+    /(?:account holder|name)[:|\s]+([A-Za-z\s]+)/i,
+  );
   if (holderMatch) {
     data.accountHolderName = holderMatch[1].trim();
   }
@@ -305,15 +341,19 @@ const parseBankStatement = (text: string): Partial<BankStatementData> => {
   }
 
   // Extract beginning balance
-  const beginMatch = text.match(/(?:beginning|opening)\s*balance[:|\s]+\$?([\d,]+\.?\d*)/i);
+  const beginMatch = text.match(
+    /(?:beginning|opening)\s*balance[:|\s]+\$?([\d,]+\.?\d*)/i,
+  );
   if (beginMatch) {
-    data.beginningBalance = parseFloat(beginMatch[1].replace(/,/g, ''));
+    data.beginningBalance = parseFloat(beginMatch[1].replace(/,/g, ""));
   }
 
   // Extract ending balance
-  const endMatch = text.match(/(?:ending|closing)\s*balance[:|\s]+\$?([\d,]+\.?\d*)/i);
+  const endMatch = text.match(
+    /(?:ending|closing)\s*balance[:|\s]+\$?([\d,]+\.?\d*)/i,
+  );
   if (endMatch) {
-    data.endingBalance = parseFloat(endMatch[1].replace(/,/g, ''));
+    data.endingBalance = parseFloat(endMatch[1].replace(/,/g, ""));
   }
 
   // Calculate average balance (simplified)
@@ -331,39 +371,51 @@ const parseLease = (text: string): Partial<LeaseData> => {
   const data: Partial<LeaseData> = {};
 
   // Extract landlord name
-  const landlordMatch = text.match(/(?:landlord|lessor|owner)[:|\s]+([A-Za-z\s]+)/i);
+  const landlordMatch = text.match(
+    /(?:landlord|lessor|owner)[:|\s]+([A-Za-z\s]+)/i,
+  );
   if (landlordMatch) {
     data.landlordName = landlordMatch[1].trim();
   }
 
   // Extract tenant name
-  const tenantMatch = text.match(/(?:tenant|lessee|renter)[:|\s]+([A-Za-z\s]+)/i);
+  const tenantMatch = text.match(
+    /(?:tenant|lessee|renter)[:|\s]+([A-Za-z\s]+)/i,
+  );
   if (tenantMatch) {
     data.tenantName = tenantMatch[1].trim();
   }
 
   // Extract monthly rent
-  const rentMatch = text.match(/(?:monthly rent|rent amount)[:|\s]+\$?([\d,]+\.?\d*)/i);
+  const rentMatch = text.match(
+    /(?:monthly rent|rent amount)[:|\s]+\$?([\d,]+\.?\d*)/i,
+  );
   if (rentMatch) {
-    data.monthlyRent = parseFloat(rentMatch[1].replace(/,/g, ''));
+    data.monthlyRent = parseFloat(rentMatch[1].replace(/,/g, ""));
   }
 
   // Extract lease start date
-  const startMatch = text.match(/(?:lease start|start date|commencement)[:|\s]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/i);
+  const startMatch = text.match(
+    /(?:lease start|start date|commencement)[:|\s]+(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})/i,
+  );
   if (startMatch) {
     data.leaseStartDate = startMatch[1];
   }
 
   // Extract lease end date
-  const endMatch = text.match(/(?:lease end|end date|termination)[:|\s]+(\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4})/i);
+  const endMatch = text.match(
+    /(?:lease end|end date|termination)[:|\s]+(\d{1,2}[/-]\d{1,2}[/-]\d{2,4})/i,
+  );
   if (endMatch) {
     data.leaseEndDate = endMatch[1];
   }
 
   // Extract security deposit
-  const depositMatch = text.match(/(?:security deposit|deposit)[:|\s]+\$?([\d,]+\.?\d*)/i);
+  const depositMatch = text.match(
+    /(?:security deposit|deposit)[:|\s]+\$?([\d,]+\.?\d*)/i,
+  );
   if (depositMatch) {
-    data.securityDeposit = parseFloat(depositMatch[1].replace(/,/g, ''));
+    data.securityDeposit = parseFloat(depositMatch[1].replace(/,/g, ""));
   }
 
   return data;
@@ -374,11 +426,11 @@ const parseLease = (text: string): Partial<LeaseData> => {
  */
 const calculateConfidence = (
   data: Record<string, any>,
-  requiredFields: string[]
+  requiredFields: string[],
 ): number => {
-  const foundFields = requiredFields.filter(field => {
+  const foundFields = requiredFields.filter((field) => {
     const value = data[field];
-    return value !== undefined && value !== null && value !== '';
+    return value !== undefined && value !== null && value !== "";
   });
 
   const confidence = (foundFields.length / requiredFields.length) * 100;
@@ -388,28 +440,30 @@ const calculateConfidence = (
 /**
  * Validate parsed data quality
  */
-export const validateParsedData = (parsed: ParsedDocument): {
+export const validateParsedData = (
+  parsed: ParsedDocument,
+): {
   isValid: boolean;
   issues: string[];
 } => {
   const issues: string[] = [];
 
   if (parsed.confidence < 50) {
-    issues.push('Low confidence in parsed data - manual review recommended');
+    issues.push("Low confidence in parsed data - manual review recommended");
   }
 
-  if (parsed.type === 'paystub') {
+  if (parsed.type === "paystub") {
     const data = parsed.extractedData as Partial<PaystubData>;
-    if (!data.employerName) issues.push('Missing employer name');
-    if (!data.grossPay) issues.push('Missing gross pay amount');
-    if (!data.payDate) issues.push('Missing pay date');
+    if (!data.employerName) issues.push("Missing employer name");
+    if (!data.grossPay) issues.push("Missing gross pay amount");
+    if (!data.payDate) issues.push("Missing pay date");
   }
 
-  if (parsed.type === 'id') {
+  if (parsed.type === "id") {
     const data = parsed.extractedData as Partial<IDData>;
-    if (!data.firstName || !data.lastName) issues.push('Missing name');
-    if (!data.dateOfBirth) issues.push('Missing date of birth');
-    if (!data.idNumber) issues.push('Missing ID number');
+    if (!data.firstName || !data.lastName) issues.push("Missing name");
+    if (!data.dateOfBirth) issues.push("Missing date of birth");
+    if (!data.idNumber) issues.push("Missing ID number");
   }
 
   return {

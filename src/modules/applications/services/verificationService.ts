@@ -1,25 +1,25 @@
 // PLACEHOLDER FILE: services\verificationService.ts
 // TODO: Add your implementation here
 
-import { VerificationStatus } from '../types/application.types';
+import { VerificationStatus } from "../types/application.types";
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4041/api';
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
 
 const apiCall = async (endpoint: string, options: RequestInit = {}) => {
-  const token = localStorage.getItem('accessToken');
-  
+  const token = localStorage.getItem("accessToken");
+
   const response = await fetch(`${API_BASE}${endpoint}`, {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token ? `Bearer ${token}` : '',
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
       ...options.headers,
     },
   });
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || 'API request failed');
+    throw new Error(error.message || "API request failed");
   }
 
   return response.json();
@@ -61,7 +61,12 @@ export interface IncomeVerificationResult {
   status: VerificationStatus;
   verified: boolean;
   verifiedIncome: number;
-  method: 'paystub' | 'bank_statement' | 'tax_return' | 'employer_letter' | 'plaid';
+  method:
+    | "paystub"
+    | "bank_statement"
+    | "tax_return"
+    | "employer_letter"
+    | "plaid";
   confidence: number; // 0-100
   verifiedAt?: string;
   message?: string;
@@ -79,7 +84,7 @@ export interface EmploymentVerificationRequest {
 export interface EmploymentVerificationResult {
   status: VerificationStatus;
   verified: boolean;
-  method: 'supervisor_contact' | 'hr_verification' | 'document_verification';
+  method: "supervisor_contact" | "hr_verification" | "document_verification";
   details: {
     employerConfirmed: boolean;
     titleConfirmed: boolean;
@@ -117,10 +122,10 @@ export const verificationService = {
    */
   verifyIdentity: async (
     applicationId: string,
-    data: IdentityVerificationRequest
+    data: IdentityVerificationRequest,
   ): Promise<IdentityVerificationResult> => {
     return apiCall(`/applications/${applicationId}/verify-identity`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
   },
@@ -130,10 +135,10 @@ export const verificationService = {
    */
   verifyIncome: async (
     applicationId: string,
-    data: IncomeVerificationRequest
+    data: IncomeVerificationRequest,
   ): Promise<IncomeVerificationResult> => {
     return apiCall(`/applications/${applicationId}/verify-income`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
   },
@@ -143,10 +148,10 @@ export const verificationService = {
    */
   verifyEmployment: async (
     applicationId: string,
-    data: EmploymentVerificationRequest
+    data: EmploymentVerificationRequest,
   ): Promise<EmploymentVerificationResult> => {
     return apiCall(`/applications/${applicationId}/verify-employment`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(data),
     });
   },
@@ -156,7 +161,7 @@ export const verificationService = {
    */
   getPlaidLinkToken: async (applicationId: string): Promise<PlaidLinkToken> => {
     return apiCall(`/applications/${applicationId}/plaid/link-token`, {
-      method: 'POST',
+      method: "POST",
     });
   },
 
@@ -165,10 +170,10 @@ export const verificationService = {
    */
   exchangePlaidToken: async (
     applicationId: string,
-    publicToken: string
+    publicToken: string,
   ): Promise<PlaidAccountData> => {
     return apiCall(`/applications/${applicationId}/plaid/exchange-token`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ publicToken }),
     });
   },
@@ -176,7 +181,9 @@ export const verificationService = {
   /**
    * Get verification status for all checks
    */
-  getVerificationStatus: async (applicationId: string): Promise<{
+  getVerificationStatus: async (
+    applicationId: string,
+  ): Promise<{
     identity: VerificationStatus;
     income: VerificationStatus;
     employment: VerificationStatus;
@@ -191,11 +198,11 @@ export const verificationService = {
    */
   requestManualReview: async (
     applicationId: string,
-    verificationType: 'identity' | 'income' | 'employment',
-    notes?: string
+    verificationType: "identity" | "income" | "employment",
+    notes?: string,
   ): Promise<void> => {
     return apiCall(`/applications/${applicationId}/request-manual-review`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ verificationType, notes }),
     });
   },
@@ -206,10 +213,10 @@ export const verificationService = {
   resendVerificationRequest: async (
     applicationId: string,
     verificationType: string,
-    method: 'email' | 'sms'
+    method: "email" | "sms",
   ): Promise<void> => {
     return apiCall(`/applications/${applicationId}/resend-verification`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ verificationType, method }),
     });
   },
@@ -219,26 +226,26 @@ export const verificationService = {
    */
   uploadSelfie: async (
     applicationId: string,
-    selfieBlob: Blob
+    selfieBlob: Blob,
   ): Promise<{ imageUrl: string }> => {
     const formData = new FormData();
-    formData.append('selfie', selfieBlob, 'selfie.jpg');
+    formData.append("selfie", selfieBlob, "selfie.jpg");
 
-    const token = localStorage.getItem('accessToken');
-    
+    const token = localStorage.getItem("accessToken");
+
     const response = await fetch(
       `${API_BASE}/applications/${applicationId}/upload-selfie`,
       {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Authorization': token ? `Bearer ${token}` : '',
+          Authorization: token ? `Bearer ${token}` : "",
         },
         body: formData,
-      }
+      },
     );
 
     if (!response.ok) {
-      throw new Error('Selfie upload failed');
+      throw new Error("Selfie upload failed");
     }
 
     return response.json();
@@ -249,10 +256,10 @@ export const verificationService = {
    */
   sendPhoneVerificationCode: async (
     applicationId: string,
-    phoneNumber: string
+    phoneNumber: string,
   ): Promise<{ codeSent: boolean }> => {
     return apiCall(`/applications/${applicationId}/verify-phone/send`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ phoneNumber }),
     });
   },
@@ -262,10 +269,10 @@ export const verificationService = {
    */
   confirmPhoneVerificationCode: async (
     applicationId: string,
-    code: string
+    code: string,
   ): Promise<{ verified: boolean }> => {
     return apiCall(`/applications/${applicationId}/verify-phone/confirm`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ code }),
     });
   },
@@ -275,10 +282,10 @@ export const verificationService = {
    */
   sendEmailVerification: async (
     applicationId: string,
-    email: string
+    email: string,
   ): Promise<{ emailSent: boolean }> => {
     return apiCall(`/applications/${applicationId}/verify-email/send`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ email }),
     });
   },
@@ -288,10 +295,10 @@ export const verificationService = {
    */
   confirmEmailVerification: async (
     applicationId: string,
-    token: string
+    token: string,
   ): Promise<{ verified: boolean }> => {
     return apiCall(`/applications/${applicationId}/verify-email/confirm`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ token }),
     });
   },

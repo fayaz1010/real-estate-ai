@@ -1,11 +1,19 @@
 // Property Validation Schemas
-import { z } from 'zod';
+import { z } from "zod";
 
 export const createPropertySchema = z.object({
   body: z.object({
-    title: z.string().min(1, 'Title is required'),
-    description: z.string().min(1, 'Description is required'),
-    propertyType: z.enum(['APARTMENT', 'HOUSE', 'CONDO', 'TOWNHOUSE', 'STUDIO', 'LOFT', 'COMMERCIAL']),
+    title: z.string().min(1, "Title is required"),
+    description: z.string().min(1, "Description is required"),
+    propertyType: z.enum([
+      "APARTMENT",
+      "HOUSE",
+      "CONDO",
+      "TOWNHOUSE",
+      "STUDIO",
+      "LOFT",
+      "COMMERCIAL",
+    ]),
     address: z.object({
       street: z.string(),
       city: z.string(),
@@ -30,13 +38,25 @@ export const updatePropertySchema = z.object({
   body: z.object({
     title: z.string().min(1).optional(),
     description: z.string().min(1).optional(),
-    propertyType: z.enum(['APARTMENT', 'HOUSE', 'CONDO', 'TOWNHOUSE', 'STUDIO', 'LOFT', 'COMMERCIAL']).optional(),
+    propertyType: z
+      .enum([
+        "APARTMENT",
+        "HOUSE",
+        "CONDO",
+        "TOWNHOUSE",
+        "STUDIO",
+        "LOFT",
+        "COMMERCIAL",
+      ])
+      .optional(),
     bedrooms: z.number().int().min(0).optional(),
     bathrooms: z.number().min(0).optional(),
     sqft: z.number().int().min(0).optional(),
     price: z.number().min(0).optional(),
     deposit: z.number().min(0).optional(),
     amenities: z.array(z.string()).optional(),
-    status: z.enum(['DRAFT', 'ACTIVE', 'RENTED', 'SOLD', 'INACTIVE', 'ARCHIVED']).optional(),
+    status: z
+      .enum(["DRAFT", "ACTIVE", "RENTED", "SOLD", "INACTIVE", "ARCHIVED"])
+      .optional(),
   }),
 });

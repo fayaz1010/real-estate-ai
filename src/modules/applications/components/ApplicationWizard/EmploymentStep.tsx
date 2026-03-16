@@ -1,43 +1,45 @@
 // PLACEHOLDER FILE: components\ApplicationWizard\EmploymentStep.tsx
 // TODO: Add your implementation here
-import React, { useState } from 'react';
-import { Briefcase, Plus, Trash2, Home, Calendar } from 'lucide-react';
-import { useApplicationForm } from '../../hooks/useApplicationForm';
-import { EmploymentInfo } from '../../types/application.types';
+import { Briefcase, Plus, Trash2, Home, Calendar } from "lucide-react";
+import React, { useState } from "react";
+
+import { useApplicationForm } from "../../hooks/useApplicationForm";
+import { EmploymentInfo } from "../../types/application.types";
 
 const EmploymentStep: React.FC = () => {
-  const { formData, addArrayItem, updateArrayItem, removeArrayItem } = useApplicationForm();
+  const { formData, addArrayItem, updateArrayItem, removeArrayItem } =
+    useApplicationForm();
   const employment = formData.employment || [];
   const [editingIndex, setEditingIndex] = useState<number>(-1);
 
   const emptyEmployment: Partial<EmploymentInfo> = {
-    employerName: '',
-    jobTitle: '',
-    employmentType: 'full_time',
-    startDate: '',
-    endDate: '',
+    employerName: "",
+    jobTitle: "",
+    employmentType: "full_time",
+    startDate: "",
+    endDate: "",
     isCurrent: true,
-    supervisorName: '',
-    supervisorPhone: '',
-    supervisorEmail: '',
+    supervisorName: "",
+    supervisorPhone: "",
+    supervisorEmail: "",
     address: {
-      street: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      country: 'US',
+      street: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      country: "US",
     },
-    verificationStatus: 'not_started',
+    verificationStatus: "not_started",
   };
 
   const handleAdd = () => {
-    addArrayItem('employment', emptyEmployment);
+    addArrayItem("employment", emptyEmployment);
     setEditingIndex(employment.length);
   };
 
-  const handleUpdate = (index: number, field: string, value: any) => {
+  const handleUpdate = (index: number, field: string, value: unknown) => {
     const updated = { ...employment[index], [field]: value };
-    updateArrayItem('employment', index, updated);
+    updateArrayItem("employment", index, updated);
   };
 
   const handleAddressUpdate = (index: number, field: string, value: string) => {
@@ -48,12 +50,12 @@ const EmploymentStep: React.FC = () => {
         [field]: value,
       },
     };
-    updateArrayItem('employment', index, updated);
+    updateArrayItem("employment", index, updated);
   };
 
   const handleRemove = (index: number) => {
-    if (confirm('Are you sure you want to remove this employment entry?')) {
-      removeArrayItem('employment', index);
+    if (confirm("Are you sure you want to remove this employment entry?")) {
+      removeArrayItem("employment", index);
       if (editingIndex === index) {
         setEditingIndex(-1);
       }
@@ -63,9 +65,12 @@ const EmploymentStep: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Employment History</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          Employment History
+        </h2>
         <p className="text-gray-600">
-          List your current and previous employment. At least one entry is required.
+          List your current and previous employment. At least one entry is
+          required.
         </p>
       </div>
 
@@ -81,10 +86,12 @@ const EmploymentStep: React.FC = () => {
                 <Briefcase className="w-5 h-5 text-blue-600 mr-2" />
                 <div>
                   <h3 className="font-semibold text-gray-900">
-                    {emp.jobTitle || 'Job Title'} at {emp.employerName || 'Company Name'}
+                    {emp.jobTitle || "Job Title"} at{" "}
+                    {emp.employerName || "Company Name"}
                   </h3>
                   <p className="text-sm text-gray-600">
-                    {emp.employmentType?.replace('_', ' ').toUpperCase()} • {emp.isCurrent ? 'Current' : 'Past'}
+                    {emp.employmentType?.replace("_", " ").toUpperCase()} •{" "}
+                    {emp.isCurrent ? "Current" : "Past"}
                   </p>
                 </div>
               </div>
@@ -108,8 +115,10 @@ const EmploymentStep: React.FC = () => {
                       <Home className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                       <input
                         type="text"
-                        value={emp.employerName || ''}
-                        onChange={(e) => handleUpdate(index, 'employerName', e.target.value)}
+                        value={emp.employerName || ""}
+                        onChange={(e) =>
+                          handleUpdate(index, "employerName", e.target.value)
+                        }
                         className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                         placeholder="Acme Corp"
                       />
@@ -122,8 +131,10 @@ const EmploymentStep: React.FC = () => {
                     </label>
                     <input
                       type="text"
-                      value={emp.jobTitle || ''}
-                      onChange={(e) => handleUpdate(index, 'jobTitle', e.target.value)}
+                      value={emp.jobTitle || ""}
+                      onChange={(e) =>
+                        handleUpdate(index, "jobTitle", e.target.value)
+                      }
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       placeholder="Software Engineer"
                     />
@@ -137,8 +148,10 @@ const EmploymentStep: React.FC = () => {
                       Employment Type *
                     </label>
                     <select
-                      value={emp.employmentType || 'full_time'}
-                      onChange={(e) => handleUpdate(index, 'employmentType', e.target.value)}
+                      value={emp.employmentType || "full_time"}
+                      onChange={(e) =>
+                        handleUpdate(index, "employmentType", e.target.value)
+                      }
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                     >
                       <option value="full_time">Full Time</option>
@@ -153,7 +166,9 @@ const EmploymentStep: React.FC = () => {
                       <input
                         type="checkbox"
                         checked={emp.isCurrent || false}
-                        onChange={(e) => handleUpdate(index, 'isCurrent', e.target.checked)}
+                        onChange={(e) =>
+                          handleUpdate(index, "isCurrent", e.target.checked)
+                        }
                         className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                       />
                       <span className="ml-2 text-sm text-gray-700">
@@ -173,8 +188,10 @@ const EmploymentStep: React.FC = () => {
                       <Calendar className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
                       <input
                         type="date"
-                        value={emp.startDate || ''}
-                        onChange={(e) => handleUpdate(index, 'startDate', e.target.value)}
+                        value={emp.startDate || ""}
+                        onChange={(e) =>
+                          handleUpdate(index, "startDate", e.target.value)
+                        }
                         className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
@@ -187,8 +204,10 @@ const EmploymentStep: React.FC = () => {
                       </label>
                       <input
                         type="date"
-                        value={emp.endDate || ''}
-                        onChange={(e) => handleUpdate(index, 'endDate', e.target.value)}
+                        value={emp.endDate || ""}
+                        onChange={(e) =>
+                          handleUpdate(index, "endDate", e.target.value)
+                        }
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       />
                     </div>
@@ -197,7 +216,9 @@ const EmploymentStep: React.FC = () => {
 
                 {/* Supervisor Info */}
                 <div className="border-t pt-4">
-                  <h4 className="font-medium text-gray-900 mb-3">Supervisor Information (Optional)</h4>
+                  <h4 className="font-medium text-gray-900 mb-3">
+                    Supervisor Information (Optional)
+                  </h4>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -205,8 +226,10 @@ const EmploymentStep: React.FC = () => {
                       </label>
                       <input
                         type="text"
-                        value={emp.supervisorName || ''}
-                        onChange={(e) => handleUpdate(index, 'supervisorName', e.target.value)}
+                        value={emp.supervisorName || ""}
+                        onChange={(e) =>
+                          handleUpdate(index, "supervisorName", e.target.value)
+                        }
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                         placeholder="Jane Smith"
                       />
@@ -218,8 +241,10 @@ const EmploymentStep: React.FC = () => {
                       </label>
                       <input
                         type="tel"
-                        value={emp.supervisorPhone || ''}
-                        onChange={(e) => handleUpdate(index, 'supervisorPhone', e.target.value)}
+                        value={emp.supervisorPhone || ""}
+                        onChange={(e) =>
+                          handleUpdate(index, "supervisorPhone", e.target.value)
+                        }
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                         placeholder="(555) 123-4567"
                       />
@@ -231,8 +256,10 @@ const EmploymentStep: React.FC = () => {
                       </label>
                       <input
                         type="email"
-                        value={emp.supervisorEmail || ''}
-                        onChange={(e) => handleUpdate(index, 'supervisorEmail', e.target.value)}
+                        value={emp.supervisorEmail || ""}
+                        onChange={(e) =>
+                          handleUpdate(index, "supervisorEmail", e.target.value)
+                        }
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                         placeholder="jane@company.com"
                       />
@@ -242,35 +269,49 @@ const EmploymentStep: React.FC = () => {
 
                 {/* Employer Address */}
                 <div className="border-t pt-4">
-                  <h4 className="font-medium text-gray-900 mb-3">Employer Address</h4>
+                  <h4 className="font-medium text-gray-900 mb-3">
+                    Employer Address
+                  </h4>
                   <div className="space-y-4">
                     <input
                       type="text"
-                      value={emp.address?.street || ''}
-                      onChange={(e) => handleAddressUpdate(index, 'street', e.target.value)}
+                      value={emp.address?.street || ""}
+                      onChange={(e) =>
+                        handleAddressUpdate(index, "street", e.target.value)
+                      }
                       className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       placeholder="Street Address"
                     />
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <input
                         type="text"
-                        value={emp.address?.city || ''}
-                        onChange={(e) => handleAddressUpdate(index, 'city', e.target.value)}
+                        value={emp.address?.city || ""}
+                        onChange={(e) =>
+                          handleAddressUpdate(index, "city", e.target.value)
+                        }
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                         placeholder="City"
                       />
                       <input
                         type="text"
-                        value={emp.address?.state || ''}
-                        onChange={(e) => handleAddressUpdate(index, 'state', e.target.value.toUpperCase())}
+                        value={emp.address?.state || ""}
+                        onChange={(e) =>
+                          handleAddressUpdate(
+                            index,
+                            "state",
+                            e.target.value.toUpperCase(),
+                          )
+                        }
                         maxLength={2}
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                         placeholder="State"
                       />
                       <input
                         type="text"
-                        value={emp.address?.zipCode || ''}
-                        onChange={(e) => handleAddressUpdate(index, 'zipCode', e.target.value)}
+                        value={emp.address?.zipCode || ""}
+                        onChange={(e) =>
+                          handleAddressUpdate(index, "zipCode", e.target.value)
+                        }
                         className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                         placeholder="ZIP"
                       />
@@ -288,7 +329,7 @@ const EmploymentStep: React.FC = () => {
             ) : (
               <div className="space-y-2">
                 <p className="text-sm text-gray-600">
-                  {emp.startDate} - {emp.isCurrent ? 'Present' : emp.endDate}
+                  {emp.startDate} - {emp.isCurrent ? "Present" : emp.endDate}
                 </p>
                 {emp.address?.city && emp.address?.state && (
                   <p className="text-sm text-gray-600">
@@ -318,7 +359,8 @@ const EmploymentStep: React.FC = () => {
 
       {employment.length === 0 && (
         <div className="text-center text-gray-500 py-8">
-          No employment history added yet. Click the button above to add your first entry.
+          No employment history added yet. Click the button above to add your
+          first entry.
         </div>
       )}
     </div>

@@ -1,5 +1,5 @@
 // Application Validation
-import { z } from 'zod';
+import { z } from "zod";
 
 export const createApplicationSchema = z.object({
   body: z.object({
@@ -30,7 +30,7 @@ export const submitApplicationSchema = z.object({
 
 export const reviewApplicationSchema = z.object({
   body: z.object({
-    action: z.enum(['approve', 'reject']),
+    action: z.enum(["approve", "reject"]),
     conditions: z.array(z.string()).optional(),
     rejectionReason: z.string().optional(),
     landlordNotes: z.string().optional(),

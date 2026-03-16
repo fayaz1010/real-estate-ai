@@ -120,7 +120,12 @@ model User {
   properties              Property[]
   inspections             Inspection[]
   applications            Application[]
-  
+  notifications           Notification[]
+  notificationPreference  NotificationPreference?
+  tenantLeases            Lease[]    @relation("TenantLeases")
+  landlordLeases          Lease[]    @relation("LandlordLeases")
+  payments                Payment[]  @relation("PayerPayments")
+
   @@index([email])
   @@index([role])
 }
@@ -299,7 +304,8 @@ model Property {
   // Relations
   inspections     Inspection[]
   applications    Application[]
-  
+  leases          Lease[]
+
   @@index([ownerId])
   @@index([status])
   @@index([propertyType])
@@ -456,4 +462,192 @@ model ApplicationDocument {
   
   @@index([applicationId])
   @@index([type])
+}
+
+// ==========================================
+// NOTIFICATION MODELS
+// ==========================================
+
+enum NotificationType {
+  INSPECTION_CONFIRMATION
+  INSPECTION_REMINDER
+  INSPECTION_CANCELLATION
+  INSPECTION_RESCHEDULE
+  INSPECTION_CHECK_IN
+  INSPECTION_CHECK_OUT
+  INSPECTION_FOLLOW_UP
+  INSPECTION_NO_SHOW
+  INSPECTION_ACCESS_CODE
+  INSPECTION_DIRECTIONS
+  APPLICATION_STATUS
+  SYSTEM
+}
+
+enum NotificationChannel {
+  EMAIL
+  IN_APP
+  SMS
+  PUSH
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  DELIVERED
+  FAILED
+  READ
+}
+
+model Notification {
+  id          String             @id @default(uuid())
+  userId      String
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type        NotificationType
+  channel     NotificationChannel @default(IN_APP)
+  status      NotificationStatus  @default(PENDING)
+
+  title       String
+  message     String
+  data        Json?              // Contextual payload (inspectionId, propertyId, etc.)
+
+  readAt      DateTime?
+  sentAt      DateTime?
+  failReason  String?
+
+  // Link to related entities
+  inspectionId String?
+  propertyId   String?
+
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+  @@index([createdAt])
+  @@index([userId, readAt])
+}
+
+model NotificationPreference {
+  id     String  @id @default(uuid())
+  userId String  @unique
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  email  Boolean @default(true)
+  sms    Boolean @default(false)
+  push   Boolean @default(true)
+
+  // Granular controls
+  inspectionReminders  Boolean @default(true)
+  inspectionUpdates    Boolean @default(true)
+  applicationUpdates   Boolean @default(true)
+  marketingEmails      Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// ==========================================
+// LEASE & PAYMENT MODELS
+// ==========================================
+
+enum LeaseStatus {
+  DRAFT
+  PENDING_SIGNATURES
+  ACTIVE
+  EXPIRED
+  TERMINATED
+  RENEWED
+}
+
+enum PaymentStatus {
+  PAYMENT_PENDING
+  PAID
+  OVERDUE
+  PARTIAL
+  REFUNDED
+  PAYMENT_CANCELLED
+}
+
+enum PaymentType {
+  RENT
+  DEPOSIT
+  LATE_FEE
+  MAINTENANCE
+  UTILITY
+  OTHER
+}
+
+model Lease {
+  id              String       @id @default(uuid())
+  propertyId      String
+  property        Property     @relation(fields: [propertyId], references: [id])
+  tenantId        String
+  tenant          User         @relation("TenantLeases", fields: [tenantId], references: [id])
+  landlordId      String
+  landlord        User         @relation("LandlordLeases", fields: [landlordId], references: [id])
+
+  // Lease terms
+  status          LeaseStatus  @default(DRAFT)
+  startDate       DateTime
+  endDate         DateTime
+  monthlyRent     Float
+  depositAmount   Float
+  depositPaid     Boolean      @default(false)
+  lateFeeAmount   Float        @default(0)
+  lateFeeGraceDays Int         @default(5)
+
+  // Documents
+  leaseDocumentUrl String?
+
+  // Metadata
+  signedByTenant    Boolean    @default(false)
+  signedByLandlord  Boolean    @default(false)
+  signedAt          DateTime?
+  terminatedAt      DateTime?
+  terminationReason String?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  // Relations
+  payments        Payment[]
+
+  @@index([propertyId])
+  @@index([tenantId])
+  @@index([landlordId])
+  @@index([status])
+}
+
+model Payment {
+  id              String        @id @default(uuid())
+  leaseId         String
+  lease           Lease         @relation(fields: [leaseId], references: [id])
+  payerId         String
+  payer           User          @relation("PayerPayments", fields: [payerId], references: [id])
+
+  // Payment details
+  type            PaymentType   @default(RENT)
+  status          PaymentStatus @default(PAYMENT_PENDING)
+  amount          Float
+  currency        String        @default("USD")
+  dueDate         DateTime
+  paidAt          DateTime?
+
+  // Stripe integration
+  stripePaymentIntentId String?
+  stripeInvoiceId       String?
+
+  // Metadata
+  description     String?
+  receiptUrl      String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([leaseId])
+  @@index([payerId])
+  @@index([status])
+  @@index([dueDate])
 }

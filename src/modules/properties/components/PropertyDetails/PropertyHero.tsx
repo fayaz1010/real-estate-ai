@@ -1,18 +1,30 @@
 // FILE PATH: src/modules/properties/components/PropertyDetails/PropertyHero.tsx
 // Module 1.2: Property Listings Management - Property Hero Section
 
-import React, { useState } from 'react';
-import { Property } from '../../types/property.types';
-import { Heart, Share2, ChevronLeft, ChevronRight, Maximize2, Play, Video } from 'lucide-react';
-import { useFavorites } from '../../hooks/useFavorites';
-import { PropertyStatus } from '../shared/PropertyStatus';
+import {
+  Heart,
+  Share2,
+  ChevronLeft,
+  ChevronRight,
+  Maximize2,
+  Play,
+  Video,
+} from "lucide-react";
+import React, { useState } from "react";
+
+import { useFavorites } from "../../hooks/useFavorites";
+import { Property } from "../../types/property.types";
+import { PropertyStatus } from "../shared/PropertyStatus";
 
 interface PropertyHeroProps {
   property: Property;
   onImageClick?: (index: number) => void;
 }
 
-export const PropertyHero: React.FC<PropertyHeroProps> = ({ property, onImageClick }) => {
+export const PropertyHero: React.FC<PropertyHeroProps> = ({
+  property,
+  onImageClick,
+}) => {
   const { isFavorite, toggleFavorite } = useFavorites();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
@@ -36,14 +48,14 @@ export const PropertyHero: React.FC<PropertyHeroProps> = ({ property, onImageCli
         await navigator.share({
           title: property.title,
           text: property.description.substring(0, 100),
-          url: url
+          url: url,
         });
       } catch (err) {
-        console.log('Share cancelled');
+        console.log("Share cancelled");
       }
     } else {
       navigator.clipboard.writeText(url);
-      alert('Link copied to clipboard!');
+      alert("Link copied to clipboard!");
     }
   };
 
@@ -53,17 +65,17 @@ export const PropertyHero: React.FC<PropertyHeroProps> = ({ property, onImageCli
       <div className="hidden md:block max-w-7xl mx-auto px-4 py-4">
         <div className="grid grid-cols-4 gap-2 h-[500px]">
           {/* Main Image */}
-          <div 
+          <div
             className="col-span-2 row-span-2 relative rounded-l-lg overflow-hidden cursor-pointer group"
             onClick={() => onImageClick?.(0)}
           >
             <img
-              src={images[0]?.url || '/placeholder.jpg'}
+              src={images[0]?.url || "/placeholder.jpg"}
               alt={property.title}
               className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
             />
             <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition" />
-            
+
             {/* Status Badge */}
             <div className="absolute top-4 left-4">
               <PropertyStatus status={property.status} size="md" />
@@ -81,8 +93,8 @@ export const PropertyHero: React.FC<PropertyHeroProps> = ({ property, onImageCli
             <div
               key={image.id}
               className={`relative overflow-hidden cursor-pointer group ${
-                index === 3 ? 'rounded-tr-lg' : ''
-              } ${index === 1 ? 'rounded-br-lg' : ''}`}
+                index === 3 ? "rounded-tr-lg" : ""
+              } ${index === 1 ? "rounded-br-lg" : ""}`}
               onClick={() => onImageClick?.(index + 1)}
             >
               <img
@@ -91,7 +103,7 @@ export const PropertyHero: React.FC<PropertyHeroProps> = ({ property, onImageCli
                 className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
               />
               <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-10 transition" />
-              
+
               {/* Show more overlay on last image */}
               {index === 3 && images.length > 5 && (
                 <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
@@ -133,15 +145,15 @@ export const PropertyHero: React.FC<PropertyHeroProps> = ({ property, onImageCli
               onClick={() => toggleFavorite(property.id)}
               className={`flex items-center gap-2 px-4 py-2 border rounded-lg transition ${
                 isFavorite(property.id)
-                  ? 'border-red-500 bg-red-50 text-red-600'
-                  : 'border-gray-300 hover:bg-gray-50'
+                  ? "border-red-500 bg-red-50 text-red-600"
+                  : "border-gray-300 hover:bg-gray-50"
               }`}
             >
               <Heart
                 size={18}
-                className={isFavorite(property.id) ? 'fill-red-500' : ''}
+                className={isFavorite(property.id) ? "fill-red-500" : ""}
               />
-              <span>{isFavorite(property.id) ? 'Saved' : 'Save'}</span>
+              <span>{isFavorite(property.id) ? "Saved" : "Save"}</span>
             </button>
           </div>
         </div>
@@ -152,7 +164,7 @@ export const PropertyHero: React.FC<PropertyHeroProps> = ({ property, onImageCli
         {/* Image Carousel */}
         <div className="relative h-64 overflow-hidden">
           <img
-            src={images[currentImageIndex]?.url || '/placeholder.jpg'}
+            src={images[currentImageIndex]?.url || "/placeholder.jpg"}
             alt={property.title}
             className="w-full h-full object-cover"
             onClick={() => onImageClick?.(currentImageIndex)}
@@ -197,12 +209,12 @@ export const PropertyHero: React.FC<PropertyHeroProps> = ({ property, onImageCli
             <button
               onClick={() => toggleFavorite(property.id)}
               className={`p-2 rounded-full shadow-lg ${
-                isFavorite(property.id) ? 'bg-red-500 text-white' : 'bg-white'
+                isFavorite(property.id) ? "bg-red-500 text-white" : "bg-white"
               }`}
             >
               <Heart
                 size={18}
-                className={isFavorite(property.id) ? 'fill-white' : ''}
+                className={isFavorite(property.id) ? "fill-white" : ""}
               />
             </button>
           </div>
@@ -216,7 +228,9 @@ export const PropertyHero: React.FC<PropertyHeroProps> = ({ property, onImageCli
                 key={image.id}
                 onClick={() => setCurrentImageIndex(index)}
                 className={`flex-shrink-0 w-16 h-16 rounded overflow-hidden border-2 ${
-                  index === currentImageIndex ? 'border-blue-600' : 'border-transparent'
+                  index === currentImageIndex
+                    ? "border-blue-600"
+                    : "border-transparent"
                 }`}
               >
                 <img

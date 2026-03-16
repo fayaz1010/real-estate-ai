@@ -1,28 +1,34 @@
 // FILE PATH: src/modules/properties/components/PropertyDetails/PropertyHistory.tsx
 // Module 1.2: Property Listings Management - Property History Component
 
-import React from 'react';
-import { Property } from '../../types/property.types';
-import { TrendingDown, TrendingUp, Calendar } from 'lucide-react';
-import { priceCalculator } from '../../utils/priceCalculator';
+import { TrendingDown, TrendingUp, Calendar } from "lucide-react";
+import React from "react";
+
+import { Property } from "../../types/property.types";
+import { priceCalculator } from "../../utils/priceCalculator";
 
 interface PropertyHistoryProps {
   property: Property;
 }
 
-export const PropertyHistory: React.FC<PropertyHistoryProps> = ({ property }) => {
+export const PropertyHistory: React.FC<PropertyHistoryProps> = ({
+  property,
+}) => {
   const priceHistory = property.pricing.priceHistory || [];
-  
+
   if (priceHistory.length === 0) {
     return null;
   }
 
-  const latestPrice = priceHistory[priceHistory.length - 1]?.price || property.pricing.price;
+  const latestPrice =
+    priceHistory[priceHistory.length - 1]?.price || property.pricing.price;
   const oldestPrice = priceHistory[0]?.price;
-  const priceChange = oldestPrice ? priceCalculator.calculatePriceChange(oldestPrice, latestPrice) : 0;
+  const priceChange = oldestPrice
+    ? priceCalculator.calculatePriceChange(oldestPrice, latestPrice)
+    : 0;
 
   // Get min and max for chart scaling
-  const prices = priceHistory.map(h => h.price);
+  const prices = priceHistory.map((h) => h.price);
   const minPrice = Math.min(...prices);
   const maxPrice = Math.max(...prices);
   const priceRange = maxPrice - minPrice;
@@ -31,11 +37,13 @@ export const PropertyHistory: React.FC<PropertyHistoryProps> = ({ property }) =>
     <div className="bg-white rounded-lg shadow p-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold text-gray-900">Price History</h2>
-        
+
         {priceChange !== 0 && (
-          <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
-            priceChange < 0 ? 'bg-green-50' : 'bg-red-50'
-          }`}>
+          <div
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
+              priceChange < 0 ? "bg-green-50" : "bg-red-50"
+            }`}
+          >
             {priceChange < 0 ? (
               <>
                 <TrendingDown className="text-green-600" size={20} />
@@ -67,30 +75,44 @@ export const PropertyHistory: React.FC<PropertyHistoryProps> = ({ property }) =>
           </div>
 
           {/* Chart line */}
-          <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+          <svg
+            className="w-full h-full"
+            viewBox="0 0 100 100"
+            preserveAspectRatio="none"
+          >
             <polyline
               fill="none"
               stroke="#3B82F6"
               strokeWidth="2"
-              points={priceHistory.map((entry, index) => {
-                const x = (index / (priceHistory.length - 1)) * 100;
-                const y = 100 - ((entry.price - minPrice) / priceRange) * 100;
-                return `${x},${y}`;
-              }).join(' ')}
+              points={priceHistory
+                .map((entry, index) => {
+                  const x = (index / (priceHistory.length - 1)) * 100;
+                  const y = 100 - ((entry.price - minPrice) / priceRange) * 100;
+                  return `${x},${y}`;
+                })
+                .join(" ")}
             />
             <polyline
               fill="url(#gradient)"
               stroke="none"
-              points={`0,100 ${priceHistory.map((entry, index) => {
-                const x = (index / (priceHistory.length - 1)) * 100;
-                const y = 100 - ((entry.price - minPrice) / priceRange) * 100;
-                return `${x},${y}`;
-              }).join(' ')} 100,100`}
+              points={`0,100 ${priceHistory
+                .map((entry, index) => {
+                  const x = (index / (priceHistory.length - 1)) * 100;
+                  const y = 100 - ((entry.price - minPrice) / priceRange) * 100;
+                  return `${x},${y}`;
+                })
+                .join(" ")} 100,100`}
             />
             <defs>
               <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style={{ stopColor: '#3B82F6', stopOpacity: 0.2 }} />
-                <stop offset="100%" style={{ stopColor: '#3B82F6', stopOpacity: 0 }} />
+                <stop
+                  offset="0%"
+                  style={{ stopColor: "#3B82F6", stopOpacity: 0.2 }}
+                />
+                <stop
+                  offset="100%"
+                  style={{ stopColor: "#3B82F6", stopOpacity: 0 }}
+                />
               </linearGradient>
             </defs>
           </svg>
@@ -99,7 +121,7 @@ export const PropertyHistory: React.FC<PropertyHistoryProps> = ({ property }) =>
           {priceHistory.map((entry, index) => {
             const x = (index / (priceHistory.length - 1)) * 100;
             const y = 100 - ((entry.price - minPrice) / priceRange) * 100;
-            
+
             return (
               <div
                 key={index}
@@ -116,7 +138,9 @@ export const PropertyHistory: React.FC<PropertyHistoryProps> = ({ property }) =>
       <div className="space-y-3">
         {priceHistory.map((entry, index) => {
           const prevPrice = index > 0 ? priceHistory[index - 1].price : null;
-          const change = prevPrice ? priceCalculator.calculatePriceChange(prevPrice, entry.price) : 0;
+          const change = prevPrice
+            ? priceCalculator.calculatePriceChange(prevPrice, entry.price)
+            : 0;
 
           return (
             <div
@@ -127,14 +151,14 @@ export const PropertyHistory: React.FC<PropertyHistoryProps> = ({ property }) =>
                 <Calendar size={16} className="text-gray-400" />
                 <div>
                   <p className="text-sm font-medium text-gray-900">
-                    {new Date(entry.date).toLocaleDateString('en-US', {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric'
+                    {new Date(entry.date).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
                     })}
                   </p>
                   <p className="text-xs text-gray-600 capitalize">
-                    {entry.event.replace('_', ' ')}
+                    {entry.event.replace("_", " ")}
                   </p>
                 </div>
               </div>
@@ -144,10 +168,13 @@ export const PropertyHistory: React.FC<PropertyHistoryProps> = ({ property }) =>
                   {priceCalculator.formatCurrency(entry.price)}
                 </p>
                 {change !== 0 && (
-                  <p className={`text-xs font-medium ${
-                    change < 0 ? 'text-green-600' : 'text-red-600'
-                  }`}>
-                    {change > 0 && '+'}{change.toFixed(1)}%
+                  <p
+                    className={`text-xs font-medium ${
+                      change < 0 ? "text-green-600" : "text-red-600"
+                    }`}
+                  >
+                    {change > 0 && "+"}
+                    {change.toFixed(1)}%
                   </p>
                 )}
               </div>
@@ -172,8 +199,11 @@ export const PropertyHistory: React.FC<PropertyHistoryProps> = ({ property }) =>
         </div>
         <div>
           <p className="text-sm text-gray-600 mb-1">Price Change</p>
-          <p className={`font-bold ${priceChange < 0 ? 'text-green-600' : 'text-red-600'}`}>
-            {priceChange > 0 && '+'}{priceChange.toFixed(1)}%
+          <p
+            className={`font-bold ${priceChange < 0 ? "text-green-600" : "text-red-600"}`}
+          >
+            {priceChange > 0 && "+"}
+            {priceChange.toFixed(1)}%
           </p>
         </div>
       </div>

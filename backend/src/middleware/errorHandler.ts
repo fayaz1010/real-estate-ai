@@ -1,17 +1,18 @@
 // Global Error Handler Middleware
-import { Request, Response, NextFunction } from 'express';
-import { Prisma } from '@prisma/client';
-import { config } from '../config/env';
+import { Prisma } from "@prisma/client";
+import { Request, Response, NextFunction } from "express";
+
+import { config } from "../config/env";
 
 export class AppError extends Error {
   constructor(
     public message: string,
     public statusCode: number = 500,
-    public code: string = 'INTERNAL_ERROR',
-    public details?: any
+    public code: string = "INTERNAL_ERROR",
+    public details?: Record<string, unknown>,
   ) {
     super(message);
-    this.name = 'AppError';
+    this.name = "AppError";
     Error.captureStackTrace(this, this.constructor);
   }
 }
@@ -20,15 +21,15 @@ export const errorHandler = (
   error: Error | AppError,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
-  console.error('Error:', error);
+  console.error("Error:", error);
 
   // Default error response
   let statusCode = 500;
-  let code = 'INTERNAL_ERROR';
-  let message = 'Internal server error';
-  let details: any = undefined;
+  let code = "INTERNAL_ERROR";
+  let message = "Internal server error";
+  let details: Record<string, unknown> | undefined = undefined;
 
   // Handle custom AppError
   if (error instanceof AppError) {
@@ -37,50 +38,48 @@ export const errorHandler = (
     message = error.message;
     details = error.details;
   }
-  
+
   // Handle Prisma errors
   else if (error instanceof Prisma.PrismaClientKnownRequestError) {
     statusCode = 400;
-    
+
     switch (error.code) {
-      case 'P2002':
-        code = 'DUPLICATE_ENTRY';
-        message = 'A record with this value already exists';
+      case "P2002":
+        code = "DUPLICATE_ENTRY";
+        message = "A record with this value already exists";
         details = { field: error.meta?.target };
         break;
-      case 'P2025':
-        code = 'NOT_FOUND';
-        message = 'Record not found';
+      case "P2025":
+        code = "NOT_FOUND";
+        message = "Record not found";
         statusCode = 404;
         break;
-      case 'P2003':
-        code = 'FOREIGN_KEY_CONSTRAINT';
-        message = 'Related record not found';
+      case "P2003":
+        code = "FOREIGN_KEY_CONSTRAINT";
+        message = "Related record not found";
         break;
       default:
-        code = 'DATABASE_ERROR';
-        message = 'Database operation failed';
+        code = "DATABASE_ERROR";
+        message = "Database operation failed";
     }
   }
-  
+
   // Handle Prisma validation errors
   else if (error instanceof Prisma.PrismaClientValidationError) {
     statusCode = 400;
-    code = 'VALIDATION_ERROR';
-    message = 'Invalid data provided';
+    code = "VALIDATION_ERROR";
+    message = "Invalid data provided";
   }
 
   // Handle JWT errors
-  else if (error.name === 'JsonWebTokenError') {
+  else if (error.name === "JsonWebTokenError") {
     statusCode = 401;
-    code = 'INVALID_TOKEN';
-    message = 'Invalid authentication token';
-  }
-  
-  else if (error.name === 'TokenExpiredError') {
+    code = "INVALID_TOKEN";
+    message = "Invalid authentication token";
+  } else if (error.name === "TokenExpiredError") {
     statusCode = 401;
-    code = 'TOKEN_EXPIRED';
-    message = 'Authentication token has expired';
+    code = "TOKEN_EXPIRED";
+    message = "Authentication token has expired";
   }
 
   // Send error response
@@ -90,7 +89,7 @@ export const errorHandler = (
       code,
       message,
       ...(details && { details }),
-      ...(config.nodeEnv === 'development' && {
+      ...(config.nodeEnv === "development" && {
         stack: error.stack,
       }),
     },
@@ -98,7 +97,9 @@ export const errorHandler = (
 };
 
 // Async handler wrapper to catch errors in async route handlers
-export const asyncHandler = (fn: Function) => {
+export const asyncHandler = (
+  fn: (req: Request, res: Response, next: NextFunction) => Promise<unknown>,
+) => {
   return (req: Request, res: Response, next: NextFunction) => {
     Promise.resolve(fn(req, res, next)).catch(next);
   };

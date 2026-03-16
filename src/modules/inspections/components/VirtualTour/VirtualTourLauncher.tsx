@@ -1,9 +1,19 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/VirtualTour/VirtualTourLauncher.tsx
 // TODO: Add your implementation here
 
-import React, { useState, useEffect } from 'react';
-import { Video, Mic, MicOff, VideoOff, Phone, MessageSquare, Share2, Settings } from 'lucide-react';
-import { Inspection } from '../../types/inspection.types';
+import {
+  Video,
+  Mic,
+  MicOff,
+  VideoOff,
+  Phone,
+  MessageSquare,
+  Share2,
+  Settings,
+} from "lucide-react";
+import React, { useState, useEffect } from "react";
+
+import { Inspection } from "../../types/inspection.types";
 
 interface VirtualTourLauncherProps {
   inspection: Inspection;
@@ -16,15 +26,23 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
   const [isConnected, setIsConnected] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isVideoOff, setIsVideoOff] = useState(false);
-  const [connectionQuality, setConnectionQuality] = useState<'good' | 'fair' | 'poor'>('good');
+  const [connectionQuality, setConnectionQuality] = useState<
+    "good" | "fair" | "poor"
+  >("good");
   const [showChat, setShowChat] = useState(false);
-  const [chatMessages, setChatMessages] = useState<Array<{ sender: string; message: string; time: string }>>([]);
-  const [chatInput, setChatInput] = useState('');
+  const [chatMessages, setChatMessages] = useState<
+    Array<{ sender: string; message: string; time: string }>
+  >([]);
+  const [chatInput, setChatInput] = useState("");
 
   useEffect(() => {
     // Simulate connection quality check
     const interval = setInterval(() => {
-      const qualities: Array<'good' | 'fair' | 'poor'> = ['good', 'fair', 'poor'];
+      const qualities: Array<"good" | "fair" | "poor"> = [
+        "good",
+        "fair",
+        "poor",
+      ];
       setConnectionQuality(qualities[Math.floor(Math.random() * 3)]);
     }, 5000);
 
@@ -34,13 +52,13 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
   const handleJoinTour = async () => {
     setIsJoining(true);
     // Simulate joining
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     setIsConnected(true);
     setIsJoining(false);
   };
 
   const handleEndCall = () => {
-    if (window.confirm('Are you sure you want to end the virtual tour?')) {
+    if (window.confirm("Are you sure you want to end the virtual tour?")) {
       setIsConnected(false);
     }
   };
@@ -50,25 +68,28 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
       setChatMessages([
         ...chatMessages,
         {
-          sender: 'You',
+          sender: "You",
           message: chatInput,
-          time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }),
+          time: new Date().toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+          }),
         },
       ]);
-      setChatInput('');
+      setChatInput("");
     }
   };
 
   const getQualityColor = (quality: string) => {
     switch (quality) {
-      case 'good':
-        return 'bg-green-500';
-      case 'fair':
-        return 'bg-yellow-500';
-      case 'poor':
-        return 'bg-red-500';
+      case "good":
+        return "bg-green-500";
+      case "fair":
+        return "bg-yellow-500";
+      case "poor":
+        return "bg-red-500";
       default:
-        return 'bg-gray-500';
+        return "bg-gray-500";
     }
   };
 
@@ -83,9 +104,7 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Virtual Property Tour
           </h2>
-          <p className="text-gray-600">
-            {inspection.property?.title}
-          </p>
+          <p className="text-gray-600">{inspection.property?.title}</p>
         </div>
 
         {/* Meeting Info */}
@@ -95,18 +114,28 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
             <div className="flex justify-between">
               <span className="text-gray-600">Date & Time:</span>
               <span className="font-medium text-gray-900">
-                {new Date(inspection.scheduledDate).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                })} at {new Date(inspection.scheduledDate).toLocaleTimeString('en-US', {
-                  hour: 'numeric',
-                  minute: '2-digit',
-                })}
+                {new Date(inspection.scheduledDate).toLocaleDateString(
+                  "en-US",
+                  {
+                    month: "short",
+                    day: "numeric",
+                  },
+                )}{" "}
+                at{" "}
+                {new Date(inspection.scheduledDate).toLocaleTimeString(
+                  "en-US",
+                  {
+                    hour: "numeric",
+                    minute: "2-digit",
+                  },
+                )}
               </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Duration:</span>
-              <span className="font-medium text-gray-900">{inspection.duration} minutes</span>
+              <span className="font-medium text-gray-900">
+                {inspection.duration} minutes
+              </span>
             </div>
             <div className="flex justify-between">
               <span className="text-gray-600">Host:</span>
@@ -127,7 +156,9 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
               className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
             />
             <Mic className="w-5 h-5 text-gray-600" />
-            <span className="flex-1 font-medium text-gray-900">Enable Microphone</span>
+            <span className="flex-1 font-medium text-gray-900">
+              Enable Microphone
+            </span>
           </label>
 
           <label className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg cursor-pointer hover:bg-gray-100 transition-colors">
@@ -138,7 +169,9 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
               className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
             />
             <Video className="w-5 h-5 text-gray-600" />
-            <span className="flex-1 font-medium text-gray-900">Enable Camera</span>
+            <span className="flex-1 font-medium text-gray-900">
+              Enable Camera
+            </span>
           </label>
         </div>
 
@@ -165,7 +198,7 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
         <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg text-sm text-blue-800">
           <p className="font-medium mb-1">Before you join:</p>
           <ul className="space-y-1 text-xs">
-            <li>• Make sure you're in a quiet place with good internet</li>
+            <li>• Make sure you&apos;re in a quiet place with good internet</li>
             <li>• Test your camera and microphone</li>
             <li>• Prepare any questions you have about the property</li>
           </ul>
@@ -210,8 +243,12 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
 
         {/* Connection Quality Indicator */}
         <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 bg-black bg-opacity-50 rounded-full">
-          <div className={`w-2 h-2 rounded-full ${getQualityColor(connectionQuality)}`} />
-          <span className="text-white text-xs capitalize">{connectionQuality} connection</span>
+          <div
+            className={`w-2 h-2 rounded-full ${getQualityColor(connectionQuality)}`}
+          />
+          <span className="text-white text-xs capitalize">
+            {connectionQuality} connection
+          </span>
         </div>
 
         {/* Timer */}
@@ -227,7 +264,9 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
           <button
             onClick={() => setIsMuted(!isMuted)}
             className={`p-4 rounded-full transition-colors ${
-              isMuted ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'
+              isMuted
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-gray-700 hover:bg-gray-600"
             }`}
           >
             {isMuted ? (
@@ -241,7 +280,9 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
           <button
             onClick={() => setIsVideoOff(!isVideoOff)}
             className={`p-4 rounded-full transition-colors ${
-              isVideoOff ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-700 hover:bg-gray-600'
+              isVideoOff
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-gray-700 hover:bg-gray-600"
             }`}
           >
             {isVideoOff ? (
@@ -305,12 +346,16 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
 
           <div className="flex-1 overflow-y-auto p-4 space-y-3">
             {chatMessages.length === 0 ? (
-              <p className="text-center text-gray-500 text-sm">No messages yet</p>
+              <p className="text-center text-gray-500 text-sm">
+                No messages yet
+              </p>
             ) : (
               chatMessages.map((msg, index) => (
                 <div key={index} className="bg-gray-50 rounded-lg p-3">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="font-medium text-sm text-gray-900">{msg.sender}</span>
+                    <span className="font-medium text-sm text-gray-900">
+                      {msg.sender}
+                    </span>
                     <span className="text-xs text-gray-500">{msg.time}</span>
                   </div>
                   <p className="text-sm text-gray-700">{msg.message}</p>
@@ -325,7 +370,7 @@ export const VirtualTourLauncher: React.FC<VirtualTourLauncherProps> = ({
                 type="text"
                 value={chatInput}
                 onChange={(e) => setChatInput(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+                onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                 placeholder="Type a message..."
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />

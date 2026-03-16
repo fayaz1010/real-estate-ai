@@ -1,13 +1,15 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionManagement/InspectionsList.tsx
 // TODO: Add your implementation here
 
-import React, { useEffect, useState } from 'react';
-import { useInspections } from '../../hooks/useInspections';
-import { InspectionCard } from './InspectionCard';
-import { Loader, Search, Filter, Calendar } from 'lucide-react';
-import { InspectionStatus } from '../../types/inspection.types';
+import { Loader, Search, Filter, Calendar } from "lucide-react";
+import React, { useEffect, useState } from "react";
 
-type FilterTab = 'all' | 'upcoming' | 'pending' | 'completed' | 'cancelled';
+import { useInspections } from "../../hooks/useInspections";
+import { InspectionStatus } from "../../types/inspection.types";
+
+import { InspectionCard } from "./InspectionCard";
+
+type FilterTab = "all" | "upcoming" | "pending" | "completed" | "cancelled";
 
 export const InspectionsList: React.FC = () => {
   const {
@@ -18,9 +20,9 @@ export const InspectionsList: React.FC = () => {
     loadInspections,
   } = useInspections();
 
-  const [activeTab, setActiveTab] = useState<FilterTab>('upcoming');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [sortBy, setSortBy] = useState<'date' | 'property'>('date');
+  const [activeTab, setActiveTab] = useState<FilterTab>("upcoming");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [sortBy, setSortBy] = useState<"date" | "property">("date");
 
   useEffect(() => {
     loadInspections();
@@ -31,18 +33,18 @@ export const InspectionsList: React.FC = () => {
 
     // Filter by tab
     switch (activeTab) {
-      case 'upcoming':
+      case "upcoming":
         filtered = inspections;
         break;
-      case 'pending':
-        filtered = inspections.filter((i) => i.status === 'pending');
+      case "pending":
+        filtered = inspections.filter((i) => i.status === "pending");
         break;
-      case 'completed':
-        filtered = inspections.filter((i) => i.status === 'completed');
+      case "completed":
+        filtered = inspections.filter((i) => i.status === "completed");
         break;
-      case 'cancelled':
+      case "cancelled":
         filtered = inspections.filter(
-          (i) => i.status === 'cancelled' || i.status === 'no_show'
+          (i) => i.status === "cancelled" || i.status === "no_show",
         );
         break;
       default:
@@ -53,25 +55,28 @@ export const InspectionsList: React.FC = () => {
     if (searchTerm) {
       filtered = filtered.filter(
         (inspection) =>
-          inspection.property?.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          inspection.property?.title
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
           inspection.property?.address.street
             .toLowerCase()
             .includes(searchTerm.toLowerCase()) ||
           inspection.property?.address.city
             .toLowerCase()
-            .includes(searchTerm.toLowerCase())
+            .includes(searchTerm.toLowerCase()),
       );
     }
 
     // Sort
-    if (sortBy === 'date') {
+    if (sortBy === "date") {
       filtered.sort(
         (a, b) =>
-          new Date(a.scheduledDate).getTime() - new Date(b.scheduledDate).getTime()
+          new Date(a.scheduledDate).getTime() -
+          new Date(b.scheduledDate).getTime(),
       );
     } else {
       filtered.sort((a, b) =>
-        (a.property?.title || '').localeCompare(b.property?.title || '')
+        (a.property?.title || "").localeCompare(b.property?.title || ""),
       );
     }
 
@@ -81,18 +86,18 @@ export const InspectionsList: React.FC = () => {
   const filteredInspections = getFilteredInspections();
 
   const tabs: { id: FilterTab; label: string; count: number }[] = [
-    { id: 'upcoming', label: 'Upcoming', count: inspections.length },
+    { id: "upcoming", label: "Upcoming", count: inspections.length },
     {
-      id: 'pending',
-      label: 'Pending',
-      count: inspections.filter((i) => i.status === 'pending').length,
+      id: "pending",
+      label: "Pending",
+      count: inspections.filter((i) => i.status === "pending").length,
     },
     {
-      id: 'completed',
-      label: 'Completed',
-      count: inspections.filter((i) => i.status === 'completed').length,
+      id: "completed",
+      label: "Completed",
+      count: inspections.filter((i) => i.status === "completed").length,
     },
-    { id: 'all', label: 'All', count: inspections.length },
+    { id: "all", label: "All", count: inspections.length },
   ];
 
   if (isLoading) {
@@ -108,7 +113,9 @@ export const InspectionsList: React.FC = () => {
     <div className="max-w-6xl mx-auto py-8 px-4">
       {/* Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">My Inspections</h1>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          My Inspections
+        </h1>
         <p className="text-gray-600">
           Manage all your property inspections in one place
         </p>
@@ -125,8 +132,8 @@ export const InspectionsList: React.FC = () => {
                 pb-3 px-1 border-b-2 transition-colors whitespace-nowrap
                 ${
                   activeTab === tab.id
-                    ? 'border-blue-600 text-blue-600 font-semibold'
-                    : 'border-transparent text-gray-600 hover:text-gray-900'
+                    ? "border-blue-600 text-blue-600 font-semibold"
+                    : "border-transparent text-gray-600 hover:text-gray-900"
                 }
               `}
             >
@@ -137,8 +144,8 @@ export const InspectionsList: React.FC = () => {
                     ml-2 px-2 py-0.5 rounded-full text-xs
                     ${
                       activeTab === tab.id
-                        ? 'bg-blue-100 text-blue-600'
-                        : 'bg-gray-100 text-gray-600'
+                        ? "bg-blue-100 text-blue-600"
+                        : "bg-gray-100 text-gray-600"
                     }
                   `}
                 >
@@ -167,7 +174,7 @@ export const InspectionsList: React.FC = () => {
         {/* Sort */}
         <select
           value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as 'date' | 'property')}
+          onChange={(e) => setSortBy(e.target.value as "date" | "property")}
           className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         >
           <option value="date">Sort by Date</option>
@@ -184,14 +191,14 @@ export const InspectionsList: React.FC = () => {
           </h3>
           <p className="text-gray-600 mb-6">
             {searchTerm
-              ? 'Try adjusting your search terms'
-              : activeTab === 'upcoming'
-              ? "You don't have any upcoming inspections"
-              : 'No inspections match this filter'}
+              ? "Try adjusting your search terms"
+              : activeTab === "upcoming"
+                ? "You don't have any upcoming inspections"
+                : "No inspections match this filter"}
           </p>
-          {activeTab === 'upcoming' && !searchTerm && (
+          {activeTab === "upcoming" && !searchTerm && (
             <button
-              onClick={() => (window.location.href = '/properties')}
+              onClick={() => (window.location.href = "/properties")}
               className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
               Browse Properties
@@ -209,15 +216,11 @@ export const InspectionsList: React.FC = () => {
       {/* Results Count */}
       {filteredInspections.length > 0 && (
         <div className="mt-6 text-center text-sm text-gray-600">
-          Showing {filteredInspections.length} of {inspections.length} inspection
-          {inspections.length !== 1 ? 's' : ''}
+          Showing {filteredInspections.length} of {inspections.length}{" "}
+          inspection
+          {inspections.length !== 1 ? "s" : ""}
         </div>
       )}
     </div>
   );
 };
-
-
-
-
-

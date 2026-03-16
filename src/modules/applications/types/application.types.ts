@@ -2,36 +2,36 @@
 // TODO: Add your implementation here
 
 // Application Status Flow
-export type ApplicationStatus = 
-  | 'draft'
-  | 'submitted'
-  | 'under_review'
-  | 'verification_pending'
-  | 'conditionally_approved'
-  | 'approved'
-  | 'approved_with_conditions'
-  | 'rejected'
-  | 'withdrawn';
+export type ApplicationStatus =
+  | "draft"
+  | "submitted"
+  | "under_review"
+  | "verification_pending"
+  | "conditionally_approved"
+  | "approved"
+  | "approved_with_conditions"
+  | "rejected"
+  | "withdrawn";
 
 // Income Sources
-export type IncomeSource = 
-  | 'employment'
-  | 'self_employment'
-  | 'investment'
-  | 'social_security'
-  | 'disability'
-  | 'retirement'
-  | 'alimony'
-  | 'other';
+export type IncomeSource =
+  | "employment"
+  | "self_employment"
+  | "investment"
+  | "social_security"
+  | "disability"
+  | "retirement"
+  | "alimony"
+  | "other";
 
 // Verification Status
-export type VerificationStatus = 
-  | 'not_started'
-  | 'pending'
-  | 'in_progress'
-  | 'verified'
-  | 'failed'
-  | 'manual_review';
+export type VerificationStatus =
+  | "not_started"
+  | "pending"
+  | "in_progress"
+  | "verified"
+  | "failed"
+  | "manual_review";
 
 export interface Address {
   street: string;
@@ -52,7 +52,7 @@ export interface PersonalInfo {
   ssn: string; // Encrypted on backend
   currentAddress: Address;
   previousAddresses: Address[];
-  idType: 'drivers_license' | 'passport' | 'state_id';
+  idType: "drivers_license" | "passport" | "state_id";
   idNumber: string;
   idExpiration: string;
 }
@@ -60,7 +60,7 @@ export interface PersonalInfo {
 export interface EmploymentInfo {
   employerName: string;
   jobTitle: string;
-  employmentType: 'full_time' | 'part_time' | 'contract' | 'self_employed';
+  employmentType: "full_time" | "part_time" | "contract" | "self_employed";
   startDate: string;
   endDate?: string;
   isCurrent: boolean;
@@ -74,7 +74,7 @@ export interface EmploymentInfo {
 export interface IncomeInfo {
   source: IncomeSource;
   amount: number;
-  frequency: 'hourly' | 'weekly' | 'biweekly' | 'monthly' | 'annually';
+  frequency: "hourly" | "weekly" | "biweekly" | "monthly" | "annually";
   verificationStatus: VerificationStatus;
   documents: string[]; // Document IDs
 }
@@ -94,7 +94,7 @@ export interface RentalHistoryEntry {
 
 export interface Reference {
   name: string;
-  relationship: 'employer' | 'personal' | 'professional' | 'previous_landlord';
+  relationship: "employer" | "personal" | "professional" | "previous_landlord";
   phone: string;
   email?: string;
   yearsKnown: number;
@@ -104,7 +104,7 @@ export interface Reference {
 }
 
 export interface PetInfo {
-  type: 'dog' | 'cat' | 'other';
+  type: "dog" | "cat" | "other";
   breed?: string;
   weight: number;
   age: number;
@@ -132,7 +132,7 @@ export interface EmergencyContact {
 
 export interface CreditCheckResult {
   id: string;
-  provider: 'experian' | 'equifax' | 'transunion';
+  provider: "experian" | "equifax" | "transunion";
   score: number;
   reportUrl: string;
   pulledAt: string;
@@ -141,7 +141,7 @@ export interface CreditCheckResult {
 }
 
 export interface CriminalRecord {
-  type: 'misdemeanor' | 'felony';
+  type: "misdemeanor" | "felony";
   description: string;
   date: string;
   jurisdiction: string;
@@ -152,12 +152,12 @@ export interface EvictionRecord {
   filedDate: string;
   court: string;
   amount?: number;
-  status: 'filed' | 'dismissed' | 'judgment';
+  status: "filed" | "dismissed" | "judgment";
 }
 
 export interface BackgroundCheckResult {
   id: string;
-  provider: 'checkr' | 'backgroundchecks.com';
+  provider: "checkr" | "backgroundchecks.com";
   status: VerificationStatus;
   completedAt?: string;
   criminalRecords: CriminalRecord[];
@@ -202,8 +202,8 @@ export interface ScoreBreakdown {
 export interface CoApplicant {
   id: string;
   email: string;
-  status: 'invited' | 'in_progress' | 'completed';
-  relationship: 'spouse' | 'partner' | 'roommate' | 'family' | 'other';
+  status: "invited" | "in_progress" | "completed";
+  relationship: "spouse" | "partner" | "roommate" | "family" | "other";
   personalInfo?: PersonalInfo;
   employment?: EmploymentInfo[];
   income?: IncomeInfo[];
@@ -213,7 +213,13 @@ export interface CoApplicant {
 
 export interface ApplicationDocument {
   id: string;
-  type: 'id' | 'paystub' | 'bank_statement' | 'tax_return' | 'employment_letter' | 'other';
+  type:
+    | "id"
+    | "paystub"
+    | "bank_statement"
+    | "tax_return"
+    | "employment_letter"
+    | "other";
   filename: string;
   url: string;
   uploadedAt: string;
@@ -243,38 +249,38 @@ export interface Application {
   id: string;
   propertyId: string;
   property?: Property;
-  
+
   // Applicants
   primaryApplicantId: string;
   coApplicants: CoApplicant[];
-  
+
   // Status
   status: ApplicationStatus;
   score: number; // 0-100
   scoreBreakdown: ScoreBreakdown;
-  
+
   // Personal Information
   personalInfo: PersonalInfo;
-  
+
   // Employment & Income
   employment: EmploymentInfo[];
   income: IncomeInfo[];
-  
+
   // Rental History
   rentalHistory: RentalHistoryEntry[];
-  
+
   // References
   references: Reference[];
-  
+
   // Verification
   identityVerification: VerificationRecord;
   incomeVerification: VerificationRecord;
   creditCheck: CreditCheckResult;
   backgroundCheck: BackgroundCheckResult;
-  
+
   // Documents
   documents: ApplicationDocument[];
-  
+
   // Preferences & Notes
   moveInDate: string;
   leaseTerm: number; // months
@@ -282,14 +288,14 @@ export interface Application {
   vehicles: VehicleInfo[];
   emergencyContact: EmergencyContact;
   applicantNotes: string;
-  
+
   // Landlord Review
   landlordNotes: string;
   rejectionReason?: string;
   conditions?: string[]; // For conditional approval
   reviewedBy?: string;
   reviewedAt?: string;
-  
+
   // Metadata
   submittedAt?: string;
   lastModified: string;

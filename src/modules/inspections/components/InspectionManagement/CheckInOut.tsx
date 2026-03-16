@@ -1,10 +1,11 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionManagement/CheckInOut.tsx
 // TODO: Add your implementation here
 
-import React, { useState } from 'react';
-import { MapPin, Camera, CheckCircle, Star } from 'lucide-react';
-import { Inspection, CheckOutDto } from '../../types/inspection.types';
-import { useInspections } from '../../hooks/useInspections';
+import { MapPin, Camera, CheckCircle, Star } from "lucide-react";
+import React, { useState } from "react";
+
+import { useInspections } from "../../hooks/useInspections";
+import { Inspection, CheckOutDto } from "../../types/inspection.types";
 
 interface CheckInOutProps {
   inspection: Inspection;
@@ -18,44 +19,46 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
 
   // Feedback form state
   const [rating, setRating] = useState<1 | 2 | 3 | 4 | 5>(5);
-  const [comment, setComment] = useState('');
+  const [comment, setComment] = useState("");
   const [likedFeatures, setLikedFeatures] = useState<string[]>([]);
   const [concerns, setConcerns] = useState<string[]>([]);
   const [interestedInApplying, setInterestedInApplying] = useState(true);
 
   const featureOptions = [
-    'Kitchen',
-    'Bathroom',
-    'Living Space',
-    'Bedrooms',
-    'Storage',
-    'Natural Light',
-    'Location',
-    'Building Amenities',
-    'Outdoor Space',
-    'Parking',
+    "Kitchen",
+    "Bathroom",
+    "Living Space",
+    "Bedrooms",
+    "Storage",
+    "Natural Light",
+    "Location",
+    "Building Amenities",
+    "Outdoor Space",
+    "Parking",
   ];
 
   const handleCheckIn = async () => {
-    if ('geolocation' in navigator) {
+    if ("geolocation" in navigator) {
       setIsCheckingIn(true);
       try {
-        const position = await new Promise<GeolocationPosition>((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(resolve, reject);
-        });
+        const position = await new Promise<GeolocationPosition>(
+          (resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          },
+        );
 
         await checkIn(inspection.id, {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude
-          });
+          lat: position.coords.latitude,
+          lng: position.coords.longitude,
+        });
       } catch (error) {
-        console.error('Failed to check in:', error);
-        alert('Failed to check in. Please enable location services.');
+        console.error("Failed to check in:", error);
+        alert("Failed to check in. Please enable location services.");
       } finally {
         setIsCheckingIn(false);
       }
     } else {
-      alert('Geolocation is not supported by your browser');
+      alert("Geolocation is not supported by your browser");
     }
   };
 
@@ -77,14 +80,18 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
       await checkOut(inspection.id, feedbackData);
       setShowFeedbackForm(false);
     } catch (error) {
-      console.error('Failed to check out:', error);
-      alert('Failed to submit feedback. Please try again.');
+      console.error("Failed to check out:", error);
+      alert("Failed to submit feedback. Please try again.");
     } finally {
       setIsCheckingOut(false);
     }
   };
 
-  const toggleFeature = (feature: string, list: string[], setList: (list: string[]) => void) => {
+  const toggleFeature = (
+    feature: string,
+    list: string[],
+    setList: (list: string[]) => void,
+  ) => {
     if (list.includes(feature)) {
       setList(list.filter((f) => f !== feature));
     } else {
@@ -93,7 +100,7 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
   };
 
   // Already checked in
-  if (inspection.status === 'checked_in') {
+  if (inspection.status === "checked_in") {
     return (
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div className="flex items-center gap-3 mb-4">
@@ -103,9 +110,9 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
           <div>
             <h3 className="font-semibold text-gray-900">Checked In</h3>
             <p className="text-sm text-gray-600">
-              {new Date(inspection.checkedInAt!).toLocaleTimeString('en-US', {
-                hour: 'numeric',
-                minute: '2-digit',
+              {new Date(inspection.checkedInAt!).toLocaleTimeString("en-US", {
+                hour: "numeric",
+                minute: "2-digit",
                 hour12: true,
               })}
             </p>
@@ -143,8 +150,8 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
                       <Star
                         className={`w-10 h-10 ${
                           star <= rating
-                            ? 'fill-yellow-400 text-yellow-400'
-                            : 'text-gray-300'
+                            ? "fill-yellow-400 text-yellow-400"
+                            : "text-gray-300"
                         }`}
                       />
                     </button>
@@ -162,11 +169,13 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
                     <button
                       key={feature}
                       type="button"
-                      onClick={() => toggleFeature(feature, likedFeatures, setLikedFeatures)}
+                      onClick={() =>
+                        toggleFeature(feature, likedFeatures, setLikedFeatures)
+                      }
                       className={`px-4 py-2 rounded-lg border-2 text-sm transition-colors ${
                         likedFeatures.includes(feature)
-                          ? 'border-green-500 bg-green-50 text-green-700'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? "border-green-500 bg-green-50 text-green-700"
+                          : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
                       {feature}
@@ -185,11 +194,13 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
                     <button
                       key={feature}
                       type="button"
-                      onClick={() => toggleFeature(feature, concerns, setConcerns)}
+                      onClick={() =>
+                        toggleFeature(feature, concerns, setConcerns)
+                      }
                       className={`px-4 py-2 rounded-lg border-2 text-sm transition-colors ${
                         concerns.includes(feature)
-                          ? 'border-red-500 bg-red-50 text-red-700'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? "border-red-500 bg-red-50 text-red-700"
+                          : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
                       {feature}
@@ -211,7 +222,9 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
                   maxLength={500}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
                 />
-                <p className="text-xs text-gray-500 mt-1">{comment.length}/500</p>
+                <p className="text-xs text-gray-500 mt-1">
+                  {comment.length}/500
+                </p>
               </div>
 
               {/* Interest in Applying */}
@@ -224,7 +237,7 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
                     className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
                   />
                   <span className="text-sm font-medium text-gray-900">
-                    I'm interested in applying for this property
+                    I&apos;m interested in applying for this property
                   </span>
                 </label>
               </div>
@@ -244,7 +257,7 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
                   disabled={isCheckingOut}
                   className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  {isCheckingOut ? 'Submitting...' : 'Submit & Check Out'}
+                  {isCheckingOut ? "Submitting..." : "Submit & Check Out"}
                 </button>
               </div>
             </div>
@@ -258,15 +271,15 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
   return (
     <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
       <h3 className="font-semibold text-gray-900 mb-4">Inspection Check-In</h3>
-      
+
       <div className="mb-6 p-4 bg-blue-50 rounded-lg">
         <div className="flex gap-3">
           <MapPin className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
           <div className="text-sm text-blue-900">
             <p className="font-medium mb-1">Ready to check in?</p>
             <p>
-              When you arrive at the property, tap the button below to check in. We'll
-              verify your location to confirm you're at the right place.
+              When you arrive at the property, tap the button below to check in.
+              We&apos;ll verify your location to confirm you&apos;re at the right place.
             </p>
           </div>
         </div>
@@ -291,11 +304,8 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
       </button>
 
       <div className="mt-4 text-xs text-gray-500 text-center">
-        Check-in will use your location to confirm you're at the property
+        Check-in will use your location to confirm you&apos;re at the property
       </div>
     </div>
   );
 };
-
-
-

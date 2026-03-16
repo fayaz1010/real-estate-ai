@@ -1,120 +1,135 @@
 ﻿// PLACEHOLDER FILE: components\ApplicationReview\CompareApplications.tsx
 // TODO: Add your implementation here
 
-import React, { useState } from 'react';
-import { X, TrendingUp, AlertCircle } from 'lucide-react';
-import { Application } from '../../types/application.types';
-import { calculateMonthlyIncome } from '../../utils/scoringAlgorithm';
+import { X, TrendingUp, AlertCircle } from "lucide-react";
+import React, { useState } from "react";
+
+import { Application } from "../../types/application.types";
+import { calculateMonthlyIncome } from "../../utils/scoringAlgorithm";
 
 interface CompareApplicationsProps {
   applications: Application[];
   onClose: () => void;
 }
 
-const CompareApplications: React.FC<CompareApplicationsProps> = ({ applications, onClose }) => {
+const CompareApplications: React.FC<CompareApplicationsProps> = ({
+  applications,
+  onClose,
+}) => {
   if (applications.length < 2) {
     return (
       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
         <AlertCircle className="w-6 h-6 text-yellow-600 mb-2" />
-        <p className="text-yellow-800">Select at least 2 applications to compare</p>
+        <p className="text-yellow-800">
+          Select at least 2 applications to compare
+        </p>
       </div>
     );
   }
 
   const comparisonRows = [
     {
-      label: 'Overall Score',
+      label: "Overall Score",
       getValue: (app: Application) => app.score,
       format: (val: number) => `${val}/100`,
-      highlight: 'max',
+      highlight: "max",
     },
     {
-      label: 'Credit Score',
+      label: "Credit Score",
       getValue: (app: Application) => app.creditCheck.score,
       format: (val: number) => val.toString(),
-      highlight: 'max',
+      highlight: "max",
     },
     {
-      label: 'Monthly Income',
+      label: "Monthly Income",
       getValue: (app: Application) => calculateMonthlyIncome(app.income),
       format: (val: number) => `$${val.toLocaleString()}`,
-      highlight: 'max',
+      highlight: "max",
     },
     {
-      label: 'Income-to-Rent Ratio',
+      label: "Income-to-Rent Ratio",
       getValue: (app: Application) => {
         const income = calculateMonthlyIncome(app.income);
         return app.property ? income / app.property.price : 0;
       },
       format: (val: number) => `${val.toFixed(2)}x`,
-      highlight: 'max',
+      highlight: "max",
     },
     {
-      label: 'Employment Years',
+      label: "Employment Years",
       getValue: (app: Application) => {
-        const currentJob = app.employment.find(e => e.isCurrent);
+        const currentJob = app.employment.find((e) => e.isCurrent);
         if (!currentJob) return 0;
-        const years = (new Date().getTime() - new Date(currentJob.startDate).getTime()) / (1000 * 60 * 60 * 24 * 365);
+        const years =
+          (new Date().getTime() - new Date(currentJob.startDate).getTime()) /
+          (1000 * 60 * 60 * 24 * 365);
         return years;
       },
       format: (val: number) => `${val.toFixed(1)} years`,
-      highlight: 'max',
+      highlight: "max",
     },
     {
-      label: 'Rental History',
+      label: "Rental History",
       getValue: (app: Application) => app.rentalHistory.length,
       format: (val: number) => `${val} properties`,
-      highlight: 'max',
+      highlight: "max",
     },
     {
-      label: 'References',
+      label: "References",
       getValue: (app: Application) => app.references.length,
       format: (val: number) => `${val} references`,
-      highlight: 'none',
+      highlight: "none",
     },
     {
-      label: 'Documents Uploaded',
+      label: "Documents Uploaded",
       getValue: (app: Application) => app.documents.length,
       format: (val: number) => `${val} documents`,
-      highlight: 'max',
+      highlight: "max",
     },
     {
-      label: 'Criminal Records',
-      getValue: (app: Application) => app.backgroundCheck.criminalRecords?.length || 0,
-      format: (val: number) => val === 0 ? 'Clean' : `${val} record(s)`,
-      highlight: 'min',
+      label: "Criminal Records",
+      getValue: (app: Application) =>
+        app.backgroundCheck.criminalRecords?.length || 0,
+      format: (val: number) => (val === 0 ? "Clean" : `${val} record(s)`),
+      highlight: "min",
     },
     {
-      label: 'Eviction Records',
-      getValue: (app: Application) => app.backgroundCheck.evictionRecords?.length || 0,
-      format: (val: number) => val === 0 ? 'None' : `${val} eviction(s)`,
-      highlight: 'min',
+      label: "Eviction Records",
+      getValue: (app: Application) =>
+        app.backgroundCheck.evictionRecords?.length || 0,
+      format: (val: number) => (val === 0 ? "None" : `${val} eviction(s)`),
+      highlight: "min",
     },
     {
-      label: 'Application Date',
-      getValue: (app: Application) => new Date(app.submittedAt || app.createdAt).getTime(),
+      label: "Application Date",
+      getValue: (app: Application) =>
+        new Date(app.submittedAt || app.createdAt).getTime(),
       format: (val: number) => new Date(val).toLocaleDateString(),
-      highlight: 'none',
+      highlight: "none",
     },
   ];
 
-  const getHighlightClass = (row: typeof comparisonRows[0], value: number, allValues: number[]) => {
-    if (row.highlight === 'none') return '';
-    
+  const getHighlightClass = (
+    row: (typeof comparisonRows)[0],
+    value: number,
+    allValues: number[],
+  ) => {
+    if (row.highlight === "none") return "";
+
     const max = Math.max(...allValues);
     const min = Math.min(...allValues);
-    
-    if (row.highlight === 'max' && value === max) {
-      return 'bg-green-100 font-semibold text-green-900';
+
+    if (row.highlight === "max" && value === max) {
+      return "bg-green-100 font-semibold text-green-900";
     }
-    if (row.highlight === 'min' && value === min && value === 0) {
-      return 'bg-green-100 font-semibold text-green-900';
+    if (row.highlight === "min" && value === min && value === 0) {
+      return "bg-green-100 font-semibold text-green-900";
     }
-    if (row.highlight === 'min' && value === max && value > 0) {
-      return 'bg-red-100 font-semibold text-red-900';
+    if (row.highlight === "min" && value === max && value > 0) {
+      return "bg-red-100 font-semibold text-red-900";
     }
-    
-    return '';
+
+    return "";
   };
 
   return (
@@ -123,7 +138,9 @@ const CompareApplications: React.FC<CompareApplicationsProps> = ({ applications,
         {/* Header */}
         <div className="p-6 border-b border-gray-200 flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">Compare Applications</h2>
+            <h2 className="text-2xl font-bold text-gray-900">
+              Compare Applications
+            </h2>
             <p className="text-sm text-gray-600 mt-1">
               Side-by-side comparison of {applications.length} applicants
             </p>
@@ -150,12 +167,17 @@ const CompareApplications: React.FC<CompareApplicationsProps> = ({ applications,
                       <div className="font-semibold text-gray-900">
                         {app.personalInfo.firstName} {app.personalInfo.lastName}
                       </div>
-                      <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
-                        app.score >= 90 ? 'bg-green-100 text-green-800' :
-                        app.score >= 75 ? 'bg-blue-100 text-blue-800' :
-                        app.score >= 60 ? 'bg-yellow-100 text-yellow-800' :
-                        'bg-red-100 text-red-800'
-                      }`}>
+                      <div
+                        className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                          app.score >= 90
+                            ? "bg-green-100 text-green-800"
+                            : app.score >= 75
+                              ? "bg-blue-100 text-blue-800"
+                              : app.score >= 60
+                                ? "bg-yellow-100 text-yellow-800"
+                                : "bg-red-100 text-red-800"
+                        }`}
+                      >
                         <TrendingUp className="w-4 h-4 mr-1" />
                         Score: {app.score}
                       </div>
@@ -166,20 +188,24 @@ const CompareApplications: React.FC<CompareApplicationsProps> = ({ applications,
             </thead>
             <tbody>
               {comparisonRows.map((row, rowIndex) => {
-                const values = applications.map(app => row.getValue(app));
-                
+                const values = applications.map((app) => row.getValue(app));
+
                 return (
                   <tr
                     key={rowIndex}
-                    className={`border-b border-gray-200 ${rowIndex % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}
+                    className={`border-b border-gray-200 ${rowIndex % 2 === 0 ? "bg-gray-50" : "bg-white"}`}
                   >
                     <td className="p-4 font-medium text-gray-700 sticky left-0 bg-inherit z-10">
                       {row.label}
                     </td>
                     {applications.map((app, appIndex) => {
                       const value = values[appIndex];
-                      const highlightClass = getHighlightClass(row, value, values);
-                      
+                      const highlightClass = getHighlightClass(
+                        row,
+                        value,
+                        values,
+                      );
+
                       return (
                         <td
                           key={app.id}

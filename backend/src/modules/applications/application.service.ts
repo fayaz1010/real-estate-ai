@@ -1,6 +1,6 @@
 // Application Service
-import prisma from '../../config/database';
-import { AppError } from '../../middleware/errorHandler';
+import prisma from "../../config/database";
+import { AppError } from "../../middleware/errorHandler";
 
 export class ApplicationService {
   async create(userId: string, propertyId: string) {
@@ -9,14 +9,14 @@ export class ApplicationService {
     });
 
     if (!property) {
-      throw new AppError('Property not found', 404, 'PROPERTY_NOT_FOUND');
+      throw new AppError("Property not found", 404, "PROPERTY_NOT_FOUND");
     }
 
     const application = await prisma.application.create({
       data: {
         propertyId,
         primaryApplicantId: userId,
-        status: 'DRAFT',
+        status: "DRAFT",
         personalInfo: {},
         employment: [],
         income: [],
@@ -59,23 +59,23 @@ export class ApplicationService {
     });
 
     if (!application) {
-      throw new AppError('Application not found', 404, 'APPLICATION_NOT_FOUND');
+      throw new AppError("Application not found", 404, "APPLICATION_NOT_FOUND");
     }
 
     return application;
   }
 
-  async update(id: string, userId: string, data: any) {
+  async update(id: string, userId: string, data: Record<string, unknown>) {
     const application = await prisma.application.findUnique({
       where: { id },
     });
 
     if (!application) {
-      throw new AppError('Application not found', 404, 'APPLICATION_NOT_FOUND');
+      throw new AppError("Application not found", 404, "APPLICATION_NOT_FOUND");
     }
 
     if (application.primaryApplicantId !== userId) {
-      throw new AppError('Not authorized', 403, 'FORBIDDEN');
+      throw new AppError("Not authorized", 403, "FORBIDDEN");
     }
 
     const updated = await prisma.application.update({
@@ -95,21 +95,25 @@ export class ApplicationService {
     });
 
     if (!application) {
-      throw new AppError('Application not found', 404, 'APPLICATION_NOT_FOUND');
+      throw new AppError("Application not found", 404, "APPLICATION_NOT_FOUND");
     }
 
     if (application.primaryApplicantId !== userId) {
-      throw new AppError('Not authorized', 403, 'FORBIDDEN');
+      throw new AppError("Not authorized", 403, "FORBIDDEN");
     }
 
-    if (application.status !== 'DRAFT') {
-      throw new AppError('Application already submitted', 400, 'ALREADY_SUBMITTED');
+    if (application.status !== "DRAFT") {
+      throw new AppError(
+        "Application already submitted",
+        400,
+        "ALREADY_SUBMITTED",
+      );
     }
 
     const updated = await prisma.application.update({
       where: { id },
       data: {
-        status: 'SUBMITTED',
+        status: "SUBMITTED",
         submittedAt: new Date(),
       },
     });
@@ -132,7 +136,7 @@ export class ApplicationService {
         },
         skip: (page - 1) * limit,
         take: limit,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
       }),
       prisma.application.count({ where: { primaryApplicantId: userId } }),
     ]);
@@ -155,17 +159,20 @@ export class ApplicationService {
     });
 
     if (!application) {
-      throw new AppError('Application not found', 404, 'APPLICATION_NOT_FOUND');
+      throw new AppError("Application not found", 404, "APPLICATION_NOT_FOUND");
     }
 
     if (application.property.ownerId !== landlordId) {
-      throw new AppError('Not authorized', 403, 'FORBIDDEN');
+      throw new AppError("Not authorized", 403, "FORBIDDEN");
     }
 
     const updated = await prisma.application.update({
       where: { id },
       data: {
-        status: conditions && conditions.length > 0 ? 'APPROVED_WITH_CONDITIONS' : 'APPROVED',
+        status:
+          conditions && conditions.length > 0
+            ? "APPROVED_WITH_CONDITIONS"
+            : "APPROVED",
         conditions: conditions || [],
         reviewedBy: landlordId,
         reviewedAt: new Date(),
@@ -182,17 +189,17 @@ export class ApplicationService {
     });
 
     if (!application) {
-      throw new AppError('Application not found', 404, 'APPLICATION_NOT_FOUND');
+      throw new AppError("Application not found", 404, "APPLICATION_NOT_FOUND");
     }
 
     if (application.property.ownerId !== landlordId) {
-      throw new AppError('Not authorized', 403, 'FORBIDDEN');
+      throw new AppError("Not authorized", 403, "FORBIDDEN");
     }
 
     const updated = await prisma.application.update({
       where: { id },
       data: {
-        status: 'REJECTED',
+        status: "REJECTED",
         rejectionReason: reason,
         reviewedBy: landlordId,
         reviewedAt: new Date(),

@@ -1,3 +1,3 @@
-﻿export * from './ApplicationStatus';
-export * from './DocumentViewer';
-export * from './ScoreIndicator';
+﻿export * from "./ApplicationStatus";
+export * from "./DocumentViewer";
+export * from "./ScoreIndicator";

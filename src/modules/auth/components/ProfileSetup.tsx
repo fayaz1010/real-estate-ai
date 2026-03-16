@@ -1,37 +1,57 @@
 // FILE PATH: src/modules/auth/components/ProfileSetup.tsx
 
-import React, { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { useProfile } from '../hooks/useProfile';
-import { UserRole } from '../types/auth.types';
-import { User as UserIcon, Upload, Camera, Home, Briefcase, AlertCircle, CheckCircle } from 'lucide-react';
+import {
+  User as UserIcon,
+  Upload,
+  Camera,
+  Home,
+  Briefcase,
+  AlertCircle,
+  CheckCircle,
+} from "lucide-react";
+import React, { useState } from "react";
+
+import { useAuth } from "../hooks/useAuth";
+import { useProfile } from "../hooks/useProfile";
+import { UserRole } from "../types/auth.types";
 
 interface ProfileSetupProps {
   onComplete?: () => void;
 }
 export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
   const { user } = useAuth();
-  const { updateProfile, uploadAvatar, updateLandlordProfile, updateTenantProfile, updateAgentProfile, isUpdating, error, success } = useProfile();
-  
-  const [avatarPreview, setAvatarPreview] = useState<string | null>(user?.avatar || null);
+  const {
+    updateProfile,
+    uploadAvatar,
+    updateLandlordProfile,
+    updateTenantProfile,
+    updateAgentProfile,
+    isUpdating,
+    error,
+    success,
+  } = useProfile();
+
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(
+    user?.avatar || null,
+  );
   const [landlordData, setLandlordData] = useState({
-    businessName: '',
-    businessRegistration: '',
-    taxId: ''
+    businessName: "",
+    businessRegistration: "",
+    taxId: "",
   });
   const [tenantData, setTenantData] = useState({
-    employmentStatus: '',
-    annualIncome: '',
-    moveInDate: '',
+    employmentStatus: "",
+    annualIncome: "",
+    moveInDate: "",
     pets: false,
-    numberOfOccupants: 1
+    numberOfOccupants: 1,
   });
   const [agentData, setAgentData] = useState({
-    licenseNumber: '',
-    licenseState: '',
-    brokerageName: '',
+    licenseNumber: "",
+    licenseState: "",
+    brokerageName: "",
     yearsOfExperience: 0,
-    specializations: [] as string[]
+    specializations: [] as string[],
   });
 
   const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +69,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
     try {
       await uploadAvatar(file);
     } catch (error) {
-      console.error('Failed to upload avatar:', error);
+      console.error("Failed to upload avatar:", error);
     }
   };
 
@@ -58,10 +78,15 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
       // Update role-specific profile based on user role
       if (user?.role === UserRole.LANDLORD && landlordData.businessName) {
         await updateLandlordProfile(landlordData);
-      } else if (user?.role === UserRole.TENANT && tenantData.employmentStatus) {
+      } else if (
+        user?.role === UserRole.TENANT &&
+        tenantData.employmentStatus
+      ) {
         await updateTenantProfile({
           ...tenantData,
-          annualIncome: tenantData.annualIncome ? parseFloat(tenantData.annualIncome) : undefined
+          annualIncome: tenantData.annualIncome
+            ? parseFloat(tenantData.annualIncome)
+            : undefined,
         });
       } else if (user?.role === UserRole.AGENT && agentData.licenseNumber) {
         await updateAgentProfile(agentData);
@@ -69,10 +94,10 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
 
       // Update profile completion
       await updateProfile({ profileCompletionPercentage: 100 });
-      
+
       onComplete?.();
     } catch (err) {
-      console.error('Failed to complete profile:', err);
+      console.error("Failed to complete profile:", err);
     }
   };
 
@@ -81,31 +106,83 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
   };
 
   const stateOptions = [
-    'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
-    'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
-    'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
-    'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
-    'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
+    "AL",
+    "AK",
+    "AZ",
+    "AR",
+    "CA",
+    "CO",
+    "CT",
+    "DE",
+    "FL",
+    "GA",
+    "HI",
+    "ID",
+    "IL",
+    "IN",
+    "IA",
+    "KS",
+    "KY",
+    "LA",
+    "ME",
+    "MD",
+    "MA",
+    "MI",
+    "MN",
+    "MS",
+    "MO",
+    "MT",
+    "NE",
+    "NV",
+    "NH",
+    "NJ",
+    "NM",
+    "NY",
+    "NC",
+    "ND",
+    "OH",
+    "OK",
+    "OR",
+    "PA",
+    "RI",
+    "SC",
+    "SD",
+    "TN",
+    "TX",
+    "UT",
+    "VT",
+    "VA",
+    "WA",
+    "WV",
+    "WI",
+    "WY",
   ];
 
   const specializationOptions = [
-    'Residential', 'Commercial', 'Luxury', 'First-time buyers',
-    'Investment properties', 'Rentals', 'New construction'
+    "Residential",
+    "Commercial",
+    "Luxury",
+    "First-time buyers",
+    "Investment properties",
+    "Rentals",
+    "New construction",
   ];
 
   const toggleSpecialization = (spec: string) => {
-    setAgentData(prev => ({
+    setAgentData((prev) => ({
       ...prev,
       specializations: prev.specializations.includes(spec)
-        ? prev.specializations.filter(s => s !== spec)
-        : [...prev.specializations, spec]
+        ? prev.specializations.filter((s) => s !== spec)
+        : [...prev.specializations, spec],
     }));
   };
 
   return (
     <div className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8">
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Complete Your Profile</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">
+          Complete Your Profile
+        </h2>
         <p className="text-gray-600">
           Add more details to help others connect with you
         </p>
@@ -131,7 +208,11 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
           <div className="relative">
             <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
               {avatarPreview ? (
-                <img src={avatarPreview} alt="Avatar" className="w-full h-full object-cover" />
+                <img
+                  src={avatarPreview}
+                  alt="Avatar"
+                  className="w-full h-full object-cover"
+                />
               ) : (
                 <UserIcon size={40} className="text-gray-400" />
               )}
@@ -148,8 +229,12 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
           </div>
           <div>
             <h3 className="font-medium text-gray-900">Profile Photo</h3>
-            <p className="text-sm text-gray-600 mt-1">Upload a photo to personalize your account</p>
-            <p className="text-xs text-gray-500 mt-1">JPG, PNG or GIF. Max size 5MB</p>
+            <p className="text-sm text-gray-600 mt-1">
+              Upload a photo to personalize your account
+            </p>
+            <p className="text-xs text-gray-500 mt-1">
+              JPG, PNG or GIF. Max size 5MB
+            </p>
           </div>
         </div>
 
@@ -160,7 +245,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
               <Home className="text-blue-600" size={24} />
               <h3 className="text-lg font-semibold">Landlord Information</h3>
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Business Name (Optional)
@@ -168,7 +253,12 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
               <input
                 type="text"
                 value={landlordData.businessName}
-                onChange={(e) => setLandlordData({ ...landlordData, businessName: e.target.value })}
+                onChange={(e) =>
+                  setLandlordData({
+                    ...landlordData,
+                    businessName: e.target.value,
+                  })
+                }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="Your Property Management Company"
               />
@@ -181,7 +271,12 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
               <input
                 type="text"
                 value={landlordData.businessRegistration}
-                onChange={(e) => setLandlordData({ ...landlordData, businessRegistration: e.target.value })}
+                onChange={(e) =>
+                  setLandlordData({
+                    ...landlordData,
+                    businessRegistration: e.target.value,
+                  })
+                }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="ABN/ACN/Business Number"
               />
@@ -194,7 +289,9 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
               <input
                 type="text"
                 value={landlordData.taxId}
-                onChange={(e) => setLandlordData({ ...landlordData, taxId: e.target.value })}
+                onChange={(e) =>
+                  setLandlordData({ ...landlordData, taxId: e.target.value })
+                }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="XX-XXXXXXX"
               />
@@ -216,7 +313,12 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
               </label>
               <select
                 value={tenantData.employmentStatus}
-                onChange={(e) => setTenantData({ ...tenantData, employmentStatus: e.target.value })}
+                onChange={(e) =>
+                  setTenantData({
+                    ...tenantData,
+                    employmentStatus: e.target.value,
+                  })
+                }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select status</option>
@@ -235,7 +337,9 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
               <input
                 type="number"
                 value={tenantData.annualIncome}
-                onChange={(e) => setTenantData({ ...tenantData, annualIncome: e.target.value })}
+                onChange={(e) =>
+                  setTenantData({ ...tenantData, annualIncome: e.target.value })
+                }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="75000"
               />
@@ -248,7 +352,9 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
               <input
                 type="date"
                 value={tenantData.moveInDate}
-                onChange={(e) => setTenantData({ ...tenantData, moveInDate: e.target.value })}
+                onChange={(e) =>
+                  setTenantData({ ...tenantData, moveInDate: e.target.value })
+                }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -261,7 +367,12 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
                 type="number"
                 min="1"
                 value={tenantData.numberOfOccupants}
-                onChange={(e) => setTenantData({ ...tenantData, numberOfOccupants: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  setTenantData({
+                    ...tenantData,
+                    numberOfOccupants: parseInt(e.target.value),
+                  })
+                }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -271,7 +382,9 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
                 <input
                   type="checkbox"
                   checked={tenantData.pets}
-                  onChange={(e) => setTenantData({ ...tenantData, pets: e.target.checked })}
+                  onChange={(e) =>
+                    setTenantData({ ...tenantData, pets: e.target.checked })
+                  }
                   className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                 />
                 <span className="ml-2 text-sm text-gray-700">I have pets</span>
@@ -295,7 +408,9 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
               <input
                 type="text"
                 value={agentData.licenseNumber}
-                onChange={(e) => setAgentData({ ...agentData, licenseNumber: e.target.value })}
+                onChange={(e) =>
+                  setAgentData({ ...agentData, licenseNumber: e.target.value })
+                }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="License #"
                 required
@@ -308,13 +423,17 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
               </label>
               <select
                 value={agentData.licenseState}
-                onChange={(e) => setAgentData({ ...agentData, licenseState: e.target.value })}
+                onChange={(e) =>
+                  setAgentData({ ...agentData, licenseState: e.target.value })
+                }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 required
               >
                 <option value="">Select state</option>
-                {stateOptions.map(state => (
-                  <option key={state} value={state}>{state}</option>
+                {stateOptions.map((state) => (
+                  <option key={state} value={state}>
+                    {state}
+                  </option>
                 ))}
               </select>
             </div>
@@ -326,7 +445,9 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
               <input
                 type="text"
                 value={agentData.brokerageName}
-                onChange={(e) => setAgentData({ ...agentData, brokerageName: e.target.value })}
+                onChange={(e) =>
+                  setAgentData({ ...agentData, brokerageName: e.target.value })
+                }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 placeholder="Your Brokerage"
                 required
@@ -341,7 +462,12 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
                 type="number"
                 min="0"
                 value={agentData.yearsOfExperience}
-                onChange={(e) => setAgentData({ ...agentData, yearsOfExperience: parseInt(e.target.value) })}
+                onChange={(e) =>
+                  setAgentData({
+                    ...agentData,
+                    yearsOfExperience: parseInt(e.target.value),
+                  })
+                }
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               />
             </div>
@@ -351,15 +477,15 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
                 Specializations
               </label>
               <div className="flex flex-wrap gap-2">
-                {specializationOptions.map(spec => (
+                {specializationOptions.map((spec) => (
                   <button
                     key={spec}
                     type="button"
                     onClick={() => toggleSpecialization(spec)}
                     className={`px-3 py-1 rounded-full text-sm transition ${
                       agentData.specializations.includes(spec)
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                     }`}
                   >
                     {spec}
@@ -384,7 +510,7 @@ export const ProfileSetup: React.FC<ProfileSetupProps> = ({ onComplete }) => {
             disabled={isUpdating}
             className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition font-medium"
           >
-            {isUpdating ? 'Saving...' : 'Complete Setup'}
+            {isUpdating ? "Saving..." : "Complete Setup"}
           </button>
         </div>
       </div>

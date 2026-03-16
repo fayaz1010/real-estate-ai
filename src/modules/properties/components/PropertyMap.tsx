@@ -1,11 +1,17 @@
 // FILE PATH: src/modules/properties/components/PropertyMap.tsx
 // Google Maps integration for property listings
 
-import React, { useState, useCallback, useMemo } from 'react';
-import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
-import { Property } from '../types/property.types';
-import { mapHelpers } from '../utils/mapHelpers';
-import { Home, MapPin } from 'lucide-react';
+import {
+  GoogleMap,
+  useJsApiLoader,
+  Marker,
+  InfoWindow,
+} from "@react-google-maps/api";
+import { Home, MapPin } from "lucide-react";
+import React, { useState, useCallback, useMemo } from "react";
+
+import { Property } from "../types/property.types";
+import { mapHelpers } from "../utils/mapHelpers";
 
 interface PropertyMapProps {
   properties: Property[];
@@ -14,13 +20,13 @@ interface PropertyMapProps {
 }
 
 const mapContainerStyle = {
-  width: '100%',
-  height: '70vh'
+  width: "100%",
+  height: "70vh",
 };
 
 const defaultCenter = {
   lat: 40.7128,
-  lng: -74.0060
+  lng: -74.006,
 };
 
 const mapOptions = {
@@ -31,14 +37,20 @@ const mapOptions = {
   fullscreenControl: true,
 };
 
-export const PropertyMap: React.FC<PropertyMapProps> = ({ properties, onPropertyClick, className = '' }) => {
+export const PropertyMap: React.FC<PropertyMapProps> = ({
+  properties,
+  onPropertyClick,
+  className = "",
+}) => {
   const { isLoaded, loadError } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '',
-    libraries: ['places', 'geometry']
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
+    libraries: ["places", "geometry"],
   });
 
   const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
+  const [selectedProperty, setSelectedProperty] = useState<Property | null>(
+    null,
+  );
 
   const center = useMemo(() => {
     if (properties.length === 0) return defaultCenter;
@@ -48,21 +60,24 @@ export const PropertyMap: React.FC<PropertyMapProps> = ({ properties, onProperty
     return { lat: centerPoint.lat, lng: centerPoint.lng };
   }, [properties]);
 
-  const onLoad = useCallback((map: google.maps.Map) => {
-    setMap(map);
-    
-    // Fit bounds to show all properties
-    if (properties.length > 0) {
-      const bounds = new google.maps.LatLngBounds();
-      properties.forEach(property => {
-        bounds.extend({
-          lat: property.address.latitude,
-          lng: property.address.longitude
+  const onLoad = useCallback(
+    (map: google.maps.Map) => {
+      setMap(map);
+
+      // Fit bounds to show all properties
+      if (properties.length > 0) {
+        const bounds = new google.maps.LatLngBounds();
+        properties.forEach((property) => {
+          bounds.extend({
+            lat: property.address.latitude,
+            lng: property.address.longitude,
+          });
         });
-      });
-      map.fitBounds(bounds);
-    }
-  }, [properties]);
+        map.fitBounds(bounds);
+      }
+    },
+    [properties],
+  );
 
   const onUnmount = useCallback(() => {
     setMap(null);
@@ -70,7 +85,9 @@ export const PropertyMap: React.FC<PropertyMapProps> = ({ properties, onProperty
 
   if (loadError) {
     return (
-      <div className={`w-full h-[70vh] bg-gray-100 rounded-lg flex items-center justify-center ${className}`}>
+      <div
+        className={`w-full h-[70vh] bg-gray-100 rounded-lg flex items-center justify-center ${className}`}
+      >
         <div className="text-center">
           <MapPin size={48} className="mx-auto text-gray-400 mb-3" />
           <p className="text-gray-600">Error loading maps</p>
@@ -81,7 +98,9 @@ export const PropertyMap: React.FC<PropertyMapProps> = ({ properties, onProperty
 
   if (!isLoaded) {
     return (
-      <div className={`w-full h-[70vh] bg-gray-100 rounded-lg flex items-center justify-center ${className}`}>
+      <div
+        className={`w-full h-[70vh] bg-gray-100 rounded-lg flex items-center justify-center ${className}`}
+      >
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-3"></div>
           <p className="text-gray-600">Loading map...</p>
@@ -105,22 +124,23 @@ export const PropertyMap: React.FC<PropertyMapProps> = ({ properties, onProperty
             key={property.id}
             position={{
               lat: property.address.latitude,
-              lng: property.address.longitude
+              lng: property.address.longitude,
             }}
             onClick={() => setSelectedProperty(property)}
             icon={{
               path: google.maps.SymbolPath.CIRCLE,
               scale: 10,
-              fillColor: property.listingType === 'rent' ? '#3B82F6' : '#10B981',
+              fillColor:
+                property.listingType === "rent" ? "#3B82F6" : "#10B981",
               fillOpacity: 0.9,
-              strokeColor: '#ffffff',
+              strokeColor: "#ffffff",
               strokeWeight: 2,
             }}
             label={{
               text: `$${Math.round(property.pricing.price / 1000)}k`,
-              color: '#ffffff',
-              fontSize: '11px',
-              fontWeight: 'bold',
+              color: "#ffffff",
+              fontSize: "11px",
+              fontWeight: "bold",
             }}
           />
         ))}
@@ -129,7 +149,7 @@ export const PropertyMap: React.FC<PropertyMapProps> = ({ properties, onProperty
           <InfoWindow
             position={{
               lat: selectedProperty.address.latitude,
-              lng: selectedProperty.address.longitude
+              lng: selectedProperty.address.longitude,
             }}
             onCloseClick={() => setSelectedProperty(null)}
           >
@@ -148,7 +168,7 @@ export const PropertyMap: React.FC<PropertyMapProps> = ({ properties, onProperty
                   </h3>
                   <p className="text-blue-600 font-bold text-lg mb-1">
                     ${selectedProperty.pricing.price.toLocaleString()}
-                    {selectedProperty.listingType === 'rent' && '/mo'}
+                    {selectedProperty.listingType === "rent" && "/mo"}
                   </p>
                   <div className="flex items-center gap-2 text-xs text-gray-600">
                     <span>{selectedProperty.details.bedrooms} bed</span>

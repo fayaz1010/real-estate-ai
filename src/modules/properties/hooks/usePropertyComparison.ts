@@ -1,15 +1,16 @@
 // FILE PATH: src/modules/properties/hooks/usePropertyComparison.ts
 // Custom hook for property comparison functionality
 
-import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store';
+import { useCallback } from "react";
+
+import { useAppDispatch, useAppSelector } from "../../../store";
 import {
   addToComparison,
   removeFromComparison,
   clearComparison,
   selectComparison,
   selectAllProperties,
-} from '../store/propertySlice';
+} from "../store/propertySlice";
 
 const MAX_COMPARISON_ITEMS = 4;
 
@@ -19,12 +20,14 @@ export const usePropertyComparison = () => {
   const allProperties = useAppSelector(selectAllProperties);
 
   // Get properties in comparison
-  const comparisonProperties = allProperties.filter(p => comparisonIds.includes(p.id));
+  const comparisonProperties = allProperties.filter((p) =>
+    comparisonIds.includes(p.id),
+  );
 
   // Check if property is in comparison
   const isInComparison = useCallback(
     (propertyId: string) => comparisonIds.includes(propertyId),
-    [comparisonIds]
+    [comparisonIds],
   );
 
   // Check if comparison is full
@@ -33,13 +36,16 @@ export const usePropertyComparison = () => {
   // Add property to comparison
   const addToCompare = useCallback(
     (propertyId: string) => {
-      if (comparisonIds.length < MAX_COMPARISON_ITEMS && !comparisonIds.includes(propertyId)) {
+      if (
+        comparisonIds.length < MAX_COMPARISON_ITEMS &&
+        !comparisonIds.includes(propertyId)
+      ) {
         dispatch(addToComparison(propertyId));
         return true;
       }
       return false;
     },
-    [dispatch, comparisonIds]
+    [dispatch, comparisonIds],
   );
 
   // Remove property from comparison
@@ -47,7 +53,7 @@ export const usePropertyComparison = () => {
     (propertyId: string) => {
       dispatch(removeFromComparison(propertyId));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Toggle property in comparison
@@ -62,7 +68,7 @@ export const usePropertyComparison = () => {
       }
       return false;
     },
-    [dispatch, comparisonIds]
+    [dispatch, comparisonIds],
   );
 
   // Clear all comparisons

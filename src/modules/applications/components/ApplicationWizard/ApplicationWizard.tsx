@@ -1,17 +1,19 @@
 // PLACEHOLDER FILE: components\ApplicationWizard\ApplicationWizard.tsx
 // TODO: Add your implementation here
-import React, { useState } from 'react';
-import { Check, ChevronRight, ChevronLeft, AlertCircle } from 'lucide-react';
-import { useApplicationForm } from '../../hooks/useApplicationForm';
-import { useApplication } from '../../hooks/useApplication';
-import PersonalInfoStep from './PersonalInfoStep';
-import EmploymentStep from './EmploymentStep';
-import IncomeVerificationStep from './IncomeVerificationStep';
-import RentalHistoryStep from './RentalHistoryStep';
-import ReferencesStep from './ReferencesStep';
-import BackgroundConsentStep from './BackgroundConsentStep';
-import DocumentUploadStep from './DocumentUploadStep';
-import ReviewSubmitStep from './ReviewSubmitStep';
+import { Check, ChevronRight, ChevronLeft, AlertCircle } from "lucide-react";
+import React, { useState } from "react";
+
+import { useApplication } from "../../hooks/useApplication";
+import { useApplicationForm } from "../../hooks/useApplicationForm";
+
+import BackgroundConsentStep from "./BackgroundConsentStep";
+import DocumentUploadStep from "./DocumentUploadStep";
+import EmploymentStep from "./EmploymentStep";
+import IncomeVerificationStep from "./IncomeVerificationStep";
+import PersonalInfoStep from "./PersonalInfoStep";
+import ReferencesStep from "./ReferencesStep";
+import RentalHistoryStep from "./RentalHistoryStep";
+import ReviewSubmitStep from "./ReviewSubmitStep";
 
 interface ApplicationWizardProps {
   propertyId: string;
@@ -19,17 +21,20 @@ interface ApplicationWizardProps {
 }
 
 const STEPS = [
-  { id: 0, name: 'Personal Info', icon: 'user' },
-  { id: 1, name: 'Employment', icon: 'briefcase' },
-  { id: 2, name: 'Income', icon: 'dollar-sign' },
-  { id: 3, name: 'Rental History', icon: 'home' },
-  { id: 4, name: 'References', icon: 'users' },
-  { id: 5, name: 'Background Check', icon: 'shield' },
-  { id: 6, name: 'Documents', icon: 'file-text' },
-  { id: 7, name: 'Review & Submit', icon: 'check-circle' },
+  { id: 0, name: "Personal Info", icon: "user" },
+  { id: 1, name: "Employment", icon: "briefcase" },
+  { id: 2, name: "Income", icon: "dollar-sign" },
+  { id: 3, name: "Rental History", icon: "home" },
+  { id: 4, name: "References", icon: "users" },
+  { id: 5, name: "Background Check", icon: "shield" },
+  { id: 6, name: "Documents", icon: "file-text" },
+  { id: 7, name: "Review & Submit", icon: "check-circle" },
 ];
 
-const ApplicationWizard: React.FC<ApplicationWizardProps> = ({ propertyId, onComplete }) => {
+const ApplicationWizard: React.FC<ApplicationWizardProps> = ({
+  propertyId,
+  onComplete,
+}) => {
   const { create, submit, application, submitting } = useApplication();
   const {
     currentStep,
@@ -59,46 +64,49 @@ const ApplicationWizard: React.FC<ApplicationWizardProps> = ({ propertyId, onCom
 
     switch (step) {
       case 0: // Personal Info
-        if (!formData.personalInfo?.firstName) errors.push('First name is required');
-        if (!formData.personalInfo?.lastName) errors.push('Last name is required');
-        if (!formData.personalInfo?.email) errors.push('Email is required');
-        if (!formData.personalInfo?.phone) errors.push('Phone is required');
-        if (!formData.personalInfo?.dateOfBirth) errors.push('Date of birth is required');
-        if (!formData.personalInfo?.ssn) errors.push('SSN is required');
+        if (!formData.personalInfo?.firstName)
+          errors.push("First name is required");
+        if (!formData.personalInfo?.lastName)
+          errors.push("Last name is required");
+        if (!formData.personalInfo?.email) errors.push("Email is required");
+        if (!formData.personalInfo?.phone) errors.push("Phone is required");
+        if (!formData.personalInfo?.dateOfBirth)
+          errors.push("Date of birth is required");
+        if (!formData.personalInfo?.ssn) errors.push("SSN is required");
         break;
 
       case 1: // Employment
         if (!formData.employment || formData.employment.length === 0) {
-          errors.push('At least one employment history is required');
+          errors.push("At least one employment history is required");
         }
         break;
 
       case 2: // Income
         if (!formData.income || formData.income.length === 0) {
-          errors.push('At least one income source is required');
+          errors.push("At least one income source is required");
         }
         break;
 
       case 3: // Rental History
         if (!formData.rentalHistory || formData.rentalHistory.length === 0) {
-          errors.push('At least one rental history entry is required');
+          errors.push("At least one rental history entry is required");
         }
         break;
 
       case 4: // References
         if (!formData.references || formData.references.length < 2) {
-          errors.push('At least 2 references are required');
+          errors.push("At least 2 references are required");
         }
         break;
 
       case 5: // Background Consent
         if (!formData.backgroundConsentGiven) {
-          errors.push('Background check consent is required');
+          errors.push("Background check consent is required");
         }
         break;
     }
 
-    setStepErrors(prev => ({ ...prev, [step]: errors }));
+    setStepErrors((prev) => ({ ...prev, [step]: errors }));
     return errors.length === 0;
   };
 
@@ -129,7 +137,7 @@ const ApplicationWizard: React.FC<ApplicationWizardProps> = ({ propertyId, onCom
         await submit(application.id);
         onComplete?.();
       } catch (error) {
-        console.error('Failed to submit application:', error);
+        console.error("Failed to submit application:", error);
       }
     }
   };
@@ -158,10 +166,10 @@ const ApplicationWizard: React.FC<ApplicationWizardProps> = ({ propertyId, onCom
   };
 
   const getScoreColor = () => {
-    if (realTimeScore >= 90) return 'text-green-600';
-    if (realTimeScore >= 75) return 'text-blue-600';
-    if (realTimeScore >= 60) return 'text-yellow-600';
-    return 'text-red-600';
+    if (realTimeScore >= 90) return "text-green-600";
+    if (realTimeScore >= 75) return "text-blue-600";
+    if (realTimeScore >= 60) return "text-yellow-600";
+    return "text-red-600";
   };
 
   return (
@@ -170,10 +178,14 @@ const ApplicationWizard: React.FC<ApplicationWizardProps> = ({ propertyId, onCom
       <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Rental Application</h1>
-            <p className="text-gray-600 mt-1">Complete all steps to submit your application</p>
+            <h1 className="text-3xl font-bold text-gray-900">
+              Rental Application
+            </h1>
+            <p className="text-gray-600 mt-1">
+              Complete all steps to submit your application
+            </p>
           </div>
-          
+
           {/* Real-time Score Badge */}
           <div className="text-center">
             <div className={`text-4xl font-bold ${getScoreColor()}`}>
@@ -213,19 +225,19 @@ const ApplicationWizard: React.FC<ApplicationWizardProps> = ({ propertyId, onCom
                 onClick={() => goToStep(step.id)}
                 className={`flex flex-col items-center cursor-pointer transition-all ${
                   currentStep === step.id
-                    ? 'scale-110'
+                    ? "scale-110"
                     : currentStep > step.id
-                    ? 'opacity-75'
-                    : 'opacity-50'
+                      ? "opacity-75"
+                      : "opacity-50"
                 }`}
               >
                 <div
                   className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 ${
                     isStepComplete(step.id)
-                      ? 'bg-green-500 text-white'
+                      ? "bg-green-500 text-white"
                       : currentStep === step.id
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-gray-200 text-gray-600'
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200 text-gray-600"
                   }`}
                 >
                   {isStepComplete(step.id) ? (
@@ -234,7 +246,9 @@ const ApplicationWizard: React.FC<ApplicationWizardProps> = ({ propertyId, onCom
                     <span className="text-sm font-semibold">{step.id + 1}</span>
                   )}
                 </div>
-                <span className="text-xs text-center font-medium">{step.name}</span>
+                <span className="text-xs text-center font-medium">
+                  {step.name}
+                </span>
                 <span className="text-xs text-gray-500">
                   {getStepCompletion(step.id)}%
                 </span>
@@ -245,7 +259,11 @@ const ApplicationWizard: React.FC<ApplicationWizardProps> = ({ propertyId, onCom
                     className="h-1 bg-blue-600 transition-all duration-300"
                     style={{
                       width: `${
-                        currentStep > step.id ? 100 : currentStep === step.id ? 50 : 0
+                        currentStep > step.id
+                          ? 100
+                          : currentStep === step.id
+                            ? 50
+                            : 0
                       }%`,
                     }}
                   />

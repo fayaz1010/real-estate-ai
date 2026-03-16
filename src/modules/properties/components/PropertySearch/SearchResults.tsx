@@ -1,30 +1,55 @@
 // FILE PATH: src/modules/properties/components/PropertySearch/SearchResults.tsx
 // Module 1.2: Property Listings Management - Search Results Display
 
-import React, { useState, useEffect } from 'react';
-import { usePropertySearch } from '../../hooks/usePropertySearch';
-import { useProperties } from '../../hooks/useProperties';
-import { PropertyGrid } from '../PropertyGrid';
-import { PropertyList } from '../PropertyList';
-import { SearchFilters } from './SearchFilters';
-import { Property, SortOption } from '../../types/property.types';
-import { Grid, List, Map as MapIcon, Sliders as SlidersHorizontal, ChevronDown, MapPin, Save } from 'lucide-react';
-import { PropertyMap } from '../PropertyMap';
-import { useNavigate } from 'react-router-dom';
+import {
+  Grid,
+  List,
+  Map as MapIcon,
+  Sliders as SlidersHorizontal,
+  ChevronDown,
+  MapPin,
+  Save,
+} from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useProperties } from "../../hooks/useProperties";
+import { usePropertySearch } from "../../hooks/usePropertySearch";
+import { Property, SortOption } from "../../types/property.types";
+import { PropertyGrid } from "../PropertyGrid";
+import { PropertyList } from "../PropertyList";
+import { PropertyMap } from "../PropertyMap";
+
+import { SearchFilters } from "./SearchFilters";
 
 interface SearchResultsProps {
   onPropertyClick?: (property: Property) => void;
+  showFilters?: boolean;
+  onToggleFilters?: (show: boolean) => void;
 }
 
-export const SearchResults: React.FC<SearchResultsProps> = ({ onPropertyClick }) => {
+export const SearchResults: React.FC<SearchResultsProps> = ({
+  onPropertyClick,
+  showFilters: externalShowFilters,
+  onToggleFilters,
+}) => {
   const navigate = useNavigate();
-  const { filters, filteredProperties, updateFilters, performSearch } = usePropertySearch();
+  const { filters, filteredProperties, updateFilters, performSearch } =
+    usePropertySearch();
   const { properties, loading } = useProperties();
-  const [viewMode, setViewMode] = useState<'grid' | 'list' | 'map'>('grid');
-  const [showFilters, setShowFilters] = useState(false);
+  const [viewMode, setViewMode] = useState<"grid" | "list" | "map">("grid");
+  const [internalShowFilters, setInternalShowFilters] = useState(false);
   const [showSortMenu, setShowSortMenu] = useState(false);
 
-  const displayProperties = filteredProperties.length > 0 ? filteredProperties : properties;
+  // Use external state if provided, otherwise fall back to internal state
+  const showFilters =
+    externalShowFilters !== undefined
+      ? externalShowFilters
+      : internalShowFilters;
+  const setShowFilters = onToggleFilters || setInternalShowFilters;
+
+  const displayProperties =
+    filteredProperties.length > 0 ? filteredProperties : properties;
   const totalCount = displayProperties.length;
   const currentPage = 1;
   const totalPages = 1;
@@ -36,15 +61,18 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ onPropertyClick })
   }, []);
 
   const sortOptions: Array<{ value: SortOption; label: string }> = [
-    { value: 'relevant', label: 'Most Relevant' },
-    { value: 'newest', label: 'Newest Listings' },
-    { value: 'price', label: 'Price: Low to High' },
-    { value: 'price', label: 'Price: High to Low' },
-    { value: 'sqft', label: 'Square Feet' },
-    { value: 'bedrooms', label: 'Bedrooms' }
+    { value: "relevant", label: "Most Relevant" },
+    { value: "newest", label: "Newest Listings" },
+    { value: "price", label: "Price: Low to High" },
+    { value: "price", label: "Price: High to Low" },
+    { value: "sqft", label: "Square Feet" },
+    { value: "bedrooms", label: "Bedrooms" },
   ];
 
-  const handleSortChange = (sortBy: SortOption, order: 'asc' | 'desc' = 'desc') => {
+  const handleSortChange = (
+    sortBy: SortOption,
+    order: "asc" | "desc" = "desc",
+  ) => {
     updateFilters({ sortBy, sortOrder: order, page: 1 });
     performSearch();
     setShowSortMenu(false);
@@ -53,7 +81,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ onPropertyClick })
   const handlePageChange = (page: number) => {
     updateFilters({ page });
     performSearch();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handlePropertyClick = (property: Property) => {
@@ -98,31 +126,31 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ onPropertyClick })
                 {showSortMenu && (
                   <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl border border-gray-200 py-2 z-40">
                     <button
-                      onClick={() => handleSortChange('relevant')}
+                      onClick={() => handleSortChange("relevant")}
                       className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
                     >
                       Most Relevant
                     </button>
                     <button
-                      onClick={() => handleSortChange('newest')}
+                      onClick={() => handleSortChange("newest")}
                       className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
                     >
                       Newest Listings
                     </button>
                     <button
-                      onClick={() => handleSortChange('price', 'asc')}
+                      onClick={() => handleSortChange("price", "asc")}
                       className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
                     >
                       Price: Low to High
                     </button>
                     <button
-                      onClick={() => handleSortChange('price', 'desc')}
+                      onClick={() => handleSortChange("price", "desc")}
                       className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
                     >
                       Price: High to Low
                     </button>
                     <button
-                      onClick={() => handleSortChange('sqft', 'desc')}
+                      onClick={() => handleSortChange("sqft", "desc")}
                       className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
                     >
                       Largest First
@@ -134,22 +162,22 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ onPropertyClick })
               {/* View Mode Toggle */}
               <div className="hidden md:flex border border-gray-300 rounded-lg overflow-hidden">
                 <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 ${viewMode === 'grid' ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
+                  onClick={() => setViewMode("grid")}
+                  className={`p-2 ${viewMode === "grid" ? "bg-gray-100" : "hover:bg-gray-50"}`}
                   title="Grid View"
                 >
                   <Grid size={18} />
                 </button>
                 <button
-                  onClick={() => setViewMode('list')}
-                  className={`p-2 border-l ${viewMode === 'list' ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
+                  onClick={() => setViewMode("list")}
+                  className={`p-2 border-l ${viewMode === "list" ? "bg-gray-100" : "hover:bg-gray-50"}`}
                   title="List View"
                 >
                   <List size={18} />
                 </button>
                 <button
-                  onClick={() => setViewMode('map')}
-                  className={`p-2 border-l ${viewMode === 'map' ? 'bg-gray-100' : 'hover:bg-gray-50'}`}
+                  onClick={() => setViewMode("map")}
+                  className={`p-2 border-l ${viewMode === "map" ? "bg-gray-100" : "hover:bg-gray-50"}`}
                   title="Map View"
                 >
                   <MapIcon size={18} />
@@ -167,7 +195,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ onPropertyClick })
 
               {/* Save Search Button */}
               <button
-                onClick={() => alert('Save search functionality')}
+                onClick={() => alert("Save search functionality")}
                 className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition"
                 title="Save Search"
               >
@@ -218,12 +246,12 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ onPropertyClick })
               </div>
             ) : (
               <>
-                {viewMode === 'grid' ? (
+                {viewMode === "grid" ? (
                   <PropertyGrid
                     properties={displayProperties}
                     onPropertyClick={handlePropertyClick}
                   />
-                ) : viewMode === 'list' ? (
+                ) : viewMode === "list" ? (
                   <PropertyList
                     properties={displayProperties}
                     onPropertyClick={handlePropertyClick}
@@ -247,32 +275,35 @@ export const SearchResults: React.FC<SearchResultsProps> = ({ onPropertyClick })
                     </button>
 
                     <div className="flex gap-1">
-                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                        let pageNum;
-                        if (totalPages <= 5) {
-                          pageNum = i + 1;
-                        } else if (currentPage <= 3) {
-                          pageNum = i + 1;
-                        } else if (currentPage >= totalPages - 2) {
-                          pageNum = totalPages - 4 + i;
-                        } else {
-                          pageNum = currentPage - 2 + i;
-                        }
+                      {Array.from(
+                        { length: Math.min(5, totalPages) },
+                        (_, i) => {
+                          let pageNum;
+                          if (totalPages <= 5) {
+                            pageNum = i + 1;
+                          } else if (currentPage <= 3) {
+                            pageNum = i + 1;
+                          } else if (currentPage >= totalPages - 2) {
+                            pageNum = totalPages - 4 + i;
+                          } else {
+                            pageNum = currentPage - 2 + i;
+                          }
 
-                        return (
-                          <button
-                            key={pageNum}
-                            onClick={() => handlePageChange(pageNum)}
-                            className={`px-4 py-2 rounded-lg ${
-                              currentPage === pageNum
-                                ? 'bg-blue-600 text-white'
-                                : 'border border-gray-300 hover:bg-gray-50'
-                            }`}
-                          >
-                            {pageNum}
-                          </button>
-                        );
-                      })}
+                          return (
+                            <button
+                              key={pageNum}
+                              onClick={() => handlePageChange(pageNum)}
+                              className={`px-4 py-2 rounded-lg ${
+                                currentPage === pageNum
+                                  ? "bg-blue-600 text-white"
+                                  : "border border-gray-300 hover:bg-gray-50"
+                              }`}
+                            >
+                              {pageNum}
+                            </button>
+                          );
+                        },
+                      )}
                     </div>
 
                     <button

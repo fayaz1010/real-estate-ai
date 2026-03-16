@@ -1,15 +1,17 @@
 // PLACEHOLDER FILE: src/modules/inspections/hooks/useInspectionBooking.ts
 // TODO: Add your implementation here
 
-import { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useInspections } from './useInspections';
-import { validateInspectionBooking } from '../utils/inspectionValidation';
+import { useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+
 import {
   InspectionBookingRequest,
   InspectionType,
   InspectionAttendee,
-} from '../types/inspection.types';
+} from "../types/inspection.types";
+import { validateInspectionBooking } from "../utils/inspectionValidation";
+
+import { useInspections } from "./useInspections";
 
 interface BookingState {
   currentStep: number;
@@ -17,7 +19,7 @@ interface BookingState {
   type: InspectionType | null;
   preferredDate: string | null;
   preferredTimeSlot: string | null;
-  attendees: Omit<InspectionAttendee, 'id'>[];
+  attendees: Omit<InspectionAttendee, "id">[];
   tenantNotes: string;
   errors: Record<string, string>;
 }
@@ -35,7 +37,7 @@ export const useInspectionBooking = () => {
     preferredDate: null,
     preferredTimeSlot: null,
     attendees: [],
-    tenantNotes: '',
+    tenantNotes: "",
     errors: {},
   });
 
@@ -43,23 +45,26 @@ export const useInspectionBooking = () => {
 
   // Update booking data
   const updateBookingData = useCallback(
-    (updates: Partial<Omit<BookingState, 'currentStep' | 'errors'>>) => {
+    (updates: Partial<Omit<BookingState, "currentStep" | "errors">>) => {
       setBookingState((prev) => ({
         ...prev,
         ...updates,
         errors: {}, // Clear errors on update
       }));
     },
-    []
+    [],
   );
 
   // Add attendee
-  const addAttendee = useCallback((attendee: Omit<InspectionAttendee, 'id'>) => {
-    setBookingState((prev) => ({
-      ...prev,
-      attendees: [...prev.attendees, attendee],
-    }));
-  }, []);
+  const addAttendee = useCallback(
+    (attendee: Omit<InspectionAttendee, "id">) => {
+      setBookingState((prev) => ({
+        ...prev,
+        attendees: [...prev.attendees, attendee],
+      }));
+    },
+    [],
+  );
 
   // Remove attendee
   const removeAttendee = useCallback((index: number) => {
@@ -71,15 +76,15 @@ export const useInspectionBooking = () => {
 
   // Update attendee
   const updateAttendee = useCallback(
-    (index: number, updates: Partial<Omit<InspectionAttendee, 'id'>>) => {
+    (index: number, updates: Partial<Omit<InspectionAttendee, "id">>) => {
       setBookingState((prev) => ({
         ...prev,
         attendees: prev.attendees.map((attendee, i) =>
-          i === index ? { ...attendee, ...updates } : attendee
+          i === index ? { ...attendee, ...updates } : attendee,
         ),
       }));
     },
-    []
+    [],
   );
 
   // Validate current step
@@ -92,25 +97,25 @@ export const useInspectionBooking = () => {
 
       switch (step) {
         case 0: // Property selection
-          stepData = { propertyId: propertyId || '' };
+          stepData = { propertyId: propertyId || "" };
           break;
         case 1: // Inspection type
-          stepData = { propertyId: propertyId || '', type: type || undefined };
+          stepData = { propertyId: propertyId || "", type: type || undefined };
           break;
         case 2: // Date & time
           stepData = {
-            propertyId: propertyId || '',
+            propertyId: propertyId || "",
             type: type || undefined,
-            preferredDate: preferredDate || '',
-            preferredTimeSlot: preferredTimeSlot || '',
+            preferredDate: preferredDate || "",
+            preferredTimeSlot: preferredTimeSlot || "",
           };
           break;
         case 3: // Attendees & notes
           stepData = {
-            propertyId: propertyId || '',
+            propertyId: propertyId || "",
             type: type || undefined,
-            preferredDate: preferredDate || '',
-            preferredTimeSlot: preferredTimeSlot || '',
+            preferredDate: preferredDate || "",
+            preferredTimeSlot: preferredTimeSlot || "",
             attendees,
           };
           break;
@@ -125,7 +130,7 @@ export const useInspectionBooking = () => {
 
       return true;
     },
-    [bookingState]
+    [bookingState],
   );
 
   // Next step
@@ -164,8 +169,14 @@ export const useInspectionBooking = () => {
       }
     }
 
-    const { propertyId, type, preferredDate, preferredTimeSlot, attendees, tenantNotes } =
-      bookingState;
+    const {
+      propertyId,
+      type,
+      preferredDate,
+      preferredTimeSlot,
+      attendees,
+      tenantNotes,
+    } = bookingState;
 
     if (!propertyId || !type || !preferredDate || !preferredTimeSlot) {
       return;
@@ -188,10 +199,10 @@ export const useInspectionBooking = () => {
       // Navigate to confirmation page
       navigate(`/inspections/${inspection.id}/confirmation`);
     } catch (error) {
-      console.error('Failed to submit booking:', error);
+      console.error("Failed to submit booking:", error);
       setBookingState((prev) => ({
         ...prev,
-        errors: { submit: 'Failed to submit booking. Please try again.' },
+        errors: { submit: "Failed to submit booking. Please try again." },
       }));
     } finally {
       setIsSubmitting(false);
@@ -207,7 +218,7 @@ export const useInspectionBooking = () => {
       preferredDate: null,
       preferredTimeSlot: null,
       attendees: [],
-      tenantNotes: '',
+      tenantNotes: "",
       errors: {},
     });
   }, []);

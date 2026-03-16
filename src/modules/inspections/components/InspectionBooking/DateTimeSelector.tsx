@@ -1,10 +1,12 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionBooking/DateTimeSelector.tsx
 // TODO: Add your implementation here
 
-import React, { useEffect, useState } from 'react';
-import { Calendar, Clock, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useAvailability } from '../../hooks/useAvailability';
-import { TimeSlotGrid } from './TimeSlotGrid';
+import { Calendar, Clock, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useEffect, useState } from "react";
+
+import { useAvailability } from "../../hooks/useAvailability";
+
+import { TimeSlotGrid } from "./TimeSlotGrid";
 
 interface DateTimeSelectorProps {
   propertyId: string;
@@ -30,13 +32,21 @@ export const DateTimeSelector: React.FC<DateTimeSelectorProps> = ({
   // Load available slots for the current month
   useEffect(() => {
     if (propertyId) {
-      const startDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1);
-      const endDate = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0);
-      
+      const startDate = new Date(
+        currentMonth.getFullYear(),
+        currentMonth.getMonth(),
+        1,
+      );
+      const endDate = new Date(
+        currentMonth.getFullYear(),
+        currentMonth.getMonth() + 1,
+        0,
+      );
+
       loadSlots(
         propertyId,
-        startDate.toISOString().split('T')[0],
-        endDate.toISOString().split('T')[0]
+        startDate.toISOString().split("T")[0],
+        endDate.toISOString().split("T")[0],
       );
     }
   }, [propertyId, currentMonth, loadSlots]);
@@ -51,8 +61,8 @@ export const DateTimeSelector: React.FC<DateTimeSelectorProps> = ({
     startDate.setDate(startDate.getDate() - startDate.getDay());
 
     const days: Date[] = [];
-    let currentDay = new Date(startDate);
-    
+    const currentDay = new Date(startDate);
+
     for (let i = 0; i < 42; i++) {
       days.push(new Date(currentDay));
       currentDay.setDate(currentDay.getDate() + 1);
@@ -62,15 +72,19 @@ export const DateTimeSelector: React.FC<DateTimeSelectorProps> = ({
   }, [currentMonth]);
 
   const goToPreviousMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
+    setCurrentMonth(
+      new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1),
+    );
   };
 
   const goToNextMonth = () => {
-    setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
+    setCurrentMonth(
+      new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1),
+    );
   };
 
   const hasAvailableSlots = (date: Date): boolean => {
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = date.toISOString().split("T")[0];
     return slots.some((slot) => slot.date === dateStr && slot.isAvailable);
   };
 
@@ -81,11 +95,21 @@ export const DateTimeSelector: React.FC<DateTimeSelectorProps> = ({
   };
 
   const monthNames = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December',
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
   ];
 
-  const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   return (
     <div>
@@ -105,7 +129,8 @@ export const DateTimeSelector: React.FC<DateTimeSelectorProps> = ({
             {/* Calendar Header */}
             <div className="flex items-center justify-between mb-4">
               <h4 className="text-lg font-semibold text-gray-900">
-                {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+                {monthNames[currentMonth.getMonth()]}{" "}
+                {currentMonth.getFullYear()}
               </h4>
               <div className="flex gap-2">
                 <button
@@ -140,12 +165,14 @@ export const DateTimeSelector: React.FC<DateTimeSelectorProps> = ({
             {/* Calendar Days */}
             <div className="grid grid-cols-7 gap-1">
               {calendarDays.map((day, index) => {
-                const dateStr = day.toISOString().split('T')[0];
+                const dateStr = day.toISOString().split("T")[0];
                 const isSelected = selectedDate === dateStr;
-                const isCurrentMonth = day.getMonth() === currentMonth.getMonth();
+                const isCurrentMonth =
+                  day.getMonth() === currentMonth.getMonth();
                 const isPast = isDateInPast(day);
                 const hasSlots = hasAvailableSlots(day);
-                const isToday = day.toDateString() === new Date().toDateString();
+                const isToday =
+                  day.toDateString() === new Date().toDateString();
 
                 return (
                   <button
@@ -153,18 +180,18 @@ export const DateTimeSelector: React.FC<DateTimeSelectorProps> = ({
                     onClick={() => {
                       if (!isPast && hasSlots) {
                         onDateSelect(dateStr);
-                        onTimeSelect(''); // Reset time selection
+                        onTimeSelect(""); // Reset time selection
                       }
                     }}
                     disabled={isPast || !hasSlots}
                     className={`
                       aspect-square p-2 rounded-lg text-sm transition-all relative
-                      ${!isCurrentMonth ? 'text-gray-400' : ''}
-                      ${isPast ? 'text-gray-300 cursor-not-allowed' : ''}
-                      ${isSelected ? 'bg-blue-600 text-white font-semibold' : ''}
-                      ${!isSelected && !isPast && hasSlots ? 'hover:bg-blue-50 text-gray-900' : ''}
-                      ${!isSelected && !isPast && !hasSlots ? 'text-gray-400 cursor-not-allowed' : ''}
-                      ${isToday && !isSelected ? 'border-2 border-blue-600' : ''}
+                      ${!isCurrentMonth ? "text-gray-400" : ""}
+                      ${isPast ? "text-gray-300 cursor-not-allowed" : ""}
+                      ${isSelected ? "bg-blue-600 text-white font-semibold" : ""}
+                      ${!isSelected && !isPast && hasSlots ? "hover:bg-blue-50 text-gray-900" : ""}
+                      ${!isSelected && !isPast && !hasSlots ? "text-gray-400 cursor-not-allowed" : ""}
+                      ${isToday && !isSelected ? "border-2 border-blue-600" : ""}
                     `}
                   >
                     {day.getDate()}
@@ -213,7 +240,9 @@ export const DateTimeSelector: React.FC<DateTimeSelectorProps> = ({
           ) : (
             <div className="bg-gray-50 rounded-lg border border-gray-200 p-8 text-center">
               <Calendar className="w-12 h-12 text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-600 font-medium mb-1">Select a date first</p>
+              <p className="text-gray-600 font-medium mb-1">
+                Select a date first
+              </p>
               <p className="text-sm text-gray-500">
                 Choose a date from the calendar to see available time slots
               </p>
@@ -239,5 +268,3 @@ export const DateTimeSelector: React.FC<DateTimeSelectorProps> = ({
     </div>
   );
 };
-
-

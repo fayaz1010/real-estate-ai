@@ -1,29 +1,28 @@
 // Authentication Middleware
-import { Request, Response, NextFunction } from 'express';
-import { verifyAccessToken, JwtPayload } from '../utils/jwt';
-import { errorResponse } from '../utils/response';
-import prisma from '../config/database';
+import { Request, Response, NextFunction } from "express";
+
+import prisma from "../config/database";
+import { verifyAccessToken, JwtPayload } from "../utils/jwt";
+import { errorResponse } from "../utils/response";
 
 // Extend Express Request to include user
-declare global {
-  namespace Express {
-    interface Request {
-      user?: JwtPayload & { id: string };
-    }
+declare module "express-serve-static-core" {
+  interface Request {
+    user?: JwtPayload & { id: string };
   }
 }
 
 export const authenticate = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     // Get token from header
     const authHeader = req.headers.authorization;
-    
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return errorResponse(res, 'No token provided', 401, 'UNAUTHORIZED');
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return errorResponse(res, "No token provided", 401, "UNAUTHORIZED");
     }
 
     const token = authHeader.substring(7); // Remove 'Bearer ' prefix
@@ -44,11 +43,16 @@ export const authenticate = async (
     });
 
     if (!user || user.deletedAt) {
-      return errorResponse(res, 'User not found', 404, 'USER_NOT_FOUND');
+      return errorResponse(res, "User not found", 404, "USER_NOT_FOUND");
     }
 
-    if (user.status !== 'ACTIVE') {
-      return errorResponse(res, 'Account is not active', 403, 'ACCOUNT_INACTIVE');
+    if (user.status !== "ACTIVE") {
+      return errorResponse(
+        res,
+        "Account is not active",
+        403,
+        "ACCOUNT_INACTIVE",
+      );
     }
 
     // Attach user to request
@@ -58,8 +62,13 @@ export const authenticate = async (
     };
 
     next();
-  } catch (error: any) {
-    return errorResponse(res, error.message || 'Invalid token', 401, 'INVALID_TOKEN');
+  } catch (error: unknown) {
+    return errorResponse(
+      res,
+      (error instanceof Error ? error.message : null) || "Invalid token",
+      401,
+      "INVALID_TOKEN",
+    );
   }
 };
 
@@ -67,16 +76,11 @@ export const authenticate = async (
 export const authorize = (...roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
     if (!req.user) {
-      return errorResponse(res, 'Unauthorized', 401, 'UNAUTHORIZED');
+      return errorResponse(res, "Unauthorized", 401, "UNAUTHORIZED");
     }
 
     if (!roles.includes(req.user.role)) {
-      return errorResponse(
-        res,
-        'Insufficient permissions',
-        403,
-        'FORBIDDEN'
-      );
+      return errorResponse(res, "Insufficient permissions", 403, "FORBIDDEN");
     }
 
     next();
@@ -87,27 +91,27 @@ export const authorize = (...roles: string[]) => {
 export const optionalAuth = async (
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ) => {
   try {
     const authHeader = req.headers.authorization;
-    
-    if (authHeader && authHeader.startsWith('Bearer ')) {
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
       const token = authHeader.substring(7);
       const decoded = verifyAccessToken(token);
-      
+
       const user = await prisma.user.findUnique({
         where: { id: decoded.userId },
         select: { id: true, email: true, role: true, status: true },
       });
 
-      if (user && user.status === 'ACTIVE') {
+      if (user && user.status === "ACTIVE") {
         req.user = { ...decoded, id: user.id };
       }
     }
   } catch (error) {
     // Silently fail for optional auth
   }
-  
+
   next();
 };

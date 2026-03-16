@@ -1,25 +1,32 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionBooking/AttendeeForm.tsx
 // TODO: Add your implementation here
 
-import React, { useState } from 'react';
-import { Plus, X, User, Mail, Phone, Users } from 'lucide-react';
-import { InspectionAttendee, AttendeeRelationship } from '../../types/inspection.types';
+import { Plus, X, User, Mail, Phone, Users } from "lucide-react";
+import React, { useState } from "react";
+
+import {
+  InspectionAttendee,
+  AttendeeRelationship,
+} from "../../types/inspection.types";
 
 interface AttendeeFormProps {
-  attendees: Omit<InspectionAttendee, 'id'>[];
+  attendees: Omit<InspectionAttendee, "id">[];
   tenantNotes: string;
-  onAddAttendee: (attendee: Omit<InspectionAttendee, 'id'>) => void;
+  onAddAttendee: (attendee: Omit<InspectionAttendee, "id">) => void;
   onRemoveAttendee: (index: number) => void;
-  onUpdateAttendee: (index: number, updates: Partial<Omit<InspectionAttendee, 'id'>>) => void;
+  onUpdateAttendee: (
+    index: number,
+    updates: Partial<Omit<InspectionAttendee, "id">>,
+  ) => void;
   onNotesChange: (notes: string) => void;
   errors: Record<string, string>;
 }
 
 const relationshipOptions: { value: AttendeeRelationship; label: string }[] = [
-  { value: 'co_applicant', label: 'Co-applicant' },
-  { value: 'roommate', label: 'Roommate' },
-  { value: 'family', label: 'Family Member' },
-  { value: 'friend', label: 'Friend' },
+  { value: "co_applicant", label: "Co-applicant" },
+  { value: "roommate", label: "Roommate" },
+  { value: "family", label: "Family Member" },
+  { value: "friend", label: "Friend" },
 ];
 
 export const AttendeeForm: React.FC<AttendeeFormProps> = ({
@@ -32,21 +39,23 @@ export const AttendeeForm: React.FC<AttendeeFormProps> = ({
   errors,
 }) => {
   const [showAddForm, setShowAddForm] = useState(false);
-  const [newAttendee, setNewAttendee] = useState<Omit<InspectionAttendee, 'id'>>({
-    name: '',
-    email: '',
-    phone: '',
-    relationship: 'co_applicant',
+  const [newAttendee, setNewAttendee] = useState<
+    Omit<InspectionAttendee, "id">
+  >({
+    name: "",
+    email: "",
+    phone: "",
+    relationship: "co_applicant",
   });
 
   const handleAddAttendee = () => {
     if (newAttendee.name && newAttendee.email) {
       onAddAttendee(newAttendee);
       setNewAttendee({
-        name: '',
-        email: '',
-        phone: '',
-        relationship: 'co_applicant',
+        name: "",
+        email: "",
+        phone: "",
+        relationship: "co_applicant",
       });
       setShowAddForm(false);
     }
@@ -71,9 +80,7 @@ export const AttendeeForm: React.FC<AttendeeFormProps> = ({
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <Users className="w-5 h-5 text-gray-600" />
-            <h4 className="font-medium text-gray-900">
-              Additional Attendees
-            </h4>
+            <h4 className="font-medium text-gray-900">Additional Attendees</h4>
             <span className="text-sm text-gray-500">
               ({attendees.length}/{MAX_ATTENDEES})
             </span>
@@ -100,10 +107,14 @@ export const AttendeeForm: React.FC<AttendeeFormProps> = ({
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <p className="font-medium text-gray-900">{attendee.name}</p>
+                      <p className="font-medium text-gray-900">
+                        {attendee.name}
+                      </p>
                       <p className="text-sm text-gray-600">{attendee.email}</p>
                       {attendee.phone && (
-                        <p className="text-sm text-gray-600">{attendee.phone}</p>
+                        <p className="text-sm text-gray-600">
+                          {attendee.phone}
+                        </p>
                       )}
                     </div>
                     <button
@@ -115,7 +126,11 @@ export const AttendeeForm: React.FC<AttendeeFormProps> = ({
                     </button>
                   </div>
                   <span className="inline-block px-2 py-1 text-xs bg-white border border-gray-200 rounded">
-                    {relationshipOptions.find((r) => r.value === attendee.relationship)?.label}
+                    {
+                      relationshipOptions.find(
+                        (r) => r.value === attendee.relationship,
+                      )?.label
+                    }
                   </span>
                 </div>
               </div>
@@ -216,10 +231,10 @@ export const AttendeeForm: React.FC<AttendeeFormProps> = ({
                   onClick={() => {
                     setShowAddForm(false);
                     setNewAttendee({
-                      name: '',
-                      email: '',
-                      phone: '',
-                      relationship: 'co_applicant',
+                      name: "",
+                      email: "",
+                      phone: "",
+                      relationship: "co_applicant",
                     });
                   }}
                   className="px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
@@ -234,7 +249,7 @@ export const AttendeeForm: React.FC<AttendeeFormProps> = ({
         {/* Info Message */}
         {attendees.length === 0 && !showAddForm && (
           <div className="p-4 bg-gray-50 rounded-lg text-sm text-gray-600 text-center">
-            You'll be the only attendee. Add others if needed.
+            You&apos;ll be the only attendee. Add others if needed.
           </div>
         )}
       </div>
@@ -256,9 +271,7 @@ export const AttendeeForm: React.FC<AttendeeFormProps> = ({
           <p className="text-xs text-gray-500">
             This will be shared with the landlord/agent
           </p>
-          <p className="text-xs text-gray-500">
-            {tenantNotes.length}/500
-          </p>
+          <p className="text-xs text-gray-500">{tenantNotes.length}/500</p>
         </div>
         {errors.tenantNotes && (
           <p className="mt-1 text-sm text-red-600">{errors.tenantNotes}</p>

@@ -1,11 +1,20 @@
 ﻿// PLACEHOLDER FILE: components\ApplicationReview\ApplicationsList.tsx
 // TODO: Add your implementation here
 
-import React, { useState } from 'react';
-import { Search, Filter, Download, TrendingUp, TrendingDown, Calendar } from 'lucide-react';
-import { useApplicationReview } from '../../hooks/useApplicationReview';
-import { ApplicationStatus } from '../../types/application.types';
-import ApplicationCard from './ApplicationCard';
+import {
+  Search,
+  Filter,
+  Download,
+  TrendingUp,
+  TrendingDown,
+  Calendar,
+} from "lucide-react";
+import React, { useState } from "react";
+
+import { useApplicationReview } from "../../hooks/useApplicationReview";
+import { ApplicationStatus } from "../../types/application.types";
+
+import ApplicationCard from "./ApplicationCard";
 
 interface ApplicationsListProps {
   propertyId?: string;
@@ -28,29 +37,41 @@ const ApplicationsList: React.FC<ApplicationsListProps> = ({ propertyId }) => {
 
   const [showFilters, setShowFilters] = useState(false);
 
-  const statusOptions: { value: ApplicationStatus; label: string; color: string }[] = [
-    { value: 'submitted', label: 'New', color: 'blue' },
-    { value: 'under_review', label: 'Under Review', color: 'yellow' },
-    { value: 'verification_pending', label: 'Verification Pending', color: 'purple' },
-    { value: 'conditionally_approved', label: 'Conditionally Approved', color: 'green' },
-    { value: 'approved', label: 'Approved', color: 'green' },
-    { value: 'rejected', label: 'Rejected', color: 'red' },
+  const statusOptions: {
+    value: ApplicationStatus;
+    label: string;
+    color: string;
+  }[] = [
+    { value: "submitted", label: "New", color: "blue" },
+    { value: "under_review", label: "Under Review", color: "yellow" },
+    {
+      value: "verification_pending",
+      label: "Verification Pending",
+      color: "purple",
+    },
+    {
+      value: "conditionally_approved",
+      label: "Conditionally Approved",
+      color: "green",
+    },
+    { value: "approved", label: "Approved", color: "green" },
+    { value: "rejected", label: "Rejected", color: "red" },
   ];
 
   const handleStatusToggle = (status: ApplicationStatus) => {
-    setFilterStatus(prev =>
+    setFilterStatus((prev) =>
       prev.includes(status)
-        ? prev.filter(s => s !== status)
-        : [...prev, status]
+        ? prev.filter((s) => s !== status)
+        : [...prev, status],
     );
   };
 
-  const toggleSort = (field: 'score' | 'date' | 'name') => {
+  const toggleSort = (field: "score" | "date" | "name") => {
     if (sortBy === field) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {
       setSortBy(field);
-      setSortOrder('desc');
+      setSortOrder("desc");
     }
   };
 
@@ -142,7 +163,7 @@ const ApplicationsList: React.FC<ApplicationsListProps> = ({ propertyId }) => {
           <div className="flex gap-2">
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
+              onChange={(e) => setSortBy(e.target.value as "score" | "date" | "name")}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
               <option value="score">Sort by Score</option>
@@ -151,10 +172,10 @@ const ApplicationsList: React.FC<ApplicationsListProps> = ({ propertyId }) => {
             </select>
 
             <button
-              onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+              onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
               className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50"
             >
-              {sortOrder === 'asc' ? (
+              {sortOrder === "asc" ? (
                 <TrendingUp className="w-5 h-5" />
               ) : (
                 <TrendingDown className="w-5 h-5" />
@@ -165,8 +186,8 @@ const ApplicationsList: React.FC<ApplicationsListProps> = ({ propertyId }) => {
               onClick={() => setShowFilters(!showFilters)}
               className={`px-4 py-2 rounded-lg flex items-center ${
                 filterStatus.length > 0
-                  ? 'bg-blue-600 text-white'
-                  : 'border border-gray-300 hover:bg-gray-50'
+                  ? "bg-blue-600 text-white"
+                  : "border border-gray-300 hover:bg-gray-50"
               }`}
             >
               <Filter className="w-5 h-5 mr-2" />
@@ -178,7 +199,9 @@ const ApplicationsList: React.FC<ApplicationsListProps> = ({ propertyId }) => {
         {/* Filter Panel */}
         {showFilters && (
           <div className="mt-4 pt-4 border-t border-gray-200">
-            <p className="text-sm font-medium text-gray-700 mb-3">Filter by Status:</p>
+            <p className="text-sm font-medium text-gray-700 mb-3">
+              Filter by Status:
+            </p>
             <div className="flex flex-wrap gap-2">
               {statusOptions.map((status) => (
                 <button
@@ -216,8 +239,8 @@ const ApplicationsList: React.FC<ApplicationsListProps> = ({ propertyId }) => {
           <p className="text-gray-600 mb-2">No applications found</p>
           <p className="text-sm text-gray-500">
             {filterStatus.length > 0 || searchQuery
-              ? 'Try adjusting your filters or search query'
-              : 'Applications will appear here once submitted'}
+              ? "Try adjusting your filters or search query"
+              : "Applications will appear here once submitted"}
           </p>
         </div>
       ) : (

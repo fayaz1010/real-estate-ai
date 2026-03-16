@@ -1,9 +1,10 @@
 // FILE PATH: src/modules/properties/components/PropertyDetails/PropertyGallery.tsx
 // Module 1.2: Property Listings Management - Image Gallery Lightbox
 
-import React, { useState, useEffect } from 'react';
-import { PropertyImage } from '../../types/property.types';
-import { X, ChevronLeft, ChevronRight, Download, Maximize } from 'lucide-react';
+import { X, ChevronLeft, ChevronRight, Download, Maximize } from "lucide-react";
+import React, { useState, useEffect } from "react";
+
+import { PropertyImage } from "../../types/property.types";
 
 interface PropertyGalleryProps {
   images: PropertyImage[];
@@ -14,24 +15,24 @@ interface PropertyGalleryProps {
 export const PropertyGallery: React.FC<PropertyGalleryProps> = ({
   images,
   startIndex = 0,
-  onClose
+  onClose,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(startIndex);
   const currentImage = images[currentIndex];
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-      if (e.key === 'ArrowLeft') goToPrevious();
-      if (e.key === 'ArrowRight') goToNext();
+      if (e.key === "Escape") onClose();
+      if (e.key === "ArrowLeft") goToPrevious();
+      if (e.key === "ArrowRight") goToNext();
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    document.body.style.overflow = 'hidden';
+    window.addEventListener("keydown", handleKeyDown);
+    document.body.style.overflow = "hidden";
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      document.body.style.overflow = 'unset';
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
     };
   }, [currentIndex]);
 
@@ -48,7 +49,7 @@ export const PropertyGallery: React.FC<PropertyGalleryProps> = ({
       const response = await fetch(currentImage.url);
       const blob = await response.blob();
       const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = url;
       link.download = `property-image-${currentIndex + 1}.jpg`;
       document.body.appendChild(link);
@@ -56,7 +57,7 @@ export const PropertyGallery: React.FC<PropertyGalleryProps> = ({
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Download failed:', error);
+      console.error("Download failed:", error);
     }
   };
 
@@ -127,8 +128,8 @@ export const PropertyGallery: React.FC<PropertyGalleryProps> = ({
               onClick={() => setCurrentIndex(index)}
               className={`flex-shrink-0 w-20 h-20 rounded overflow-hidden border-2 transition ${
                 index === currentIndex
-                  ? 'border-white'
-                  : 'border-transparent opacity-60 hover:opacity-100'
+                  ? "border-white"
+                  : "border-transparent opacity-60 hover:opacity-100"
               }`}
             >
               <img

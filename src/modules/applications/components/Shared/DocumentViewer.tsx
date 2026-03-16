@@ -1,22 +1,33 @@
 // PLACEHOLDER FILE: components\Shared\DocumentViewer.tsx
 // TODO: Add your implementation here
-import React, { useState } from 'react';
-import { X, Download, ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from 'lucide-react';
-import { ApplicationDocument } from '../../types/application.types';
+import {
+  X,
+  Download,
+  ZoomIn,
+  ZoomOut,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
+import React, { useState } from "react";
+
+import { ApplicationDocument } from "../../types/application.types";
 
 interface DocumentViewerProps {
   document: ApplicationDocument;
   onClose: () => void;
 }
 
-const DocumentViewer: React.FC<DocumentViewerProps> = ({ document, onClose }) => {
+const DocumentViewer: React.FC<DocumentViewerProps> = ({
+  document,
+  onClose,
+}) => {
   const [zoom, setZoom] = useState(100);
 
   const isImage = document.filename.match(/\.(jpg|jpeg|png|gif|webp)$/i);
   const isPDF = document.filename.match(/\.pdf$/i);
 
   const handleDownload = () => {
-    const link = window.document.createElement('a');
+    const link = window.document.createElement("a");
     link.href = document.url;
     link.download = document.filename;
     link.click();
@@ -32,10 +43,11 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ document, onClose }) =>
               {document.filename}
             </h3>
             <p className="text-sm text-gray-600">
-              {(document.size / 1024).toFixed(2)} KB • Uploaded {new Date(document.uploadedAt).toLocaleDateString()}
+              {(document.size / 1024).toFixed(2)} KB • Uploaded{" "}
+              {new Date(document.uploadedAt).toLocaleDateString()}
             </p>
           </div>
-          
+
           <div className="flex items-center gap-2 ml-4">
             {isImage && (
               <>
@@ -58,7 +70,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ document, onClose }) =>
                 </button>
               </>
             )}
-            
+
             <button
               onClick={handleDownload}
               className="p-2 hover:bg-gray-100 rounded transition-colors"
@@ -66,7 +78,7 @@ const DocumentViewer: React.FC<DocumentViewerProps> = ({ document, onClose }) =>
             >
               <Download className="w-5 h-5 text-gray-700" />
             </button>
-            
+
             <button
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded transition-colors"

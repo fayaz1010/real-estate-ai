@@ -1,8 +1,9 @@
 // FILE PATH: src/modules/properties/hooks/useProperties.ts
 // Custom hook for property CRUD operations
 
-import { useCallback, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store';
+import { useCallback, useEffect } from "react";
+
+import { useAppDispatch, useAppSelector } from "../../../store";
 import {
   fetchProperties,
   fetchPropertyById,
@@ -13,8 +14,8 @@ import {
   selectPropertyById,
   selectPropertiesLoading,
   selectPropertiesError,
-} from '../store/propertySlice';
-import { Property, PropertyFormData } from '../types/property.types';
+} from "../store/propertySlice";
+import { Property, PropertyFormData } from "../types/property.types";
 
 export const useProperties = () => {
   const dispatch = useAppDispatch();
@@ -27,7 +28,7 @@ export const useProperties = () => {
     (filters?: Record<string, any>) => {
       dispatch(fetchProperties(filters));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Fetch single property by ID
@@ -35,7 +36,7 @@ export const useProperties = () => {
     (id: string) => {
       return dispatch(fetchPropertyById(id));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Create new property
@@ -43,7 +44,7 @@ export const useProperties = () => {
     async (propertyData: PropertyFormData) => {
       return dispatch(createProperty(propertyData));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Update existing property
@@ -51,7 +52,7 @@ export const useProperties = () => {
     async (id: string, propertyData: Partial<Property>) => {
       return dispatch(updateProperty({ id, updates: propertyData }));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Delete property
@@ -59,7 +60,7 @@ export const useProperties = () => {
     async (id: string) => {
       return dispatch(deleteProperty(id));
     },
-    [dispatch]
+    [dispatch],
   );
 
   // Load properties on mount

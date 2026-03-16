@@ -1,3 +1,3 @@
-﻿export * from './CoApplicantInvite';
-export * from './CoApplicantForm';
-export * from './CoApplicantProgress';
+﻿export * from "./CoApplicantInvite";
+export * from "./CoApplicantForm";
+export * from "./CoApplicantProgress";

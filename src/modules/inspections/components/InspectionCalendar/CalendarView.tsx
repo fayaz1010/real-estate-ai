@@ -1,12 +1,18 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionCalendar/CalendarView.tsx
 // TODO: Add your implementation here
 
-import React from 'react';
-import { ChevronLeft, ChevronRight, Calendar as CalendarIcon } from 'lucide-react';
-import { useInspectionCalendar } from '../../hooks/useInspectionCalendar';
-import { MonthView } from './MonthView';
-import { WeekView } from './WeekView';
-import { DayView } from './DayView';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Calendar as CalendarIcon,
+} from "lucide-react";
+import React from "react";
+
+import { useInspectionCalendar } from "../../hooks/useInspectionCalendar";
+
+import { DayView } from "./DayView";
+import { MonthView } from "./MonthView";
+import { WeekView } from "./WeekView";
 
 export const CalendarView: React.FC = () => {
   const {
@@ -62,31 +68,31 @@ export const CalendarView: React.FC = () => {
           {/* View Toggle */}
           <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1">
             <button
-              onClick={() => changeView('month')}
+              onClick={() => changeView("month")}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                view === 'month'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                view === "month"
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
               }`}
             >
               Month
             </button>
             <button
-              onClick={() => changeView('week')}
+              onClick={() => changeView("week")}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                view === 'week'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                view === "week"
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
               }`}
             >
               Week
             </button>
             <button
-              onClick={() => changeView('day')}
+              onClick={() => changeView("day")}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-                view === 'day'
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                view === "day"
+                  ? "bg-white text-gray-900 shadow-sm"
+                  : "text-gray-600 hover:text-gray-900"
               }`}
             >
               Day
@@ -97,9 +103,14 @@ export const CalendarView: React.FC = () => {
 
       {/* Calendar Content */}
       <div className="p-4">
-        {view === 'month' && <MonthView />}
-        {view === 'week' && <WeekView />}
-        {view === 'day' && <DayView date={currentDate} inspections={getInspectionsForDate(currentDate)} />}
+        {view === "month" && <MonthView />}
+        {view === "week" && <WeekView />}
+        {view === "day" && (
+          <DayView
+            date={currentDate}
+            inspections={getInspectionsForDate(currentDate)}
+          />
+        )}
       </div>
 
       {/* Legend */}

@@ -3,7 +3,6 @@
 // Module 1.3: Inspection Booking & Scheduling System - Analytics Component
 // ============================================================================
 
-import React, { useEffect, useState } from 'react';
 import {
   TrendingUp,
   Calendar,
@@ -14,15 +13,20 @@ import {
   XCircle,
   BarChart,
   AlertCircle,
-  MapPin
-} from 'lucide-react';
-import { useInspections } from '../../hooks/useInspections';
-import { InspectionAnalytics, PropertyInspectionMetrics } from '../../types/inspection.types';
+  MapPin,
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+
+import { useInspections } from "../../hooks/useInspections";
+import {
+  InspectionAnalytics,
+  PropertyInspectionMetrics,
+} from "../../types/inspection.types";
 
 interface InspectionMetricsProps {
   landlordId?: string;
   propertyId?: string;
-  type: 'landlord' | 'property';
+  type: "landlord" | "property";
   className?: string;
 }
 
@@ -30,12 +34,15 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
   landlordId,
   propertyId,
   type,
-  className = '',
+  className = "",
 }) => {
   const { loadInspections, isLoading, error } = useInspections();
   const [analytics, setAnalytics] = useState<InspectionAnalytics | null>(null);
-  const [propertyMetrics, setPropertyMetrics] = useState<PropertyInspectionMetrics | null>(null);
-  const [dateRange, setDateRange] = useState<'7d' | '30d' | '90d' | 'all'>('30d');
+  const [propertyMetrics, setPropertyMetrics] =
+    useState<PropertyInspectionMetrics | null>(null);
+  const [dateRange, setDateRange] = useState<"7d" | "30d" | "90d" | "all">(
+    "30d",
+  );
 
   useEffect(() => {
     loadMetrics();
@@ -45,7 +52,7 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
     try {
       // This would call actual API endpoints for analytics
       // For now, we'll use mock data to demonstrate the component
-      if (type === 'landlord' && landlordId) {
+      if (type === "landlord" && landlordId) {
         // Mock landlord analytics data
         const mockAnalytics: InspectionAnalytics = {
           totalInspections: 156,
@@ -64,15 +71,15 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
             rescheduled: 2,
           },
           peakBookingTimes: [
-            { day: 'Saturday', hour: 10, count: 23 },
-            { day: 'Saturday', hour: 14, count: 19 },
-            { day: 'Sunday', hour: 14, count: 18 },
-            { day: 'Saturday', hour: 11, count: 16 },
-            { day: 'Sunday', hour: 15, count: 15 },
+            { day: "Saturday", hour: 10, count: 23 },
+            { day: "Saturday", hour: 14, count: 19 },
+            { day: "Sunday", hour: 14, count: 18 },
+            { day: "Saturday", hour: 11, count: 16 },
+            { day: "Sunday", hour: 15, count: 15 },
           ],
         };
         setAnalytics(mockAnalytics);
-      } else if (type === 'property' && propertyId) {
+      } else if (type === "property" && propertyId) {
         // Mock property metrics data
         const mockPropertyMetrics: PropertyInspectionMetrics = {
           totalViews: 342,
@@ -81,23 +88,23 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
           averageFeedbackRating: 4.2,
           inspectionToApplication: 0.45,
           likedFeatures: [
-            'Modern kitchen appliances',
-            'Hardwood floors',
-            'Natural lighting',
-            'Updated bathroom',
-            'Spacious layout'
+            "Modern kitchen appliances",
+            "Hardwood floors",
+            "Natural lighting",
+            "Updated bathroom",
+            "Spacious layout",
           ],
           commonConcerns: [
-            'Limited parking availability',
-            'Street noise level',
-            'Small closet space',
-            'No in-unit laundry'
+            "Limited parking availability",
+            "Street noise level",
+            "Small closet space",
+            "No in-unit laundry",
           ],
         };
         setPropertyMetrics(mockPropertyMetrics);
       }
     } catch (error) {
-      console.error('Failed to load metrics:', error);
+      console.error("Failed to load metrics:", error);
     }
   };
 
@@ -112,7 +119,9 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
 
   if (error) {
     return (
-      <div className={`flex items-center justify-center py-12 text-red-600 ${className}`}>
+      <div
+        className={`flex items-center justify-center py-12 text-red-600 ${className}`}
+      >
         <AlertCircle className="w-6 h-6 mr-2" />
         <span>Error loading analytics: {error}</span>
       </div>
@@ -150,21 +159,29 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
               <div className="p-2 bg-green-100 rounded-lg">
                 <CheckCircle className="w-6 h-6 text-green-600" />
               </div>
-              <span className="text-xs text-gray-500">Inspection → Application</span>
+              <span className="text-xs text-gray-500">
+                Inspection → Application
+              </span>
             </div>
             <h3 className="text-2xl font-bold text-gray-900 mb-1">
               {(analytics.conversionRate * 100).toFixed(1)}%
             </h3>
             <p className="text-sm text-gray-600">Conversion Rate</p>
-            <div className={`mt-2 flex items-center text-xs ${
-              analytics.conversionRate > 0.6 ? 'text-green-600' : 'text-yellow-600'
-            }`}>
+            <div
+              className={`mt-2 flex items-center text-xs ${
+                analytics.conversionRate > 0.6
+                  ? "text-green-600"
+                  : "text-yellow-600"
+              }`}
+            >
               {analytics.conversionRate > 0.6 ? (
                 <TrendingUp className="w-4 h-4 mr-1" />
               ) : (
                 <AlertCircle className="w-4 h-4 mr-1" />
               )}
-              {analytics.conversionRate > 0.6 ? 'Above average' : 'Below average'}
+              {analytics.conversionRate > 0.6
+                ? "Above average"
+                : "Below average"}
             </div>
           </div>
 
@@ -179,15 +196,17 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
               {(analytics.noShowRate * 100).toFixed(1)}%
             </h3>
             <p className="text-sm text-gray-600">No-Show Rate</p>
-            <div className={`mt-2 flex items-center text-xs ${
-              analytics.noShowRate < 0.15 ? 'text-green-600' : 'text-red-600'
-            }`}>
+            <div
+              className={`mt-2 flex items-center text-xs ${
+                analytics.noShowRate < 0.15 ? "text-green-600" : "text-red-600"
+              }`}
+            >
               {analytics.noShowRate < 0.15 ? (
                 <CheckCircle className="w-4 h-4 mr-1" />
               ) : (
                 <AlertCircle className="w-4 h-4 mr-1" />
               )}
-              {analytics.noShowRate < 0.15 ? 'Good' : 'Needs improvement'}
+              {analytics.noShowRate < 0.15 ? "Good" : "Needs improvement"}
             </div>
           </div>
 
@@ -208,8 +227,8 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
                   key={star}
                   className={`w-4 h-4 ${
                     star <= Math.round(analytics.averageRating)
-                      ? 'text-yellow-400 fill-current'
-                      : 'text-gray-300'
+                      ? "text-yellow-400 fill-current"
+                      : "text-gray-300"
                   }`}
                 />
               ))}
@@ -224,10 +243,13 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
           </h3>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {Object.entries(analytics.byStatus).map(([status, count]) => (
-              <div key={status} className="text-center p-4 bg-gray-50 rounded-lg">
+              <div
+                key={status}
+                className="text-center p-4 bg-gray-50 rounded-lg"
+              >
                 <p className="text-2xl font-bold text-gray-900">{count}</p>
                 <p className="text-sm text-gray-600 capitalize">
-                  {status.replace('_', ' ')}
+                  {status.replace("_", " ")}
                 </p>
               </div>
             ))}
@@ -252,7 +274,7 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
                   <div
                     className="bg-blue-600 h-2 rounded-full"
                     style={{
-                      width: `${(time.count / Math.max(...analytics.peakBookingTimes.map(t => t.count))) * 100}%`,
+                      width: `${(time.count / Math.max(...analytics.peakBookingTimes.map((t) => t.count))) * 100}%`,
                     }}
                   />
                 </div>
@@ -274,7 +296,8 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
               </h3>
             </div>
             <p className="text-3xl font-bold text-gray-900 mb-2">
-              {analytics.averageDuration} <span className="text-lg text-gray-600">min</span>
+              {analytics.averageDuration}{" "}
+              <span className="text-lg text-gray-600">min</span>
             </p>
             <p className="text-sm text-gray-600">Per inspection</p>
           </div>
@@ -287,7 +310,8 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
               </h3>
             </div>
             <p className="text-3xl font-bold text-gray-900 mb-2">
-              {analytics.responseTime} <span className="text-lg text-gray-600">hrs</span>
+              {analytics.responseTime}{" "}
+              <span className="text-lg text-gray-600">hrs</span>
             </p>
             <p className="text-sm text-gray-600">Average confirmation time</p>
           </div>
@@ -361,17 +385,24 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
             <div>
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-600">Property Views</span>
-                <span className="font-medium text-gray-900">{propertyMetrics.totalViews}</span>
+                <span className="font-medium text-gray-900">
+                  {propertyMetrics.totalViews}
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
-                <div className="bg-blue-600 h-3 rounded-full" style={{ width: '100%' }} />
+                <div
+                  className="bg-blue-600 h-3 rounded-full"
+                  style={{ width: "100%" }}
+                />
               </div>
             </div>
 
             <div>
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-600">Inspection Requests</span>
-                <span className="font-medium text-gray-900">{propertyMetrics.inspectionRequests}</span>
+                <span className="font-medium text-gray-900">
+                  {propertyMetrics.inspectionRequests}
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
                 <div
@@ -386,7 +417,9 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
             <div>
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-600">Completed Inspections</span>
-                <span className="font-medium text-gray-900">{propertyMetrics.completedInspections}</span>
+                <span className="font-medium text-gray-900">
+                  {propertyMetrics.completedInspections}
+                </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
                 <div
@@ -402,14 +435,17 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
               <div className="flex justify-between text-sm mb-1">
                 <span className="text-gray-600">Applications</span>
                 <span className="font-medium text-gray-900">
-                  {Math.round(propertyMetrics.inspectionToApplication * propertyMetrics.completedInspections)}
+                  {Math.round(
+                    propertyMetrics.inspectionToApplication *
+                      propertyMetrics.completedInspections,
+                  )}
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-3">
                 <div
                   className="bg-yellow-600 h-3 rounded-full"
                   style={{
-                    width: `${(propertyMetrics.inspectionToApplication * propertyMetrics.completedInspections / propertyMetrics.totalViews) * 100}%`,
+                    width: `${((propertyMetrics.inspectionToApplication * propertyMetrics.completedInspections) / propertyMetrics.totalViews) * 100}%`,
                   }}
                 />
               </div>
@@ -424,12 +460,14 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
               Most Liked Features
             </h3>
             <div className="space-y-2">
-              {propertyMetrics.likedFeatures.slice(0, 5).map((feature, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <span className="text-green-600">✓</span>
-                  <span className="text-gray-700">{feature}</span>
-                </div>
-              ))}
+              {propertyMetrics.likedFeatures
+                .slice(0, 5)
+                .map((feature, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <span className="text-green-600">✓</span>
+                    <span className="text-gray-700">{feature}</span>
+                  </div>
+                ))}
             </div>
           </div>
 
@@ -438,12 +476,14 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
               Common Concerns
             </h3>
             <div className="space-y-2">
-              {propertyMetrics.commonConcerns.slice(0, 5).map((concern, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <span className="text-yellow-600">!</span>
-                  <span className="text-gray-700">{concern}</span>
-                </div>
-              ))}
+              {propertyMetrics.commonConcerns
+                .slice(0, 5)
+                .map((concern, index) => (
+                  <div key={index} className="flex items-center gap-2">
+                    <span className="text-yellow-600">!</span>
+                    <span className="text-gray-700">{concern}</span>
+                  </div>
+                ))}
             </div>
           </div>
         </div>
@@ -457,12 +497,14 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
       <div className="flex items-center justify-between mb-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">
-            {type === 'landlord' ? 'Inspection Analytics' : 'Property Performance'}
+            {type === "landlord"
+              ? "Inspection Analytics"
+              : "Property Performance"}
           </h2>
           <p className="text-gray-600">
-            {type === 'landlord'
-              ? 'Track your inspection performance and conversion rates'
-              : 'Analyze how this property is performing'}
+            {type === "landlord"
+              ? "Track your inspection performance and conversion rates"
+              : "Analyze how this property is performing"}
           </p>
         </div>
 
@@ -480,8 +522,7 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
       </div>
 
       {/* Metrics Content */}
-      {type === 'landlord' ? renderLandlordMetrics() : renderPropertyMetrics()}
+      {type === "landlord" ? renderLandlordMetrics() : renderPropertyMetrics()}
     </div>
   );
 };
-

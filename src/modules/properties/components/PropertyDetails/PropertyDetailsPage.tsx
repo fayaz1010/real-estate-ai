@@ -1,58 +1,64 @@
 // FILE PATH: src/modules/properties/components/PropertyDetails/PropertyDetailsPage.tsx
 // Module 1.2: Property Listings Management - Main Property Details Page
 
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useProperties } from '../../hooks/useProperties';
-import { propertyService } from '../../services/propertyService';
-import { PropertyIntelligence } from '../../../../components/PropertyIntelligence';
-import { PropertyHero } from './PropertyHero';
-import { PropertyOverview } from './PropertyOverview';
-import { PropertyDescription } from './PropertyDescription';
-import { PropertyFeatures } from './PropertyFeatures';
-import { PropertyLocation } from './PropertyLocation';
-import { PropertyPricing } from './PropertyPricing';
-import { PropertyGallery } from './PropertyGallery';
-import { PropertyContact } from './PropertyContact';
-import { SimilarProperties } from './SimilarProperties';
-import { PropertyHistory } from './PropertyHistory';
-import { ArrowLeft, Share2, Flag } from 'lucide-react';
+import { ArrowLeft, Share2, Flag } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
+import { PropertyIntelligence } from "../../../../components/PropertyIntelligence";
+import { useProperties } from "../../hooks/useProperties";
+import { propertyService } from "../../services/propertyService";
+
+import { PropertyContact } from "./PropertyContact";
+import { PropertyDescription } from "./PropertyDescription";
+import { PropertyFeatures } from "./PropertyFeatures";
+import { PropertyGallery } from "./PropertyGallery";
+import { PropertyHero } from "./PropertyHero";
+import { PropertyHistory } from "./PropertyHistory";
+import { PropertyLocation } from "./PropertyLocation";
+import { PropertyOverview } from "./PropertyOverview";
+import { PropertyPricing } from "./PropertyPricing";
+import { SimilarProperties } from "./SimilarProperties";
 
 export const PropertyDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { properties, loadProperty, loading } = useProperties();
-  const selectedProperty = properties.find(p => p.id === id);
+  const selectedProperty = properties.find((p) => p.id === id);
   const [showGallery, setShowGallery] = useState(false);
   const [galleryStartIndex, setGalleryStartIndex] = useState(0);
 
   useEffect(() => {
     if (id) {
-      loadProperty(id).catch(err => console.error('Failed to load property:', err));
+      loadProperty(id).catch((err) =>
+        console.error("Failed to load property:", err),
+      );
       // Track property view
-      propertyService.trackView(id).catch(err => console.error('Failed to track view:', err));
+      propertyService
+        .trackView(id)
+        .catch((err) => console.error("Failed to track view:", err));
     }
   }, [id, loadProperty]);
 
   const handleShare = async () => {
     const url = window.location.href;
-    const title = selectedProperty?.title || 'Property';
+    const title = selectedProperty?.title || "Property";
     if (navigator.share) {
       try {
         await navigator.share({ title, url });
       } catch (err) {
-        console.log('Share cancelled');
+        console.log("Share cancelled");
       }
     } else {
       // Fallback: Copy to clipboard
       navigator.clipboard.writeText(url);
-      alert('Link copied to clipboard!');
+      alert("Link copied to clipboard!");
     }
   };
 
   const handleReport = () => {
     // Open report modal or redirect to report page
-    alert('Report functionality would open here');
+    alert("Report functionality would open here");
   };
 
   const openGallery = (startIndex: number = 0) => {
@@ -75,10 +81,14 @@ export const PropertyDetailsPage: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Property Not Found</h2>
-          <p className="text-gray-600 mb-6">The property you're looking for doesn't exist or has been removed.</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Property Not Found
+          </h2>
+          <p className="text-gray-600 mb-6">
+            The property you&apos;re looking for doesn&apos;t exist or has been removed.
+          </p>
           <button
-            onClick={() => navigate('/properties')}
+            onClick={() => navigate("/properties")}
             className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
           >
             Browse Properties
@@ -123,10 +133,7 @@ export const PropertyDetailsPage: React.FC = () => {
       </div>
 
       {/* Hero Section */}
-      <PropertyHero 
-        property={selectedProperty} 
-        onImageClick={openGallery}
-      />
+      <PropertyHero property={selectedProperty} onImageClick={openGallery} />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -149,10 +156,10 @@ export const PropertyDetailsPage: React.FC = () => {
             <PropertyPricing property={selectedProperty} />
 
             {/* Price History */}
-            {selectedProperty.pricing.priceHistory && 
-             selectedProperty.pricing.priceHistory.length > 0 && (
-              <PropertyHistory property={selectedProperty} />
-            )}
+            {selectedProperty.pricing.priceHistory &&
+              selectedProperty.pricing.priceHistory.length > 0 && (
+                <PropertyHistory property={selectedProperty} />
+              )}
           </div>
 
           {/* Right Column - Sidebar */}
@@ -163,7 +170,9 @@ export const PropertyDetailsPage: React.FC = () => {
 
               {/* Property Stats */}
               <div className="bg-white rounded-lg shadow p-6">
-                <h3 className="font-semibold text-gray-900 mb-4">Property Stats</h3>
+                <h3 className="font-semibold text-gray-900 mb-4">
+                  Property Stats
+                </h3>
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Views</span>
@@ -186,7 +195,10 @@ export const PropertyDetailsPage: React.FC = () => {
                   <div className="flex justify-between">
                     <span className="text-gray-600">Listed Date</span>
                     <span className="font-medium text-gray-900">
-                      {new Date(selectedProperty.publishedAt || selectedProperty.createdAt).toLocaleDateString()}
+                      {new Date(
+                        selectedProperty.publishedAt ||
+                          selectedProperty.createdAt,
+                      ).toLocaleDateString()}
                     </span>
                   </div>
                 </div>
@@ -214,27 +226,30 @@ export const PropertyDetailsPage: React.FC = () => {
       <script type="application/ld+json">
         {JSON.stringify({
           "@context": "https://schema.org",
-          "@type": selectedProperty.listingType === 'sale' ? "SingleFamilyResidence" : "Apartment",
-          "name": selectedProperty.title,
-          "address": {
+          "@type":
+            selectedProperty.listingType === "sale"
+              ? "SingleFamilyResidence"
+              : "Apartment",
+          name: selectedProperty.title,
+          address: {
             "@type": "PostalAddress",
-            "streetAddress": selectedProperty.address.street,
-            "addressLocality": selectedProperty.address.city,
-            "addressRegion": selectedProperty.address.state,
-            "postalCode": selectedProperty.address.zipCode,
-            "addressCountry": selectedProperty.address.country
+            streetAddress: selectedProperty.address.street,
+            addressLocality: selectedProperty.address.city,
+            addressRegion: selectedProperty.address.state,
+            postalCode: selectedProperty.address.zipCode,
+            addressCountry: selectedProperty.address.country,
           },
-          "geo": {
+          geo: {
             "@type": "GeoCoordinates",
-            "latitude": selectedProperty.address.latitude,
-            "longitude": selectedProperty.address.longitude
+            latitude: selectedProperty.address.latitude,
+            longitude: selectedProperty.address.longitude,
           },
-          "numberOfRooms": selectedProperty.details.bedrooms,
-          "floorSize": {
+          numberOfRooms: selectedProperty.details.bedrooms,
+          floorSize: {
             "@type": "QuantitativeValue",
-            "value": selectedProperty.details.sqft,
-            "unitCode": "SQF"
-          }
+            value: selectedProperty.details.sqft,
+            unitCode: "SQF",
+          },
         })}
       </script>
     </div>

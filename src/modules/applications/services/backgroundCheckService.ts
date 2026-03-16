@@ -1,25 +1,29 @@
 // PLACEHOLDER FILE: services\backgroundCheckService.ts
 // TODO: Add your implementation here
 
-import { BackgroundCheckResult, CriminalRecord, EvictionRecord } from '../types/application.types';
+import {
+  BackgroundCheckResult,
+  CriminalRecord,
+  EvictionRecord,
+} from "../types/application.types";
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4041/api';
+const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
 
 const apiCall = async (endpoint: string, options: RequestInit = {}) => {
-  const token = localStorage.getItem('accessToken');
-  
+  const token = localStorage.getItem("accessToken");
+
   const response = await fetch(`${API_BASE}${endpoint}`, {
     ...options,
     headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token ? `Bearer ${token}` : '',
+      "Content-Type": "application/json",
+      Authorization: token ? `Bearer ${token}` : "",
       ...options.headers,
     },
   });
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || 'API request failed');
+    throw new Error(error.message || "API request failed");
   }
 
   return response.json();
@@ -61,7 +65,7 @@ export interface BackgroundCheckOrder {
   id: string;
   applicationId: string;
   packageId: string;
-  status: 'pending' | 'in_progress' | 'completed' | 'cancelled';
+  status: "pending" | "in_progress" | "completed" | "cancelled";
   orderedAt: string;
   completedAt?: string;
   result?: BackgroundCheckResult;
@@ -72,7 +76,7 @@ export const backgroundCheckService = {
    * Get available background check packages
    */
   getPackages: async (): Promise<BackgroundCheckPackage[]> => {
-    return apiCall('/background-checks/packages');
+    return apiCall("/background-checks/packages");
   },
 
   /**
@@ -81,10 +85,10 @@ export const backgroundCheckService = {
   orderBackgroundCheck: async (
     applicationId: string,
     packageId: string,
-    data: BackgroundCheckRequest
+    data: BackgroundCheckRequest,
   ): Promise<BackgroundCheckOrder> => {
     return apiCall(`/applications/${applicationId}/background-check`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ packageId, ...data }),
     });
   },
@@ -93,7 +97,7 @@ export const backgroundCheckService = {
    * Get background check status
    */
   getBackgroundCheckStatus: async (
-    applicationId: string
+    applicationId: string,
   ): Promise<BackgroundCheckOrder> => {
     return apiCall(`/applications/${applicationId}/background-check`);
   },
@@ -102,7 +106,7 @@ export const backgroundCheckService = {
    * Get full background check report
    */
   getBackgroundCheckReport: async (
-    applicationId: string
+    applicationId: string,
   ): Promise<BackgroundCheckResult> => {
     return apiCall(`/applications/${applicationId}/background-check/report`);
   },
@@ -110,22 +114,20 @@ export const backgroundCheckService = {
   /**
    * Download background check PDF
    */
-  downloadBackgroundCheckPDF: async (
-    applicationId: string
-  ): Promise<Blob> => {
-    const token = localStorage.getItem('accessToken');
-    
+  downloadBackgroundCheckPDF: async (applicationId: string): Promise<Blob> => {
+    const token = localStorage.getItem("accessToken");
+
     const response = await fetch(
       `${API_BASE}/applications/${applicationId}/background-check/pdf`,
       {
         headers: {
-          'Authorization': token ? `Bearer ${token}` : '',
+          Authorization: token ? `Bearer ${token}` : "",
         },
-      }
+      },
     );
 
     if (!response.ok) {
-      throw new Error('PDF download failed');
+      throw new Error("PDF download failed");
     }
 
     return response.blob();
@@ -136,7 +138,7 @@ export const backgroundCheckService = {
    */
   cancelBackgroundCheck: async (applicationId: string): Promise<void> => {
     return apiCall(`/applications/${applicationId}/background-check`, {
-      method: 'DELETE',
+      method: "DELETE",
     });
   },
 
@@ -147,10 +149,10 @@ export const backgroundCheckService = {
     applicationId: string,
     reason: string,
     details: string,
-    supportingDocuments?: string[]
+    supportingDocuments?: string[],
   ): Promise<{ disputeId: string }> => {
     return apiCall(`/applications/${applicationId}/background-check/dispute`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ reason, details, supportingDocuments }),
     });
   },
@@ -159,7 +161,7 @@ export const backgroundCheckService = {
    * Get criminal record details
    */
   getCriminalRecordDetails: async (
-    recordId: string
+    recordId: string,
   ): Promise<CriminalRecord> => {
     return apiCall(`/background-checks/criminal-records/${recordId}`);
   },
@@ -168,7 +170,7 @@ export const backgroundCheckService = {
    * Get eviction record details
    */
   getEvictionRecordDetails: async (
-    recordId: string
+    recordId: string,
   ): Promise<EvictionRecord> => {
     return apiCall(`/background-checks/eviction-records/${recordId}`);
   },
@@ -180,7 +182,7 @@ export const backgroundCheckService = {
     formHtml: string;
     disclosures: string[];
   }> => {
-    return apiCall('/background-checks/consent-form');
+    return apiCall("/background-checks/consent-form");
   },
 
   /**
@@ -189,10 +191,10 @@ export const backgroundCheckService = {
   submitConsent: async (
     applicationId: string,
     signature: string,
-    ipAddress: string
+    ipAddress: string,
   ): Promise<{ consentRecorded: boolean }> => {
     return apiCall(`/applications/${applicationId}/background-check/consent`, {
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify({ signature, ipAddress }),
     });
   },
@@ -201,7 +203,7 @@ export const backgroundCheckService = {
    * Get applicant's background check history
    */
   getBackgroundCheckHistory: async (): Promise<BackgroundCheckOrder[]> => {
-    return apiCall('/background-checks/my-history');
+    return apiCall("/background-checks/my-history");
   },
 
   /**
@@ -209,10 +211,10 @@ export const backgroundCheckService = {
    */
   estimateCost: async (
     packageId: string,
-    state: string
+    state: string,
   ): Promise<{ cost: number; breakdown: any }> => {
-    return apiCall('/background-checks/estimate-cost', {
-      method: 'POST',
+    return apiCall("/background-checks/estimate-cost", {
+      method: "POST",
       body: JSON.stringify({ packageId, state }),
     });
   },

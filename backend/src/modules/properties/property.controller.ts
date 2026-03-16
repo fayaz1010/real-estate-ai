@@ -1,14 +1,16 @@
 // Property Controller
-import { Request, Response } from 'express';
-import propertyService from './property.service';
-import { successResponse } from '../../utils/response';
-import { asyncHandler } from '../../middleware/errorHandler';
+import { Request, Response } from "express";
+
+import { asyncHandler } from "../../middleware/errorHandler";
+import { successResponse } from "../../utils/response";
+
+import propertyService from "./property.service";
 
 export class PropertyController {
   create = asyncHandler(async (req: Request, res: Response) => {
     const ownerId = req.user!.userId;
     const property = await propertyService.create(ownerId, req.body);
-    return successResponse(res, property, 'Property created', 201);
+    return successResponse(res, property, "Property created", 201);
   });
 
   getAll = asyncHandler(async (req: Request, res: Response) => {
@@ -28,14 +30,18 @@ export class PropertyController {
 
   update = asyncHandler(async (req: Request, res: Response) => {
     const ownerId = req.user!.userId;
-    const property = await propertyService.update(req.params.id, ownerId, req.body);
-    return successResponse(res, property, 'Property updated');
+    const property = await propertyService.update(
+      req.params.id,
+      ownerId,
+      req.body,
+    );
+    return successResponse(res, property, "Property updated");
   });
 
   delete = asyncHandler(async (req: Request, res: Response) => {
     const ownerId = req.user!.userId;
     await propertyService.delete(req.params.id, ownerId);
-    return successResponse(res, null, 'Property deleted');
+    return successResponse(res, null, "Property deleted");
   });
 
   getMyProperties = asyncHandler(async (req: Request, res: Response) => {
@@ -44,7 +50,7 @@ export class PropertyController {
     const result = await propertyService.getMyProperties(
       ownerId,
       page ? parseInt(page as string) : 1,
-      limit ? parseInt(limit as string) : 20
+      limit ? parseInt(limit as string) : 20,
     );
     return successResponse(res, result);
   });
@@ -52,7 +58,7 @@ export class PropertyController {
   publish = asyncHandler(async (req: Request, res: Response) => {
     const ownerId = req.user!.userId;
     const property = await propertyService.publish(req.params.id, ownerId);
-    return successResponse(res, property, 'Property published');
+    return successResponse(res, property, "Property published");
   });
 }
 

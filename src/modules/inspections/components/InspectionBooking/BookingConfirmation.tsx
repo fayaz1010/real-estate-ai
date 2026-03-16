@@ -1,11 +1,19 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionBooking/BookingConfirmation.tsx
 // TODO: Add your implementation here
 
-import React, { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { CheckCircle, Calendar, Mail, MessageSquare, Download, Share2 } from 'lucide-react';
-import { useInspection } from '../../hooks/useInspections';
-import { openCalendarApp } from '../../utils/calendarSync';
+import {
+  CheckCircle,
+  Calendar,
+  Mail,
+  MessageSquare,
+  Download,
+  Share2,
+} from "lucide-react";
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+import { useInspection } from "../../hooks/useInspections";
+import { openCalendarApp } from "../../utils/calendarSync";
 
 export const BookingConfirmation: React.FC = () => {
   const { inspectionId } = useParams<{ inspectionId: string }>();
@@ -14,6 +22,7 @@ export const BookingConfirmation: React.FC = () => {
 
   useEffect(() => {
     if (inspectionId) {
+      // intentionally empty
     }
   }, [inspectionId]);
 
@@ -30,7 +39,7 @@ export const BookingConfirmation: React.FC = () => {
       <div className="max-w-2xl mx-auto py-12 px-4 text-center">
         <p className="text-gray-600">Inspection not found</p>
         <button
-          onClick={() => navigate('/properties')}
+          onClick={() => navigate("/properties")}
           className="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
           Browse Properties
@@ -40,23 +49,25 @@ export const BookingConfirmation: React.FC = () => {
   }
 
   const formatDate = (dateStr: string): string => {
-    return new Date(dateStr).toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
   const formatTime = (dateStr: string): string => {
-    return new Date(dateStr).toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
+    return new Date(dateStr).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
       hour12: true,
     });
   };
 
-  const handleAddToCalendar = (provider: 'google' | 'outlook' | 'apple' | 'ics') => {
+  const handleAddToCalendar = (
+    provider: "google" | "outlook" | "apple" | "ics",
+  ) => {
     openCalendarApp(inspection, provider);
   };
 
@@ -71,9 +82,9 @@ export const BookingConfirmation: React.FC = () => {
           Inspection Request Submitted!
         </h1>
         <p className="text-lg text-gray-600">
-          {inspection.status === 'confirmed'
-            ? 'Your inspection has been confirmed'
-            : 'Waiting for landlord confirmation'}
+          {inspection.status === "confirmed"
+            ? "Your inspection has been confirmed"
+            : "Waiting for landlord confirmation"}
         </p>
       </div>
 
@@ -97,10 +108,11 @@ export const BookingConfirmation: React.FC = () => {
             </div>
             <div>
               <h3 className="font-medium text-gray-900">
-                {inspection.property?.title || 'Property'}
+                {inspection.property?.title || "Property"}
               </h3>
               <p className="text-sm text-gray-600">
-                {inspection.property?.address.street}, {inspection.property?.address.city}
+                {inspection.property?.address.street},{" "}
+                {inspection.property?.address.city}
               </p>
             </div>
           </div>
@@ -125,7 +137,7 @@ export const BookingConfirmation: React.FC = () => {
           <div>
             <p className="text-sm text-gray-600 mb-1">Inspection Type</p>
             <p className="font-medium text-gray-900 capitalize">
-              {inspection.type.replace('_', ' ')}
+              {inspection.type.replace("_", " ")}
             </p>
           </div>
 
@@ -144,7 +156,7 @@ export const BookingConfirmation: React.FC = () => {
         <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <button
-            onClick={() => handleAddToCalendar('google')}
+            onClick={() => handleAddToCalendar("google")}
             className="flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <Calendar className="w-5 h-5 text-gray-600" />
@@ -155,7 +167,9 @@ export const BookingConfirmation: React.FC = () => {
             className="flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <Download className="w-5 h-5 text-gray-600" />
-            <span className="font-medium text-gray-900">Download Confirmation</span>
+            <span className="font-medium text-gray-900">
+              Download Confirmation
+            </span>
           </button>
         </div>
       </div>
@@ -171,7 +185,8 @@ export const BookingConfirmation: React.FC = () => {
             <div>
               <p className="font-medium text-blue-900">Email Confirmation</p>
               <p className="text-sm text-blue-800">
-                You'll receive an email with all the details and calendar invite
+                You&apos;ll receive an email with all the details and calendar
+                invite
               </p>
             </div>
           </li>
@@ -182,7 +197,8 @@ export const BookingConfirmation: React.FC = () => {
             <div>
               <p className="font-medium text-blue-900">Landlord Confirms</p>
               <p className="text-sm text-blue-800">
-                The landlord will confirm your inspection (usually within 24 hours)
+                The landlord will confirm your inspection (usually within 24
+                hours)
               </p>
             </div>
           </li>
@@ -193,7 +209,8 @@ export const BookingConfirmation: React.FC = () => {
             <div>
               <p className="font-medium text-blue-900">Reminders</p>
               <p className="text-sm text-blue-800">
-                We'll send you reminders 24 hours and 2 hours before your inspection
+                We&apos;ll send you reminders 24 hours and 2 hours before your
+                inspection
               </p>
             </div>
           </li>
@@ -216,10 +233,12 @@ export const BookingConfirmation: React.FC = () => {
         <div className="flex items-start gap-3">
           <MessageSquare className="w-6 h-6 text-gray-600 flex-shrink-0 mt-1" />
           <div>
-            <h3 className="font-medium text-gray-900 mb-1">Need to Make Changes?</h3>
+            <h3 className="font-medium text-gray-900 mb-1">
+              Need to Make Changes?
+            </h3>
             <p className="text-sm text-gray-600 mb-3">
-              You can reschedule or cancel your inspection up to 2 hours before the
-              scheduled time.
+              You can reschedule or cancel your inspection up to 2 hours before
+              the scheduled time.
             </p>
             <button
               onClick={() => navigate(`/inspections/${inspection.id}`)}
@@ -234,13 +253,13 @@ export const BookingConfirmation: React.FC = () => {
       {/* Navigation Buttons */}
       <div className="flex flex-col sm:flex-row gap-3">
         <button
-          onClick={() => navigate('/inspections')}
+          onClick={() => navigate("/inspections")}
           className="flex-1 px-6 py-3 border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition-colors"
         >
           View All Inspections
         </button>
         <button
-          onClick={() => navigate('/properties')}
+          onClick={() => navigate("/properties")}
           className="flex-1 px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
         >
           Browse More Properties
@@ -249,15 +268,14 @@ export const BookingConfirmation: React.FC = () => {
 
       {/* Help Text */}
       <p className="text-center text-sm text-gray-600 mt-6">
-        Questions? Contact us at{' '}
-        <a href="mailto:support@realestate.com" className="text-blue-600 hover:underline">
+        Questions? Contact us at{" "}
+        <a
+          href="mailto:support@realestate.com"
+          className="text-blue-600 hover:underline"
+        >
           support@realestate.com
         </a>
       </p>
     </div>
   );
 };
-
-
-
-

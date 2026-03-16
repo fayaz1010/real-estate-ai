@@ -1,13 +1,15 @@
 // FILE PATH: src/modules/properties/components/PropertySearch/SearchBar.tsx
 // Module 1.2: Property Listings Management - Main Search Bar Component
 
-import React, { useState, useEffect, useRef } from 'react';
-import { useJsApiLoader } from '@react-google-maps/api';
-import { Search, MapPin, X, TrendingUp } from 'lucide-react';
-import { usePropertySearch } from '../../hooks/usePropertySearch';
-import { searchService } from '../../services/searchService';
-import { useNavigate } from 'react-router-dom';
-import { useBrowsingHistory } from '@/hooks/useBrowsingHistory';
+import { useJsApiLoader } from "@react-google-maps/api";
+import { Search, MapPin, X, TrendingUp } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { usePropertySearch } from "../../hooks/usePropertySearch";
+import { searchService } from "../../services/searchService";
+
+import { useBrowsingHistory } from "@/hooks/useBrowsingHistory";
 
 interface SearchBarProps {
   placeholder?: string;
@@ -18,45 +20,49 @@ interface SearchBarProps {
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
-  placeholder = 'Search by suburb, postcode, city or address...',
+  placeholder = "Search by suburb, postcode, city or address...",
   autoFocus = false,
   onSearch,
   showSuggestions = true,
-  className = ''
+  className = "",
 }) => {
   const navigate = useNavigate();
   const { updateFilters, performSearch } = usePropertySearch();
   const { saveRecentSearch } = useBrowsingHistory();
 
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
-  const [placeSuggestions, setPlaceSuggestions] = useState<google.maps.places.AutocompletePrediction[]>([]);
+  const [placeSuggestions, setPlaceSuggestions] = useState<
+    google.maps.places.AutocompletePrediction[]
+  >([]);
   const [showDropdown, setShowDropdown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const autocompleteService = useRef<google.maps.places.AutocompleteService | null>(null);
+  const autocompleteService =
+    useRef<google.maps.places.AutocompleteService | null>(null);
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || '',
-    libraries: ['places']
+    googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
+    libraries: ["places"],
   });
 
   // Initialize autocomplete service
   useEffect(() => {
     if (isLoaded && !autocompleteService.current) {
-      autocompleteService.current = new google.maps.places.AutocompleteService();
+      autocompleteService.current =
+        new google.maps.places.AutocompleteService();
     }
   }, [isLoaded]);
 
   // Popular searches
   const popularSearches = [
-    'New York, NY',
-    'Los Angeles, CA',
-    'Chicago, IL',
-    'Downtown',
-    'Beach Properties',
-    'Pet Friendly'
+    "New York, NY",
+    "Los Angeles, CA",
+    "Chicago, IL",
+    "Downtown",
+    "Beach Properties",
+    "Pet Friendly",
   ];
 
   // Fetch suggestions as user types using Google Places Autocomplete
@@ -76,20 +82,23 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           autocompleteService.current.getPlacePredictions(
             {
               input: query,
-              types: ['(regions)'], // Focus on cities, suburbs, postcodes
-              componentRestrictions: { country: 'us' } // Change to your country
+              types: ["(regions)"], // Focus on cities, suburbs, postcodes
+              componentRestrictions: { country: "us" }, // Change to your country
             },
             (predictions, status) => {
-              if (status === google.maps.places.PlacesServiceStatus.OK && predictions) {
+              if (
+                status === google.maps.places.PlacesServiceStatus.OK &&
+                predictions
+              ) {
                 setPlaceSuggestions(predictions);
               } else {
                 setPlaceSuggestions([]);
               }
               setIsLoading(false);
-            }
+            },
           );
         } catch (error) {
-          console.error('Failed to fetch place suggestions:', error);
+          console.error("Failed to fetch place suggestions:", error);
           setPlaceSuggestions([]);
           setIsLoading(false);
         }
@@ -99,7 +108,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           const results = await searchService.getLocationSuggestions(query);
           setSuggestions(results);
         } catch (error) {
-          console.error('Failed to fetch suggestions:', error);
+          console.error("Failed to fetch suggestions:", error);
           setSuggestions([]);
         } finally {
           setIsLoading(false);
@@ -123,8 +132,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const handleSearch = (searchQuery: string = query) => {
@@ -143,9 +152,9 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleSearch();
-    } else if (e.key === 'Escape') {
+    } else if (e.key === "Escape") {
       setShowDropdown(false);
       inputRef.current?.blur();
     }
@@ -157,7 +166,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   const clearSearch = () => {
-    setQuery('');
+    setQuery("");
     setSuggestions([]);
     inputRef.current?.focus();
   };
@@ -223,10 +232,15 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                   {placeSuggestions.map((prediction) => (
                     <button
                       key={prediction.place_id}
-                      onClick={() => handleSuggestionClick(prediction.description)}
+                      onClick={() =>
+                        handleSuggestionClick(prediction.description)
+                      }
                       className="w-full px-4 py-3 text-left hover:bg-gray-50 transition flex items-center gap-3"
                     >
-                      <MapPin size={16} className="text-blue-600 flex-shrink-0" />
+                      <MapPin
+                        size={16}
+                        className="text-blue-600 flex-shrink-0"
+                      />
                       <div className="flex-1 min-w-0">
                         <span className="text-gray-900 block">
                           {prediction.structured_formatting.main_text}
@@ -252,7 +266,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                       onClick={() => handleSuggestionClick(suggestion)}
                       className="w-full px-4 py-3 text-left hover:bg-gray-50 transition flex items-center gap-3"
                     >
-                      <MapPin size={16} className="text-gray-400 flex-shrink-0" />
+                      <MapPin
+                        size={16}
+                        className="text-gray-400 flex-shrink-0"
+                      />
                       <span className="text-gray-900">{suggestion}</span>
                     </button>
                   ))}
@@ -272,7 +289,10 @@ export const SearchBar: React.FC<SearchBarProps> = ({
                       onClick={() => handleSuggestionClick(search)}
                       className="w-full px-4 py-3 text-left hover:bg-gray-50 transition flex items-center gap-3"
                     >
-                      <Search size={16} className="text-gray-400 flex-shrink-0" />
+                      <Search
+                        size={16}
+                        className="text-gray-400 flex-shrink-0"
+                      />
                       <span className="text-gray-700">{search}</span>
                     </button>
                   ))}
@@ -280,15 +300,18 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               )}
 
               {/* No Results */}
-              {query && !isLoading && suggestions.length === 0 && placeSuggestions.length === 0 && (
-                <div className="p-8 text-center">
-                  <MapPin size={48} className="mx-auto text-gray-300 mb-3" />
-                  <p className="text-gray-600 mb-2">No locations found</p>
-                  <p className="text-sm text-gray-500">
-                    Try searching for a suburb, city, postcode or address
-                  </p>
-                </div>
-              )}
+              {query &&
+                !isLoading &&
+                suggestions.length === 0 &&
+                placeSuggestions.length === 0 && (
+                  <div className="p-8 text-center">
+                    <MapPin size={48} className="mx-auto text-gray-300 mb-3" />
+                    <p className="text-gray-600 mb-2">No locations found</p>
+                    <p className="text-sm text-gray-500">
+                      Try searching for a suburb, city, postcode or address
+                    </p>
+                  </div>
+                )}
             </>
           )}
         </div>

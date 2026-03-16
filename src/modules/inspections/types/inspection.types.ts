@@ -3,22 +3,26 @@
 // Module 1.3: Inspection Booking & Scheduling System - Type Definitions
 // ============================================================================
 
-import { Property } from '../../properties/types/property.types';
+import { Property } from "../../properties/types/property.types";
 
 // ============================================================================
 // CORE TYPES
 // ============================================================================
 
-export type InspectionType = 'in_person' | 'virtual' | 'open_house' | 'self_guided';
+export type InspectionType =
+  | "in_person"
+  | "virtual"
+  | "open_house"
+  | "self_guided";
 
 export type InspectionStatus =
-  | 'pending'       // Awaiting approval
-  | 'confirmed'     // Confirmed by landlord
-  | 'checked_in'    // Tenant arrived
-  | 'completed'     // Tour finished
-  | 'cancelled'     // Cancelled by either party
-  | 'no_show'       // Tenant didn't show up
-  | 'rescheduled';  // Moved to new time
+  | "pending" // Awaiting approval
+  | "confirmed" // Confirmed by landlord
+  | "checked_in" // Tenant arrived
+  | "completed" // Tour finished
+  | "cancelled" // Cancelled by either party
+  | "no_show" // Tenant didn't show up
+  | "rescheduled"; // Moved to new time
 
 // ============================================================================
 // MAIN INTERFACES
@@ -55,11 +59,11 @@ export interface Inspection {
   completedAt?: string;
   cancelledAt?: string;
   cancellationReason?: string;
-  cancelledBy?: 'tenant' | 'landlord' | 'system';
+  cancelledBy?: "tenant" | "landlord" | "system";
 
   // Reminders
   remindersSent: {
-    type: '24h' | '2h' | '30m';
+    type: "24h" | "2h" | "30m";
     sentAt: string;
   }[];
 
@@ -78,7 +82,12 @@ export interface Inspection {
   updatedAt: string;
 }
 
-export type AttendeeRelationship = 'applicant' | 'co_applicant' | 'roommate' | 'family' | 'friend';
+export type AttendeeRelationship =
+  | "applicant"
+  | "co_applicant"
+  | "roommate"
+  | "family"
+  | "friend";
 
 export interface InspectionAttendee {
   id: string;
@@ -172,7 +181,7 @@ export interface InspectionBookingRequest {
   type: InspectionType;
   preferredDate: string;
   preferredTimeSlot: string;
-  attendees: Omit<InspectionAttendee, 'id'>[];
+  attendees: Omit<InspectionAttendee, "id">[];
   tenantNotes?: string;
   requiresApproval?: boolean; // Instant booking vs approval needed
 }
@@ -304,7 +313,7 @@ export interface InspectionBookingProps {
 export interface InspectionCalendarProps {
   propertyId?: string;
   landlordId?: string;
-  view?: 'day' | 'week' | 'month';
+  view?: "day" | "week" | "month";
   onInspectionSelect?: (inspection: Inspection) => void;
 }
 
@@ -351,7 +360,7 @@ export interface InspectionFormData {
   type: InspectionType;
   preferredDate: string;
   preferredTimeSlot: string;
-  attendees: Omit<InspectionAttendee, 'id'>[];
+  attendees: Omit<InspectionAttendee, "id">[];
   tenantNotes?: string;
   requiresApproval?: boolean;
 }
@@ -410,7 +419,7 @@ export interface CreateInspectionDto {
   scheduledDate: string;
   duration: number;
   timezone: string;
-  attendees: Omit<InspectionAttendee, 'id'>[];
+  attendees: Omit<InspectionAttendee, "id">[];
   maxAttendees?: number;
   tenantNotes?: string;
   landlordNotes?: string;

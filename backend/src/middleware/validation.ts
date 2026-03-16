@@ -1,7 +1,8 @@
 // Request Validation Middleware
-import { Request, Response, NextFunction } from 'express';
-import { z, ZodSchema } from 'zod';
-import { errorResponse } from '../utils/response';
+import { Request, Response, NextFunction } from "express";
+import { z, ZodSchema } from "zod";
+
+import { errorResponse } from "../utils/response";
 
 export const validate = (schema: ZodSchema) => {
   return (req: Request, res: Response, next: NextFunction) => {
@@ -12,19 +13,19 @@ export const validate = (schema: ZodSchema) => {
         params: req.params,
       });
       next();
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (error instanceof z.ZodError) {
         const errors = error.errors.map((err) => ({
-          field: err.path.join('.'),
+          field: err.path.join("."),
           message: err.message,
         }));
-        
+
         return errorResponse(
           res,
-          'Validation failed',
+          "Validation failed",
           400,
-          'VALIDATION_ERROR',
-          errors
+          "VALIDATION_ERROR",
+          errors,
         );
       }
       next(error);
@@ -38,19 +39,19 @@ export const validateBody = (schema: ZodSchema) => {
     try {
       schema.parse(req.body);
       next();
-    } catch (error: any) {
+    } catch (error: unknown) {
       if (error instanceof z.ZodError) {
         const errors = error.errors.map((err) => ({
-          field: err.path.join('.'),
+          field: err.path.join("."),
           message: err.message,
         }));
-        
+
         return errorResponse(
           res,
-          'Validation failed',
+          "Validation failed",
           400,
-          'VALIDATION_ERROR',
-          errors
+          "VALIDATION_ERROR",
+          errors,
         );
       }
       next(error);

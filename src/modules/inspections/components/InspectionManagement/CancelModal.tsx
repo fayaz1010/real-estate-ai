@@ -3,10 +3,11 @@
 // Cancel Inspection Modal Component
 // ============================================================================
 
-import React, { useState } from 'react';
-import { X, AlertCircle } from 'lucide-react';
-import { Inspection } from '../../types/inspection.types';
-import { useInspections } from '../../hooks/useInspections';
+import { X, AlertCircle } from "lucide-react";
+import React, { useState } from "react";
+
+import { useInspections } from "../../hooks/useInspections";
+import { Inspection } from "../../types/inspection.types";
 
 interface CancelModalProps {
   inspection: Inspection;
@@ -17,17 +18,17 @@ interface CancelModalProps {
 export const CancelModal: React.FC<CancelModalProps> = ({
   inspection,
   isOpen,
-  onClose
+  onClose,
 }) => {
   const { cancel } = useInspections();
-  const [reason, setReason] = useState('');
+  const [reason, setReason] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   if (!isOpen) return null;
 
   const handleCancel = async () => {
     if (!reason.trim()) {
-      alert('Please provide a reason for cancellation');
+      alert("Please provide a reason for cancellation");
       return;
     }
 
@@ -36,7 +37,7 @@ export const CancelModal: React.FC<CancelModalProps> = ({
       await cancel(inspection.id, reason);
       onClose();
     } catch (error) {
-      console.error('Failed to cancel inspection:', error);
+      console.error("Failed to cancel inspection:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -48,7 +49,9 @@ export const CancelModal: React.FC<CancelModalProps> = ({
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <AlertCircle className="w-6 h-6 text-red-600" />
-            <h2 className="text-xl font-bold text-gray-900">Cancel Inspection</h2>
+            <h2 className="text-xl font-bold text-gray-900">
+              Cancel Inspection
+            </h2>
           </div>
           <button
             onClick={onClose}
@@ -60,7 +63,8 @@ export const CancelModal: React.FC<CancelModalProps> = ({
 
         <div className="mb-4">
           <p className="text-gray-600 mb-4">
-            Are you sure you want to cancel this inspection? This action cannot be undone.
+            Are you sure you want to cancel this inspection? This action cannot
+            be undone.
           </p>
 
           <div>
@@ -91,7 +95,7 @@ export const CancelModal: React.FC<CancelModalProps> = ({
             disabled={isSubmitting || !reason.trim()}
             className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
           >
-            {isSubmitting ? 'Cancelling...' : 'Cancel Inspection'}
+            {isSubmitting ? "Cancelling..." : "Cancel Inspection"}
           </button>
         </div>
       </div>

@@ -3,9 +3,11 @@
 // Day View Calendar Component
 // ============================================================================
 
-import React from 'react';
-import { Inspection } from '../../types/inspection.types';
-import { TimeSlot } from './TimeSlot';
+import React from "react";
+
+import { Inspection } from "../../types/inspection.types";
+
+import { TimeSlot } from "./TimeSlot";
 
 interface DayViewProps {
   date: Date;
@@ -16,12 +18,12 @@ interface DayViewProps {
 export const DayView: React.FC<DayViewProps> = ({
   date,
   inspections,
-  onInspectionClick
+  onInspectionClick,
 }) => {
   const hours = Array.from({ length: 24 }, (_, i) => i);
 
   const getInspectionsForHour = (hour: number) => {
-    return inspections.filter(inspection => {
+    return inspections.filter((inspection) => {
       const inspectionHour = new Date(inspection.scheduledDate).getHours();
       return inspectionHour === hour;
     });
@@ -30,20 +32,27 @@ export const DayView: React.FC<DayViewProps> = ({
   return (
     <div className="space-y-2">
       <h3 className="text-lg font-semibold text-gray-900 mb-4">
-        {date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
+        {date.toLocaleDateString("en-US", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+        })}
       </h3>
 
       <div className="space-y-1">
-        {hours.map(hour => {
+        {hours.map((hour) => {
           const hourInspections = getInspectionsForHour(hour);
-          
+
           return (
-            <div key={hour} className="flex gap-2 min-h-[60px] border-b border-gray-100">
+            <div
+              key={hour}
+              className="flex gap-2 min-h-[60px] border-b border-gray-100"
+            >
               <div className="w-20 text-sm text-gray-600 py-2">
-                {hour.toString().padStart(2, '0')}:00
+                {hour.toString().padStart(2, "0")}:00
               </div>
               <div className="flex-1 py-1">
-                {hourInspections.map(inspection => (
+                {hourInspections.map((inspection) => (
                   <TimeSlot
                     key={inspection.id}
                     inspection={inspection}

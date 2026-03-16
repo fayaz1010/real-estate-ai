@@ -1,7 +1,9 @@
-import { useState, useCallback, useMemo } from 'react';
-import { useInspections } from './useInspections';
-import { useAvailability } from './useAvailability';
-import { Inspection } from '../types/inspection.types';
+import { useState, useCallback, useMemo } from "react";
+
+import { Inspection } from "../types/inspection.types";
+
+import { useAvailability } from "./useAvailability";
+import { useInspections } from "./useInspections";
 
 interface CalendarDay {
   date: Date;
@@ -14,17 +16,17 @@ interface CalendarDay {
 export const useInspectionCalendar = () => {
   const { inspections } = useInspections();
   const { slots, loadSlots } = useAvailability();
-  
+
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [view, setView] = useState<'month' | 'week' | 'day'>('month');
+  const [view, setView] = useState<"month" | "week" | "day">("month");
 
   // Navigate to previous period
   const previousPeriod = useCallback(() => {
     setCurrentDate((prev) => {
       const newDate = new Date(prev);
-      if (view === 'month') {
+      if (view === "month") {
         newDate.setMonth(newDate.getMonth() - 1);
-      } else if (view === 'week') {
+      } else if (view === "week") {
         newDate.setDate(newDate.getDate() - 7);
       } else {
         newDate.setDate(newDate.getDate() - 1);
@@ -37,9 +39,9 @@ export const useInspectionCalendar = () => {
   const nextPeriod = useCallback(() => {
     setCurrentDate((prev) => {
       const newDate = new Date(prev);
-      if (view === 'month') {
+      if (view === "month") {
         newDate.setMonth(newDate.getMonth() + 1);
-      } else if (view === 'week') {
+      } else if (view === "week") {
         newDate.setDate(newDate.getDate() + 7);
       } else {
         newDate.setDate(newDate.getDate() + 1);
@@ -54,22 +56,22 @@ export const useInspectionCalendar = () => {
   }, []);
 
   // Change view
-  const changeView = useCallback((newView: 'month' | 'week' | 'day') => {
+  const changeView = useCallback((newView: "month" | "week" | "day") => {
     setView(newView);
   }, []);
 
   // Get inspections for a specific date
   const getInspectionsForDate = useCallback(
     (date: Date): Inspection[] => {
-      const dateStr = date.toISOString().split('T')[0];
+      const dateStr = date.toISOString().split("T")[0];
       return inspections.filter((inspection) => {
         const inspectionDate = new Date(inspection.scheduledDate)
           .toISOString()
-          .split('T')[0];
+          .split("T")[0];
         return inspectionDate === dateStr;
       });
     },
-    [inspections]
+    [inspections],
   );
 
   // Get calendar days for month view
@@ -85,10 +87,10 @@ export const useInspectionCalendar = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    let currentDay = new Date(startDate);
+    const currentDay = new Date(startDate);
     for (let i = 0; i < 42; i++) {
       const dayInspections = getInspectionsForDate(currentDay);
-      
+
       days.push({
         date: new Date(currentDay),
         inspections: dayInspections,
@@ -147,23 +149,23 @@ export const useInspectionCalendar = () => {
   // Get formatted period label
   const getPeriodLabel = useCallback((): string => {
     const monthNames = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
+      "June",
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
 
-    if (view === 'month') {
+    if (view === "month") {
       return `${monthNames[currentDate.getMonth()]} ${currentDate.getFullYear()}`;
-    } else if (view === 'week') {
+    } else if (view === "week") {
       const startOfWeek = new Date(currentDate);
       startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
       const endOfWeek = new Date(startOfWeek);
@@ -173,11 +175,11 @@ export const useInspectionCalendar = () => {
         monthNames[endOfWeek.getMonth()]
       } ${endOfWeek.getDate()}, ${endOfWeek.getFullYear()}`;
     } else {
-      return currentDate.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
+      return currentDate.toLocaleDateString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
       });
     }
   }, [currentDate, view]);

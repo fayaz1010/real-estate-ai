@@ -3,10 +3,15 @@
 // Module 1.2: Property Listings Management - Search Service
 // ============================================================================
 
-import { SearchFilters, PropertiesResponse, SavedSearch } from '../types/property.types';
-import { tokenManager } from '../../auth/utils/tokenManager';
+import { tokenManager } from "../../auth/utils/tokenManager";
+import {
+  SearchFilters,
+  PropertiesResponse,
+  SavedSearch,
+} from "../types/property.types";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4041/api';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:4041/api";
 
 class SearchService {
   /**
@@ -18,7 +23,7 @@ class SearchService {
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== undefined && value !== null) {
         if (Array.isArray(value)) {
-          value.forEach(v => queryParams.append(key, v.toString()));
+          value.forEach((v) => queryParams.append(key, v.toString()));
         } else {
           queryParams.append(key, value.toString());
         }
@@ -28,12 +33,12 @@ class SearchService {
     const response = await fetch(
       `${API_BASE_URL}/properties/search?${queryParams.toString()}`,
       {
-        headers: tokenManager.getAuthHeader()
-      }
+        headers: tokenManager.getAuthHeader(),
+      },
     );
 
     if (!response.ok) {
-      throw new Error('Search failed');
+      throw new Error("Search failed");
     }
 
     return response.json();
@@ -42,18 +47,22 @@ class SearchService {
   /**
    * Save search
    */
-  async saveSearch(name: string, filters: SearchFilters, alertsEnabled: boolean = false): Promise<SavedSearch> {
+  async saveSearch(
+    name: string,
+    filters: SearchFilters,
+    alertsEnabled: boolean = false,
+  ): Promise<SavedSearch> {
     const response = await fetch(`${API_BASE_URL}/properties/search/save`, {
-      method: 'POST',
+      method: "POST",
       headers: {
         ...tokenManager.getAuthHeader(),
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ name, filters, alertsEnabled })
+      body: JSON.stringify({ name, filters, alertsEnabled }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to save search');
+      throw new Error("Failed to save search");
     }
 
     const data = await response.json();
@@ -65,11 +74,11 @@ class SearchService {
    */
   async getSavedSearches(): Promise<SavedSearch[]> {
     const response = await fetch(`${API_BASE_URL}/properties/search/saved`, {
-      headers: tokenManager.getAuthHeader()
+      headers: tokenManager.getAuthHeader(),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch saved searches');
+      throw new Error("Failed to fetch saved searches");
     }
 
     const data = await response.json();
@@ -80,31 +89,40 @@ class SearchService {
    * Delete saved search
    */
   async deleteSavedSearch(id: string): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/properties/search/saved/${id}`, {
-      method: 'DELETE',
-      headers: tokenManager.getAuthHeader()
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/properties/search/saved/${id}`,
+      {
+        method: "DELETE",
+        headers: tokenManager.getAuthHeader(),
+      },
+    );
 
     if (!response.ok) {
-      throw new Error('Failed to delete saved search');
+      throw new Error("Failed to delete saved search");
     }
   }
 
   /**
    * Update saved search
    */
-  async updateSavedSearch(id: string, updates: Partial<SavedSearch>): Promise<SavedSearch> {
-    const response = await fetch(`${API_BASE_URL}/properties/search/saved/${id}`, {
-      method: 'PATCH',
-      headers: {
-        ...tokenManager.getAuthHeader(),
-        'Content-Type': 'application/json'
+  async updateSavedSearch(
+    id: string,
+    updates: Partial<SavedSearch>,
+  ): Promise<SavedSearch> {
+    const response = await fetch(
+      `${API_BASE_URL}/properties/search/saved/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          ...tokenManager.getAuthHeader(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updates),
       },
-      body: JSON.stringify(updates)
-    });
+    );
 
     if (!response.ok) {
-      throw new Error('Failed to update saved search');
+      throw new Error("Failed to update saved search");
     }
 
     const data = await response.json();
@@ -116,7 +134,7 @@ class SearchService {
    */
   async getLocationSuggestions(query: string): Promise<string[]> {
     const response = await fetch(
-      `${API_BASE_URL}/properties/search/autocomplete?query=${encodeURIComponent(query)}`
+      `${API_BASE_URL}/properties/search/autocomplete?query=${encodeURIComponent(query)}`,
     );
 
     if (!response.ok) {

@@ -1,43 +1,65 @@
 ﻿// PLACEHOLDER FILE: components\ApplicationWizard\DocumentUploadStep.tsx
 // TODO: Add your implementation here
 
-import React, { useState, useRef } from 'react';
-import { Upload, FileText, Check, X, Eye, Loader } from 'lucide-react';
-import { useApplication } from '../../hooks/useApplication';
-import { applicationService } from '../../services/applicationService';
-import { ApplicationDocument } from '../../types/application.types';
+import { Upload, FileText, Check, X, Eye, Loader } from "lucide-react";
+import React, { useState, useRef } from "react";
+
+import { useApplication } from "../../hooks/useApplication";
+import { applicationService } from "../../services/applicationService";
+import { ApplicationDocument } from "../../types/application.types";
 
 const DocumentUploadStep: React.FC = () => {
   const { application } = useApplication();
-  const [documents, setDocuments] = useState<ApplicationDocument[]>(application?.documents || []);
+  const [documents, setDocuments] = useState<ApplicationDocument[]>(
+    application?.documents || [],
+  );
   const [uploading, setUploading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
+  const [uploadProgress, setUploadProgress] = useState<Record<string, number>>(
+    {},
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const requiredDocs = [
-    { type: 'id', label: 'Government-Issued ID', required: true },
-    { type: 'paystub', label: 'Recent Paystubs (last 2 months)', required: true },
-    { type: 'bank_statement', label: 'Bank Statements (last 3 months)', required: false },
-    { type: 'employment_letter', label: 'Employment Verification Letter', required: false },
-    { type: 'tax_return', label: 'Tax Returns (if self-employed)', required: false },
+    { type: "id", label: "Government-Issued ID", required: true },
+    {
+      type: "paystub",
+      label: "Recent Paystubs (last 2 months)",
+      required: true,
+    },
+    {
+      type: "bank_statement",
+      label: "Bank Statements (last 3 months)",
+      required: false,
+    },
+    {
+      type: "employment_letter",
+      label: "Employment Verification Letter",
+      required: false,
+    },
+    {
+      type: "tax_return",
+      label: "Tax Returns (if self-employed)",
+      required: false,
+    },
   ];
 
   const handleFileSelect = async (type: string) => {
     if (!application) return;
-    
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*,application/pdf';
-    input.multiple = type === 'paystub' || type === 'bank_statement';
-    
-    input.onchange = async (e: any) => {
-      const files = Array.from(e.target.files || []) as File[];
-      
+
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = "image/*,application/pdf";
+    input.multiple = type === "paystub" || type === "bank_statement";
+
+    input.onchange = async (e: Event) => {
+      const target = e.target as HTMLInputElement;
+      const files = Array.from(target.files || []) as File[];
+
       for (const file of files) {
         await uploadFile(file, type);
       }
     };
-    
+
     input.click();
   };
 
@@ -46,12 +68,12 @@ const DocumentUploadStep: React.FC = () => {
 
     setUploading(true);
     const fileId = `${Date.now()}-${file.name}`;
-    setUploadProgress(prev => ({ ...prev, [fileId]: 0 }));
+    setUploadProgress((prev) => ({ ...prev, [fileId]: 0 }));
 
     try {
       // Simulate upload progress
       const progressInterval = setInterval(() => {
-        setUploadProgress(prev => {
+        setUploadProgress((prev) => {
           const current = prev[fileId] || 0;
           if (current >= 90) {
             clearInterval(progressInterval);
@@ -61,30 +83,34 @@ const DocumentUploadStep: React.FC = () => {
         });
       }, 200);
 
-      const uploaded = await applicationService.uploadDocument(application.id, file, type);
-      
+      const uploaded = await applicationService.uploadDocument(
+        application.id,
+        file,
+        type,
+      );
+
       clearInterval(progressInterval);
-      setUploadProgress(prev => ({ ...prev, [fileId]: 100 }));
-      
+      setUploadProgress((prev) => ({ ...prev, [fileId]: 100 }));
+
       // Add to documents list
-      setDocuments(prev => [...prev, uploaded]);
-      
+      setDocuments((prev) => [...prev, uploaded]);
+
       // Parse document if applicable
-      if (type === 'paystub' || type === 'id' || type === 'bank_statement') {
+      if (type === "paystub" || type === "id" || type === "bank_statement") {
         await applicationService.parseDocument(application.id, uploaded.id);
       }
-      
+
       setTimeout(() => {
-        setUploadProgress(prev => {
+        setUploadProgress((prev) => {
           const newProgress = { ...prev };
           delete newProgress[fileId];
           return newProgress;
         });
       }, 1000);
     } catch (error) {
-      console.error('Upload failed:', error);
-      alert('Failed to upload document. Please try again.');
-      setUploadProgress(prev => {
+      console.error("Upload failed:", error);
+      alert("Failed to upload document. Please try again.");
+      setUploadProgress((prev) => {
         const newProgress = { ...prev };
         delete newProgress[fileId];
         return newProgress;
@@ -95,31 +121,33 @@ const DocumentUploadStep: React.FC = () => {
   };
 
   const handleDelete = async (docId: string) => {
-    if (!application || !confirm('Delete this document?')) return;
+    if (!application || !confirm("Delete this document?")) return;
 
     try {
       await applicationService.deleteDocument(application.id, docId);
-      setDocuments(prev => prev.filter(d => d.id !== docId));
+      setDocuments((prev) => prev.filter((d) => d.id !== docId));
     } catch (error) {
-      console.error('Delete failed:', error);
-      alert('Failed to delete document.');
+      console.error("Delete failed:", error);
+      alert("Failed to delete document.");
     }
   };
 
   const getDocumentsByType = (type: string) => {
-    return documents.filter(d => d.type === type);
+    return documents.filter((d) => d.type === type);
   };
 
   const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+    if (bytes < 1024) return bytes + " B";
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + " KB";
+    return (bytes / (1024 * 1024)).toFixed(1) + " MB";
   };
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Upload Documents</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          Upload Documents
+        </h2>
         <p className="text-gray-600">
           Upload supporting documents to verify your application information.
         </p>
@@ -130,7 +158,9 @@ const DocumentUploadStep: React.FC = () => {
         <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
           <div className="flex items-center mb-2">
             <Loader className="w-5 h-5 text-blue-600 animate-spin mr-2" />
-            <span className="font-medium text-blue-900">Uploading documents...</span>
+            <span className="font-medium text-blue-900">
+              Uploading documents...
+            </span>
           </div>
           {Object.entries(uploadProgress).map(([fileId, progress]) => (
             <div key={fileId} className="mt-2">
@@ -160,10 +190,10 @@ const DocumentUploadStep: React.FC = () => {
               key={docType.type}
               className={`border rounded-lg p-6 transition-colors ${
                 hasUploaded
-                  ? 'border-green-300 bg-green-50'
+                  ? "border-green-300 bg-green-50"
                   : docType.required
-                  ? 'border-red-300 bg-red-50'
-                  : 'border-gray-300 bg-white'
+                    ? "border-red-300 bg-red-50"
+                    : "border-gray-300 bg-white"
               }`}
             >
               <div className="flex items-start justify-between mb-4">
@@ -181,7 +211,7 @@ const DocumentUploadStep: React.FC = () => {
                       )}
                     </h3>
                     <p className="text-sm text-gray-600 mt-1">
-                      {docType.required ? 'Required' : 'Optional'} •{' '}
+                      {docType.required ? "Required" : "Optional"} •{" "}
                       {uploadedDocs.length} uploaded
                     </p>
                   </div>
@@ -212,10 +242,12 @@ const DocumentUploadStep: React.FC = () => {
                             {doc.filename}
                           </p>
                           <p className="text-xs text-gray-500">
-                            {formatFileSize(doc.size)} •{' '}
+                            {formatFileSize(doc.size)} •{" "}
                             {new Date(doc.uploadedAt).toLocaleDateString()}
                             {doc.parsed && (
-                              <span className="ml-2 text-green-600">✓ Verified</span>
+                              <span className="ml-2 text-green-600">
+                                ✓ Verified
+                              </span>
                             )}
                           </p>
                         </div>
@@ -242,7 +274,7 @@ const DocumentUploadStep: React.FC = () => {
               )}
 
               {/* Document Requirements */}
-              {docType.type === 'paystub' && (
+              {docType.type === "paystub" && (
                 <div className="mt-4 text-sm text-gray-600">
                   <p className="font-medium mb-1">Requirements:</p>
                   <ul className="list-disc list-inside space-y-1">
@@ -259,7 +291,9 @@ const DocumentUploadStep: React.FC = () => {
 
       {/* Tips */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-semibold text-blue-900 mb-2">Document Upload Tips</h4>
+        <h4 className="font-semibold text-blue-900 mb-2">
+          Document Upload Tips
+        </h4>
         <ul className="text-sm text-blue-800 space-y-1">
           <li>• Accepted formats: PDF, JPG, PNG (max 10MB per file)</li>
           <li>• Ensure documents are clear and legible</li>
@@ -285,7 +319,12 @@ const DocumentUploadStep: React.FC = () => {
               Required Documents
             </p>
             <p className="text-2xl font-bold text-gray-900 mt-1">
-              {requiredDocs.filter(d => d.required && getDocumentsByType(d.type).length > 0).length} / {requiredDocs.filter(d => d.required).length}
+              {
+                requiredDocs.filter(
+                  (d) => d.required && getDocumentsByType(d.type).length > 0,
+                ).length
+              }{" "}
+              / {requiredDocs.filter((d) => d.required).length}
             </p>
           </div>
         </div>

@@ -1,23 +1,23 @@
 // Inspection Service
-import prisma from '../../config/database';
-import { AppError } from '../../middleware/errorHandler';
+import prisma from "../../config/database";
+import { AppError } from "../../middleware/errorHandler";
 
 export class InspectionService {
-  async create(userId: string, data: any) {
+  async create(userId: string, data: Record<string, unknown>) {
     // Verify property exists
     const property = await prisma.property.findUnique({
       where: { id: data.propertyId },
     });
 
     if (!property) {
-      throw new AppError('Property not found', 404, 'PROPERTY_NOT_FOUND');
+      throw new AppError("Property not found", 404, "PROPERTY_NOT_FOUND");
     }
 
     const inspection = await prisma.inspection.create({
       data: {
         ...data,
         userId,
-        status: 'SCHEDULED',
+        status: "SCHEDULED",
       },
       include: {
         property: {
@@ -41,10 +41,10 @@ export class InspectionService {
     return inspection;
   }
 
-  async getAll(filters: any = {}) {
+  async getAll(filters: Record<string, unknown> = {}) {
     const { page = 1, limit = 20, propertyId, userId, status } = filters;
 
-    const where: any = {};
+    const where: Record<string, unknown> = {};
     if (propertyId) where.propertyId = propertyId;
     if (userId) where.userId = userId;
     if (status) where.status = status;
@@ -71,7 +71,7 @@ export class InspectionService {
         },
         skip: (page - 1) * limit,
         take: limit,
-        orderBy: { scheduledDate: 'asc' },
+        orderBy: { scheduledDate: "asc" },
       }),
       prisma.inspection.count({ where }),
     ]);
@@ -105,23 +105,23 @@ export class InspectionService {
     });
 
     if (!inspection) {
-      throw new AppError('Inspection not found', 404, 'INSPECTION_NOT_FOUND');
+      throw new AppError("Inspection not found", 404, "INSPECTION_NOT_FOUND");
     }
 
     return inspection;
   }
 
-  async update(id: string, userId: string, data: any) {
+  async update(id: string, userId: string, data: Record<string, unknown>) {
     const inspection = await prisma.inspection.findUnique({
       where: { id },
     });
 
     if (!inspection) {
-      throw new AppError('Inspection not found', 404, 'INSPECTION_NOT_FOUND');
+      throw new AppError("Inspection not found", 404, "INSPECTION_NOT_FOUND");
     }
 
     if (inspection.userId !== userId) {
-      throw new AppError('Not authorized', 403, 'FORBIDDEN');
+      throw new AppError("Not authorized", 403, "FORBIDDEN");
     }
 
     const updated = await prisma.inspection.update({
@@ -138,17 +138,17 @@ export class InspectionService {
     });
 
     if (!inspection) {
-      throw new AppError('Inspection not found', 404, 'INSPECTION_NOT_FOUND');
+      throw new AppError("Inspection not found", 404, "INSPECTION_NOT_FOUND");
     }
 
     if (inspection.userId !== userId) {
-      throw new AppError('Not authorized', 403, 'FORBIDDEN');
+      throw new AppError("Not authorized", 403, "FORBIDDEN");
     }
 
     const updated = await prisma.inspection.update({
       where: { id },
       data: {
-        status: 'CANCELLED',
+        status: "CANCELLED",
         cancelledAt: new Date(),
         cancellationReason: reason,
       },
@@ -172,7 +172,7 @@ export class InspectionService {
         },
         skip: (page - 1) * limit,
         take: limit,
-        orderBy: { scheduledDate: 'asc' },
+        orderBy: { scheduledDate: "asc" },
       }),
       prisma.inspection.count({ where: { userId } }),
     ]);

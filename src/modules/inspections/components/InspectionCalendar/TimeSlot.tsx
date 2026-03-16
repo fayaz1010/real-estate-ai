@@ -1,62 +1,63 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionCalendar/TimeSlot.tsx
 // TODO: Add your implementation here
 
-import React from 'react';
-import { MapPin, Clock, User, Users } from 'lucide-react';
-import { Inspection } from '../../types/inspection.types';
+import { MapPin, Clock, User, Users } from "lucide-react";
+import React from "react";
+
+import { Inspection } from "../../types/inspection.types";
 
 interface TimeSlotProps {
   inspection: Inspection;
   onClick?: () => void;
-  variant?: 'compact' | 'expanded';
+  variant?: "compact" | "expanded";
 }
 
 export const TimeSlot: React.FC<TimeSlotProps> = ({
   inspection,
   onClick,
-  variant = 'compact',
+  variant = "compact",
 }) => {
   const getStatusColor = (status: string): string => {
     switch (status) {
-      case 'confirmed':
-      case 'checked_in':
-        return 'bg-blue-600 border-blue-600';
-      case 'pending':
-        return 'bg-yellow-500 border-yellow-500';
-      case 'completed':
-        return 'bg-green-600 border-green-600';
-      case 'cancelled':
-      case 'no_show':
-        return 'bg-red-500 border-red-500';
+      case "confirmed":
+      case "checked_in":
+        return "bg-blue-600 border-blue-600";
+      case "pending":
+        return "bg-yellow-500 border-yellow-500";
+      case "completed":
+        return "bg-green-600 border-green-600";
+      case "cancelled":
+      case "no_show":
+        return "bg-red-500 border-red-500";
       default:
-        return 'bg-gray-400 border-gray-400';
+        return "bg-gray-400 border-gray-400";
     }
   };
 
   const formatTime = (dateStr: string): string => {
-    return new Date(dateStr).toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
+    return new Date(dateStr).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
       hour12: true,
     });
   };
 
   const getInspectionTypeIcon = (type: string) => {
     switch (type) {
-      case 'in_person':
-        return '🏠';
-      case 'virtual':
-        return '💻';
-      case 'open_house':
-        return '👥';
-      case 'self_guided':
-        return '🔑';
+      case "in_person":
+        return "🏠";
+      case "virtual":
+        return "💻";
+      case "open_house":
+        return "👥";
+      case "self_guided":
+        return "🔑";
       default:
-        return '📅';
+        return "📅";
     }
   };
 
-  if (variant === 'compact') {
+  if (variant === "compact") {
     return (
       <button
         onClick={onClick}
@@ -73,7 +74,7 @@ export const TimeSlot: React.FC<TimeSlotProps> = ({
           <span>{getInspectionTypeIcon(inspection.type)}</span>
         </div>
         <div className="text-xs mt-0.5 truncate opacity-90">
-          {inspection.property?.title || 'Property'}
+          {inspection.property?.title || "Property"}
         </div>
       </button>
     );
@@ -92,13 +93,15 @@ export const TimeSlot: React.FC<TimeSlotProps> = ({
       {/* Header */}
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
-          <span className="text-xl">{getInspectionTypeIcon(inspection.type)}</span>
+          <span className="text-xl">
+            {getInspectionTypeIcon(inspection.type)}
+          </span>
           <div>
             <h4 className="font-semibold text-gray-900">
-              {inspection.property?.title || 'Property Inspection'}
+              {inspection.property?.title || "Property Inspection"}
             </h4>
             <p className="text-sm text-gray-500 capitalize">
-              {inspection.type.replace('_', ' ')} Tour
+              {inspection.type.replace("_", " ")} Tour
             </p>
           </div>
         </div>
@@ -118,7 +121,8 @@ export const TimeSlot: React.FC<TimeSlotProps> = ({
         <div className="flex items-center gap-2 text-sm text-gray-600">
           <Clock className="w-4 h-4" />
           <span>
-            {formatTime(inspection.scheduledDate)} ({inspection.duration} minutes)
+            {formatTime(inspection.scheduledDate)} ({inspection.duration}{" "}
+            minutes)
           </span>
         </div>
 
@@ -127,7 +131,8 @@ export const TimeSlot: React.FC<TimeSlotProps> = ({
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <MapPin className="w-4 h-4 flex-shrink-0" />
             <span className="truncate">
-              {inspection.property.address.street}, {inspection.property.address.city}
+              {inspection.property.address.street},{" "}
+              {inspection.property.address.city}
             </span>
           </div>
         )}
@@ -138,7 +143,7 @@ export const TimeSlot: React.FC<TimeSlotProps> = ({
             <Users className="w-4 h-4" />
             <span>
               You + {inspection.attendees.length} other
-              {inspection.attendees.length > 1 ? 's' : ''}
+              {inspection.attendees.length > 1 ? "s" : ""}
             </span>
           </div>
         )}
@@ -148,14 +153,15 @@ export const TimeSlot: React.FC<TimeSlotProps> = ({
           <div className="flex items-center gap-2 text-sm text-gray-600">
             <User className="w-4 h-4" />
             <span>
-              With {inspection.landlord.firstName} {inspection.landlord.lastName}
+              With {inspection.landlord.firstName}{" "}
+              {inspection.landlord.lastName}
             </span>
           </div>
         )}
       </div>
 
       {/* Quick Actions */}
-      {inspection.status === 'confirmed' && (
+      {inspection.status === "confirmed" && (
         <div className="mt-3 pt-3 border-t border-gray-200 flex gap-2">
           <button
             onClick={(e) => {

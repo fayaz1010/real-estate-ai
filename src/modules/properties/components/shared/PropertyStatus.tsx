@@ -1,74 +1,75 @@
 // FILE PATH: src/modules/properties/components/shared/PropertyStatus.tsx
 // Module 1.2: Property Listings Management - Property Status Component
 
-import React from 'react';
-import { PropertyStatus as PropertyStatusType } from '../../types/property.types';
-import { CheckCircle, Clock, XCircle, EyeOff, Edit } from 'lucide-react';
+import { CheckCircle, Clock, XCircle, EyeOff, Edit } from "lucide-react";
+import React from "react";
+
+import { PropertyStatus as PropertyStatusType } from "../../types/property.types";
 
 interface PropertyStatusProps {
   status: PropertyStatusType;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   showIcon?: boolean;
   className?: string;
 }
 
 export const PropertyStatus: React.FC<PropertyStatusProps> = ({
   status,
-  size = 'md',
+  size = "md",
   showIcon = true,
-  className = ''
+  className = "",
 }) => {
   // Get status configuration
   const getStatusConfig = () => {
     const configs = {
       available: {
-        label: 'Available',
-        bgColor: 'bg-green-100',
-        textColor: 'text-green-800',
-        borderColor: 'border-green-200',
+        label: "Available",
+        bgColor: "bg-green-100",
+        textColor: "text-green-800",
+        borderColor: "border-green-200",
         icon: CheckCircle,
-        description: 'Ready for viewing and applications'
+        description: "Ready for viewing and applications",
       },
       pending: {
-        label: 'Pending',
-        bgColor: 'bg-yellow-100',
-        textColor: 'text-yellow-800',
-        borderColor: 'border-yellow-200',
+        label: "Pending",
+        bgColor: "bg-yellow-100",
+        textColor: "text-yellow-800",
+        borderColor: "border-yellow-200",
         icon: Clock,
-        description: 'Application under review'
+        description: "Application under review",
       },
       rented: {
-        label: 'Rented',
-        bgColor: 'bg-blue-100',
-        textColor: 'text-blue-800',
-        borderColor: 'border-blue-200',
+        label: "Rented",
+        bgColor: "bg-blue-100",
+        textColor: "text-blue-800",
+        borderColor: "border-blue-200",
         icon: CheckCircle,
-        description: 'Currently leased'
+        description: "Currently leased",
       },
       sold: {
-        label: 'Sold',
-        bgColor: 'bg-purple-100',
-        textColor: 'text-purple-800',
-        borderColor: 'border-purple-200',
+        label: "Sold",
+        bgColor: "bg-purple-100",
+        textColor: "text-purple-800",
+        borderColor: "border-purple-200",
         icon: CheckCircle,
-        description: 'Property sold'
+        description: "Property sold",
       },
       off_market: {
-        label: 'Off Market',
-        bgColor: 'bg-gray-100',
-        textColor: 'text-gray-800',
-        borderColor: 'border-gray-200',
+        label: "Off Market",
+        bgColor: "bg-gray-100",
+        textColor: "text-gray-800",
+        borderColor: "border-gray-200",
         icon: EyeOff,
-        description: 'Not currently listed'
+        description: "Not currently listed",
       },
       draft: {
-        label: 'Draft',
-        bgColor: 'bg-orange-100',
-        textColor: 'text-orange-800',
-        borderColor: 'border-orange-200',
+        label: "Draft",
+        bgColor: "bg-orange-100",
+        textColor: "text-orange-800",
+        borderColor: "border-orange-200",
         icon: Edit,
-        description: 'Not yet published'
-      }
+        description: "Not yet published",
+      },
     };
 
     return configs[status] || configs.draft;
@@ -80,23 +81,23 @@ export const PropertyStatus: React.FC<PropertyStatusProps> = ({
   // Size configurations
   const sizeClasses = {
     sm: {
-      padding: 'px-2 py-0.5',
-      text: 'text-xs',
+      padding: "px-2 py-0.5",
+      text: "text-xs",
       icon: 12,
-      gap: 'gap-1'
+      gap: "gap-1",
     },
     md: {
-      padding: 'px-3 py-1',
-      text: 'text-sm',
+      padding: "px-3 py-1",
+      text: "text-sm",
       icon: 14,
-      gap: 'gap-1.5'
+      gap: "gap-1.5",
     },
     lg: {
-      padding: 'px-4 py-2',
-      text: 'text-base',
+      padding: "px-4 py-2",
+      text: "text-base",
       icon: 16,
-      gap: 'gap-2'
-    }
+      gap: "gap-2",
+    },
   };
 
   const sizeConfig = sizeClasses[size];
@@ -128,76 +129,77 @@ interface PropertyStatusDetailedProps {
 export const PropertyStatusDetailed: React.FC<PropertyStatusDetailedProps> = ({
   status,
   showDescription = true,
-  className = ''
+  className = "",
 }) => {
   const getStatusConfig = () => {
     const configs = {
       available: {
-        label: 'Available Now',
-        bgColor: 'bg-green-50',
-        textColor: 'text-green-900',
-        borderColor: 'border-green-200',
-        accentColor: 'bg-green-500',
+        label: "Available Now",
+        bgColor: "bg-green-50",
+        textColor: "text-green-900",
+        borderColor: "border-green-200",
+        accentColor: "bg-green-500",
         icon: CheckCircle,
-        iconColor: 'text-green-600',
-        description: 'This property is ready for viewing and accepting applications.',
-        action: 'Schedule a tour or apply now'
+        iconColor: "text-green-600",
+        description:
+          "This property is ready for viewing and accepting applications.",
+        action: "Schedule a tour or apply now",
       },
       pending: {
-        label: 'Application Pending',
-        bgColor: 'bg-yellow-50',
-        textColor: 'text-yellow-900',
-        borderColor: 'border-yellow-200',
-        accentColor: 'bg-yellow-500',
+        label: "Application Pending",
+        bgColor: "bg-yellow-50",
+        textColor: "text-yellow-900",
+        borderColor: "border-yellow-200",
+        accentColor: "bg-yellow-500",
         icon: Clock,
-        iconColor: 'text-yellow-600',
-        description: 'An application is being reviewed for this property.',
-        action: 'May become available soon'
+        iconColor: "text-yellow-600",
+        description: "An application is being reviewed for this property.",
+        action: "May become available soon",
       },
       rented: {
-        label: 'Currently Rented',
-        bgColor: 'bg-blue-50',
-        textColor: 'text-blue-900',
-        borderColor: 'border-blue-200',
-        accentColor: 'bg-blue-500',
+        label: "Currently Rented",
+        bgColor: "bg-blue-50",
+        textColor: "text-blue-900",
+        borderColor: "border-blue-200",
+        accentColor: "bg-blue-500",
         icon: CheckCircle,
-        iconColor: 'text-blue-600',
-        description: 'This property is currently occupied by a tenant.',
-        action: 'Save for future availability'
+        iconColor: "text-blue-600",
+        description: "This property is currently occupied by a tenant.",
+        action: "Save for future availability",
       },
       sold: {
-        label: 'Sold',
-        bgColor: 'bg-purple-50',
-        textColor: 'text-purple-900',
-        borderColor: 'border-purple-200',
-        accentColor: 'bg-purple-500',
+        label: "Sold",
+        bgColor: "bg-purple-50",
+        textColor: "text-purple-900",
+        borderColor: "border-purple-200",
+        accentColor: "bg-purple-500",
         icon: CheckCircle,
-        iconColor: 'text-purple-600',
-        description: 'This property has been sold.',
-        action: 'Browse similar properties'
+        iconColor: "text-purple-600",
+        description: "This property has been sold.",
+        action: "Browse similar properties",
       },
       off_market: {
-        label: 'Off Market',
-        bgColor: 'bg-gray-50',
-        textColor: 'text-gray-900',
-        borderColor: 'border-gray-200',
-        accentColor: 'bg-gray-500',
+        label: "Off Market",
+        bgColor: "bg-gray-50",
+        textColor: "text-gray-900",
+        borderColor: "border-gray-200",
+        accentColor: "bg-gray-500",
         icon: EyeOff,
-        iconColor: 'text-gray-600',
-        description: 'This property is temporarily not available for viewing.',
-        action: 'Contact owner for details'
+        iconColor: "text-gray-600",
+        description: "This property is temporarily not available for viewing.",
+        action: "Contact owner for details",
       },
       draft: {
-        label: 'Draft',
-        bgColor: 'bg-orange-50',
-        textColor: 'text-orange-900',
-        borderColor: 'border-orange-200',
-        accentColor: 'bg-orange-500',
+        label: "Draft",
+        bgColor: "bg-orange-50",
+        textColor: "text-orange-900",
+        borderColor: "border-orange-200",
+        accentColor: "bg-orange-500",
         icon: Edit,
-        iconColor: 'text-orange-600',
-        description: 'This listing is not yet published.',
-        action: 'Complete and publish listing'
-      }
+        iconColor: "text-orange-600",
+        description: "This listing is not yet published.",
+        action: "Complete and publish listing",
+      },
     };
 
     return configs[status] || configs.draft;
@@ -241,47 +243,46 @@ export const PropertyStatusDetailed: React.FC<PropertyStatusDetailedProps> = ({
 // Status badge with tooltip
 interface PropertyStatusWithTooltipProps {
   status: PropertyStatusType;
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 }
 
-export const PropertyStatusWithTooltip: React.FC<PropertyStatusWithTooltipProps> = ({
-  status,
-  size = 'md'
-}) => {
+export const PropertyStatusWithTooltip: React.FC<
+  PropertyStatusWithTooltipProps
+> = ({ status, size = "md" }) => {
   const [showTooltip, setShowTooltip] = React.useState(false);
 
   const getStatusConfig = () => {
     const configs = {
       available: {
-        label: 'Available',
-        description: 'Ready for viewing and applications',
-        color: 'green'
+        label: "Available",
+        description: "Ready for viewing and applications",
+        color: "green",
       },
       pending: {
-        label: 'Pending',
-        description: 'Application under review',
-        color: 'yellow'
+        label: "Pending",
+        description: "Application under review",
+        color: "yellow",
       },
       rented: {
-        label: 'Rented',
-        description: 'Currently leased',
-        color: 'blue'
+        label: "Rented",
+        description: "Currently leased",
+        color: "blue",
       },
       sold: {
-        label: 'Sold',
-        description: 'Property sold',
-        color: 'purple'
+        label: "Sold",
+        description: "Property sold",
+        color: "purple",
       },
       off_market: {
-        label: 'Off Market',
-        description: 'Not currently listed',
-        color: 'gray'
+        label: "Off Market",
+        description: "Not currently listed",
+        color: "gray",
       },
       draft: {
-        label: 'Draft',
-        description: 'Not yet published',
-        color: 'orange'
-      }
+        label: "Draft",
+        description: "Not yet published",
+        color: "orange",
+      },
     };
 
     return configs[status] || configs.draft;

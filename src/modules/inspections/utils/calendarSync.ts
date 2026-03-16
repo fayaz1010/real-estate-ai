@@ -1,72 +1,74 @@
 // PLACEHOLDER FILE: src/modules/inspections/utils/calendarSync.ts
 // TODO: Add your implementation here
 
-import { Inspection, CalendarEvent } from '../types/inspection.types';
+import { Inspection, CalendarEvent } from "../types/inspection.types";
 
 /**
  * Generate iCalendar (.ics) format for inspection
  */
 export function generateICalendar(inspection: Inspection): string {
   const startDate = new Date(inspection.scheduledDate);
-  const endDate = new Date(startDate.getTime() + inspection.duration * 60 * 1000);
+  const endDate = new Date(
+    startDate.getTime() + inspection.duration * 60 * 1000,
+  );
 
   const formatDateTime = (date: Date): string => {
-    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
   };
 
   const attendeeList = inspection.attendees
     .map((a) => `ATTENDEE;CN=${a.name}:mailto:${a.email}`)
-    .join('\n');
+    .join("\n");
 
   const property = inspection.property;
   const location = property
     ? `${property.address.street}, ${property.address.city}, ${property.address.state} ${property.address.zipCode}`
-    : '';
+    : "";
 
   const description = [
     `Property Inspection - ${inspection.type}`,
-    '',
-    property ? `Property: ${property.title}` : '',
+    "",
+    property ? `Property: ${property.title}` : "",
     `Duration: ${inspection.duration} minutes`,
-    inspection.tenantNotes ? `\nNotes: ${inspection.tenantNotes}` : '',
-    '',
+    inspection.tenantNotes ? `\nNotes: ${inspection.tenantNotes}` : "",
+    "",
     inspection.virtualMeetingUrl
       ? `Virtual Meeting Link: ${inspection.virtualMeetingUrl}`
-      : '',
+      : "",
   ]
     .filter(Boolean)
-    .join('\\n');
+    .join("\\n");
 
   const icsContent = [
-    'BEGIN:VCALENDAR',
-    'VERSION:2.0',
-    'PRODID:-//Real Estate Platform//Inspection Booking//EN',
-    'CALSCALE:GREGORIAN',
-    'METHOD:REQUEST',
-    'BEGIN:VEVENT',
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Real Estate Platform//Inspection Booking//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:REQUEST",
+    "BEGIN:VEVENT",
     `UID:${inspection.id}@realestate-platform.com`,
     `DTSTAMP:${formatDateTime(new Date())}`,
     `DTSTART:${formatDateTime(startDate)}`,
     `DTEND:${formatDateTime(endDate)}`,
-    `SUMMARY:Property Inspection - ${property?.title || 'Property Tour'}`,
+    `SUMMARY:Property Inspection - ${property?.title || "Property Tour"}`,
     `DESCRIPTION:${description}`,
     `LOCATION:${location}`,
     attendeeList,
-    'STATUS:CONFIRMED',
-    'SEQUENCE:0',
-    'BEGIN:VALARM',
-    'TRIGGER:-PT2H',
-    'ACTION:DISPLAY',
-    'DESCRIPTION:Reminder: Property inspection in 2 hours',
-    'END:VALARM',
-    'BEGIN:VALARM',
-    'TRIGGER:-PT30M',
-    'ACTION:DISPLAY',
-    'DESCRIPTION:Reminder: Property inspection in 30 minutes',
-    'END:VALARM',
-    'END:VEVENT',
-    'END:VCALENDAR',
-  ].join('\r\n');
+    "STATUS:CONFIRMED",
+    "SEQUENCE:0",
+    "BEGIN:VALARM",
+    "TRIGGER:-PT2H",
+    "ACTION:DISPLAY",
+    "DESCRIPTION:Reminder: Property inspection in 2 hours",
+    "END:VALARM",
+    "BEGIN:VALARM",
+    "TRIGGER:-PT30M",
+    "ACTION:DISPLAY",
+    "DESCRIPTION:Reminder: Property inspection in 30 minutes",
+    "END:VALARM",
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
 
   return icsContent;
 }
@@ -76,7 +78,7 @@ export function generateICalendar(inspection: Inspection): string {
  */
 export function getCalendarDownloadUrl(inspection: Inspection): string {
   const icsContent = generateICalendar(inspection);
-  const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+  const blob = new Blob([icsContent], { type: "text/calendar;charset=utf-8" });
   return URL.createObjectURL(blob);
 }
 
@@ -85,7 +87,7 @@ export function getCalendarDownloadUrl(inspection: Inspection): string {
  */
 export function downloadCalendarFile(inspection: Inspection): void {
   const url = getCalendarDownloadUrl(inspection);
-  const link = document.createElement('a');
+  const link = document.createElement("a");
   link.href = url;
   link.download = `inspection-${inspection.id}.ics`;
   document.body.appendChild(link);
@@ -99,34 +101,40 @@ export function downloadCalendarFile(inspection: Inspection): void {
  */
 export function getGoogleCalendarUrl(inspection: Inspection): string {
   const startDate = new Date(inspection.scheduledDate);
-  const endDate = new Date(startDate.getTime() + inspection.duration * 60 * 1000);
+  const endDate = new Date(
+    startDate.getTime() + inspection.duration * 60 * 1000,
+  );
 
   const formatGoogleDate = (date: Date): string => {
-    return date.toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+    return date.toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
   };
 
   const property = inspection.property;
   const title = encodeURIComponent(
-    `Property Inspection - ${property?.title || 'Property Tour'}`
+    `Property Inspection - ${property?.title || "Property Tour"}`,
   );
 
   const location = property
     ? encodeURIComponent(
-        `${property.address.street}, ${property.address.city}, ${property.address.state}`
+        `${property.address.street}, ${property.address.city}, ${property.address.state}`,
       )
-    : '';
+    : "";
 
-  const details = encodeURIComponent([
-    `Property Inspection - ${inspection.type}`,
-    '',
-    property ? `Property: ${property.title}` : '',
-    `Duration: ${inspection.duration} minutes`,
-    inspection.tenantNotes ? `\nNotes: ${inspection.tenantNotes}` : '',
-    '',
-    inspection.virtualMeetingUrl
-      ? `Virtual Meeting Link: ${inspection.virtualMeetingUrl}`
-      : '',
-  ].filter(Boolean).join('\n'));
+  const details = encodeURIComponent(
+    [
+      `Property Inspection - ${inspection.type}`,
+      "",
+      property ? `Property: ${property.title}` : "",
+      `Duration: ${inspection.duration} minutes`,
+      inspection.tenantNotes ? `\nNotes: ${inspection.tenantNotes}` : "",
+      "",
+      inspection.virtualMeetingUrl
+        ? `Virtual Meeting Link: ${inspection.virtualMeetingUrl}`
+        : "",
+    ]
+      .filter(Boolean)
+      .join("\n"),
+  );
 
   const dates = `${formatGoogleDate(startDate)}/${formatGoogleDate(endDate)}`;
 
@@ -138,7 +146,9 @@ export function getGoogleCalendarUrl(inspection: Inspection): string {
  */
 export function getOutlookCalendarUrl(inspection: Inspection): string {
   const startDate = new Date(inspection.scheduledDate);
-  const endDate = new Date(startDate.getTime() + inspection.duration * 60 * 1000);
+  const endDate = new Date(
+    startDate.getTime() + inspection.duration * 60 * 1000,
+  );
 
   const formatOutlookDate = (date: Date): string => {
     return date.toISOString();
@@ -146,26 +156,30 @@ export function getOutlookCalendarUrl(inspection: Inspection): string {
 
   const property = inspection.property;
   const subject = encodeURIComponent(
-    `Property Inspection - ${property?.title || 'Property Tour'}`
+    `Property Inspection - ${property?.title || "Property Tour"}`,
   );
 
   const location = property
     ? encodeURIComponent(
-        `${property.address.street}, ${property.address.city}, ${property.address.state}`
+        `${property.address.street}, ${property.address.city}, ${property.address.state}`,
       )
-    : '';
+    : "";
 
-  const body = encodeURIComponent([
-    `Property Inspection - ${inspection.type}`,
-    '',
-    property ? `Property: ${property.title}` : '',
-    `Duration: ${inspection.duration} minutes`,
-    inspection.tenantNotes ? `\nNotes: ${inspection.tenantNotes}` : '',
-    '',
-    inspection.virtualMeetingUrl
-      ? `Virtual Meeting Link: ${inspection.virtualMeetingUrl}`
-      : '',
-  ].filter(Boolean).join('\n'));
+  const body = encodeURIComponent(
+    [
+      `Property Inspection - ${inspection.type}`,
+      "",
+      property ? `Property: ${property.title}` : "",
+      `Duration: ${inspection.duration} minutes`,
+      inspection.tenantNotes ? `\nNotes: ${inspection.tenantNotes}` : "",
+      "",
+      inspection.virtualMeetingUrl
+        ? `Virtual Meeting Link: ${inspection.virtualMeetingUrl}`
+        : "",
+    ]
+      .filter(Boolean)
+      .join("\n"),
+  );
 
   const startTime = formatOutlookDate(startDate);
   const endTime = formatOutlookDate(endDate);
@@ -186,29 +200,33 @@ export function getAppleCalendarUrl(inspection: Inspection): string {
 /**
  * Convert inspection to calendar event format
  */
-export function inspectionToCalendarEvent(inspection: Inspection): CalendarEvent {
+export function inspectionToCalendarEvent(
+  inspection: Inspection,
+): CalendarEvent {
   const startDate = new Date(inspection.scheduledDate);
-  const endDate = new Date(startDate.getTime() + inspection.duration * 60 * 1000);
+  const endDate = new Date(
+    startDate.getTime() + inspection.duration * 60 * 1000,
+  );
 
   const property = inspection.property;
   const location = property
     ? `${property.address.street}, ${property.address.city}, ${property.address.state}`
-    : '';
+    : "";
 
   const description = [
     `Property Inspection - ${inspection.type}`,
-    property ? `Property: ${property.title}` : '',
-    inspection.tenantNotes ? `Notes: ${inspection.tenantNotes}` : '',
+    property ? `Property: ${property.title}` : "",
+    inspection.tenantNotes ? `Notes: ${inspection.tenantNotes}` : "",
     inspection.virtualMeetingUrl
       ? `Virtual Meeting: ${inspection.virtualMeetingUrl}`
-      : '',
+      : "",
   ]
     .filter(Boolean)
-    .join('\n');
+    .join("\n");
 
   return {
     id: inspection.id,
-    title: `Property Inspection - ${property?.title || 'Property Tour'}`,
+    title: `Property Inspection - ${property?.title || "Property Tour"}`,
     description,
     startTime: startDate.toISOString(),
     endTime: endDate.toISOString(),
@@ -223,7 +241,7 @@ export function inspectionToCalendarEvent(inspection: Inspection): CalendarEvent
     type: inspection.type,
     status: inspection.status,
     propertyId: inspection.propertyId,
-    tenantName: inspection.tenant?.name || 'Unknown',
+    tenantName: inspection.tenant?.name || "Unknown",
   };
 }
 
@@ -232,21 +250,21 @@ export function inspectionToCalendarEvent(inspection: Inspection): CalendarEvent
  */
 export function openCalendarApp(
   inspection: Inspection,
-  provider: 'google' | 'outlook' | 'apple' | 'ics'
+  provider: "google" | "outlook" | "apple" | "ics",
 ): void {
   let url: string;
 
   switch (provider) {
-    case 'google':
+    case "google":
       url = getGoogleCalendarUrl(inspection);
       break;
-    case 'outlook':
+    case "outlook":
       url = getOutlookCalendarUrl(inspection);
       break;
-    case 'apple':
+    case "apple":
       downloadCalendarFile(inspection);
       return;
-    case 'ics':
+    case "ics":
       downloadCalendarFile(inspection);
       return;
     default:
@@ -254,28 +272,39 @@ export function openCalendarApp(
       return;
   }
 
-  window.open(url, '_blank');
+  window.open(url, "_blank");
 }
 
 /**
  * Detect user's preferred calendar provider
  */
-export function detectCalendarProvider(): 'google' | 'outlook' | 'apple' | 'unknown' {
+export function detectCalendarProvider():
+  | "google"
+  | "outlook"
+  | "apple"
+  | "unknown" {
   const userAgent = navigator.userAgent.toLowerCase();
 
-  if (userAgent.includes('mac') || userAgent.includes('iphone') || userAgent.includes('ipad')) {
-    return 'apple';
+  if (
+    userAgent.includes("mac") ||
+    userAgent.includes("iphone") ||
+    userAgent.includes("ipad")
+  ) {
+    return "apple";
   }
 
   // Check if user is logged into Google
-  if (document.cookie.includes('google')) {
-    return 'google';
+  if (document.cookie.includes("google")) {
+    return "google";
   }
 
   // Check if user is using Outlook/Microsoft
-  if (document.cookie.includes('microsoft') || document.cookie.includes('outlook')) {
-    return 'outlook';
+  if (
+    document.cookie.includes("microsoft") ||
+    document.cookie.includes("outlook")
+  ) {
+    return "outlook";
   }
 
-  return 'unknown';
+  return "unknown";
 }

@@ -1,19 +1,14 @@
-import React, { ReactElement } from 'react'
-import { render, RenderOptions } from '@testing-library/react'
-import { ThemeProvider } from '@/components/theme-provider'
+import { render, RenderOptions } from "@testing-library/react";
+import React, { ReactElement } from "react";
 
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
-      {children}
-    </ThemeProvider>
-  )
-}
+  return <>{children}</>;
+};
 
 const customRender = (
   ui: ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>,
-) => render(ui, { wrapper: AllTheProviders, ...options })
+  options?: Omit<RenderOptions, "wrapper">,
+) => render(ui, { wrapper: AllTheProviders, ...options });
 
-export * from '@testing-library/react'
-export { customRender as render }
+export * from "@testing-library/react";
+export { customRender as render };

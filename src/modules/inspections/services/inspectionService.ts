@@ -3,7 +3,8 @@
 // Module 1.3: Inspection Booking & Scheduling System - API Service Layer
 // ============================================================================
 
-import axios from 'axios';
+import axios from "axios";
+
 import {
   Inspection,
   InspectionBookingRequest,
@@ -15,9 +16,9 @@ import {
   PropertyInspectionMetrics,
   InspectionsResponse,
   AvailableSlotsResponse,
-} from '../types/inspection.types';
+} from "../types/inspection.types";
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4041/api';
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
 
 class InspectionService {
   /**
@@ -26,7 +27,7 @@ class InspectionService {
   async requestInspection(data: InspectionBookingRequest): Promise<Inspection> {
     const response = await axios.post<Inspection>(
       `${API_URL}/inspections/request`,
-      data
+      data,
     );
     return response.data;
   }
@@ -37,7 +38,7 @@ class InspectionService {
   async createInspection(data: CreateInspectionDto): Promise<Inspection> {
     const response = await axios.post<Inspection>(
       `${API_URL}/inspections`,
-      data
+      data,
     );
     return response.data;
   }
@@ -57,7 +58,7 @@ class InspectionService {
   }): Promise<InspectionsResponse> {
     const response = await axios.get<InspectionsResponse>(
       `${API_URL}/inspections`,
-      { params: filters }
+      { params: filters },
     );
     return response.data;
   }
@@ -67,7 +68,7 @@ class InspectionService {
    */
   async getInspectionById(id: string): Promise<Inspection> {
     const response = await axios.get<Inspection>(
-      `${API_URL}/inspections/${id}`
+      `${API_URL}/inspections/${id}`,
     );
     return response.data;
   }
@@ -75,10 +76,13 @@ class InspectionService {
   /**
    * Update inspection
    */
-  async updateInspection(id: string, updates: UpdateInspectionDto): Promise<Inspection> {
+  async updateInspection(
+    id: string,
+    updates: UpdateInspectionDto,
+  ): Promise<Inspection> {
     const response = await axios.patch<Inspection>(
       `${API_URL}/inspections/${id}`,
-      updates
+      updates,
     );
     return response.data;
   }
@@ -88,7 +92,7 @@ class InspectionService {
    */
   async confirmInspection(id: string): Promise<Inspection> {
     const response = await axios.post<Inspection>(
-      `${API_URL}/inspections/${id}/confirm`
+      `${API_URL}/inspections/${id}/confirm`,
     );
     return response.data;
   }
@@ -99,7 +103,7 @@ class InspectionService {
   async cancelInspection(id: string, reason: string): Promise<Inspection> {
     const response = await axios.post<Inspection>(
       `${API_URL}/inspections/${id}/cancel`,
-      { reason }
+      { reason },
     );
     return response.data;
   }
@@ -111,11 +115,11 @@ class InspectionService {
     id: string,
     newDate: string,
     newTime: string,
-    reason?: string
+    reason?: string,
   ): Promise<Inspection> {
     const response = await axios.post<Inspection>(
       `${API_URL}/inspections/${id}/reschedule`,
-      { newDate, newTime, reason }
+      { newDate, newTime, reason },
     );
     return response.data;
   }
@@ -126,7 +130,7 @@ class InspectionService {
   async checkInInspection(id: string, data: CheckInDto): Promise<Inspection> {
     const response = await axios.post<Inspection>(
       `${API_URL}/inspections/${id}/checkin`,
-      data
+      data,
     );
     return response.data;
   }
@@ -137,7 +141,7 @@ class InspectionService {
   async checkOutInspection(id: string, data: CheckOutDto): Promise<Inspection> {
     const response = await axios.post<Inspection>(
       `${API_URL}/inspections/${id}/checkout`,
-      data
+      data,
     );
     return response.data;
   }
@@ -147,7 +151,7 @@ class InspectionService {
    */
   async markAsNoShow(id: string): Promise<Inspection> {
     const response = await axios.post<Inspection>(
-      `${API_URL}/inspections/${id}/no-show`
+      `${API_URL}/inspections/${id}/no-show`,
     );
     return response.data;
   }
@@ -162,10 +166,13 @@ class InspectionService {
   /**
    * Get available slots for a property
    */
-  async getAvailableSlots(propertyId: string, date?: string): Promise<AvailableSlotsResponse> {
+  async getAvailableSlots(
+    propertyId: string,
+    date?: string,
+  ): Promise<AvailableSlotsResponse> {
     const response = await axios.get<AvailableSlotsResponse>(
       `${API_URL}/properties/${propertyId}/available-slots`,
-      { params: { date } }
+      { params: { date } },
     );
     return response.data;
   }
@@ -175,11 +182,11 @@ class InspectionService {
    */
   async getLandlordAnalytics(
     landlordId: string,
-    dateRange: '7d' | '30d' | '90d' | 'all' = '30d'
+    dateRange: "7d" | "30d" | "90d" | "all" = "30d",
   ): Promise<InspectionAnalytics> {
     const response = await axios.get<InspectionAnalytics>(
       `${API_URL}/landlords/${landlordId}/inspection-analytics`,
-      { params: { dateRange } }
+      { params: { dateRange } },
     );
     return response.data;
   }
@@ -189,11 +196,11 @@ class InspectionService {
    */
   async getPropertyMetrics(
     propertyId: string,
-    dateRange: '7d' | '30d' | '90d' | 'all' = '30d'
+    dateRange: "7d" | "30d" | "90d" | "all" = "30d",
   ): Promise<PropertyInspectionMetrics> {
     const response = await axios.get<PropertyInspectionMetrics>(
       `${API_URL}/properties/${propertyId}/inspection-metrics`,
-      { params: { dateRange } }
+      { params: { dateRange } },
     );
     return response.data;
   }
@@ -201,7 +208,7 @@ class InspectionService {
   /**
    * Send reminder for inspection
    */
-  async sendReminder(id: string, type: '24h' | '2h' | '30m'): Promise<void> {
+  async sendReminder(id: string, type: "24h" | "2h" | "30m"): Promise<void> {
     await axios.post(`${API_URL}/inspections/${id}/reminder`, { type });
   }
 
@@ -210,7 +217,7 @@ class InspectionService {
    */
   async getUpcomingInspections(tenantId: string): Promise<Inspection[]> {
     const response = await axios.get<Inspection[]>(
-      `${API_URL}/tenants/${tenantId}/upcoming-inspections`
+      `${API_URL}/tenants/${tenantId}/upcoming-inspections`,
     );
     return response.data;
   }
@@ -218,10 +225,14 @@ class InspectionService {
   /**
    * Get past inspections for tenant
    */
-  async getPastInspections(tenantId: string, page?: number, limit?: number): Promise<InspectionsResponse> {
+  async getPastInspections(
+    tenantId: string,
+    page?: number,
+    limit?: number,
+  ): Promise<InspectionsResponse> {
     const response = await axios.get<InspectionsResponse>(
       `${API_URL}/tenants/${tenantId}/past-inspections`,
-      { params: { page, limit } }
+      { params: { page, limit } },
     );
     return response.data;
   }
@@ -238,11 +249,11 @@ class InspectionService {
       endDate?: string;
       page?: number;
       limit?: number;
-    }
+    },
   ): Promise<InspectionsResponse> {
     const response = await axios.get<InspectionsResponse>(
       `${API_URL}/landlords/${landlordId}/inspections`,
-      { params: filters }
+      { params: filters },
     );
     return response.data;
   }
@@ -258,11 +269,11 @@ class InspectionService {
       endDate?: string;
       page?: number;
       limit?: number;
-    }
+    },
   ): Promise<InspectionsResponse> {
     const response = await axios.get<InspectionsResponse>(
       `${API_URL}/properties/${propertyId}/inspections`,
-      { params: filters }
+      { params: filters },
     );
     return response.data;
   }
@@ -273,11 +284,11 @@ class InspectionService {
   async bulkUpdateStatus(
     inspectionIds: string[],
     status: string,
-    reason?: string
+    reason?: string,
   ): Promise<Inspection[]> {
     const response = await axios.post<Inspection[]>(
       `${API_URL}/inspections/bulk-status`,
-      { inspectionIds, status, reason }
+      { inspectionIds, status, reason },
     );
     return response.data;
   }
@@ -285,18 +296,16 @@ class InspectionService {
   /**
    * Export inspections data
    */
-  async exportInspections(
-    filters?: {
-      landlordId?: string;
-      propertyId?: string;
-      startDate?: string;
-      endDate?: string;
-      format?: 'csv' | 'excel';
-    }
-  ): Promise<Blob> {
+  async exportInspections(filters?: {
+    landlordId?: string;
+    propertyId?: string;
+    startDate?: string;
+    endDate?: string;
+    format?: "csv" | "excel";
+  }): Promise<Blob> {
     const response = await axios.get(`${API_URL}/inspections/export`, {
       params: filters,
-      responseType: 'blob',
+      responseType: "blob",
     });
     return response.data;
   }

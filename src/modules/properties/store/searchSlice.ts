@@ -1,49 +1,62 @@
-
 // ============================================================================
 // FILE PATH: src/modules/properties/store/searchSlice.ts
 // Module 1.2: Property Listings Management - Search Redux Slice
 // ============================================================================
 
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { searchService } from '../services/searchService';
-import { SearchState, SearchFilters, SavedSearch, Property, SortOption } from '../types/property.types';
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+
+import { searchService } from "../services/searchService";
+import {
+  SearchState,
+  SearchFilters,
+  SavedSearch,
+  Property,
+  SortOption,
+} from "../types/property.types";
 
 // Async thunks
 export const searchProperties = createAsyncThunk(
-  'search/searchProperties',
+  "search/searchProperties",
   async (filters: SearchFilters, { rejectWithValue }) => {
     try {
       return await searchService.searchProperties(filters);
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const saveSearch = createAsyncThunk(
-  'search/saveSearch',
-  async ({ name, filters, alertsEnabled }: { name: string; filters: SearchFilters; alertsEnabled: boolean }, { rejectWithValue }) => {
+  "search/saveSearch",
+  async (
+    {
+      name,
+      filters,
+      alertsEnabled,
+    }: { name: string; filters: SearchFilters; alertsEnabled: boolean },
+    { rejectWithValue },
+  ) => {
     try {
       return await searchService.saveSearch(name, filters, alertsEnabled);
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const fetchSavedSearches = createAsyncThunk(
-  'search/fetchSavedSearches',
+  "search/fetchSavedSearches",
   async (_, { rejectWithValue }) => {
     try {
       return await searchService.getSavedSearches();
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 export const deleteSavedSearch = createAsyncThunk(
-  'search/deleteSavedSearch',
+  "search/deleteSavedSearch",
   async (id: string, { rejectWithValue }) => {
     try {
       await searchService.deleteSavedSearch(id);
@@ -51,15 +64,15 @@ export const deleteSavedSearch = createAsyncThunk(
     } catch (error: any) {
       return rejectWithValue(error.message);
     }
-  }
+  },
 );
 
 const initialState: SearchState = {
   filters: {
     page: 1,
     limit: 20,
-    sortBy: 'relevant',
-    sortOrder: 'desc'
+    sortBy: "relevant",
+    sortOrder: "desc",
   },
   results: [],
   isSearching: false,
@@ -67,11 +80,11 @@ const initialState: SearchState = {
   savedSearches: [],
   mapBounds: null,
   mapCenter: null,
-  mapZoom: 12
+  mapZoom: 12,
 };
 
 const searchSlice = createSlice({
-  name: 'search',
+  name: "search",
   initialState,
   reducers: {
     setFilters: (state, action: PayloadAction<Partial<SearchFilters>>) => {
@@ -87,8 +100,8 @@ const searchSlice = createSlice({
       state.filters = {
         page: 1,
         limit: 20,
-        sortBy: 'relevant',
-        sortOrder: 'desc'
+        sortBy: "relevant",
+        sortOrder: "desc",
       };
     },
     setMapBounds: (state, action) => {
@@ -102,7 +115,7 @@ const searchSlice = createSlice({
     },
     clearSearchError: (state) => {
       state.error = null;
-    }
+    },
   },
   extraReducers: (builder) => {
     // Search properties
@@ -130,9 +143,11 @@ const searchSlice = createSlice({
 
     // Delete saved search
     builder.addCase(deleteSavedSearch.fulfilled, (state, action) => {
-      state.savedSearches = state.savedSearches.filter(s => s.id !== action.payload);
+      state.savedSearches = state.savedSearches.filter(
+        (s) => s.id !== action.payload,
+      );
     });
-  }
+  },
 });
 
 export const {
@@ -143,20 +158,31 @@ export const {
   setMapBounds,
   setMapCenter,
   setMapZoom,
-  clearSearchError
+  clearSearchError,
 } = searchSlice.actions;
 
 // Selectors
-export const selectSearchFilters = (state: { search: SearchState }) => state.search.filters;
-export const selectSearchQuery = (state: { search: SearchState }) => state.search.filters.keywords || '';
-export const selectSortBy = (state: { search: SearchState }) => state.search.filters.sortBy || 'relevant';
-export const selectSearchResults = (state: { search: SearchState }) => state.search.results;
-export const selectFilteredProperties = (state: { search: SearchState }) => state.search.results;
-export const selectIsSearching = (state: { search: SearchState }) => state.search.isSearching;
-export const selectSearchError = (state: { search: SearchState }) => state.search.error;
-export const selectSavedSearches = (state: { search: SearchState }) => state.search.savedSearches;
-export const selectMapBounds = (state: { search: SearchState }) => state.search.mapBounds;
-export const selectMapCenter = (state: { search: SearchState }) => state.search.mapCenter;
-export const selectMapZoom = (state: { search: SearchState }) => state.search.mapZoom;
+export const selectSearchFilters = (state: { search: SearchState }) =>
+  state.search.filters;
+export const selectSearchQuery = (state: { search: SearchState }) =>
+  state.search.filters.keywords || "";
+export const selectSortBy = (state: { search: SearchState }) =>
+  state.search.filters.sortBy || "relevant";
+export const selectSearchResults = (state: { search: SearchState }) =>
+  state.search.results;
+export const selectFilteredProperties = (state: { search: SearchState }) =>
+  state.search.results;
+export const selectIsSearching = (state: { search: SearchState }) =>
+  state.search.isSearching;
+export const selectSearchError = (state: { search: SearchState }) =>
+  state.search.error;
+export const selectSavedSearches = (state: { search: SearchState }) =>
+  state.search.savedSearches;
+export const selectMapBounds = (state: { search: SearchState }) =>
+  state.search.mapBounds;
+export const selectMapCenter = (state: { search: SearchState }) =>
+  state.search.mapCenter;
+export const selectMapZoom = (state: { search: SearchState }) =>
+  state.search.mapZoom;
 
 export default searchSlice.reducer;

@@ -1,14 +1,15 @@
 // FILE PATH: src/modules/properties/hooks/useFavorites.ts
 // Custom hook for managing favorite properties
 
-import { useCallback } from 'react';
-import { useAppDispatch, useAppSelector } from '../../../store';
+import { useCallback } from "react";
+
+import { useAppDispatch, useAppSelector } from "../../../store";
 import {
   addToFavorites,
   removeFromFavorites,
   selectFavorites,
   selectAllProperties,
-} from '../store/propertySlice';
+} from "../store/propertySlice";
 
 export const useFavorites = () => {
   const dispatch = useAppDispatch();
@@ -16,12 +17,14 @@ export const useFavorites = () => {
   const allProperties = useAppSelector(selectAllProperties);
 
   // Get favorite properties
-  const favoriteProperties = allProperties.filter(p => favoriteIds.includes(p.id));
+  const favoriteProperties = allProperties.filter((p) =>
+    favoriteIds.includes(p.id),
+  );
 
   // Check if property is favorited
   const isFavorite = useCallback(
     (propertyId: string) => favoriteIds.includes(propertyId),
-    [favoriteIds]
+    [favoriteIds],
   );
 
   // Toggle favorite status
@@ -33,7 +36,7 @@ export const useFavorites = () => {
         dispatch(addToFavorites(propertyId));
       }
     },
-    [dispatch, favoriteIds]
+    [dispatch, favoriteIds],
   );
 
   // Add to favorites
@@ -43,7 +46,7 @@ export const useFavorites = () => {
         dispatch(addToFavorites(propertyId));
       }
     },
-    [dispatch, favoriteIds]
+    [dispatch, favoriteIds],
   );
 
   // Remove from favorites
@@ -51,7 +54,7 @@ export const useFavorites = () => {
     (propertyId: string) => {
       dispatch(removeFromFavorites(propertyId));
     },
-    [dispatch]
+    [dispatch],
   );
 
   return {

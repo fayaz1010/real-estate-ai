@@ -1,17 +1,30 @@
 ﻿// PLACEHOLDER FILE: components\ApplicationWizard\ReviewSubmitStep.tsx
 // TODO: Add your implementation here
-import React from 'react';
-import { CheckCircle, AlertCircle, Edit, User, Briefcase, DollarSign, Home, Users, Shield, FileText } from 'lucide-react';
-import { useApplicationForm } from '../../hooks/useApplicationForm';
-import { useApplication } from '../../hooks/useApplication';
-import { maskSSN } from '../../utils/applicationValidation';
+import {
+  CheckCircle,
+  AlertCircle,
+  Edit,
+  User,
+  Briefcase,
+  DollarSign,
+  Home,
+  Users,
+  Shield,
+  FileText,
+} from "lucide-react";
+import React from "react";
+
+import { useApplication } from "../../hooks/useApplication";
+import { useApplicationForm } from "../../hooks/useApplicationForm";
+import { maskSSN } from "../../utils/applicationValidation";
 
 interface ReviewSubmitStepProps {
   onSubmit: () => void;
 }
 
 const ReviewSubmitStep: React.FC<ReviewSubmitStepProps> = ({ onSubmit }) => {
-  const { formData, goToStep, realTimeScore, scoreRating } = useApplicationForm();
+  const { formData, goToStep, realTimeScore, scoreRating } =
+    useApplicationForm();
   const { application, submitting } = useApplication();
 
   const personalInfo = formData.personalInfo;
@@ -22,42 +35,64 @@ const ReviewSubmitStep: React.FC<ReviewSubmitStepProps> = ({ onSubmit }) => {
   const documents = application?.documents || [];
 
   const completionChecks = [
-    { label: 'Personal Information', complete: !!personalInfo?.firstName && !!personalInfo?.lastName, step: 0 },
-    { label: 'Employment History', complete: employment.length > 0, step: 1 },
-    { label: 'Income Information', complete: income.length > 0, step: 2 },
-    { label: 'Rental History', complete: rentalHistory.length > 0, step: 3 },
-    { label: 'References', complete: references.length >= 2, step: 4 },
-    { label: 'Background Consent', complete: !!formData.backgroundConsentGiven, step: 5 },
-    { label: 'Documents Uploaded', complete: documents.length > 0, step: 6 },
+    {
+      label: "Personal Information",
+      complete: !!personalInfo?.firstName && !!personalInfo?.lastName,
+      step: 0,
+    },
+    { label: "Employment History", complete: employment.length > 0, step: 1 },
+    { label: "Income Information", complete: income.length > 0, step: 2 },
+    { label: "Rental History", complete: rentalHistory.length > 0, step: 3 },
+    { label: "References", complete: references.length >= 2, step: 4 },
+    {
+      label: "Background Consent",
+      complete: !!formData.backgroundConsentGiven,
+      step: 5,
+    },
+    { label: "Documents Uploaded", complete: documents.length > 0, step: 6 },
   ];
 
-  const allComplete = completionChecks.every(check => check.complete);
+  const allComplete = completionChecks.every((check) => check.complete);
 
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Review & Submit Application</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          Review & Submit Application
+        </h2>
         <p className="text-gray-600">
           Please review all information before submitting your application.
         </p>
       </div>
 
       {/* Application Score */}
-      <div className={`rounded-lg p-6 ${
-        realTimeScore >= 90 ? 'bg-green-50 border-2 border-green-500' :
-        realTimeScore >= 75 ? 'bg-blue-50 border-2 border-blue-500' :
-        realTimeScore >= 60 ? 'bg-yellow-50 border-2 border-yellow-500' :
-        'bg-red-50 border-2 border-red-500'
-      }`}>
+      <div
+        className={`rounded-lg p-6 ${
+          realTimeScore >= 90
+            ? "bg-green-50 border-2 border-green-500"
+            : realTimeScore >= 75
+              ? "bg-blue-50 border-2 border-blue-500"
+              : realTimeScore >= 60
+                ? "bg-yellow-50 border-2 border-yellow-500"
+                : "bg-red-50 border-2 border-red-500"
+        }`}
+      >
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-gray-700 mb-1">Your Application Score</p>
-            <p className={`text-4xl font-bold ${
-              realTimeScore >= 90 ? 'text-green-700' :
-              realTimeScore >= 75 ? 'text-blue-700' :
-              realTimeScore >= 60 ? 'text-yellow-700' :
-              'text-red-700'
-            }`}>
+            <p className="text-sm font-medium text-gray-700 mb-1">
+              Your Application Score
+            </p>
+            <p
+              className={`text-4xl font-bold ${
+                realTimeScore >= 90
+                  ? "text-green-700"
+                  : realTimeScore >= 75
+                    ? "text-blue-700"
+                    : realTimeScore >= 60
+                      ? "text-yellow-700"
+                      : "text-red-700"
+              }`}
+            >
               {realTimeScore} / 100
             </p>
             <p className="text-sm mt-1 font-medium">
@@ -72,7 +107,9 @@ const ReviewSubmitStep: React.FC<ReviewSubmitStepProps> = ({ onSubmit }) => {
 
       {/* Completion Checklist */}
       <div className="bg-white border border-gray-200 rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Application Checklist</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">
+          Application Checklist
+        </h3>
         <div className="space-y-3">
           {completionChecks.map((check, index) => (
             <div
@@ -85,7 +122,13 @@ const ReviewSubmitStep: React.FC<ReviewSubmitStepProps> = ({ onSubmit }) => {
                 ) : (
                   <AlertCircle className="w-5 h-5 text-red-600 mr-3" />
                 )}
-                <span className={check.complete ? 'text-gray-900' : 'text-red-700 font-medium'}>
+                <span
+                  className={
+                    check.complete
+                      ? "text-gray-900"
+                      : "text-red-700 font-medium"
+                  }
+                >
                   {check.label}
                 </span>
               </div>
@@ -122,7 +165,9 @@ const ReviewSubmitStep: React.FC<ReviewSubmitStepProps> = ({ onSubmit }) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
             <div>
               <p className="text-gray-600">Name</p>
-              <p className="font-medium">{personalInfo.firstName} {personalInfo.lastName}</p>
+              <p className="font-medium">
+                {personalInfo.firstName} {personalInfo.lastName}
+              </p>
             </div>
             <div>
               <p className="text-gray-600">Email</p>
@@ -138,12 +183,14 @@ const ReviewSubmitStep: React.FC<ReviewSubmitStepProps> = ({ onSubmit }) => {
             </div>
             <div>
               <p className="text-gray-600">SSN</p>
-              <p className="font-medium">{maskSSN(personalInfo.ssn || '')}</p>
+              <p className="font-medium">{maskSSN(personalInfo.ssn || "")}</p>
             </div>
             <div>
               <p className="text-gray-600">Address</p>
               <p className="font-medium">
-                {personalInfo.currentAddress?.street}, {personalInfo.currentAddress?.city}, {personalInfo.currentAddress?.state}
+                {personalInfo.currentAddress?.street},{" "}
+                {personalInfo.currentAddress?.city},{" "}
+                {personalInfo.currentAddress?.state}
               </p>
             </div>
           </div>
@@ -167,9 +214,12 @@ const ReviewSubmitStep: React.FC<ReviewSubmitStepProps> = ({ onSubmit }) => {
         </div>
         {employment.map((emp, index) => (
           <div key={index} className="mb-3 last:mb-0">
-            <p className="font-medium">{emp.jobTitle} at {emp.employerName}</p>
+            <p className="font-medium">
+              {emp.jobTitle} at {emp.employerName}
+            </p>
             <p className="text-sm text-gray-600">
-              {emp.employmentType?.replace('_', ' ').toUpperCase()} • {emp.isCurrent ? 'Current' : `Ended ${emp.endDate}`}
+              {emp.employmentType?.replace("_", " ").toUpperCase()} •{" "}
+              {emp.isCurrent ? "Current" : `Ended ${emp.endDate}`}
             </p>
           </div>
         ))}
@@ -192,7 +242,9 @@ const ReviewSubmitStep: React.FC<ReviewSubmitStepProps> = ({ onSubmit }) => {
         </div>
         {income.map((inc, index) => (
           <div key={index} className="mb-3 last:mb-0">
-            <p className="font-medium capitalize">{inc.source?.replace('_', ' ')}</p>
+            <p className="font-medium capitalize">
+              {inc.source?.replace("_", " ")}
+            </p>
             <p className="text-sm text-gray-600">
               ${inc.amount} / {inc.frequency}
             </p>
@@ -219,7 +271,8 @@ const ReviewSubmitStep: React.FC<ReviewSubmitStepProps> = ({ onSubmit }) => {
           <div key={index} className="mb-3 last:mb-0">
             <p className="font-medium">{rental.address?.street}</p>
             <p className="text-sm text-gray-600">
-              {rental.address?.city}, {rental.address?.state} • ${rental.monthlyRent}/mo
+              {rental.address?.city}, {rental.address?.state} • $
+              {rental.monthlyRent}/mo
             </p>
           </div>
         ))}
@@ -244,7 +297,7 @@ const ReviewSubmitStep: React.FC<ReviewSubmitStepProps> = ({ onSubmit }) => {
           <div key={index} className="mb-3 last:mb-0">
             <p className="font-medium">{ref.name}</p>
             <p className="text-sm text-gray-600 capitalize">
-              {ref.relationship?.replace('_', ' ')} • {ref.phone}
+              {ref.relationship?.replace("_", " ")} • {ref.phone}
             </p>
           </div>
         ))}
@@ -289,7 +342,8 @@ const ReviewSubmitStep: React.FC<ReviewSubmitStepProps> = ({ onSubmit }) => {
                 Application Incomplete
               </p>
               <p className="text-sm text-red-800">
-                Please complete all required sections before submitting your application.
+                Please complete all required sections before submitting your
+                application.
               </p>
             </div>
           </div>
@@ -300,7 +354,10 @@ const ReviewSubmitStep: React.FC<ReviewSubmitStepProps> = ({ onSubmit }) => {
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
         <h4 className="font-semibold text-gray-900 mb-2">Certification</h4>
         <p className="text-sm text-gray-700">
-          By submitting this application, I certify that all information provided is true and accurate to the best of my knowledge. I understand that any false information may result in the rejection of my application or termination of tenancy.
+          By submitting this application, I certify that all information
+          provided is true and accurate to the best of my knowledge. I
+          understand that any false information may result in the rejection of
+          my application or termination of tenancy.
         </p>
       </div>
 

@@ -1,13 +1,16 @@
-declare module 'lucide-react' {
-  import { ComponentType, SVGProps } from 'react';
-  
+declare module "lucide-react" {
+  import { ComponentType, SVGProps } from "react";
+
   export interface LucideProps extends SVGProps<SVGSVGElement> {
     size?: number | string;
     absoluteStrokeWidth?: boolean;
   }
 
-  export const createLucideIcon: (iconName: string, iconNode: any) => ComponentType<LucideProps>;
-  
+  export const createLucideIcon: (
+    iconName: string,
+    iconNode: [string, Record<string, string | number>][],
+  ) => ComponentType<LucideProps>;
+
   // Export all Lucide icons as named exports
   export const Activity: ComponentType<LucideProps>;
   export const Airplay: ComponentType<LucideProps>;
@@ -295,9 +298,9 @@ declare module 'lucide-react' {
   export const ZapOff: ComponentType<LucideProps>;
   export const ZoomIn: ComponentType<LucideProps>;
   export const ZoomOut: ComponentType<LucideProps>;
-  
+
   // Add more icons as needed
-  
+
   // Lucide icon context for dynamic icon rendering
   export const icons: Record<string, ComponentType<LucideProps>>;
 }

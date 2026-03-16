@@ -1,36 +1,38 @@
 ﻿// PLACEHOLDER FILE: components\ApplicationWizard\IncomeVerificationStep.tsx
 // TODO: Add your implementation here
 
-import React from 'react';
-import { DollarSign, Plus, Trash2, TrendingUp } from 'lucide-react';
-import { useApplicationForm } from '../../hooks/useApplicationForm';
-import { IncomeInfo, IncomeSource } from '../../types/application.types';
-import { calculateMonthlyIncome } from '../../utils/scoringAlgorithm';
+import { DollarSign, Plus, Trash2, TrendingUp } from "lucide-react";
+import React from "react";
+
+import { useApplicationForm } from "../../hooks/useApplicationForm";
+import { IncomeInfo, IncomeSource } from "../../types/application.types";
+import { calculateMonthlyIncome } from "../../utils/scoringAlgorithm";
 
 const IncomeVerificationStep: React.FC = () => {
-  const { formData, addArrayItem, updateArrayItem, removeArrayItem } = useApplicationForm();
+  const { formData, addArrayItem, updateArrayItem, removeArrayItem } =
+    useApplicationForm();
   const income = formData.income || [];
 
   const emptyIncome: Partial<IncomeInfo> = {
-    source: 'employment',
+    source: "employment",
     amount: 0,
-    frequency: 'monthly',
-    verificationStatus: 'not_started',
+    frequency: "monthly",
+    verificationStatus: "not_started",
     documents: [],
   };
 
   const handleAdd = () => {
-    addArrayItem('income', emptyIncome);
+    addArrayItem("income", emptyIncome);
   };
 
-  const handleUpdate = (index: number, field: string, value: any) => {
+  const handleUpdate = (index: number, field: string, value: unknown) => {
     const updated = { ...income[index], [field]: value };
-    updateArrayItem('income', index, updated);
+    updateArrayItem("income", index, updated);
   };
 
   const handleRemove = (index: number) => {
-    if (confirm('Remove this income source?')) {
-      removeArrayItem('income', index);
+    if (confirm("Remove this income source?")) {
+      removeArrayItem("income", index);
     }
   };
 
@@ -39,9 +41,9 @@ const IncomeVerificationStep: React.FC = () => {
   };
 
   const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD',
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
       minimumFractionDigits: 0,
     }).format(amount);
   };
@@ -49,9 +51,12 @@ const IncomeVerificationStep: React.FC = () => {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">Income Verification</h2>
+        <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          Income Verification
+        </h2>
         <p className="text-gray-600">
-          List all sources of income. This helps us determine your qualification for the property.
+          List all sources of income. This helps us determine your qualification
+          for the property.
         </p>
       </div>
 
@@ -102,8 +107,14 @@ const IncomeVerificationStep: React.FC = () => {
                   Income Source *
                 </label>
                 <select
-                  value={inc.source || 'employment'}
-                  onChange={(e) => handleUpdate(index, 'source', e.target.value as IncomeSource)}
+                  value={inc.source || "employment"}
+                  onChange={(e) =>
+                    handleUpdate(
+                      index,
+                      "source",
+                      e.target.value as IncomeSource,
+                    )
+                  }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="employment">Employment</option>
@@ -124,11 +135,19 @@ const IncomeVerificationStep: React.FC = () => {
                     Amount *
                   </label>
                   <div className="relative">
-                    <span className="absolute left-3 top-3 text-gray-400">$</span>
+                    <span className="absolute left-3 top-3 text-gray-400">
+                      $
+                    </span>
                     <input
                       type="number"
-                      value={inc.amount || ''}
-                      onChange={(e) => handleUpdate(index, 'amount', parseFloat(e.target.value) || 0)}
+                      value={inc.amount || ""}
+                      onChange={(e) =>
+                        handleUpdate(
+                          index,
+                          "amount",
+                          parseFloat(e.target.value) || 0,
+                        )
+                      }
                       className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                       placeholder="0.00"
                       min="0"
@@ -142,8 +161,10 @@ const IncomeVerificationStep: React.FC = () => {
                     Frequency *
                   </label>
                   <select
-                    value={inc.frequency || 'monthly'}
-                    onChange={(e) => handleUpdate(index, 'frequency', e.target.value)}
+                    value={inc.frequency || "monthly"}
+                    onChange={(e) =>
+                      handleUpdate(index, "frequency", e.target.value)
+                    }
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   >
                     <option value="hourly">Hourly</option>
@@ -159,9 +180,11 @@ const IncomeVerificationStep: React.FC = () => {
               {inc.amount && inc.frequency && (
                 <div className="bg-gray-50 rounded-lg p-3">
                   <p className="text-sm text-gray-600">
-                    Monthly Income from this source:{' '}
+                    Monthly Income from this source:{" "}
                     <span className="font-semibold text-gray-900">
-                      {formatCurrency(calculateMonthlyIncome([inc as IncomeInfo]))}
+                      {formatCurrency(
+                        calculateMonthlyIncome([inc as IncomeInfo]),
+                      )}
                     </span>
                   </p>
                 </div>
@@ -182,18 +205,27 @@ const IncomeVerificationStep: React.FC = () => {
 
       {income.length === 0 && (
         <div className="text-center text-gray-500 py-8">
-          No income sources added yet. Click the button above to add your first income source.
+          No income sources added yet. Click the button above to add your first
+          income source.
         </div>
       )}
 
       {/* Income Tips */}
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-semibold text-blue-900 mb-2">Income Verification Tips</h4>
+        <h4 className="font-semibold text-blue-900 mb-2">
+          Income Verification Tips
+        </h4>
         <ul className="text-sm text-blue-800 space-y-1">
           <li>• Include all regular sources of income</li>
-          <li>• You'll need to upload supporting documents (paystubs, bank statements, etc.)</li>
+          <li>
+            • You&apos;ll need to upload supporting documents (paystubs, bank
+            statements, etc.)
+          </li>
           <li>• Most landlords require income to be 3x the monthly rent</li>
-          <li>• Self-employment income typically requires tax returns or bank statements</li>
+          <li>
+            • Self-employment income typically requires tax returns or bank
+            statements
+          </li>
         </ul>
       </div>
     </div>

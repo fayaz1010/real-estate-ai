@@ -1,20 +1,30 @@
 // FILE PATH: src/modules/properties/components/PropertyDetails/PropertyOverview.tsx
 // Module 1.2: Property Listings Management - Property Overview Section
 
-import React from 'react';
-import { Property } from '../../types/property.types';
-import { MapPin, Droplet, Maximize, Home, Calendar, TrendingUp } from 'lucide-react';
-import { PropertyPrice } from '../shared/PropertyPrice';
-import { priceCalculator } from '../../utils/priceCalculator';
+import {
+  MapPin,
+  Droplet,
+  Maximize,
+  Home,
+  Calendar,
+  TrendingUp,
+} from "lucide-react";
+import React from "react";
+
+import { Property } from "../../types/property.types";
+import { priceCalculator } from "../../utils/priceCalculator";
+import { PropertyPrice } from "../shared/PropertyPrice";
 
 interface PropertyOverviewProps {
   property: Property;
 }
 
-export const PropertyOverview: React.FC<PropertyOverviewProps> = ({ property }) => {
+export const PropertyOverview: React.FC<PropertyOverviewProps> = ({
+  property,
+}) => {
   const pricePerSqft = priceCalculator.calculatePricePerSqft(
     property.pricing.price,
-    property.details.sqft
+    property.details.sqft,
   );
 
   return (
@@ -29,7 +39,9 @@ export const PropertyOverview: React.FC<PropertyOverviewProps> = ({ property }) 
         <MapPin size={18} className="mr-2 flex-shrink-0" />
         <span className="text-lg">
           {property.address.street}
-          {property.address.unit && `, ${property.address.unit}`}, {property.address.city}, {property.address.state} {property.address.zipCode}
+          {property.address.unit && `, ${property.address.unit}`},{" "}
+          {property.address.city}, {property.address.state}{" "}
+          {property.address.zipCode}
         </span>
       </div>
 
@@ -102,7 +114,9 @@ export const PropertyOverview: React.FC<PropertyOverviewProps> = ({ property }) 
         {property.details.yearBuilt && (
           <div>
             <p className="text-gray-600">Year Built</p>
-            <p className="font-semibold text-gray-900">{property.details.yearBuilt}</p>
+            <p className="font-semibold text-gray-900">
+              {property.details.yearBuilt}
+            </p>
           </div>
         )}
         {property.details.lotSize && (

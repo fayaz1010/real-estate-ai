@@ -1,10 +1,11 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/Availability/BlackoutDates.tsx
 // TODO: Add your implementation here
 
-import React, { useState } from 'react';
-import { Plus, Trash2, XCircle, Calendar } from 'lucide-react';
-import { useAvailability } from '../../hooks/useAvailability';
-import { BlackoutDate } from '../../types/inspection.types';
+import { Plus, Trash2, XCircle, Calendar } from "lucide-react";
+import React, { useState } from "react";
+
+import { useAvailability } from "../../hooks/useAvailability";
+import { BlackoutDate } from "../../types/inspection.types";
 
 interface BlackoutDatesProps {
   propertyId: string;
@@ -14,9 +15,9 @@ export const BlackoutDates: React.FC<BlackoutDatesProps> = ({ propertyId }) => {
   const { blackoutDates, createBlackout, deleteBlackout } = useAvailability();
   const [showForm, setShowForm] = useState(false);
   const [formData, setFormData] = useState({
-    startDate: '',
-    endDate: '',
-    reason: '',
+    startDate: "",
+    endDate: "",
+    reason: "",
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
 
@@ -27,16 +28,20 @@ export const BlackoutDates: React.FC<BlackoutDatesProps> = ({ propertyId }) => {
     // Validation
     const newErrors: Record<string, string> = {};
     if (!formData.startDate) {
-      newErrors.startDate = 'Start date is required';
+      newErrors.startDate = "Start date is required";
     }
     if (!formData.endDate) {
-      newErrors.endDate = 'End date is required';
+      newErrors.endDate = "End date is required";
     }
-    if (formData.startDate && formData.endDate && formData.startDate > formData.endDate) {
-      newErrors.endDate = 'End date must be after start date';
+    if (
+      formData.startDate &&
+      formData.endDate &&
+      formData.startDate > formData.endDate
+    ) {
+      newErrors.endDate = "End date must be after start date";
     }
     if (!formData.reason.trim()) {
-      newErrors.reason = 'Reason is required';
+      newErrors.reason = "Reason is required";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -47,28 +52,32 @@ export const BlackoutDates: React.FC<BlackoutDatesProps> = ({ propertyId }) => {
     try {
       await createBlackout({
         propertyId,
-        landlordId: 'current-user-id', // Replace with actual user ID
+        landlordId: "current-user-id", // Replace with actual user ID
         ...formData,
       });
 
       // Reset form
       setShowForm(false);
       setFormData({
-        startDate: '',
-        endDate: '',
-        reason: '',
+        startDate: "",
+        endDate: "",
+        reason: "",
       });
     } catch (error) {
-      setErrors({ submit: 'Failed to create blackout date. Please try again.' });
+      setErrors({
+        submit: "Failed to create blackout date. Please try again.",
+      });
     }
   };
 
   const handleDelete = async (blackoutId: string) => {
-    if (window.confirm('Are you sure you want to remove this blackout period?')) {
+    if (
+      window.confirm("Are you sure you want to remove this blackout period?")
+    ) {
       try {
         await deleteBlackout(blackoutId);
       } catch (error) {
-        alert('Failed to delete blackout date');
+        alert("Failed to delete blackout date");
       }
     }
   };
@@ -76,23 +85,23 @@ export const BlackoutDates: React.FC<BlackoutDatesProps> = ({ propertyId }) => {
   const formatDateRange = (startDate: string, endDate: string): string => {
     const start = new Date(startDate);
     const end = new Date(endDate);
-    
+
     if (startDate === endDate) {
-      return start.toLocaleDateString('en-US', {
-        weekday: 'long',
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
+      return start.toLocaleDateString("en-US", {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+        year: "numeric",
       });
     }
-    
-    return `${start.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-    })} - ${end.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      year: 'numeric',
+
+    return `${start.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+    })} - ${end.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
     })}`;
   };
 
@@ -108,15 +117,21 @@ export const BlackoutDates: React.FC<BlackoutDatesProps> = ({ propertyId }) => {
     return new Date(startDate) > new Date();
   };
 
-  const upcomingBlackouts = blackoutDates.filter((b: BlackoutDate) => isUpcoming(b.startDate));
-  const pastBlackouts = blackoutDates.filter((b: BlackoutDate) => !isUpcoming(b.startDate));
+  const upcomingBlackouts = blackoutDates.filter((b: BlackoutDate) =>
+    isUpcoming(b.startDate),
+  );
+  const pastBlackouts = blackoutDates.filter(
+    (b: BlackoutDate) => !isUpcoming(b.startDate),
+  );
 
   return (
     <div>
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Blackout Dates</h3>
+          <h3 className="text-lg font-semibold text-gray-900">
+            Blackout Dates
+          </h3>
           <p className="text-sm text-gray-600">
             Block specific dates when inspections cannot be scheduled
           </p>
@@ -156,7 +171,9 @@ export const BlackoutDates: React.FC<BlackoutDatesProps> = ({ propertyId }) => {
                       </p>
                       <span className="inline-block px-2 py-1 bg-red-100 text-red-700 text-xs font-medium rounded">
                         {getDaysCount(blackout.startDate, blackout.endDate)} day
-                        {getDaysCount(blackout.startDate, blackout.endDate) > 1 ? 's' : ''}
+                        {getDaysCount(blackout.startDate, blackout.endDate) > 1
+                          ? "s"
+                          : ""}
                       </span>
                     </div>
                   </div>
@@ -247,12 +264,14 @@ export const BlackoutDates: React.FC<BlackoutDatesProps> = ({ propertyId }) => {
                   onChange={(e) =>
                     setFormData({ ...formData, startDate: e.target.value })
                   }
-                  min={new Date().toISOString().split('T')[0]}
+                  min={new Date().toISOString().split("T")[0]}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
                 {errors.startDate && (
-                  <p className="mt-1 text-sm text-red-600">{errors.startDate}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {errors.startDate}
+                  </p>
                 )}
               </div>
 
@@ -266,7 +285,9 @@ export const BlackoutDates: React.FC<BlackoutDatesProps> = ({ propertyId }) => {
                   onChange={(e) =>
                     setFormData({ ...formData, endDate: e.target.value })
                   }
-                  min={formData.startDate || new Date().toISOString().split('T')[0]}
+                  min={
+                    formData.startDate || new Date().toISOString().split("T")[0]
+                  }
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
@@ -318,7 +339,7 @@ export const BlackoutDates: React.FC<BlackoutDatesProps> = ({ propertyId }) => {
                   type="button"
                   onClick={() => {
                     setShowForm(false);
-                    setFormData({ startDate: '', endDate: '', reason: '' });
+                    setFormData({ startDate: "", endDate: "", reason: "" });
                   }}
                   className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                 >

@@ -1,10 +1,12 @@
 // FILE PATH: src/modules/properties/components/PropertyGrid.tsx
 // Grid layout for displaying properties
 
-import React from 'react';
-import { Property } from '../types/property.types';
-import { PropertyCard } from './PropertyCard';
-import { Loader as Loader2 } from 'lucide-react';
+import { Loader as Loader2 } from "lucide-react";
+import React from "react";
+
+import { Property } from "../types/property.types";
+
+import { PropertyCard } from "./PropertyCard";
 
 interface PropertyGridProps {
   properties: Property[];
@@ -19,15 +21,15 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
   properties,
   loading = false,
   onPropertyClick,
-  emptyMessage = 'No properties found',
+  emptyMessage = "No properties found",
   columns = 3,
-  className = '',
+  className = "",
 }) => {
   const gridCols = {
-    1: 'grid-cols-1',
-    2: 'grid-cols-1 md:grid-cols-2',
-    3: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3',
-    4: 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4',
+    1: "grid-cols-1",
+    2: "grid-cols-1 md:grid-cols-2",
+    3: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3",
+    4: "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
   };
 
   if (loading) {
@@ -57,7 +59,9 @@ export const PropertyGrid: React.FC<PropertyGridProps> = ({
             />
           </svg>
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">No Properties Found</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          No Properties Found
+        </h3>
         <p className="text-gray-600 max-w-md">{emptyMessage}</p>
       </div>
     );

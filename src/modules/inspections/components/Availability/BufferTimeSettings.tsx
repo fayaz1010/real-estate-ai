@@ -1,8 +1,8 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/Availability/BufferTimeSettings.tsx
 // TODO: Add your implementation here
 
-import React, { useState } from 'react';
-import { Clock, Save, Info } from 'lucide-react';
+import { Clock, Save, Info } from "lucide-react";
+import React, { useState } from "react";
 
 interface BufferTimeSettingsProps {
   propertyId: string;
@@ -29,7 +29,7 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
       setSaveSuccess(true);
       setTimeout(() => setSaveSuccess(false), 3000);
     } catch (error) {
-      alert('Failed to save settings');
+      alert("Failed to save settings");
     } finally {
       setIsSaving(false);
     }
@@ -38,7 +38,9 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
   return (
     <div>
       <div className="mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Buffer & Booking Settings</h3>
+        <h3 className="text-lg font-semibold text-gray-900">
+          Buffer & Booking Settings
+        </h3>
         <p className="text-sm text-gray-600">
           Configure time buffers and booking preferences
         </p>
@@ -54,7 +56,8 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                 Default Buffer Time
               </h4>
               <p className="text-sm text-gray-600">
-                Time gap between consecutive inspections for preparation and travel
+                Time gap between consecutive inspections for preparation and
+                travel
               </p>
             </div>
           </div>
@@ -63,25 +66,27 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
             {[0, 15, 30, 45].map((minutes) => (
               <button
                 key={minutes}
-                onClick={() => setSettings({ ...settings, defaultBuffer: minutes })}
+                onClick={() =>
+                  setSettings({ ...settings, defaultBuffer: minutes })
+                }
                 className={`
                   px-4 py-3 rounded-lg border-2 font-medium transition-colors
                   ${
                     settings.defaultBuffer === minutes
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? "border-blue-600 bg-blue-50 text-blue-700"
+                      : "border-gray-200 hover:border-gray-300"
                   }
                 `}
               >
-                {minutes === 0 ? 'None' : `${minutes} min`}
+                {minutes === 0 ? "None" : `${minutes} min`}
               </button>
             ))}
           </div>
 
           <div className="mt-3 p-3 bg-blue-50 rounded-lg text-sm text-blue-800">
             <Info className="w-4 h-4 inline mr-2" />
-            Recommended: 15-30 minutes for local properties, 30-45 minutes if traveling
-            between locations
+            Recommended: 15-30 minutes for local properties, 30-45 minutes if
+            traveling between locations
           </div>
         </div>
 
@@ -105,12 +110,14 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                   px-4 py-3 rounded-lg border-2 font-medium transition-colors
                   ${
                     settings.minAdvanceNotice === hours
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? "border-blue-600 bg-blue-50 text-blue-700"
+                      : "border-gray-200 hover:border-gray-300"
                   }
                 `}
               >
-                {hours < 24 ? `${hours} hours` : `${hours / 24} day${hours > 24 ? 's' : ''}`}
+                {hours < 24
+                  ? `${hours} hours`
+                  : `${hours / 24} day${hours > 24 ? "s" : ""}`}
               </button>
             ))}
           </div>
@@ -136,8 +143,8 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                   px-4 py-3 rounded-lg border-2 font-medium transition-colors
                   ${
                     settings.maxAdvanceBooking === days
-                      ? 'border-blue-600 bg-blue-50 text-blue-700'
-                      : 'border-gray-200 hover:border-gray-300'
+                      ? "border-blue-600 bg-blue-50 text-blue-700"
+                      : "border-gray-200 hover:border-gray-300"
                   }
                 `}
               >
@@ -161,7 +168,10 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                   type="checkbox"
                   checked={settings.instantBooking}
                   onChange={(e) =>
-                    setSettings({ ...settings, instantBooking: e.target.checked })
+                    setSettings({
+                      ...settings,
+                      instantBooking: e.target.checked,
+                    })
                   }
                   className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
                 />
@@ -171,8 +181,8 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                   Instant Booking
                 </span>
                 <p className="text-sm text-gray-600 mt-1">
-                  Allow tenants to instantly book available time slots without your
-                  approval. You'll still receive notifications.
+                  Allow tenants to instantly book available time slots without
+                  your approval. You&apos;ll still receive notifications.
                 </p>
               </div>
             </label>
@@ -194,8 +204,8 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                   Auto-Confirm After 24 Hours
                 </span>
                 <p className="text-sm text-gray-600 mt-1">
-                  Automatically confirm pending inspection requests if you don't respond
-                  within 24 hours.
+                  Automatically confirm pending inspection requests if you don&apos;t
+                  respond within 24 hours.
                 </p>
               </div>
             </label>
@@ -204,13 +214,15 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
 
         {/* Summary */}
         <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
-          <h4 className="font-semibold text-gray-900 mb-3">Current Settings Summary</h4>
+          <h4 className="font-semibold text-gray-900 mb-3">
+            Current Settings Summary
+          </h4>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
             <div>
               <p className="text-gray-600">Buffer Time</p>
               <p className="font-semibold text-gray-900">
                 {settings.defaultBuffer === 0
-                  ? 'No buffer'
+                  ? "No buffer"
                   : `${settings.defaultBuffer} minutes`}
               </p>
             </div>
@@ -220,7 +232,7 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                 {settings.minAdvanceNotice < 24
                   ? `${settings.minAdvanceNotice} hours`
                   : `${settings.minAdvanceNotice / 24} day${
-                      settings.minAdvanceNotice > 24 ? 's' : ''
+                      settings.minAdvanceNotice > 24 ? "s" : ""
                     }`}
               </p>
             </div>
@@ -233,7 +245,7 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
             <div>
               <p className="text-gray-600">Booking Mode</p>
               <p className="font-semibold text-gray-900">
-                {settings.instantBooking ? 'Instant' : 'Approval Required'}
+                {settings.instantBooking ? "Instant" : "Approval Required"}
               </p>
             </div>
           </div>

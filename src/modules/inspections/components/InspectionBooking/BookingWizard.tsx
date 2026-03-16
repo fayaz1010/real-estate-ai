@@ -1,17 +1,19 @@
-import React from 'react';
-import { Check } from 'lucide-react';
-import { useInspectionBooking } from '../../hooks/useInspectionBooking';
-import { PropertySelection } from './PropertySelection';
-import { InspectionTypeSelector } from './InspectionTypeSelector';
-import { DateTimeSelector } from './DateTimeSelector';
-import { AttendeeForm } from './AttendeeForm';
-import { BookingSummary } from './BookingSummary';
+import { Check } from "lucide-react";
+import React from "react";
+
+import { useInspectionBooking } from "../../hooks/useInspectionBooking";
+
+import { AttendeeForm } from "./AttendeeForm";
+import { BookingSummary } from "./BookingSummary";
+import { DateTimeSelector } from "./DateTimeSelector";
+import { InspectionTypeSelector } from "./InspectionTypeSelector";
+import { PropertySelection } from "./PropertySelection";
 
 const STEPS = [
-  { id: 0, name: 'Property', description: 'Select property' },
-  { id: 1, name: 'Type', description: 'Inspection type' },
-  { id: 2, name: 'Date & Time', description: 'Choose slot' },
-  { id: 3, name: 'Details', description: 'Add attendees' },
+  { id: 0, name: "Property", description: "Select property" },
+  { id: 1, name: "Type", description: "Inspection type" },
+  { id: 2, name: "Date & Time", description: "Choose slot" },
+  { id: 3, name: "Details", description: "Add attendees" },
 ];
 
 export const BookingWizard: React.FC = () => {
@@ -43,15 +45,15 @@ export const BookingWizard: React.FC = () => {
           <PropertySelection
             selectedPropertyId={propertyId}
             onSelect={(id) => updateBookingData({ propertyId: id })}
-            
           />
         );
       case 1:
         return (
           <InspectionTypeSelector
             selectedType={type}
-            onSelect={(selectedType) => updateBookingData({ type: selectedType })}
-            
+            onSelect={(selectedType) =>
+              updateBookingData({ type: selectedType })
+            }
           />
         );
       case 2:
@@ -61,8 +63,13 @@ export const BookingWizard: React.FC = () => {
             selectedDate={preferredDate}
             selectedTime={preferredTimeSlot}
             onDateSelect={(date) => updateBookingData({ preferredDate: date })}
-            onTimeSelect={(time) => updateBookingData({ preferredTimeSlot: time })}
-            errors={{ date: errors.preferredDate, time: errors.preferredTimeSlot }}
+            onTimeSelect={(time) =>
+              updateBookingData({ preferredTimeSlot: time })
+            }
+            errors={{
+              date: errors.preferredDate,
+              time: errors.preferredTimeSlot,
+            }}
           />
         );
       case 3:
@@ -88,7 +95,9 @@ export const BookingWizard: React.FC = () => {
       <div className="mb-8">
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-2xl font-bold text-gray-900">Book Inspection</h2>
-          <span className="text-sm text-gray-600">{completionPercentage}% Complete</span>
+          <span className="text-sm text-gray-600">
+            {completionPercentage}% Complete
+          </span>
         </div>
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div
@@ -107,10 +116,10 @@ export const BookingWizard: React.FC = () => {
                 <div
                   className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-colors ${
                     currentStep > step.id
-                      ? 'bg-blue-600 border-blue-600 text-white'
+                      ? "bg-blue-600 border-blue-600 text-white"
                       : currentStep === step.id
-                      ? 'border-blue-600 text-blue-600'
-                      : 'border-gray-300 text-gray-400'
+                        ? "border-blue-600 text-blue-600"
+                        : "border-gray-300 text-gray-400"
                   }`}
                 >
                   {currentStep > step.id ? (
@@ -122,7 +131,7 @@ export const BookingWizard: React.FC = () => {
                 <div className="mt-2 text-center">
                   <p
                     className={`text-sm font-medium ${
-                      currentStep >= step.id ? 'text-gray-900' : 'text-gray-500'
+                      currentStep >= step.id ? "text-gray-900" : "text-gray-500"
                     }`}
                   >
                     {step.name}
@@ -135,7 +144,7 @@ export const BookingWizard: React.FC = () => {
               {index < STEPS.length - 1 && (
                 <div
                   className={`flex-1 h-0.5 mx-2 ${
-                    currentStep > step.id ? 'bg-blue-600' : 'bg-gray-300'
+                    currentStep > step.id ? "bg-blue-600" : "bg-gray-300"
                   }`}
                 />
               )}
@@ -198,7 +207,7 @@ export const BookingWizard: React.FC = () => {
                 Submitting...
               </>
             ) : (
-              'Submit Request'
+              "Submit Request"
             )}
           </button>
         )}
@@ -206,12 +215,14 @@ export const BookingWizard: React.FC = () => {
 
       {/* Help Text */}
       <p className="text-center text-sm text-gray-600 mt-6">
-        Need help? Contact our support team at{' '}
-        <a href="mailto:support@realestate.com" className="text-blue-600 hover:underline">
+        Need help? Contact our support team at{" "}
+        <a
+          href="mailto:support@realestate.com"
+          className="text-blue-600 hover:underline"
+        >
           support@realestate.com
         </a>
       </p>
     </div>
   );
 };
-

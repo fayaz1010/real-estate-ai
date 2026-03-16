@@ -1,49 +1,67 @@
 // FILE PATH: src/modules/auth/services/authService.ts
 // Module 1.1: User Authentication & Management - Authentication Service
 
-import { tokenManager } from '../utils/tokenManager';
-import { User, AuthTokens, LoginCredentials, RegisterData } from '../types/auth.types';
+import {
+  User,
+  AuthTokens,
+  LoginCredentials,
+  RegisterData,
+} from "../types/auth.types";
+import { tokenManager } from "../utils/tokenManager";
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4041/api';
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL || "http://localhost:4041/api";
 
 class AuthService {
   /**
    * Login user with email and password
    */
-  async login(credentials: LoginCredentials): Promise<{ user: User; tokens: AuthTokens }> {
+  async login(
+    credentials: LoginCredentials,
+  ): Promise<{ user: User; tokens: AuthTokens }> {
     const response = await fetch(`${API_BASE_URL}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credentials)
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(credentials),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Login failed');
+      throw new Error(error.message || "Login failed");
     }
 
     const data = await response.json();
-    tokenManager.setTokens(data.tokens.accessToken, data.tokens.refreshToken, data.tokens.expiresIn);
+    tokenManager.setTokens(
+      data.tokens.accessToken,
+      data.tokens.refreshToken,
+      data.tokens.expiresIn,
+    );
     return data;
   }
 
   /**
    * Register new user account
    */
-  async register(registerData: RegisterData): Promise<{ user: User; tokens: AuthTokens }> {
+  async register(
+    registerData: RegisterData,
+  ): Promise<{ user: User; tokens: AuthTokens }> {
     const response = await fetch(`${API_BASE_URL}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(registerData)
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(registerData),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Registration failed');
+      throw new Error(error.message || "Registration failed");
     }
 
     const data = await response.json();
-    tokenManager.setTokens(data.tokens.accessToken, data.tokens.refreshToken, data.tokens.expiresIn);
+    tokenManager.setTokens(
+      data.tokens.accessToken,
+      data.tokens.refreshToken,
+      data.tokens.expiresIn,
+    );
     return data;
   }
 
@@ -53,11 +71,11 @@ class AuthService {
   async logout(): Promise<void> {
     try {
       await fetch(`${API_BASE_URL}/auth/logout`, {
-        method: 'POST',
+        method: "POST",
         headers: {
           ...tokenManager.getAuthHeader(),
-          'Content-Type': 'application/json'
-        }
+          "Content-Type": "application/json",
+        },
       });
     } finally {
       tokenManager.clearTokens();
@@ -69,20 +87,20 @@ class AuthService {
    */
   async refreshToken(): Promise<AuthTokens> {
     const refreshToken = tokenManager.getRefreshToken();
-    
+
     if (!refreshToken) {
-      throw new Error('No refresh token available');
+      throw new Error("No refresh token available");
     }
 
     const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken })
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ refreshToken }),
     });
 
     if (!response.ok) {
       tokenManager.clearTokens();
-      throw new Error('Token refresh failed');
+      throw new Error("Token refresh failed");
     }
 
     const data = await response.json();
@@ -95,11 +113,11 @@ class AuthService {
    */
   async getCurrentUser(): Promise<User> {
     const response = await fetch(`${API_BASE_URL}/auth/me`, {
-      headers: tokenManager.getAuthHeader()
+      headers: tokenManager.getAuthHeader(),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch user data');
+      throw new Error("Failed to fetch user data");
     }
 
     return response.json();
@@ -109,15 +127,18 @@ class AuthService {
    * Request password reset email
    */
   async requestPasswordReset(email: string): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/auth/password-reset-request`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email })
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/auth/password-reset-request`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      },
+    );
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Password reset request failed');
+      throw new Error(error.message || "Password reset request failed");
     }
   }
 
@@ -125,15 +146,18 @@ class AuthService {
    * Reset password with token
    */
   async resetPassword(token: string, newPassword: string): Promise<void> {
-    const response = await fetch(`${API_BASE_URL}/auth/password-reset-confirm`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token, newPassword })
-    });
+    const response = await fetch(
+      `${API_BASE_URL}/auth/password-reset-confirm`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token, newPassword }),
+      },
+    );
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Password reset failed');
+      throw new Error(error.message || "Password reset failed");
     }
   }
 
@@ -142,14 +166,14 @@ class AuthService {
    */
   async verifyEmail(token: string): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/auth/verify-email`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ token })
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token }),
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Email verification failed');
+      throw new Error(error.message || "Email verification failed");
     }
   }
 
@@ -158,16 +182,16 @@ class AuthService {
    */
   async resendVerificationEmail(): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/auth/resend-verification`, {
-      method: 'POST',
+      method: "POST",
       headers: {
         ...tokenManager.getAuthHeader(),
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     });
 
     if (!response.ok) {
       const error = await response.json();
-      throw new Error(error.message || 'Failed to resend verification email');
+      throw new Error(error.message || "Failed to resend verification email");
     }
   }
 
@@ -176,12 +200,12 @@ class AuthService {
    */
   async enable2FA(): Promise<{ qrCode: string; secret: string }> {
     const response = await fetch(`${API_BASE_URL}/auth/2fa/enable`, {
-      method: 'POST',
-      headers: tokenManager.getAuthHeader()
+      method: "POST",
+      headers: tokenManager.getAuthHeader(),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to enable 2FA');
+      throw new Error("Failed to enable 2FA");
     }
 
     return response.json();
@@ -192,16 +216,16 @@ class AuthService {
    */
   async verify2FA(code: string): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/auth/2fa/verify`, {
-      method: 'POST',
+      method: "POST",
       headers: {
         ...tokenManager.getAuthHeader(),
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ code })
+      body: JSON.stringify({ code }),
     });
 
     if (!response.ok) {
-      throw new Error('2FA verification failed');
+      throw new Error("2FA verification failed");
     }
   }
 
@@ -210,16 +234,16 @@ class AuthService {
    */
   async disable2FA(code: string): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/auth/2fa/disable`, {
-      method: 'POST',
+      method: "POST",
       headers: {
         ...tokenManager.getAuthHeader(),
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify({ code })
+      body: JSON.stringify({ code }),
     });
 
     if (!response.ok) {
-      throw new Error('Failed to disable 2FA');
+      throw new Error("Failed to disable 2FA");
     }
   }
 }

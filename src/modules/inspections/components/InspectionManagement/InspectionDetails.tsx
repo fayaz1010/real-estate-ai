@@ -1,8 +1,6 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionManagement/InspectionDetails.tsx
 // TODO: Add your implementation here
 
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
 import {
   MapPin,
   Calendar,
@@ -16,18 +14,23 @@ import {
   X,
   Video,
   Key,
-} from 'lucide-react';
-import { useInspection } from '../../hooks/useInspections';
-import { InspectionStatus } from './InspectionStatusBadge';
-import { RescheduleModal } from './RescheduleModal';
-import { CancelModal } from './CancelModal';
-import { CheckInOut } from './CheckInOut';
-import { openCalendarApp } from '../../utils/calendarSync';
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
+import { useInspection } from "../../hooks/useInspections";
+import { openCalendarApp } from "../../utils/calendarSync";
+
+import { CancelModal } from "./CancelModal";
+import { CheckInOut } from "./CheckInOut";
+import { InspectionStatus } from "./InspectionStatusBadge";
+import { RescheduleModal } from "./RescheduleModal";
 
 export const InspectionDetails: React.FC = () => {
   const { inspectionId } = useParams<{ inspectionId: string }>();
   const navigate = useNavigate();
-  const { inspection, isLoading, setCurrentInspection } = useInspection(inspectionId);
+  const { inspection, isLoading, setCurrentInspection } =
+    useInspection(inspectionId);
 
   const [showRescheduleModal, setShowRescheduleModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);
@@ -51,7 +54,7 @@ export const InspectionDetails: React.FC = () => {
       <div className="max-w-4xl mx-auto py-12 px-4 text-center">
         <p className="text-gray-600 mb-4">Inspection not found</p>
         <button
-          onClick={() => navigate('/inspections')}
+          onClick={() => navigate("/inspections")}
           className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
         >
           Back to Inspections
@@ -61,31 +64,31 @@ export const InspectionDetails: React.FC = () => {
   }
 
   const formatDate = (dateStr: string): string => {
-    return new Date(dateStr).toLocaleDateString('en-US', {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
+    return new Date(dateStr).toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
     });
   };
 
   const formatTime = (dateStr: string): string => {
-    return new Date(dateStr).toLocaleTimeString('en-US', {
-      hour: 'numeric',
-      minute: '2-digit',
+    return new Date(dateStr).toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
       hour12: true,
     });
   };
 
   const canModify =
-    inspection.status === 'pending' || inspection.status === 'confirmed';
+    inspection.status === "pending" || inspection.status === "confirmed";
 
   return (
     <div className="max-w-5xl mx-auto py-8 px-4">
       {/* Header */}
       <div className="mb-6">
         <button
-          onClick={() => navigate('/inspections')}
+          onClick={() => navigate("/inspections")}
           className="text-blue-600 hover:text-blue-700 mb-4 flex items-center gap-1"
         >
           ← Back to Inspections
@@ -108,7 +111,9 @@ export const InspectionDetails: React.FC = () => {
         <div className="lg:col-span-2 space-y-6">
           {/* Property Info */}
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">Property</h2>
+            <h2 className="text-xl font-semibold text-gray-900 mb-4">
+              Property
+            </h2>
             <div className="flex gap-4">
               <div className="w-32 h-32 rounded-lg overflow-hidden bg-gray-200 flex-shrink-0">
                 {inspection.property?.media?.images?.[0] && (
@@ -127,8 +132,8 @@ export const InspectionDetails: React.FC = () => {
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4" />
                     <span>
-                      {inspection.property?.address.street},{' '}
-                      {inspection.property?.address.city},{' '}
+                      {inspection.property?.address.street},{" "}
+                      {inspection.property?.address.city},{" "}
                       {inspection.property?.address.state}
                     </span>
                   </div>
@@ -175,11 +180,17 @@ export const InspectionDetails: React.FC = () => {
               <div>
                 <p className="text-sm text-gray-600 mb-1">Type</p>
                 <div className="flex items-center gap-2">
-                  {inspection.type === 'virtual' && <Video className="w-5 h-5 text-gray-400" />}
-                  {inspection.type === 'self_guided' && <Key className="w-5 h-5 text-gray-400" />}
-                  {inspection.type === 'in_person' && <Users className="w-5 h-5 text-gray-400" />}
+                  {inspection.type === "virtual" && (
+                    <Video className="w-5 h-5 text-gray-400" />
+                  )}
+                  {inspection.type === "self_guided" && (
+                    <Key className="w-5 h-5 text-gray-400" />
+                  )}
+                  {inspection.type === "in_person" && (
+                    <Users className="w-5 h-5 text-gray-400" />
+                  )}
                   <p className="font-medium text-gray-900 capitalize">
-                    {inspection.type.replace('_', ' ')} Tour
+                    {inspection.type.replace("_", " ")} Tour
                   </p>
                 </div>
               </div>
@@ -193,7 +204,9 @@ export const InspectionDetails: React.FC = () => {
 
               {inspection.virtualMeetingUrl && (
                 <div>
-                  <p className="text-sm text-gray-600 mb-1">Virtual Meeting Link</p>
+                  <p className="text-sm text-gray-600 mb-1">
+                    Virtual Meeting Link
+                  </p>
                   <a
                     href={inspection.virtualMeetingUrl}
                     target="_blank"
@@ -225,7 +238,7 @@ export const InspectionDetails: React.FC = () => {
                       <p className="text-sm text-gray-600">{attendee.phone}</p>
                     )}
                     <span className="text-xs text-gray-500 capitalize">
-                      {attendee.relationship.replace('_', ' ')}
+                      {attendee.relationship.replace("_", " ")}
                     </span>
                   </div>
                 ))}
@@ -244,7 +257,7 @@ export const InspectionDetails: React.FC = () => {
           )}
 
           {/* Check-in/Check-out */}
-          {inspection.status === 'confirmed' && (
+          {inspection.status === "confirmed" && (
             <CheckInOut inspection={inspection} />
           )}
         </div>
@@ -254,10 +267,12 @@ export const InspectionDetails: React.FC = () => {
           {/* Quick Actions */}
           {canModify && (
             <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-              <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+              <h3 className="font-semibold text-gray-900 mb-4">
+                Quick Actions
+              </h3>
               <div className="space-y-2">
                 <button
-                  onClick={() => openCalendarApp(inspection, 'google')}
+                  onClick={() => openCalendarApp(inspection, "google")}
                   className="w-full flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   <Calendar className="w-4 h-4" />
@@ -289,7 +304,8 @@ export const InspectionDetails: React.FC = () => {
                 <div>
                   <p className="text-sm text-gray-600 mb-1">Landlord/Agent</p>
                   <p className="font-medium text-gray-900">
-                    {inspection.landlord.firstName} {inspection.landlord.lastName}
+                    {inspection.landlord.firstName}{" "}
+                    {inspection.landlord.lastName}
                   </p>
                 </div>
                 {inspection.landlord.email && (
@@ -337,13 +353,10 @@ export const InspectionDetails: React.FC = () => {
           isOpen={showCancelModal}
           onClose={() => {
             setShowCancelModal(false);
-            navigate('/inspections');
+            navigate("/inspections");
           }}
         />
       )}
     </div>
   );
 };
-
-
-

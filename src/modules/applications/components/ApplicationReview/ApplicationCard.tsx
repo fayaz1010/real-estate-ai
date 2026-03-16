@@ -1,12 +1,23 @@
 ﻿// PLACEHOLDER FILE: components\ApplicationReview\ApplicationCard.tsx
 // TODO: Add your implementation here
 
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { User, Mail, Phone, Calendar, TrendingUp, MapPin, DollarSign, Briefcase, ChevronRight } from 'lucide-react';
-import { Application } from '../../types/application.types';
-import { getScoreRating } from '../../utils/scoringAlgorithm';
-import { calculateMonthlyIncome } from '../../utils/scoringAlgorithm';
+import {
+  User,
+  Mail,
+  Phone,
+  Calendar,
+  TrendingUp,
+  MapPin,
+  DollarSign,
+  Briefcase,
+  ChevronRight,
+} from "lucide-react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+
+import { Application } from "../../types/application.types";
+import { getScoreRating } from "../../utils/scoringAlgorithm";
+import { calculateMonthlyIncome } from "../../utils/scoringAlgorithm";
 
 interface ApplicationCardProps {
   application: Application;
@@ -19,39 +30,39 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'submitted':
-        return 'bg-blue-100 text-blue-800';
-      case 'under_review':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'verification_pending':
-        return 'bg-purple-100 text-purple-800';
-      case 'conditionally_approved':
-        return 'bg-green-100 text-green-800';
-      case 'approved':
-        return 'bg-green-100 text-green-800';
-      case 'approved_with_conditions':
-        return 'bg-green-100 text-green-800';
-      case 'rejected':
-        return 'bg-red-100 text-red-800';
-      case 'withdrawn':
-        return 'bg-gray-100 text-gray-800';
+      case "submitted":
+        return "bg-blue-100 text-blue-800";
+      case "under_review":
+        return "bg-yellow-100 text-yellow-800";
+      case "verification_pending":
+        return "bg-purple-100 text-purple-800";
+      case "conditionally_approved":
+        return "bg-green-100 text-green-800";
+      case "approved":
+        return "bg-green-100 text-green-800";
+      case "approved_with_conditions":
+        return "bg-green-100 text-green-800";
+      case "rejected":
+        return "bg-red-100 text-red-800";
+      case "withdrawn":
+        return "bg-gray-100 text-gray-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return 'text-green-600 bg-green-50';
-    if (score >= 75) return 'text-blue-600 bg-blue-50';
-    if (score >= 60) return 'text-yellow-600 bg-yellow-50';
-    return 'text-red-600 bg-red-50';
+    if (score >= 90) return "text-green-600 bg-green-50";
+    if (score >= 75) return "text-blue-600 bg-blue-50";
+    if (score >= 60) return "text-yellow-600 bg-yellow-50";
+    return "text-red-600 bg-red-50";
   };
 
   const formatStatus = (status: string) => {
     return status
-      .split('_')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
   };
 
   const handleClick = () => {
@@ -72,9 +83,12 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-3 mb-2">
               <h3 className="text-lg font-semibold text-gray-900">
-                {application.personalInfo.firstName} {application.personalInfo.lastName}
+                {application.personalInfo.firstName}{" "}
+                {application.personalInfo.lastName}
               </h3>
-              <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(application.status)}`}>
+              <span
+                className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(application.status)}`}
+              >
                 {formatStatus(application.status)}
               </span>
             </div>
@@ -92,13 +106,11 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
         </div>
 
         {/* Score Badge */}
-        <div className={`ml-4 text-center px-4 py-3 rounded-lg ${getScoreColor(application.score)}`}>
-          <div className="text-2xl font-bold">
-            {application.score}
-          </div>
-          <div className="text-xs font-medium mt-1">
-            {scoreRating.label}
-          </div>
+        <div
+          className={`ml-4 text-center px-4 py-3 rounded-lg ${getScoreColor(application.score)}`}
+        >
+          <div className="text-2xl font-bold">{application.score}</div>
+          <div className="text-xs font-medium mt-1">{scoreRating.label}</div>
         </div>
       </div>
 
@@ -147,7 +159,9 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
           <div className="text-sm">
             <p className="text-gray-600">Applied</p>
             <p className="font-medium text-gray-900">
-              {new Date(application.submittedAt || application.createdAt).toLocaleDateString()}
+              {new Date(
+                application.submittedAt || application.createdAt,
+              ).toLocaleDateString()}
             </p>
           </div>
         </div>
@@ -159,22 +173,31 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
           <div className="flex items-center space-x-4">
             <div className="flex items-center">
               <div className="w-2 h-2 rounded-full bg-green-500 mr-2" />
-              <span className="text-gray-600">Credit: {application.scoreBreakdown.creditScore.score}</span>
+              <span className="text-gray-600">
+                Credit: {application.scoreBreakdown.creditScore.score}
+              </span>
             </div>
             <div className="flex items-center">
               <div className="w-2 h-2 rounded-full bg-blue-500 mr-2" />
-              <span className="text-gray-600">Income: {application.scoreBreakdown.incomeRatio.score}</span>
+              <span className="text-gray-600">
+                Income: {application.scoreBreakdown.incomeRatio.score}
+              </span>
             </div>
             <div className="flex items-center">
               <div className="w-2 h-2 rounded-full bg-purple-500 mr-2" />
-              <span className="text-gray-600">Employment: {application.scoreBreakdown.employmentStability.score}</span>
+              <span className="text-gray-600">
+                Employment:{" "}
+                {application.scoreBreakdown.employmentStability.score}
+              </span>
             </div>
             <div className="flex items-center">
               <div className="w-2 h-2 rounded-full bg-yellow-500 mr-2" />
-              <span className="text-gray-600">Background: {application.scoreBreakdown.backgroundCheck.score}</span>
+              <span className="text-gray-600">
+                Background: {application.scoreBreakdown.backgroundCheck.score}
+              </span>
             </div>
           </div>
-          
+
           <div className="flex items-center text-blue-600 font-medium">
             View Details
             <ChevronRight className="w-4 h-4 ml-1" />
@@ -186,18 +209,24 @@ const ApplicationCard: React.FC<ApplicationCardProps> = ({ application }) => {
       {application.coApplicants.length > 0 && (
         <div className="mt-4 pt-4 border-t border-gray-200">
           <p className="text-sm text-gray-600">
-            <span className="font-medium">{application.coApplicants.length}</span> co-applicant
-            {application.coApplicants.length > 1 ? 's' : ''}
+            <span className="font-medium">
+              {application.coApplicants.length}
+            </span>{" "}
+            co-applicant
+            {application.coApplicants.length > 1 ? "s" : ""}
           </p>
         </div>
       )}
 
       {/* Needs Attention Badge */}
-      {(application.status === 'submitted' || application.status === 'under_review') && (
+      {(application.status === "submitted" ||
+        application.status === "under_review") && (
         <div className="mt-4 pt-4 border-t border-gray-200">
           <div className="flex items-center text-sm">
             <TrendingUp className="w-4 h-4 text-orange-600 mr-2" />
-            <span className="text-orange-600 font-medium">Needs Your Attention</span>
+            <span className="text-orange-600 font-medium">
+              Needs Your Attention
+            </span>
           </div>
         </div>
       )}

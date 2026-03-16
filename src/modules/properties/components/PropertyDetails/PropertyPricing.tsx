@@ -1,27 +1,28 @@
 // FILE PATH: src/modules/properties/components/PropertyDetails/PropertyPricing.tsx
 // Module 1.2: Property Listings Management - Property Pricing Component
 
-import React, { useState } from 'react';
-import { Property } from '../../types/property.types';
-import { 
-  DollarSign, 
-  TrendingUp, 
-  TrendingDown, 
-  Info, 
-  Home, 
-  DollarSign as DollarSignIcon, 
-  Calendar, 
-  Percent, 
-  MapPin, 
+import {
+  DollarSign,
+  TrendingUp,
+  TrendingDown,
+  Info,
+  Home,
+  DollarSign as DollarSignIcon,
+  Calendar,
+  Percent,
+  MapPin,
   Clock,
-  TrendingUp as TrendingIcon
-} from 'lucide-react';
+  TrendingUp as TrendingIcon,
+} from "lucide-react";
+import React, { useState } from "react";
+
+import { MortgageCalculator } from "../../../../components/MortgageCalculator";
+import { Badge } from "../../../../components/ui/badge";
+import { Button } from "../../../../components/ui/button";
+import { formatCurrency } from "../../../../lib/utils";
+import { Property } from "../../types/property.types";
 
 // Import using relative path to avoid module resolution issues
-import { Button } from '../../../../components/ui/button';
-import { Badge } from '../../../../components/ui/badge';
-import { formatCurrency } from '../../../../lib/utils';
-import { MortgageCalculator } from '../../../../components/MortgageCalculator';
 
 interface PriceChangeProps {
   change: number;
@@ -47,15 +48,20 @@ interface PropertyPricingData {
   priceHistory?: PriceHistoryEntry[];
 }
 
-const PriceChange: React.FC<PriceChangeProps> = ({ change, className = '' }) => {
+const PriceChange: React.FC<PriceChangeProps> = ({
+  change,
+  className = "",
+}) => {
   const isPositive = change >= 0;
   const Icon = isPositive ? TrendingUp : TrendingDown;
 
   return (
-    <div className={`flex items-center ${isPositive ? 'text-green-600' : 'text-red-600'} ${className}`}>
+    <div
+      className={`flex items-center ${isPositive ? "text-green-600" : "text-red-600"} ${className}`}
+    >
       <Icon className="w-4 h-4 mr-1" />
       <span className="text-sm font-medium">
-        {Math.abs(change)}% {isPositive ? 'increase' : 'decrease'}
+        {Math.abs(change)}% {isPositive ? "increase" : "decrease"}
       </span>
     </div>
   );
@@ -74,15 +80,13 @@ const PriceDetailItem: React.FC<PriceDetailItemProps> = ({
   label,
   value,
   description,
-  className = '',
+  className = "",
 }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
     <div className={`flex items-start space-x-3 ${className}`}>
-      <div className="p-2 bg-blue-50 rounded-lg text-blue-600">
-        {icon}
-      </div>
+      <div className="p-2 bg-blue-50 rounded-lg text-blue-600">{icon}</div>
       <div className="flex-1">
         <div className="flex items-center">
           <span className="text-sm text-gray-500">{label}</span>
@@ -104,7 +108,7 @@ const PriceDetailItem: React.FC<PriceDetailItemProps> = ({
           )}
         </div>
         <div className="mt-0.5 text-base font-medium text-gray-900">
-          {typeof value === 'number' ? formatCurrency(value) : value}
+          {typeof value === "number" ? formatCurrency(value) : value}
         </div>
       </div>
     </div>
@@ -114,7 +118,7 @@ const PriceDetailItem: React.FC<PriceDetailItemProps> = ({
 interface PropertyPricingProps {
   property: {
     pricing: PropertyPricingData;
-    listingType: 'sale' | 'rent';
+    listingType: "sale" | "rent";
     propertyType: string;
     address: {
       street: string;
@@ -134,7 +138,7 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
   onScheduleTour,
 }) => {
   const { pricing, listingType } = property;
-  const isRental = listingType === 'rent';
+  const isRental = listingType === "rent";
   const priceChange = pricing.priceChange ?? 0;
 
   // Calculate monthly payment (example calculation)
@@ -150,7 +154,8 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
 
     return (
       (principal *
-        (monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments))) /
+        (monthlyInterestRate *
+          Math.pow(1 + monthlyInterestRate, numberOfPayments))) /
       (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1)
     );
   };
@@ -161,7 +166,9 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
         <div>
           <div className="flex items-center">
             <h2 className="text-2xl font-bold text-gray-900">
-              {isRental ? `${formatCurrency(pricing.price)}/mo` : formatCurrency(pricing.price)}
+              {isRental
+                ? `${formatCurrency(pricing.price)}/mo`
+                : formatCurrency(pricing.price)}
             </h2>
             {priceChange !== 0 && (
               <div className="ml-3">
@@ -172,7 +179,9 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
 
           {!isRental && (
             <div className="mt-1 text-sm text-gray-500">
-              {pricing.pricePerSqft ? `$${pricing.pricePerSqft.toLocaleString()} per sq ft` : 'Price per sq ft not available'}
+              {pricing.pricePerSqft
+                ? `$${pricing.pricePerSqft.toLocaleString()} per sq ft`
+                : "Price per sq ft not available"}
             </div>
           )}
 
@@ -207,7 +216,8 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
             Estimated monthly payment of {formatCurrency(pricing.price)}
           </h3>
           <p className="mt-1 text-xs text-blue-700">
-            Monthly rent amount. Security deposit and application fees may apply.
+            Monthly rent amount. Security deposit and application fees may
+            apply.
           </p>
         </div>
       )}
@@ -215,7 +225,7 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
       <div className="mt-6 space-y-4">
         <PriceDetailItem
           icon={<DollarSignIcon className="w-5 h-5" />}
-          label={isRental ? 'Monthly Rent' : 'Price'}
+          label={isRental ? "Monthly Rent" : "Price"}
           value={pricing.price}
         />
 
@@ -241,7 +251,7 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
           <PriceDetailItem
             icon={<Percent className="w-5 h-5" />}
             label="Property Tax"
-            value={`${(pricing.propertyTax / pricing.price * 100).toFixed(2)}%`}
+            value={`${((pricing.propertyTax / pricing.price) * 100).toFixed(2)}%`}
             description="Annual property tax amount"
           />
         )}
@@ -257,7 +267,9 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
 
         {pricing.utilitiesIncluded && pricing.utilitiesIncluded.length > 0 && (
           <div className="pt-2">
-            <h4 className="text-sm font-medium text-gray-500 mb-2">Utilities Included:</h4>
+            <h4 className="text-sm font-medium text-gray-500 mb-2">
+              Utilities Included:
+            </h4>
             <div className="flex flex-wrap gap-2">
               {pricing.utilitiesIncluded.map((utility) => (
                 <Badge key={utility} variant="outline" className="text-xs">
@@ -270,18 +282,23 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
       </div>
 
       <div className="mt-6 pt-6 border-t">
-        <h3 className="text-sm font-medium text-gray-900 mb-3">Price History</h3>
+        <h3 className="text-sm font-medium text-gray-900 mb-3">
+          Price History
+        </h3>
         {pricing.priceHistory && pricing.priceHistory.length > 0 ? (
           <div className="space-y-3">
             {pricing.priceHistory.map((entry, index) => (
-              <div key={index} className="flex items-center justify-between text-sm">
+              <div
+                key={index}
+                className="flex items-center justify-between text-sm"
+              >
                 <div className="flex items-center">
                   <Clock className="w-4 h-4 text-gray-400 mr-2" />
                   <span className="text-gray-600">
-                    {new Date(entry.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric'
+                    {new Date(entry.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "short",
+                      day: "numeric",
                     })}
                   </span>
                 </div>
@@ -289,9 +306,9 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
                   <span className="font-medium text-gray-900">
                     {formatCurrency(entry.price)}
                   </span>
-                  {entry.event !== 'listed' && (
+                  {entry.event !== "listed" && (
                     <span className="ml-2 text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-600">
-                      {entry.event.replace('_', ' ')}
+                      {entry.event.replace("_", " ")}
                     </span>
                   )}
                 </div>
@@ -305,7 +322,9 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
 
       {/* Additional Financial Tools */}
       <div className="mt-6 pt-6 border-t">
-        <h3 className="text-sm font-medium text-gray-900 mb-3">Financial Tools</h3>
+        <h3 className="text-sm font-medium text-gray-900 mb-3">
+          Financial Tools
+        </h3>
         <div className="grid grid-cols-2 gap-3">
           <Button variant="outline" size="sm" className="text-sm">
             <TrendingIcon className="w-4 h-4 mr-2" />

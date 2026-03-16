@@ -1,23 +1,25 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/Availability/AvailabilityManager.tsx
 // TODO: Add your implementation here
 
-import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, XCircle, Settings } from 'lucide-react';
-import { useAvailability } from '../../hooks/useAvailability';
-import { RecurringSchedule } from './RecurringSchedule';
-import { BlackoutDates } from './BlackoutDates';
-import { BufferTimeSettings } from './BufferTimeSettings';
+import { Calendar, Clock, XCircle, Settings } from "lucide-react";
+import React, { useState, useEffect } from "react";
+
+import { useAvailability } from "../../hooks/useAvailability";
+
+import { BlackoutDates } from "./BlackoutDates";
+import { BufferTimeSettings } from "./BufferTimeSettings";
+import { RecurringSchedule } from "./RecurringSchedule";
 
 interface AvailabilityManagerProps {
   propertyId: string;
 }
 
-type TabType = 'schedule' | 'blackout' | 'settings';
+type TabType = "schedule" | "blackout" | "settings";
 
 export const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
   propertyId,
 }) => {
-  const [activeTab, setActiveTab] = useState<TabType>('schedule');
+  const [activeTab, setActiveTab] = useState<TabType>("schedule");
   const { loadSchedules, loadBlackouts, isLoading } = useAvailability();
 
   useEffect(() => {
@@ -29,22 +31,22 @@ export const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
 
   const tabs = [
     {
-      id: 'schedule' as TabType,
-      label: 'Recurring Schedule',
+      id: "schedule" as TabType,
+      label: "Recurring Schedule",
       icon: Calendar,
-      description: 'Set your regular availability',
+      description: "Set your regular availability",
     },
     {
-      id: 'blackout' as TabType,
-      label: 'Blackout Dates',
+      id: "blackout" as TabType,
+      label: "Blackout Dates",
       icon: XCircle,
-      description: 'Block specific dates',
+      description: "Block specific dates",
     },
     {
-      id: 'settings' as TabType,
-      label: 'Buffer Settings',
+      id: "settings" as TabType,
+      label: "Buffer Settings",
       icon: Settings,
-      description: 'Configure time buffers',
+      description: "Configure time buffers",
     },
   ];
 
@@ -76,20 +78,20 @@ export const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
                   flex-1 px-6 py-4 text-left border-b-2 transition-colors
                   ${
                     activeTab === tab.id
-                      ? 'border-blue-600 bg-blue-50'
-                      : 'border-transparent hover:bg-gray-50'
+                      ? "border-blue-600 bg-blue-50"
+                      : "border-transparent hover:bg-gray-50"
                   }
                 `}
               >
                 <div className="flex items-center gap-3 mb-1">
                   <Icon
                     className={`w-5 h-5 ${
-                      activeTab === tab.id ? 'text-blue-600' : 'text-gray-400'
+                      activeTab === tab.id ? "text-blue-600" : "text-gray-400"
                     }`}
                   />
                   <span
                     className={`font-medium ${
-                      activeTab === tab.id ? 'text-blue-600' : 'text-gray-900'
+                      activeTab === tab.id ? "text-blue-600" : "text-gray-900"
                     }`}
                   >
                     {tab.label}
@@ -97,7 +99,7 @@ export const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
                 </div>
                 <p
                   className={`text-sm ${
-                    activeTab === tab.id ? 'text-blue-800' : 'text-gray-500'
+                    activeTab === tab.id ? "text-blue-800" : "text-gray-500"
                   }`}
                 >
                   {tab.description}
@@ -117,13 +119,13 @@ export const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
           </div>
         ) : (
           <>
-            {activeTab === 'schedule' && (
+            {activeTab === "schedule" && (
               <RecurringSchedule propertyId={propertyId} />
             )}
-            {activeTab === 'blackout' && (
+            {activeTab === "blackout" && (
               <BlackoutDates propertyId={propertyId} />
             )}
-            {activeTab === 'settings' && (
+            {activeTab === "settings" && (
               <BufferTimeSettings propertyId={propertyId} />
             )}
           </>
@@ -138,14 +140,14 @@ export const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
             <span className="text-blue-600 font-bold">•</span>
             <span>
               <strong>Recurring Schedule:</strong> Set your regular weekly
-              availability. This will automatically generate time slots for tenants
-              to book.
+              availability. This will automatically generate time slots for
+              tenants to book.
             </span>
           </li>
           <li className="flex items-start gap-2">
             <span className="text-blue-600 font-bold">•</span>
             <span>
-              <strong>Blackout Dates:</strong> Block specific dates when you're
+              <strong>Blackout Dates:</strong> Block specific dates when you&apos;re
               unavailable (holidays, maintenance, etc.)
             </span>
           </li>

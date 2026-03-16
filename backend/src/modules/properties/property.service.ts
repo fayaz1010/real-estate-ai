@@ -1,19 +1,20 @@
 // Property Service - Business Logic
-import prisma from '../../config/database';
-import { AppError } from '../../middleware/errorHandler';
+import prisma from "../../config/database";
+import { AppError } from "../../middleware/errorHandler";
 
 export class PropertyService {
   // Create property
-  async create(ownerId: string, data: any) {
+  async create(ownerId: string, data: Record<string, unknown>) {
     // Generate slug from title
-    const slug = data.title.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now();
+    const slug =
+      data.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + Date.now();
 
     const property = await prisma.property.create({
       data: {
         ...data,
         slug,
         ownerId,
-        status: 'DRAFT',
+        status: "DRAFT",
       },
       include: {
         images: true,
@@ -32,7 +33,7 @@ export class PropertyService {
   }
 
   // Get all properties with filters
-  async getAll(filters: any = {}) {
+  async getAll(filters: Record<string, unknown> = {}) {
     const {
       page = 1,
       limit = 20,
@@ -45,9 +46,9 @@ export class PropertyService {
       search,
     } = filters;
 
-    const where: any = {
+    const where: Record<string, unknown> = {
       deletedAt: null,
-      status: status || 'ACTIVE', // Default to ACTIVE properties
+      status: status || "ACTIVE", // Default to ACTIVE properties
     };
 
     if (propertyType) where.propertyType = propertyType;
@@ -60,8 +61,8 @@ export class PropertyService {
     if (bathrooms) where.bathrooms = parseFloat(bathrooms);
     if (search) {
       where.OR = [
-        { title: { contains: search, mode: 'insensitive' } },
-        { description: { contains: search, mode: 'insensitive' } },
+        { title: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } },
       ];
     }
 
@@ -70,7 +71,7 @@ export class PropertyService {
         where,
         include: {
           images: {
-            orderBy: { order: 'asc' },
+            orderBy: { order: "asc" },
           },
           owner: {
             select: {
@@ -82,7 +83,7 @@ export class PropertyService {
         },
         skip: (page - 1) * limit,
         take: limit,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
       }),
       prisma.property.count({ where }),
     ]);
@@ -104,7 +105,7 @@ export class PropertyService {
       where: { id },
       include: {
         images: {
-          orderBy: { order: 'asc' },
+          orderBy: { order: "asc" },
         },
         owner: {
           select: {
@@ -119,7 +120,7 @@ export class PropertyService {
     });
 
     if (!property || property.deletedAt) {
-      throw new AppError('Property not found', 404, 'PROPERTY_NOT_FOUND');
+      throw new AppError("Property not found", 404, "PROPERTY_NOT_FOUND");
     }
 
     // Increment view count
@@ -137,7 +138,7 @@ export class PropertyService {
       where: { slug },
       include: {
         images: {
-          orderBy: { order: 'asc' },
+          orderBy: { order: "asc" },
         },
         owner: {
           select: {
@@ -150,24 +151,24 @@ export class PropertyService {
     });
 
     if (!property || property.deletedAt) {
-      throw new AppError('Property not found', 404, 'PROPERTY_NOT_FOUND');
+      throw new AppError("Property not found", 404, "PROPERTY_NOT_FOUND");
     }
 
     return property;
   }
 
   // Update property
-  async update(id: string, ownerId: string, data: any) {
+  async update(id: string, ownerId: string, data: Record<string, unknown>) {
     const property = await prisma.property.findUnique({
       where: { id },
     });
 
     if (!property || property.deletedAt) {
-      throw new AppError('Property not found', 404, 'PROPERTY_NOT_FOUND');
+      throw new AppError("Property not found", 404, "PROPERTY_NOT_FOUND");
     }
 
     if (property.ownerId !== ownerId) {
-      throw new AppError('Not authorized', 403, 'FORBIDDEN');
+      throw new AppError("Not authorized", 403, "FORBIDDEN");
     }
 
     const updated = await prisma.property.update({
@@ -188,11 +189,11 @@ export class PropertyService {
     });
 
     if (!property || property.deletedAt) {
-      throw new AppError('Property not found', 404, 'PROPERTY_NOT_FOUND');
+      throw new AppError("Property not found", 404, "PROPERTY_NOT_FOUND");
     }
 
     if (property.ownerId !== ownerId) {
-      throw new AppError('Not authorized', 403, 'FORBIDDEN');
+      throw new AppError("Not authorized", 403, "FORBIDDEN");
     }
 
     // Soft delete
@@ -212,12 +213,12 @@ export class PropertyService {
         },
         include: {
           images: {
-            orderBy: { order: 'asc' },
+            orderBy: { order: "asc" },
           },
         },
         skip: (page - 1) * limit,
         take: limit,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
       }),
       prisma.property.count({
         where: {
@@ -245,17 +246,17 @@ export class PropertyService {
     });
 
     if (!property || property.deletedAt) {
-      throw new AppError('Property not found', 404, 'PROPERTY_NOT_FOUND');
+      throw new AppError("Property not found", 404, "PROPERTY_NOT_FOUND");
     }
 
     if (property.ownerId !== ownerId) {
-      throw new AppError('Not authorized', 403, 'FORBIDDEN');
+      throw new AppError("Not authorized", 403, "FORBIDDEN");
     }
 
     const updated = await prisma.property.update({
       where: { id },
       data: {
-        status: 'ACTIVE',
+        status: "ACTIVE",
         publishedAt: new Date(),
       },
     });

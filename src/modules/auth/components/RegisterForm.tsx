@@ -1,80 +1,95 @@
 // FILE PATH: src/modules/auth/components/RegisterForm.tsx
 // Module 1.1: User Authentication & Management - Registration Form Component
 
-import React, { useState } from 'react';
-import { useAuth } from '../hooks/useAuth';
-import { validators } from '../utils/validation';
-import { UserRole } from '../types/auth.types';
-import { Mail, Lock, User as UserIcon, Phone, Eye, EyeOff, AlertCircle, CheckCircle } from 'lucide-react';
+import {
+  Mail,
+  Lock,
+  User as UserIcon,
+  Phone,
+  Eye,
+  EyeOff,
+  AlertCircle,
+  CheckCircle,
+} from "lucide-react";
+import React, { useState } from "react";
+
+import { useAuth } from "../hooks/useAuth";
+import { UserRole } from "../types/auth.types";
+import { validators } from "../utils/validation";
 
 interface RegisterFormProps {
   onSuccess?: () => void;
   onLogin?: () => void;
 }
 
-export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }) => {
+export const RegisterForm: React.FC<RegisterFormProps> = ({
+  onSuccess,
+  onLogin,
+}) => {
   const { register, isLoading, error } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    firstName: '',
-    lastName: '',
-    phone: '',
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    phone: "",
     role: UserRole.TENANT,
-    acceptedTerms: false
+    acceptedTerms: false,
   });
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [validationErrors, setValidationErrors] = useState<
+    Record<string, string>
+  >({});
 
   const roleOptions = [
-    { 
-      value: UserRole.TENANT, 
-      label: 'Tenant', 
-      desc: 'Looking for a place to rent',
-      icon: '🏠'
+    {
+      value: UserRole.TENANT,
+      label: "Tenant",
+      desc: "Looking for a place to rent",
+      icon: "🏠",
     },
-    { 
-      value: UserRole.LANDLORD, 
-      label: 'Landlord', 
-      desc: 'List and manage properties',
-      icon: '🏢'
+    {
+      value: UserRole.LANDLORD,
+      label: "Landlord",
+      desc: "List and manage properties",
+      icon: "🏢",
     },
-    { 
-      value: UserRole.AGENT, 
-      label: 'Agent', 
-      desc: 'Real estate professional',
-      icon: '💼'
+    {
+      value: UserRole.AGENT,
+      label: "Agent",
+      desc: "Real estate professional",
+      icon: "💼",
     },
-    { 
-      value: UserRole.PROPERTY_MANAGER, 
-      label: 'Property Manager', 
-      desc: 'Manage properties for owners',
-      icon: '🔑'
+    {
+      value: UserRole.PROPERTY_MANAGER,
+      label: "Property Manager",
+      desc: "Manage properties for owners",
+      icon: "🔑",
     },
-    { 
-      value: UserRole.BUSINESS, 
-      label: 'Business', 
-      desc: 'Corporate housing solutions',
-      icon: '🏛️'
-    }
+    {
+      value: UserRole.BUSINESS,
+      label: "Business",
+      desc: "Corporate housing solutions",
+      icon: "🏛️",
+    },
   ];
 
   const validateStep1 = (): boolean => {
     const errors: Record<string, string> = {};
 
     if (!validators.name(formData.firstName)) {
-      errors.firstName = 'First name must be 2-50 characters';
+      errors.firstName = "First name must be 2-50 characters";
     }
     if (!validators.name(formData.lastName)) {
-      errors.lastName = 'Last name must be 2-50 characters';
+      errors.lastName = "Last name must be 2-50 characters";
     }
     if (!validators.email(formData.email)) {
-      errors.email = 'Please enter a valid email address';
+      errors.email = "Please enter a valid email address";
     }
     if (formData.phone && !validators.phone(formData.phone)) {
-      errors.phone = 'Please enter a valid phone number';
+      errors.phone = "Please enter a valid phone number";
     }
 
     setValidationErrors(errors);
@@ -89,7 +104,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
       errors.password = passwordValidation.errors[0];
     }
     if (formData.password !== confirmPassword) {
-      errors.confirmPassword = 'Passwords do not match';
+      errors.confirmPassword = "Passwords do not match";
     }
 
     setValidationErrors(errors);
@@ -100,7 +115,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
     const errors: Record<string, string> = {};
 
     if (!formData.acceptedTerms) {
-      errors.terms = 'You must accept the terms and conditions';
+      errors.terms = "You must accept the terms and conditions";
     }
 
     setValidationErrors(errors);
@@ -111,7 +126,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
     let isValid = false;
     if (currentStep === 1) isValid = validateStep1();
     if (currentStep === 2) isValid = validateStep2();
-    
+
     if (isValid) {
       setCurrentStep(currentStep + 1);
     }
@@ -132,9 +147,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
 
   const passwordStrength = validators.getPasswordStrength(formData.password);
   const strengthColors = {
-    weak: 'bg-red-500',
-    medium: 'bg-yellow-500',
-    strong: 'bg-green-500'
+    weak: "bg-red-500",
+    medium: "bg-yellow-500",
+    strong: "bg-green-500",
   };
 
   return (
@@ -154,8 +169,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
               <div
                 key={step}
                 className={`flex-1 h-2 rounded ${
-                  step <= currentStep ? 'bg-blue-600' : 'bg-gray-200'
-                } ${step !== 3 ? 'mr-2' : ''}`}
+                  step <= currentStep ? "bg-blue-600" : "bg-gray-200"
+                } ${step !== 3 ? "mr-2" : ""}`}
               />
             ))}
           </div>
@@ -178,19 +193,28 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
                     First Name *
                   </label>
                   <div className="relative">
-                    <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                    <UserIcon
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                      size={18}
+                    />
                     <input
                       type="text"
                       value={formData.firstName}
-                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, firstName: e.target.value })
+                      }
                       className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
-                        validationErrors.firstName ? 'border-red-300' : 'border-gray-300'
+                        validationErrors.firstName
+                          ? "border-red-300"
+                          : "border-gray-300"
                       }`}
                       placeholder="John"
                     />
                   </div>
                   {validationErrors.firstName && (
-                    <p className="mt-1 text-sm text-red-600">{validationErrors.firstName}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {validationErrors.firstName}
+                    </p>
                   )}
                 </div>
 
@@ -201,14 +225,20 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
                   <input
                     type="text"
                     value={formData.lastName}
-                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, lastName: e.target.value })
+                    }
                     className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
-                      validationErrors.lastName ? 'border-red-300' : 'border-gray-300'
+                      validationErrors.lastName
+                        ? "border-red-300"
+                        : "border-gray-300"
                     }`}
                     placeholder="Doe"
                   />
                   {validationErrors.lastName && (
-                    <p className="mt-1 text-sm text-red-600">{validationErrors.lastName}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {validationErrors.lastName}
+                    </p>
                   )}
                 </div>
               </div>
@@ -218,19 +248,28 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
                   Email Address *
                 </label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                  <Mail
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    size={18}
+                  />
                   <input
                     type="email"
                     value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, email: e.target.value })
+                    }
                     className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
-                      validationErrors.email ? 'border-red-300' : 'border-gray-300'
+                      validationErrors.email
+                        ? "border-red-300"
+                        : "border-gray-300"
                     }`}
                     placeholder="you@example.com"
                   />
                 </div>
                 {validationErrors.email && (
-                  <p className="mt-1 text-sm text-red-600">{validationErrors.email}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {validationErrors.email}
+                  </p>
                 )}
               </div>
 
@@ -239,19 +278,28 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
                   Phone Number (Optional)
                 </label>
                 <div className="relative">
-                  <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                  <Phone
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    size={18}
+                  />
                   <input
                     type="tel"
                     value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, phone: e.target.value })
+                    }
                     className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
-                      validationErrors.phone ? 'border-red-300' : 'border-gray-300'
+                      validationErrors.phone
+                        ? "border-red-300"
+                        : "border-gray-300"
                     }`}
                     placeholder="+1 (555) 000-0000"
                   />
                 </div>
                 {validationErrors.phone && (
-                  <p className="mt-1 text-sm text-red-600">{validationErrors.phone}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {validationErrors.phone}
+                  </p>
                 )}
               </div>
 
@@ -273,13 +321,20 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
                   Password *
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                  <Lock
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    size={18}
+                  />
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({ ...formData, password: e.target.value })
+                    }
                     className={`w-full pl-10 pr-12 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
-                      validationErrors.password ? 'border-red-300' : 'border-gray-300'
+                      validationErrors.password
+                        ? "border-red-300"
+                        : "border-gray-300"
                     }`}
                     placeholder="••••••••"
                   />
@@ -295,20 +350,28 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
                   <div className="mt-2">
                     <div className="flex items-center gap-2 mb-1">
                       <div className="flex-1 h-1 bg-gray-200 rounded">
-                        <div 
+                        <div
                           className={`h-full rounded transition-all ${strengthColors[passwordStrength]}`}
-                          style={{ 
-                            width: passwordStrength === 'weak' ? '33%' : 
-                                   passwordStrength === 'medium' ? '66%' : '100%' 
+                          style={{
+                            width:
+                              passwordStrength === "weak"
+                                ? "33%"
+                                : passwordStrength === "medium"
+                                  ? "66%"
+                                  : "100%",
                           }}
                         />
                       </div>
-                      <span className="text-xs font-medium capitalize">{passwordStrength}</span>
+                      <span className="text-xs font-medium capitalize">
+                        {passwordStrength}
+                      </span>
                     </div>
                   </div>
                 )}
                 {validationErrors.password && (
-                  <p className="mt-1 text-sm text-red-600">{validationErrors.password}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {validationErrors.password}
+                  </p>
                 )}
               </div>
 
@@ -317,53 +380,127 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
                   Confirm Password *
                 </label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+                  <Lock
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                    size={18}
+                  />
                   <input
-                    type={showPassword ? 'text' : 'password'}
+                    type={showPassword ? "text" : "password"}
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className={`w-full pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 ${
-                      validationErrors.confirmPassword ? 'border-red-300' : 'border-gray-300'
+                      validationErrors.confirmPassword
+                        ? "border-red-300"
+                        : "border-gray-300"
                     }`}
                     placeholder="••••••••"
                   />
                 </div>
                 {validationErrors.confirmPassword && (
-                  <p className="mt-1 text-sm text-red-600">{validationErrors.confirmPassword}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {validationErrors.confirmPassword}
+                  </p>
                 )}
               </div>
 
               {/* Password Requirements */}
               <div className="bg-gray-50 p-3 rounded-lg">
-                <p className="text-sm font-medium text-gray-700 mb-2">Password must contain:</p>
+                <p className="text-sm font-medium text-gray-700 mb-2">
+                  Password must contain:
+                </p>
                 <ul className="space-y-1 text-sm">
                   <li className="flex items-center gap-2">
-                    <CheckCircle size={14} className={formData.password.length >= 8 ? 'text-green-600' : 'text-gray-400'} />
-                    <span className={formData.password.length >= 8 ? 'text-green-600' : 'text-gray-600'}>
+                    <CheckCircle
+                      size={14}
+                      className={
+                        formData.password.length >= 8
+                          ? "text-green-600"
+                          : "text-gray-400"
+                      }
+                    />
+                    <span
+                      className={
+                        formData.password.length >= 8
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }
+                    >
                       At least 8 characters
                     </span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle size={14} className={/[A-Z]/.test(formData.password) ? 'text-green-600' : 'text-gray-400'} />
-                    <span className={/[A-Z]/.test(formData.password) ? 'text-green-600' : 'text-gray-600'}>
+                    <CheckCircle
+                      size={14}
+                      className={
+                        /[A-Z]/.test(formData.password)
+                          ? "text-green-600"
+                          : "text-gray-400"
+                      }
+                    />
+                    <span
+                      className={
+                        /[A-Z]/.test(formData.password)
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }
+                    >
                       One uppercase letter
                     </span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle size={14} className={/[a-z]/.test(formData.password) ? 'text-green-600' : 'text-gray-400'} />
-                    <span className={/[a-z]/.test(formData.password) ? 'text-green-600' : 'text-gray-600'}>
+                    <CheckCircle
+                      size={14}
+                      className={
+                        /[a-z]/.test(formData.password)
+                          ? "text-green-600"
+                          : "text-gray-400"
+                      }
+                    />
+                    <span
+                      className={
+                        /[a-z]/.test(formData.password)
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }
+                    >
                       One lowercase letter
                     </span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle size={14} className={/[0-9]/.test(formData.password) ? 'text-green-600' : 'text-gray-400'} />
-                    <span className={/[0-9]/.test(formData.password) ? 'text-green-600' : 'text-gray-600'}>
+                    <CheckCircle
+                      size={14}
+                      className={
+                        /[0-9]/.test(formData.password)
+                          ? "text-green-600"
+                          : "text-gray-400"
+                      }
+                    />
+                    <span
+                      className={
+                        /[0-9]/.test(formData.password)
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }
+                    >
                       One number
                     </span>
                   </li>
                   <li className="flex items-center gap-2">
-                    <CheckCircle size={14} className={/[!@#$%^&*]/.test(formData.password) ? 'text-green-600' : 'text-gray-400'} />
-                    <span className={/[!@#$%^&*]/.test(formData.password) ? 'text-green-600' : 'text-gray-600'}>
+                    <CheckCircle
+                      size={14}
+                      className={
+                        /[!@#$%^&*]/.test(formData.password)
+                          ? "text-green-600"
+                          : "text-gray-400"
+                      }
+                    />
+                    <span
+                      className={
+                        /[!@#$%^&*]/.test(formData.password)
+                          ? "text-green-600"
+                          : "text-gray-600"
+                      }
+                    >
                       One special character
                     </span>
                   </li>
@@ -402,8 +539,8 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
                       key={role.value}
                       className={`flex items-start p-4 border-2 rounded-lg cursor-pointer transition ${
                         formData.role === role.value
-                          ? 'border-blue-600 bg-blue-50'
-                          : 'border-gray-200 hover:border-gray-300'
+                          ? "border-blue-600 bg-blue-50"
+                          : "border-gray-200 hover:border-gray-300"
                       }`}
                     >
                       <input
@@ -411,15 +548,24 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
                         name="role"
                         value={role.value}
                         checked={formData.role === role.value}
-                        onChange={(e) => setFormData({ ...formData, role: e.target.value as UserRole })}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            role: e.target.value as UserRole,
+                          })
+                        }
                         className="mt-1"
                       />
                       <div className="ml-3 flex-1">
                         <div className="flex items-center gap-2">
                           <span className="text-xl">{role.icon}</span>
-                          <p className="font-medium text-gray-900">{role.label}</p>
+                          <p className="font-medium text-gray-900">
+                            {role.label}
+                          </p>
                         </div>
-                        <p className="text-sm text-gray-600 mt-1">{role.desc}</p>
+                        <p className="text-sm text-gray-600 mt-1">
+                          {role.desc}
+                        </p>
                       </div>
                     </label>
                   ))}
@@ -431,22 +577,39 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
                   <input
                     type="checkbox"
                     checked={formData.acceptedTerms}
-                    onChange={(e) => setFormData({ ...formData, acceptedTerms: e.target.checked })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        acceptedTerms: e.target.checked,
+                      })
+                    }
                     className="mt-1"
                   />
                   <span className="ml-2 text-sm text-gray-600">
-                    I agree to the{' '}
-                    <a href="/terms" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                    I agree to the{" "}
+                    <a
+                      href="/terms"
+                      className="text-blue-600 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Terms of Service
-                    </a>{' '}
-                    and{' '}
-                    <a href="/privacy" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">
+                    </a>{" "}
+                    and{" "}
+                    <a
+                      href="/privacy"
+                      className="text-blue-600 hover:underline"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       Privacy Policy
                     </a>
                   </span>
                 </label>
                 {validationErrors.terms && (
-                  <p className="mt-1 text-sm text-red-600">{validationErrors.terms}</p>
+                  <p className="mt-1 text-sm text-red-600">
+                    {validationErrors.terms}
+                  </p>
                 )}
               </div>
 
@@ -463,7 +626,7 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
                   disabled={isLoading}
                   className="flex-1 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 transition font-medium"
                 >
-                  {isLoading ? 'Creating Account...' : 'Create Account'}
+                  {isLoading ? "Creating Account..." : "Create Account"}
                 </button>
               </div>
             </div>
@@ -472,7 +635,9 @@ export const RegisterForm: React.FC<RegisterFormProps> = ({ onSuccess, onLogin }
 
         {/* Login Link */}
         <div className="mt-6 text-center">
-          <span className="text-sm text-gray-600">Already have an account? </span>
+          <span className="text-sm text-gray-600">
+            Already have an account?{" "}
+          </span>
           <button
             type="button"
             onClick={onLogin}
