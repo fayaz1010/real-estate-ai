@@ -1,0 +1,68 @@
+﻿Folder PATH listing for volume Files
+Volume serial number is 48D4-9A72
+D:\REALESTATEAI\SRC\MODULES\INSPECTIONS
+ª   index.ts
+ª   
++---components
+ª   +---Analytics
+ª   ª       InspectionMetrics.tsx
+ª   ª       
+ª   +---Availability
+ª   ª       AvailabilityManager.tsx
+ª   ª       BlackoutDates.tsx
+ª   ª       BufferTimeSettings.tsx
+ª   ª       RecurringSchedule.tsx
+ª   ª       
+ª   +---InspectionBooking
+ª   ª       AttendeeForm.tsx
+ª   ª       BookingConfirmation.tsx
+ª   ª       BookingSummary.tsx
+ª   ª       BookingWizard.tsx
+ª   ª       DateTimeSelector.tsx
+ª   ª       InspectionTypeSelector.tsx
+ª   ª       PropertySelection.tsx
+ª   ª       TimeSlotGrid.tsx
+ª   ª       
+ª   +---InspectionCalendar
+ª   ª       CalendarView.tsx
+ª   ª       DayView.tsx
+ª   ª       MonthView.tsx
+ª   ª       TimeSlot.tsx
+ª   ª       WeekView.tsx
+ª   ª       
+ª   +---InspectionManagement
+ª   ª       CancelModal.tsx
+ª   ª       CheckInOut.tsx
+ª   ª       InspectionCard.tsx
+ª   ª       InspectionDetails.tsx
+ª   ª       InspectionsList.tsx
+ª   ª       InspectionStatus.tsx
+ª   ª       RescheduleModal.tsx
+ª   ª       
+ª   +---VirtualTour
+ª           VirtualTourLauncher.tsx
+ª           
++---hooks
+ª       useAvailability.ts
+ª       useInspectionBooking.ts
+ª       useInspectionCalendar.ts
+ª       useInspections.ts
+ª       
++---services
+ª       availabilityService.ts
+ª       inspectionService.ts
+ª       notificationService.ts
+ª       
++---store
+ª       availabilitySlice.ts
+ª       inspectionSlice.ts
+ª       
++---types
+ª       inspection.types.ts
+ª       
++---utils
+        calendarSync.ts
+        inspectionValidation.ts
+        timeSlotGenerator.ts
+        timezoneHandler.ts
+        

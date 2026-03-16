@@ -1,0 +1,459 @@
+// Complete Prisma Schema for Real Estate Platform
+// Modules: Auth, Properties, Inspections, Applications
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+
+enum UserRole {
+  TENANT
+  LANDLORD
+  AGENT
+  PROPERTY_MANAGER
+  BUSINESS
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+}
+
+enum PropertyStatus {
+  DRAFT
+  ACTIVE
+  RENTED
+  SOLD
+  INACTIVE
+  ARCHIVED
+}
+
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  CONDO
+  TOWNHOUSE
+  STUDIO
+  LOFT
+  COMMERCIAL
+}
+
+enum InspectionType {
+  IN_PERSON
+  VIRTUAL
+  OPEN_HOUSE
+}
+
+enum InspectionStatus {
+  SCHEDULED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+  RESCHEDULED
+}
+
+enum ApplicationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  VERIFICATION_PENDING
+  CONDITIONALLY_APPROVED
+  APPROVED
+  APPROVED_WITH_CONDITIONS
+  REJECTED
+  WITHDRAWN
+}
+
+enum VerificationStatus {
+  NOT_STARTED
+  PENDING
+  IN_PROGRESS
+  VERIFIED
+  FAILED
+  MANUAL_REVIEW
+}
+
+// ==========================================
+// USER & AUTH MODELS
+// ==========================================
+
+model User {
+  id                      String    @id @default(uuid())
+  email                   String    @unique
+  passwordHash            String
+  firstName               String
+  lastName                String
+  phone                   String?
+  role                    UserRole  @default(TENANT)
+  avatar                  String?
+  status                  UserStatus @default(PENDING_VERIFICATION)
+  emailVerified           Boolean   @default(false)
+  phoneVerified           Boolean   @default(false)
+  twoFactorEnabled        Boolean   @default(false)
+  twoFactorSecret         String?
+  profileCompletion       Int       @default(0)
+  lastLoginAt             DateTime?
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  deletedAt               DateTime?
+
+  // Relations
+  refreshTokens           RefreshToken[]
+  passwordResetTokens     PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
+  landlordProfile         LandlordProfile?
+  tenantProfile           TenantProfile?
+  agentProfile            AgentProfile?
+  properties              Property[]
+  inspections             Inspection[]
+  applications            Application[]
+  
+  @@index([email])
+  @@index([role])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([token])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([token])
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([token])
+}
+
+model LandlordProfile {
+  id                  String    @id @default(uuid())
+  userId              String    @unique
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessName        String?
+  businessRegistration String?
+  taxId               String?
+  bankAccountVerified Boolean   @default(false)
+  propertiesCount     Int       @default(0)
+  rating              Float?
+  verificationStatus  String    @default("pending")
+  bio                 String?
+  website             String?
+  languages           String[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+model TenantProfile {
+  id                  String    @id @default(uuid())
+  userId              String    @unique
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employmentStatus    String?
+  employerName        String?
+  jobTitle            String?
+  annualIncome        Float?
+  creditScore         Int?
+  hasPets             Boolean   @default(false)
+  petsDescription     String?
+  hasVehicle          Boolean   @default(false)
+  vehicleDescription  String?
+  smoking             Boolean   @default(false)
+  references          Json?
+  moveInDate          DateTime?
+  leaseTerm           Int?
+  preferredLocations  String[]
+  budgetMin           Float?
+  budgetMax           Float?
+  preferredPropertyTypes String[]
+  specialRequirements String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+model AgentProfile {
+  id                  String    @id @default(uuid())
+  userId              String    @unique
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  licenseNumber       String
+  licenseState        String
+  licenseExpiry       DateTime
+  brokerageName       String
+  brokerageAddress    String?
+  brokeragePhone      String?
+  yearsOfExperience   Int       @default(0)
+  specializations     String[]
+  services            String[]
+  languages           String[]
+  website             String?
+  linkedin            String?
+  facebook            String?
+  instagram           String?
+  twitter             String?
+  bio                 String?
+  rating              Float?    @default(0)
+  reviewCount         Int       @default(0)
+  propertiesListed    Int       @default(0)
+  propertiesSold      Int       @default(0)
+  verificationStatus  String    @default("pending")
+  isFeatured          Boolean   @default(false)
+  availableForContact Boolean   @default(true)
+  officeHours         Json?
+  serviceAreas        String[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+// ==========================================
+// PROPERTY MODELS
+// ==========================================
+
+model Property {
+  id              String         @id @default(uuid())
+  ownerId         String
+  owner           User           @relation(fields: [ownerId], references: [id])
+  
+  // Basic Info
+  title           String
+  description     String
+  slug            String         @unique
+  propertyType    PropertyType
+  status          PropertyStatus @default(DRAFT)
+  
+  // Location
+  address         Json           // {street, city, state, zip, country, lat, lng}
+  
+  // Details
+  bedrooms        Int
+  bathrooms       Float
+  sqft            Int?
+  lotSize         Int?
+  yearBuilt       Int?
+  
+  // Pricing
+  price           Float
+  pricePerSqft    Float?
+  deposit         Float?
+  
+  // Features
+  amenities       String[]
+  utilities       Json?          // {electric, water, gas, internet}
+  parking         Json?          // {type, spaces, covered}
+  petPolicy       Json?          // {allowed, deposit, restrictions}
+  
+  // Media
+  images          PropertyImage[]
+  virtualTourUrl  String?
+  videoUrl        String?
+  floorPlanUrl    String?
+  
+  // Availability
+  availableFrom   DateTime?
+  leaseTerm       Int?           // months
+  
+  // Metadata
+  views           Int            @default(0)
+  featured        Boolean        @default(false)
+  verified        Boolean        @default(false)
+  publishedAt     DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  deletedAt       DateTime?
+  
+  // Relations
+  inspections     Inspection[]
+  applications    Application[]
+  
+  @@index([ownerId])
+  @@index([status])
+  @@index([propertyType])
+  @@index([slug])
+  @@index([createdAt])
+}
+
+model PropertyImage {
+  id          String   @id @default(uuid())
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url         String
+  caption     String?
+  order       Int      @default(0)
+  isPrimary   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  
+  @@index([propertyId])
+  @@index([order])
+}
+
+// ==========================================
+// INSPECTION MODELS
+// ==========================================
+
+model Inspection {
+  id              String           @id @default(uuid())
+  propertyId      String
+  property        Property         @relation(fields: [propertyId], references: [id])
+  userId          String
+  user            User             @relation(fields: [userId], references: [id])
+  
+  // Inspection Details
+  type            InspectionType
+  status          InspectionStatus @default(SCHEDULED)
+  scheduledDate   DateTime
+  scheduledTime   String           // HH:MM format
+  duration        Int              @default(30) // minutes
+  
+  // Attendees
+  attendees       Json?            // [{name, email, phone}]
+  
+  // Notes
+  tenantNotes     String?
+  landlordNotes   String?
+  
+  // Tracking
+  confirmedAt     DateTime?
+  completedAt     DateTime?
+  cancelledAt     DateTime?
+  cancellationReason String?
+  
+  // Reminders
+  reminderSent    Boolean          @default(false)
+  reminderSentAt  DateTime?
+  
+  // Virtual Tour
+  meetingLink     String?
+  meetingId       String?
+  
+  // Metadata
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  
+  @@index([propertyId])
+  @@index([userId])
+  @@index([scheduledDate])
+  @@index([status])
+}
+
+// ==========================================
+// APPLICATION MODELS
+// ==========================================
+
+model Application {
+  id                  String            @id @default(uuid())
+  propertyId          String
+  property            Property          @relation(fields: [propertyId], references: [id])
+  primaryApplicantId  String
+  primaryApplicant    User              @relation(fields: [primaryApplicantId], references: [id])
+  
+  // Status & Scoring
+  status              ApplicationStatus @default(DRAFT)
+  score               Int               @default(0)
+  scoreBreakdown      Json?
+  
+  // Personal Info
+  personalInfo        Json              // Full personal information
+  
+  // Employment & Income
+  employment          Json[]            // Array of employment records
+  income              Json[]            // Array of income sources
+  
+  // Rental History
+  rentalHistory       Json[]            // Array of rental history
+  
+  // References
+  references          Json[]            // Array of references
+  
+  // Verification
+  identityVerification Json?
+  incomeVerification   Json?
+  creditCheck          Json?
+  backgroundCheck      Json?
+  
+  // Documents
+  documents           ApplicationDocument[]
+  
+  // Preferences
+  moveInDate          DateTime?
+  leaseTerm           Int?              // months
+  pets                Json[]            // Array of pet info
+  vehicles            Json[]            // Array of vehicle info
+  emergencyContact    Json?
+  applicantNotes      String?
+  
+  // Co-Applicants
+  coApplicants        Json[]            // Array of co-applicant data
+  
+  // Landlord Review
+  landlordNotes       String?
+  rejectionReason     String?
+  conditions          String[]
+  reviewedBy          String?
+  reviewedAt          DateTime?
+  
+  // Timestamps
+  submittedAt         DateTime?
+  expiresAt           DateTime?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  deletedAt           DateTime?
+  
+  @@index([propertyId])
+  @@index([primaryApplicantId])
+  @@index([status])
+  @@index([score])
+  @@index([submittedAt])
+}
+
+model ApplicationDocument {
+  id            String      @id @default(uuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  
+  type          String      // id, paystub, bank_statement, tax_return, employment_letter, other
+  filename      String
+  url           String
+  size          Int
+  uploadedBy    String
+  uploadedAt    DateTime    @default(now())
+  parsed        Boolean     @default(false)
+  extractedData Json?
+  
+  @@index([applicationId])
+  @@index([type])
+}
