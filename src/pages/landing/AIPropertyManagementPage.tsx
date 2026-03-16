@@ -9,7 +9,7 @@ import {
   MessageSquare,
   TrendingUp,
   Search,
-  Tool,
+  Hammer,
   FileText,
   BarChart,
   Shield,
@@ -36,7 +36,7 @@ const timeSavings = [
     manualTime: "3 hours",
     aiTime: "20 minutes",
     saved: "2h 40m",
-    icon: Tool,
+    icon: Hammer,
   },
   {
     task: "Lease Renewals & Documentation",
@@ -79,7 +79,7 @@ const aiFeatures = [
       "AI continuously monitors comparable listings, neighborhood demand, and economic indicators to recommend the ideal rent price for each unit. Landlords using this feature see an average 8% increase in rental income within the first year.",
   },
   {
-    icon: Tool,
+    icon: Hammer,
     title: "Intelligent Maintenance Routing",
     description:
       "When a tenant submits a maintenance request, AI categorizes the issue by urgency, matches it with the best available contractor based on specialty and past performance, and auto-schedules the repair — often before you even see the ticket.",

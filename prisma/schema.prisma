@@ -1,0 +1,888 @@
+// Complete Prisma Schema for Real Estate Platform
+// Modules: Auth, Properties, Inspections, Applications, Leases, Payments
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+
+enum UserRole {
+  TENANT
+  LANDLORD
+  AGENT
+  PROPERTY_MANAGER
+  BUSINESS
+  ADMIN
+  SUPER_ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  PENDING_VERIFICATION
+}
+
+enum PropertyStatus {
+  DRAFT
+  ACTIVE
+  RENTED
+  SOLD
+  INACTIVE
+  ARCHIVED
+}
+
+enum PropertyType {
+  APARTMENT
+  HOUSE
+  CONDO
+  TOWNHOUSE
+  STUDIO
+  LOFT
+  COMMERCIAL
+}
+
+enum InspectionType {
+  IN_PERSON
+  VIRTUAL
+  OPEN_HOUSE
+}
+
+enum InspectionStatus {
+  SCHEDULED
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+  RESCHEDULED
+}
+
+enum ApplicationStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  VERIFICATION_PENDING
+  CONDITIONALLY_APPROVED
+  APPROVED
+  APPROVED_WITH_CONDITIONS
+  REJECTED
+  WITHDRAWN
+}
+
+enum VerificationStatus {
+  NOT_STARTED
+  PENDING
+  IN_PROGRESS
+  VERIFIED
+  FAILED
+  MANUAL_REVIEW
+}
+
+enum NotificationType {
+  INSPECTION_CONFIRMATION
+  INSPECTION_REMINDER
+  INSPECTION_CANCELLATION
+  INSPECTION_RESCHEDULE
+  INSPECTION_CHECK_IN
+  INSPECTION_CHECK_OUT
+  INSPECTION_FOLLOW_UP
+  INSPECTION_NO_SHOW
+  INSPECTION_ACCESS_CODE
+  INSPECTION_DIRECTIONS
+  APPLICATION_STATUS
+  SYSTEM
+}
+
+enum NotificationChannel {
+  EMAIL
+  IN_APP
+  SMS
+  PUSH
+}
+
+enum NotificationStatus {
+  PENDING
+  SENT
+  DELIVERED
+  FAILED
+  READ
+}
+
+enum LeaseStatus {
+  DRAFT
+  PENDING_SIGNATURES
+  ACTIVE
+  EXPIRED
+  TERMINATED
+  RENEWED
+}
+
+enum PaymentStatus {
+  PAYMENT_PENDING
+  PAID
+  OVERDUE
+  PARTIAL
+  REFUNDED
+  PAYMENT_CANCELLED
+}
+
+enum PaymentType {
+  RENT
+  DEPOSIT
+  LATE_FEE
+  MAINTENANCE
+  UTILITY
+  OTHER
+}
+
+enum BookingType {
+  VIEWING
+  INSPECTION
+  MAINTENANCE
+  MEETING
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+enum Plan {
+  FREE
+  STARTER
+  PROFESSIONAL
+  BUSINESS
+  ENTERPRISE
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELLED
+  EXPIRED
+}
+
+// ==========================================
+// USER & AUTH MODELS
+// ==========================================
+
+model User {
+  id                      String    @id @default(uuid())
+  email                   String    @unique
+  passwordHash            String
+  firstName               String
+  lastName                String
+  phone                   String?
+  role                    UserRole  @default(TENANT)
+  avatar                  String?
+  status                  UserStatus @default(PENDING_VERIFICATION)
+  emailVerified           Boolean   @default(false)
+  phoneVerified           Boolean   @default(false)
+  twoFactorEnabled        Boolean   @default(false)
+  twoFactorSecret         String?
+  profileCompletion       Int       @default(0)
+  lastLoginAt             DateTime?
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  deletedAt               DateTime?
+
+  refreshTokens           RefreshToken[]
+  passwordResetTokens     PasswordResetToken[]
+  emailVerificationTokens EmailVerificationToken[]
+  landlordProfile         LandlordProfile?
+  tenantProfile           TenantProfile?
+  agentProfile            AgentProfile?
+  properties              Property[]
+  inspections             Inspection[]
+  applications            Application[]
+  notifications           Notification[]
+  notificationPreference  NotificationPreference?
+  tenantLeases            Lease[]    @relation("TenantLeases")
+  landlordLeases          Lease[]    @relation("LandlordLeases")
+  payments                Payment[]  @relation("PayerPayments")
+  workflows               Workflow[]
+  bookings                Booking[]  @relation("TenantBookings")
+  availabilities          Availability[]
+  subscription            Subscription?
+  featureUsages           UserFeatureUsage[]
+  tipDismissals           TipDismissal[]
+
+  @@index([email])
+  @@index([role])
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+}
+
+model PasswordResetToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+}
+
+model EmailVerificationToken {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  verified  Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+}
+
+model LandlordProfile {
+  id                  String    @id @default(uuid())
+  userId              String    @unique
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  businessName        String?
+  businessRegistration String?
+  taxId               String?
+  bankAccountVerified Boolean   @default(false)
+  propertiesCount     Int       @default(0)
+  rating              Float?
+  verificationStatus  String    @default("pending")
+  bio                 String?
+  website             String?
+  languages           String[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+model TenantProfile {
+  id                  String    @id @default(uuid())
+  userId              String    @unique
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  employmentStatus    String?
+  employerName        String?
+  jobTitle            String?
+  annualIncome        Float?
+  creditScore         Int?
+  hasPets             Boolean   @default(false)
+  petsDescription     String?
+  hasVehicle          Boolean   @default(false)
+  vehicleDescription  String?
+  smoking             Boolean   @default(false)
+  references          Json?
+  moveInDate          DateTime?
+  leaseTerm           Int?
+  preferredLocations  String[]
+  budgetMin           Float?
+  budgetMax           Float?
+  preferredPropertyTypes String[]
+  specialRequirements String?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+model AgentProfile {
+  id                  String    @id @default(uuid())
+  userId              String    @unique
+  user                User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  licenseNumber       String
+  licenseState        String
+  licenseExpiry       DateTime
+  brokerageName       String
+  brokerageAddress    String?
+  brokeragePhone      String?
+  yearsOfExperience   Int       @default(0)
+  specializations     String[]
+  services            String[]
+  languages           String[]
+  website             String?
+  linkedin            String?
+  facebook            String?
+  instagram           String?
+  twitter             String?
+  bio                 String?
+  rating              Float?    @default(0)
+  reviewCount         Int       @default(0)
+  propertiesListed    Int       @default(0)
+  propertiesSold      Int       @default(0)
+  verificationStatus  String    @default("pending")
+  isFeatured          Boolean   @default(false)
+  availableForContact Boolean   @default(true)
+  officeHours         Json?
+  serviceAreas        String[]
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+}
+
+// ==========================================
+// PROPERTY MODELS
+// ==========================================
+
+model Property {
+  id              String         @id @default(uuid())
+  ownerId         String
+  owner           User           @relation(fields: [ownerId], references: [id])
+
+  title           String
+  description     String
+  slug            String         @unique
+  propertyType    PropertyType
+  status          PropertyStatus @default(DRAFT)
+
+  address         Json
+  bedrooms        Int
+  bathrooms       Float
+  sqft            Int?
+  lotSize         Int?
+  yearBuilt       Int?
+
+  price           Float
+  pricePerSqft    Float?
+  deposit         Float?
+
+  amenities       String[]
+  utilities       Json?
+  parking         Json?
+  petPolicy       Json?
+
+  images          PropertyImage[]
+  virtualTourUrl  String?
+  videoUrl        String?
+  floorPlanUrl    String?
+
+  availableFrom   DateTime?
+  leaseTerm       Int?
+
+  views           Int            @default(0)
+  featured        Boolean        @default(false)
+  verified        Boolean        @default(false)
+  publishedAt     DateTime?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  deletedAt       DateTime?
+
+  inspections        Inspection[]
+  applications       Application[]
+  leases             Lease[]
+  screeningRequests  ScreeningRequest[]
+  bookings               Booking[]
+  availabilities         Availability[]
+  maintenanceRecords     MaintenanceRecord[]
+  maintenancePredictions MaintenancePrediction[]
+  transactions           Transaction[]
+  financialReports       FinancialReport[]
+
+  @@index([ownerId])
+  @@index([status])
+  @@index([propertyType])
+  @@index([slug])
+  @@index([createdAt])
+}
+
+model PropertyImage {
+  id          String   @id @default(uuid())
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  url         String
+  caption     String?
+  order       Int      @default(0)
+  isPrimary   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  @@index([propertyId])
+  @@index([order])
+}
+
+// ==========================================
+// INSPECTION MODELS
+// ==========================================
+
+model Inspection {
+  id              String           @id @default(uuid())
+  propertyId      String
+  property        Property         @relation(fields: [propertyId], references: [id])
+  userId          String
+  user            User             @relation(fields: [userId], references: [id])
+
+  type            InspectionType
+  status          InspectionStatus @default(SCHEDULED)
+  scheduledDate   DateTime
+  scheduledTime   String
+  duration        Int              @default(30)
+
+  attendees       Json?
+  tenantNotes     String?
+  landlordNotes   String?
+
+  confirmedAt     DateTime?
+  completedAt     DateTime?
+  cancelledAt     DateTime?
+  cancellationReason String?
+
+  reminderSent    Boolean          @default(false)
+  reminderSentAt  DateTime?
+
+  meetingLink     String?
+  meetingId       String?
+
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+
+  @@index([propertyId])
+  @@index([userId])
+  @@index([scheduledDate])
+  @@index([status])
+}
+
+// ==========================================
+// APPLICATION MODELS
+// ==========================================
+
+model Application {
+  id                  String            @id @default(uuid())
+  propertyId          String
+  property            Property          @relation(fields: [propertyId], references: [id])
+  primaryApplicantId  String
+  primaryApplicant    User              @relation(fields: [primaryApplicantId], references: [id])
+
+  status              ApplicationStatus @default(DRAFT)
+  score               Int               @default(0)
+  scoreBreakdown      Json?
+
+  personalInfo        Json
+  employment          Json[]
+  income              Json[]
+  rentalHistory       Json[]
+  references          Json[]
+
+  identityVerification Json?
+  incomeVerification   Json?
+  creditCheck          Json?
+  backgroundCheck      Json?
+
+  documents           ApplicationDocument[]
+
+  moveInDate          DateTime?
+  leaseTerm           Int?
+  pets                Json[]
+  vehicles            Json[]
+  emergencyContact    Json?
+  applicantNotes      String?
+  coApplicants        Json[]
+
+  landlordNotes       String?
+  rejectionReason     String?
+  conditions          String[]
+  reviewedBy          String?
+  reviewedAt          DateTime?
+
+  submittedAt         DateTime?
+  expiresAt           DateTime?
+  createdAt           DateTime          @default(now())
+  updatedAt           DateTime          @updatedAt
+  deletedAt           DateTime?
+
+  @@index([propertyId])
+  @@index([primaryApplicantId])
+  @@index([status])
+  @@index([score])
+  @@index([submittedAt])
+}
+
+model ApplicationDocument {
+  id            String      @id @default(uuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+
+  type          String
+  filename      String
+  url           String
+  size          Int
+  uploadedBy    String
+  uploadedAt    DateTime    @default(now())
+  parsed        Boolean     @default(false)
+  extractedData Json?
+
+  @@index([applicationId])
+  @@index([type])
+}
+
+// ==========================================
+// NOTIFICATION MODELS
+// ==========================================
+
+model Notification {
+  id          String             @id @default(uuid())
+  userId      String
+  user        User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type        NotificationType
+  channel     NotificationChannel @default(IN_APP)
+  status      NotificationStatus  @default(PENDING)
+
+  title       String
+  message     String
+  data        Json?
+
+  readAt      DateTime?
+  sentAt      DateTime?
+  failReason  String?
+
+  inspectionId String?
+  propertyId   String?
+
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@index([userId])
+  @@index([type])
+  @@index([status])
+  @@index([createdAt])
+  @@index([userId, readAt])
+}
+
+model NotificationPreference {
+  id     String  @id @default(uuid())
+  userId String  @unique
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  email  Boolean @default(true)
+  sms    Boolean @default(false)
+  push   Boolean @default(true)
+
+  inspectionReminders  Boolean @default(true)
+  inspectionUpdates    Boolean @default(true)
+  applicationUpdates   Boolean @default(true)
+  marketingEmails      Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+// ==========================================
+// SCREENING MODELS
+// ==========================================
+
+enum ScreeningStatus {
+  SCREENING_PENDING
+  IN_PROGRESS
+  SCREENING_COMPLETED
+  SCREENING_FAILED
+}
+
+model ScreeningRequest {
+  id                     String           @id @default(uuid())
+  tenantName             String
+  email                  String
+  phone                  String
+  propertyId             String
+  property               Property         @relation(fields: [propertyId], references: [id])
+  status                 ScreeningStatus  @default(SCREENING_PENDING)
+  creditScore            Int?
+  backgroundCheck        Boolean?
+  evictionHistory        Boolean?
+  employmentVerification Boolean?
+  createdAt              DateTime         @default(now())
+  updatedAt              DateTime         @updatedAt
+
+  @@index([propertyId])
+  @@index([status])
+  @@index([email])
+  @@index([createdAt])
+}
+
+// ==========================================
+// LEASE & PAYMENT MODELS
+// ==========================================
+
+model Lease {
+  id              String       @id @default(uuid())
+  propertyId      String
+  property        Property     @relation(fields: [propertyId], references: [id])
+  tenantId        String
+  tenant          User         @relation("TenantLeases", fields: [tenantId], references: [id])
+  landlordId      String
+  landlord        User         @relation("LandlordLeases", fields: [landlordId], references: [id])
+
+  status          LeaseStatus  @default(DRAFT)
+  startDate       DateTime
+  endDate         DateTime
+  monthlyRent     Float
+  depositAmount   Float
+  depositPaid     Boolean      @default(false)
+  lateFeeAmount   Float        @default(0)
+  lateFeeGraceDays Int         @default(5)
+
+  leaseDocumentUrl String?
+
+  signedByTenant    Boolean    @default(false)
+  signedByLandlord  Boolean    @default(false)
+  signedAt          DateTime?
+  terminatedAt      DateTime?
+  terminationReason String?
+  createdAt         DateTime   @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  payments        Payment[]
+
+  @@index([propertyId])
+  @@index([tenantId])
+  @@index([landlordId])
+  @@index([status])
+}
+
+model Payment {
+  id              String        @id @default(uuid())
+  leaseId         String
+  lease           Lease         @relation(fields: [leaseId], references: [id])
+  payerId         String
+  payer           User          @relation("PayerPayments", fields: [payerId], references: [id])
+
+  type            PaymentType   @default(RENT)
+  status          PaymentStatus @default(PAYMENT_PENDING)
+  amount          Float
+  currency        String        @default("USD")
+  dueDate         DateTime
+  paidAt          DateTime?
+
+  stripePaymentIntentId String?
+  stripeInvoiceId       String?
+
+  description     String?
+  receiptUrl      String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+
+  @@index([leaseId])
+  @@index([payerId])
+  @@index([status])
+  @@index([dueDate])
+}
+
+// ==========================================
+// MAINTENANCE MODELS
+// ==========================================
+
+enum MaintenanceSystemType {
+  HVAC
+  PLUMBING
+  ELECTRICAL
+  ROOFING
+  APPLIANCE
+  STRUCTURAL
+}
+
+model MaintenanceRecord {
+  id                String                @id @default(uuid())
+  propertyId        String
+  property          Property              @relation(fields: [propertyId], references: [id])
+  systemType        MaintenanceSystemType
+  description       String
+  cost              Decimal
+  completedAt       DateTime
+  nextPredictedDate DateTime?
+  createdAt         DateTime              @default(now())
+
+  @@index([propertyId])
+  @@index([systemType])
+  @@index([completedAt])
+}
+
+model MaintenancePrediction {
+  id                   String                @id @default(uuid())
+  propertyId           String
+  property             Property              @relation(fields: [propertyId], references: [id])
+  systemType           MaintenanceSystemType
+  predictedFailureDate DateTime
+  confidence           Float
+  createdAt            DateTime              @default(now())
+
+  @@index([propertyId])
+  @@index([systemType])
+  @@index([predictedFailureDate])
+}
+
+// ==========================================
+// FINANCE MODELS
+// ==========================================
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
+
+model Transaction {
+  id          String          @id @default(uuid())
+  propertyId  String
+  property    Property        @relation(fields: [propertyId], references: [id])
+  type        TransactionType @default(EXPENSE)
+  category    String
+  amount      Decimal         @db.Decimal(10, 2)
+  date        DateTime
+  description String?
+  receiptUrl  String?
+  createdAt   DateTime        @default(now())
+
+  @@index([propertyId])
+}
+
+model FinancialReport {
+  id          String   @id @default(uuid())
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id])
+  startDate   DateTime
+  endDate     DateTime
+  netIncome   Decimal  @db.Decimal(10, 2)
+  grossIncome Decimal  @db.Decimal(10, 2)
+  expenses    Decimal  @db.Decimal(10, 2)
+  createdAt   DateTime @default(now())
+
+  @@index([propertyId])
+}
+
+// ==========================================
+// WORKFLOW MODELS
+// ==========================================
+
+enum WorkflowTriggerType {
+  MANUAL
+  NEW_TENANT
+  LEASE_EXPIRY
+  MAINTENANCE_REQUEST
+  PAYMENT_RECEIVED
+  SCHEDULED
+}
+
+enum WorkflowExecutionStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+model Workflow {
+  id          String              @id @default(uuid())
+  userId      String
+  user        User                @relation(fields: [userId], references: [id])
+  name        String
+  description String?
+  triggerType WorkflowTriggerType
+  steps       Json
+  isActive    Boolean             @default(true)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  executions  WorkflowExecution[]
+
+  @@index([userId])
+  @@index([triggerType])
+  @@index([isActive])
+}
+
+model WorkflowExecution {
+  id         String                  @id @default(uuid())
+  workflowId String
+  workflow   Workflow                @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  status     WorkflowExecutionStatus @default(PENDING)
+  log        String?
+  createdAt  DateTime                @default(now())
+  updatedAt  DateTime                @updatedAt
+
+  @@index([workflowId])
+  @@index([status])
+}
+
+// ==========================================
+// SUBSCRIPTION & BILLING MODELS
+// ==========================================
+
+model Subscription {
+  id                    String             @id @default(uuid())
+  userId                String             @unique
+  stripeCustomerId      String?            @map("stripe_customer_id")
+  stripeSubscriptionId  String?            @map("stripe_subscription_id")
+  plan                  Plan               @default(FREE)
+  status                SubscriptionStatus @default(TRIALING)
+  trialStartDate        DateTime?          @map("trial_start_date")
+  trialEndDate          DateTime?          @map("trial_end_date")
+  currentPeriodStart    DateTime?          @map("current_period_start")
+  currentPeriodEnd      DateTime?          @map("current_period_end")
+  cancelAtPeriodEnd     Boolean            @default(false) @map("cancel_at_period_end")
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
+  user                  User               @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([stripeCustomerId])
+  @@index([stripeSubscriptionId])
+  @@index([status])
+}
+
+// ==========================================
+// SCHEDULING & BOOKING MODELS
+// ==========================================
+
+model Booking {
+  id          String        @id @default(uuid())
+  propertyId  String
+  tenantId    String?
+  type        BookingType   @default(VIEWING)
+  title       String
+  startTime   DateTime
+  endTime     DateTime
+  status      BookingStatus @default(PENDING)
+  notes       String?
+  location    String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  property    Property      @relation(fields: [propertyId], references: [id])
+  tenant      User?         @relation("TenantBookings", fields: [tenantId], references: [id])
+
+  @@index([propertyId])
+  @@index([tenantId])
+  @@index([startTime])
+  @@index([status])
+}
+
+model Availability {
+  id          String   @id @default(uuid())
+  propertyId  String
+  userId      String
+  dayOfWeek   Int
+  startTime   DateTime
+  endTime     DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  property    Property @relation(fields: [propertyId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([propertyId])
+  @@index([userId])
+  @@index([dayOfWeek])
+}

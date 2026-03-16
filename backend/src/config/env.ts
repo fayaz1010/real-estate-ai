@@ -48,6 +48,12 @@ export const config = {
     maxRequests: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS || "100", 10),
   },
 
+  // Email Rate Limiting (per recipient)
+  emailRateLimit: {
+    windowMs: parseInt(process.env.EMAIL_RATE_LIMIT_WINDOW_MS || "3600000", 10),
+    max: parseInt(process.env.EMAIL_RATE_LIMIT_MAX || "10", 10),
+  },
+
   // Swagger
   swaggerEnabled: process.env.SWAGGER_ENABLED === "true",
 

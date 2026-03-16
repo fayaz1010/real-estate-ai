@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import {
   Shield,
   CreditCard,
-  Tool,
+  Hammer,
   Cpu,
   Clock,
   Users,
@@ -43,14 +43,15 @@ const HeroSection: React.FC = () => (
         <h1 className="text-display text-4xl sm:text-5xl md:text-6xl text-white leading-tight mb-6">
           Property Management,{" "}
           <span className="text-realestate-accent">
-            Powered by Intelligence
+            Powered by AI
           </span>
         </h1>
 
         <p className="font-inter text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Automate tenant screening, rent collection, maintenance tracking, and
-          scheduling with AI-driven tools that save landlords{" "}
-          <strong className="text-white">15+ hours every week</strong>.
+          AI that actively manages your properties — predicting maintenance issues,
+          optimizing rent prices, screening tenants, and reducing vacancy — so you
+          manage more units with{" "}
+          <strong className="text-white">less effort</strong>.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -179,7 +180,7 @@ const features = [
     iconColor: "text-realestate-secondary",
   },
   {
-    icon: Tool,
+    icon: Hammer,
     title: "Predictive Maintenance",
     description:
       "AI predicts maintenance needs before they become costly repairs, saving you time and money while keeping tenants happy.",
@@ -651,34 +652,34 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial: t }) => 
 const tiers = [
   {
     name: "Starter",
-    price: "Free",
-    period: "",
-    description: "For landlords just getting started",
-    features: ["Up to 5 units", "Basic tenant screening", "Email support"],
+    price: "$49",
+    period: "/mo",
+    description: "For small landlords getting started",
+    features: ["Up to 25 units", "AI tenant screening", "Rent collection", "Email support"],
     highlighted: false,
   },
   {
     name: "Professional",
-    price: "$29",
+    price: "$149",
     period: "/mo",
     description: "For growing portfolios",
     features: [
-      "Up to 50 units",
-      "AI screening & scoring",
-      "Smart rent collection",
+      "Up to 100 units",
+      "Smart rent pricing",
+      "Predictive maintenance",
       "Priority support",
     ],
     highlighted: true,
   },
   {
     name: "Business",
-    price: "$79",
+    price: "$399",
     period: "/mo",
     description: "For property management firms",
     features: [
-      "Up to 200 units",
-      "Predictive maintenance",
-      "Advanced analytics",
+      "Up to 500 units",
+      "Full AI automation",
+      "Custom reporting",
       "API access",
     ],
     highlighted: false,
@@ -712,8 +713,7 @@ const PricingPreview: React.FC = () => (
           Plans That Scale With You
         </h2>
         <p className="font-inter text-gray-500 max-w-xl mx-auto">
-          Start free, upgrade when you are ready. No hidden fees, cancel
-          anytime.
+          Start with a free 14-day trial. No hidden fees, cancel anytime.
         </p>
       </div>
 

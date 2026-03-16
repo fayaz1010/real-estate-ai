@@ -17,6 +17,13 @@ import {
   ApplicationsPage,
   AdminPage,
   PropertiesPage,
+  TenantPortalPage,
+  LandlordPortalPage,
+  DeveloperPortalPage,
+  MaintenanceRequestPage,
+  LeaseManagementPage,
+  PaymentCollectionPage,
+  PredictiveMaintenancePage,
 } from "./pages";
 import {
   SmallLandlordsPage,
@@ -313,6 +320,56 @@ const AppContent: React.FC = () => {
                     onComplete={() => (window.location.href = "/dashboard")}
                   />
                 </div>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Portal Routes (protected, dashboard style) */}
+          <Route
+            path="/tenant-portal"
+            element={
+              <ProtectedRoute>
+                <TenantPortalPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/landlord-portal"
+            element={
+              <ProtectedRoute>
+                <LandlordPortalPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/developer-portal"
+            element={
+              <ProtectedRoute>
+                <DeveloperPortalPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/maintenance"
+            element={
+              <ProtectedRoute>
+                <MaintenanceRequestPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/leases"
+            element={
+              <ProtectedRoute>
+                <LeaseManagementPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/payments"
+            element={
+              <ProtectedRoute>
+                <PaymentCollectionPage />
               </ProtectedRoute>
             }
           />

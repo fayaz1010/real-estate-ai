@@ -11,7 +11,7 @@ import {
   Bell,
   CreditCard,
   Search,
-  Tool,
+  Hammer,
   FileText,
   BarChart,
   TrendingUp,
@@ -46,7 +46,7 @@ const steps = [
   },
   {
     number: "04",
-    icon: Tool,
+    icon: Hammer,
     title: "Automate Maintenance Workflows",
     description:
       "Tenants submit maintenance requests through the portal with photos and descriptions. AI categorizes each request by type and urgency, matches it with the best available contractor based on specialty, rating, and proximity, and schedules the repair. You approve or adjust with one tap. The tenant and contractor both receive automatic status updates throughout the process.",

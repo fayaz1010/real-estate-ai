@@ -55,92 +55,99 @@ interface FeatureRow {
 
 const tiers: PricingTier[] = [
   {
-    id: "free",
-    name: "Free Trial",
-    icon: <Star className="w-6 h-6" />,
-    description: "Explore the full platform risk-free for 14 days.",
-    monthlyPrice: "$0",
-    monthlyUnit: "for 14 days",
-    monthlyMin: "",
-    annualPrice: "$0",
-    annualUnit: "for 14 days",
-    annualMin: "",
-    features: [
-      "Full platform access",
-      "Up to 10 units",
-      "Basic AI insights",
-      "Email support",
-    ],
-    cta: "Start Free Trial",
-    ctaLink: "/auth/register",
-    highlighted: false,
-  },
-  {
     id: "starter",
     name: "Starter",
     icon: <Building className="w-6 h-6" />,
-    description: "Perfect for small landlords and growing portfolios.",
-    monthlyPrice: "$1",
-    monthlyUnit: "/unit/mo",
-    monthlyMin: "Minimum $79/mo",
-    annualPrice: "$0.83",
-    annualUnit: "/unit/mo",
-    annualMin: "Minimum $66/mo",
+    description: "Perfect for small landlords getting started with AI management.",
+    monthlyPrice: "$49",
+    monthlyUnit: "/mo",
+    monthlyMin: "Up to 25 units",
+    annualPrice: "$39",
+    annualUnit: "/mo",
+    annualMin: "Up to 25 units, billed annually",
     features: [
-      "Up to 150 units",
-      "AI tenant screening",
-      "Online rent collection",
-      "Basic reporting",
-      "Maintenance tracking",
+      "Up to 25 units",
+      "Basic property management",
+      "Tenant portal",
+      "Rent collection",
+      "Limited AI insights",
+      "14-day free trial",
+      "20% annual discount (2 months free)",
     ],
-    cta: "Get Started",
+    cta: "Start Free 14-Day Trial",
     ctaLink: "/auth/register",
     highlighted: false,
   },
   {
-    id: "growth",
-    name: "Growth",
+    id: "professional",
+    name: "Professional",
     icon: <Zap className="w-6 h-6" />,
-    description: "For scaling property managers who need powerful tools.",
-    monthlyPrice: "$2",
-    monthlyUnit: "/unit/mo",
-    monthlyMin: "Minimum $199/mo",
-    annualPrice: "$1.67",
-    annualUnit: "/unit/mo",
-    annualMin: "Minimum $166/mo",
+    description: "For growing portfolios that need powerful AI tools.",
+    monthlyPrice: "$149",
+    monthlyUnit: "/mo",
+    monthlyMin: "Up to 100 units",
+    annualPrice: "$119",
+    annualUnit: "/mo",
+    annualMin: "Up to 100 units, billed annually",
     features: [
-      "Up to 500 units",
-      "Advanced AI analytics",
-      "Automated workflows",
-      "Custom reporting",
+      "Up to 100 units",
+      "Full AI assistant",
+      "Automated tenant screening",
+      "Predictive maintenance alerts",
+      "Financial reporting",
       "API access",
-      "eSignatures",
-      "Priority support",
+      "14-day free trial",
+      "20% annual discount (2 months free)",
     ],
-    cta: "Get Started",
+    cta: "Start Free 14-Day Trial",
     ctaLink: "/auth/register",
     highlighted: true,
     badge: "Most Popular",
   },
   {
+    id: "business",
+    name: "Business",
+    icon: <Award className="w-6 h-6" />,
+    description: "For property management firms scaling operations.",
+    monthlyPrice: "$399",
+    monthlyUnit: "/mo",
+    monthlyMin: "Up to 500 units",
+    annualPrice: "$319",
+    annualUnit: "/mo",
+    annualMin: "Up to 500 units, billed annually",
+    features: [
+      "Up to 500 units",
+      "Advanced AI analytics",
+      "Portfolio optimization",
+      "Custom workflows",
+      "Priority support",
+      "White-label options",
+      "14-day free trial",
+      "20% annual discount (2 months free)",
+    ],
+    cta: "Start Free 14-Day Trial",
+    ctaLink: "/auth/register",
+    highlighted: false,
+  },
+  {
     id: "enterprise",
     name: "Enterprise",
-    icon: <Award className="w-6 h-6" />,
-    description: "Tailored solutions for large-scale operations.",
-    monthlyPrice: "$3.50",
-    monthlyUnit: "/unit/mo",
-    monthlyMin: "Minimum $1,500/mo",
-    annualPrice: "$2.92",
-    annualUnit: "/unit/mo",
-    annualMin: "Minimum $1,250/mo",
+    icon: <Star className="w-6 h-6" />,
+    description: "Tailored solutions for large-scale property operations.",
+    monthlyPrice: "Custom",
+    monthlyUnit: "",
+    monthlyMin: "$800–$2,000+/mo · Unlimited units",
+    annualPrice: "Custom",
+    annualUnit: "",
+    annualMin: "$800–$2,000+/mo · Unlimited units",
     features: [
       "Unlimited units",
-      "AI-driven automation suite",
-      "White-label option",
-      "Dedicated account manager",
+      "Dedicated AI model training",
       "Custom integrations",
-      "Data export",
-      "SLA guarantee",
+      "SLA guarantees",
+      "Dedicated account manager",
+      "On-premise option",
+      "20% annual discount (2 months free)",
     ],
     cta: "Contact Sales",
     ctaLink: "/contact",
@@ -149,22 +156,22 @@ const tiers: PricingTier[] = [
 ];
 
 const featureRows: FeatureRow[] = [
-  { name: "Units included", free: "Up to 10", starter: "Up to 150", growth: "Up to 500", enterprise: "Unlimited" },
-  { name: "AI insights", free: "Basic", starter: "Standard", growth: "Advanced", enterprise: "Full suite" },
-  { name: "Tenant screening", free: false, starter: true, growth: true, enterprise: true },
-  { name: "Online rent collection", free: false, starter: true, growth: true, enterprise: true },
-  { name: "Maintenance tracking", free: false, starter: true, growth: true, enterprise: true },
-  { name: "Basic reporting", free: false, starter: true, growth: true, enterprise: true },
+  { name: "Units included", free: "Up to 25", starter: "Up to 100", growth: "Up to 500", enterprise: "Unlimited" },
+  { name: "AI insights", free: "Basic", starter: "Advanced", growth: "Full suite", enterprise: "Custom AI" },
+  { name: "Tenant screening", free: true, starter: true, growth: true, enterprise: true },
+  { name: "Online rent collection", free: true, starter: true, growth: true, enterprise: true },
+  { name: "Maintenance tracking", free: "Basic", starter: "Predictive", growth: "Predictive", enterprise: "Predictive" },
+  { name: "Smart rent pricing", free: false, starter: true, growth: true, enterprise: true },
+  { name: "Automated workflows", free: false, starter: true, growth: true, enterprise: true },
   { name: "Custom reporting", free: false, starter: false, growth: true, enterprise: true },
-  { name: "Automated workflows", free: false, starter: false, growth: true, enterprise: true },
   { name: "API access", free: false, starter: false, growth: true, enterprise: true },
-  { name: "eSignatures", free: false, starter: false, growth: true, enterprise: true },
+  { name: "eSignatures", free: false, starter: true, growth: true, enterprise: true },
+  { name: "Team management", free: false, starter: false, growth: true, enterprise: true },
   { name: "White-label option", free: false, starter: false, growth: false, enterprise: true },
   { name: "Dedicated account manager", free: false, starter: false, growth: false, enterprise: true },
-  { name: "Custom integrations", free: false, starter: false, growth: false, enterprise: true },
-  { name: "Data export", free: false, starter: false, growth: false, enterprise: true },
+  { name: "Custom integrations", free: false, starter: false, growth: true, enterprise: true },
   { name: "SLA guarantee", free: false, starter: false, growth: false, enterprise: true },
-  { name: "Support", free: "Email", starter: "Email", growth: "Priority", enterprise: "Dedicated" },
+  { name: "Support", free: "Email", starter: "Priority", growth: "Dedicated", enterprise: "24/7 Dedicated" },
 ];
 
 const faqs: FAQ[] = [
@@ -451,13 +458,13 @@ export default function PricingPage() {
                   Feature
                 </th>
                 <th className="text-center py-4 px-4 text-heading text-sm text-realestate-primary w-1/5">
-                  Free Trial
-                </th>
-                <th className="text-center py-4 px-4 text-heading text-sm text-realestate-primary w-1/5">
                   Starter
                 </th>
-                <th className="text-center py-4 px-4 text-heading text-sm text-realestate-accent w-1/5">
-                  Growth
+                <th className="text-center py-4 px-4 text-heading text-sm text-realestate-secondary w-1/5">
+                  Professional
+                </th>
+                <th className="text-center py-4 px-4 text-heading text-sm text-realestate-primary w-1/5">
+                  Business
                 </th>
                 <th className="text-center py-4 px-4 text-heading text-sm text-realestate-primary w-1/5">
                   Enterprise
@@ -476,10 +483,10 @@ export default function PricingPage() {
                   <td className="py-3.5 px-4 text-center">
                     <FeatureCell value={row.free} />
                   </td>
-                  <td className="py-3.5 px-4 text-center">
+                  <td className="py-3.5 px-4 text-center bg-realestate-secondary/[0.03]">
                     <FeatureCell value={row.starter} />
                   </td>
-                  <td className="py-3.5 px-4 text-center bg-realestate-accent/[0.03]">
+                  <td className="py-3.5 px-4 text-center">
                     <FeatureCell value={row.growth} />
                   </td>
                   <td className="py-3.5 px-4 text-center">
@@ -514,11 +521,11 @@ export default function PricingPage() {
               <ul className="space-y-2.5">
                 {featureRows.map((row) => {
                   const val =
-                    tier.id === "free"
+                    tier.id === "starter"
                       ? row.free
-                      : tier.id === "starter"
+                      : tier.id === "professional"
                       ? row.starter
-                      : tier.id === "growth"
+                      : tier.id === "business"
                       ? row.growth
                       : row.enterprise;
 

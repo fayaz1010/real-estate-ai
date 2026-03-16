@@ -4,14 +4,36 @@ export default {
   theme: {
     extend: {
       colors: {
-        "realestate-primary": "#161D23",
-        "realestate-secondary": "#576E6A",
-        "realestate-accent": "#E5B80B",
+        // Warm & Trustworthy palette
+        primary: "#2C3E50",
+        secondary: "#8B7355",
+        accent: "#C9956B",
+        background: "#FAF6F1",
+        text_primary: "#1A1A2E",
+        // Legacy aliases for existing components
+        "realestate-primary": "#2C3E50",
+        "realestate-secondary": "#8B7355",
+        "realestate-accent": "#C9956B",
+        "realestate-background": "#FAF6F1",
+        "realestate-text": "#1A1A2E",
+        "realestate-surface": "#FFFFFF",
+        "realestate-text-secondary": "#6599ac",
+        "realestate-text-muted": "#94a3b8",
+        "realestate-border": "#cbd5e1",
+        "realestate-success": "#34d399",
+        "realestate-warning": "#fde047",
+        "realestate-error": "#ef4444",
       },
       fontFamily: {
-        "space-grotesk": ["Space Grotesk", "sans-serif"],
-        inter: ["Inter", "sans-serif"],
-        mono: ["JetBrains Mono", "monospace"],
+        display: ["Instrument Serif", "serif"],
+        body: ["DM Sans", "sans-serif"],
+        montserrat: ["Instrument Serif", "serif"],
+        "open-sans": ["DM Sans", "sans-serif"],
+        "roboto-mono": ["Roboto Mono", "monospace"],
+        // Legacy aliases pointing to new fonts
+        "space-grotesk": ["Instrument Serif", "serif"],
+        inter: ["DM Sans", "sans-serif"],
+        mono: ["Roboto Mono", "monospace"],
       },
       borderRadius: {
         "realestate-sm": "0.125rem",

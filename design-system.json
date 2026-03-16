@@ -1,0 +1,679 @@
+{
+  "personality": {
+    "brand_name": "RealEstate AI",
+    "tagline": "Property Management, Powered by AI",
+    "voice": "Confident, warm, and quietly intelligent — like a seasoned property manager who always has the answer before you ask the question",
+    "tone_attributes": ["professional", "reassuring", "proactive", "clear", "human-first"],
+    "design_philosophy": "AI as invisible infrastructure — every workflow is AI-assisted by default, but the interface feels calm, intuitive, and human. No 'AI-powered' badges. The intelligence is felt, not labeled.",
+    "emotional_target": "Users should feel like they have a brilliant partner handling the complexity, freeing them to focus on growing their portfolio",
+    "target_audience": "Independent landlords and small-to-mid property management companies (25–200 units) who are tech-savvy but overwhelmed by manual processes",
+    "competitive_position": "AI-native property management — not a legacy platform with AI bolted on, but built from the ground up with predictive insights, proactive alerts, and automated workflows at the core"
+  },
+
+  "page_inventory": [
+    {
+      "route": "/",
+      "name": "Home",
+      "purpose": "Primary landing page — communicate the AI-native value proposition and convert visitors by role (landlord, tenant, developer)",
+      "layout": "immersive_hero_with_sections",
+      "key_components": [
+        "hero_with_animated_property_visualization",
+        "role_based_value_cards",
+        "ai_capabilities_showcase",
+        "social_proof_metrics_bar",
+        "testimonial_carousel",
+        "role_specific_cta_section",
+        "trusted_by_logos"
+      ]
+    },
+    {
+      "route": "/properties",
+      "name": "Properties",
+      "purpose": "Browsable property listings with AI-powered search, filtering, and map integration",
+      "layout": "split_panel_list_map",
+      "key_components": [
+        "natural_language_search_bar",
+        "smart_filter_sidebar",
+        "property_card_grid",
+        "google_maps_integration",
+        "ai_match_score_badges",
+        "saved_search_alerts",
+        "sort_with_animated_transitions"
+      ]
+    },
+    {
+      "route": "/properties/:id",
+      "name": "Property Details",
+      "purpose": "Comprehensive single-property view with AI insights, scheduling, and booking",
+      "layout": "full_width_detail",
+      "key_components": [
+        "image_gallery_with_lightbox",
+        "property_stats_grid",
+        "ai_rent_estimate_widget",
+        "smart_scheduling_calendar",
+        "booking_flow_modal",
+        "google_maps_location",
+        "neighborhood_insights",
+        "similar_properties_carousel"
+      ]
+    },
+    {
+      "route": "/pricing",
+      "name": "Pricing",
+      "purpose": "Transparent tier-based pricing with comparison to competitors — drive conversions from cost-conscious landlords",
+      "layout": "centered_comparison",
+      "key_components": [
+        "pricing_tier_cards",
+        "feature_comparison_table",
+        "annual_monthly_toggle",
+        "savings_calculator",
+        "competitor_comparison_callout",
+        "faq_accordion",
+        "cta_with_free_trial"
+      ]
+    },
+    {
+      "route": "/about",
+      "name": "About",
+      "purpose": "Build trust through team, mission, and the AI-first story",
+      "layout": "narrative_scroll",
+      "key_components": [
+        "mission_statement_hero",
+        "founding_story_section",
+        "team_grid",
+        "technology_philosophy",
+        "company_metrics_bar"
+      ]
+    },
+    {
+      "route": "/contact",
+      "name": "Contact",
+      "purpose": "Multi-channel contact with smart routing based on inquiry type",
+      "layout": "split_form_info",
+      "key_components": [
+        "contact_form_with_validation",
+        "inquiry_type_selector",
+        "office_location_map",
+        "response_time_indicator",
+        "quick_links_sidebar"
+      ]
+    },
+    {
+      "route": "/auth/login",
+      "name": "Login",
+      "purpose": "Clean authentication with social login support — no layout chrome",
+      "layout": "centered_card_fullscreen",
+      "key_components": [
+        "login_form",
+        "social_auth_buttons",
+        "forgot_password_link",
+        "register_redirect",
+        "branded_background"
+      ]
+    },
+    {
+      "route": "/auth/register",
+      "name": "Register",
+      "purpose": "Progressive onboarding — collect role first, then relevant details",
+      "layout": "centered_card_fullscreen",
+      "key_components": [
+        "role_selection_step",
+        "registration_form",
+        "social_auth_buttons",
+        "terms_checkbox",
+        "progress_indicator"
+      ]
+    },
+    {
+      "route": "/dashboard",
+      "name": "Dashboard",
+      "purpose": "AI-adaptive command center — layout and metrics change based on user role and behavior patterns",
+      "layout": "adaptive_sidebar_dashboard",
+      "key_components": [
+        "collapsible_sidebar_nav",
+        "command_palette_trigger",
+        "ai_insights_summary_card",
+        "key_metrics_grid",
+        "action_items_feed",
+        "property_performance_charts",
+        "vacancy_risk_alerts",
+        "recent_activity_timeline",
+        "quick_actions_bar"
+      ]
+    },
+    {
+      "route": "/tenant-portal",
+      "name": "Tenant Portal",
+      "purpose": "Tenant self-service hub — pay rent, submit maintenance, view lease, communicate with landlord",
+      "layout": "adaptive_sidebar_dashboard",
+      "key_components": [
+        "rent_payment_widget",
+        "maintenance_request_quick_form",
+        "lease_summary_card",
+        "message_center",
+        "document_vault",
+        "upcoming_events_calendar",
+        "ai_assistant_chat_bubble"
+      ]
+    },
+    {
+      "route": "/landlord-portal",
+      "name": "Landlord Portal",
+      "purpose": "Portfolio overview with AI-driven insights on rent optimization, vacancy prediction, and maintenance forecasting",
+      "layout": "adaptive_sidebar_dashboard",
+      "key_components": [
+        "portfolio_summary_cards",
+        "rent_optimization_widget",
+        "vacancy_risk_dashboard",
+        "maintenance_forecast_timeline",
+        "tenant_screening_queue",
+        "financial_overview_charts",
+        "ai_recommendations_feed",
+        "property_comparison_table"
+      ]
+    },
+    {
+      "route": "/developer-portal",
+      "name": "Developer Portal",
+      "purpose": "API documentation, project management, and development analytics for property development projects",
+      "layout": "adaptive_sidebar_dashboard",
+      "key_components": [
+        "project_pipeline_board",
+        "budget_tracker_widget",
+        "timeline_gantt_view",
+        "permit_status_tracker",
+        "contractor_directory",
+        "document_management",
+        "ai_cost_estimation_widget"
+      ]
+    },
+    {
+      "route": "/applications",
+      "name": "Applications",
+      "purpose": "AI-assisted tenant application processing with smart screening and scoring",
+      "layout": "adaptive_sidebar_dashboard",
+      "key_components": [
+        "application_pipeline_board",
+        "ai_screening_score_card",
+        "applicant_detail_drawer",
+        "co_applicant_form",
+        "document_upload_zone",
+        "approval_workflow_actions",
+        "comparison_side_by_side"
+      ]
+    },
+    {
+      "route": "/inspections",
+      "name": "Inspections",
+      "purpose": "Schedule, conduct, and track property inspections with AI-generated checklists",
+      "layout": "adaptive_sidebar_dashboard",
+      "key_components": [
+        "inspection_calendar_view",
+        "checklist_builder",
+        "photo_upload_grid",
+        "ai_condition_assessment",
+        "inspection_report_generator",
+        "history_timeline",
+        "scheduling_widget"
+      ]
+    },
+    {
+      "route": "/maintenance",
+      "name": "Maintenance Requests",
+      "purpose": "AI-triaged maintenance workflow — auto-classify urgency, suggest vendors, predict costs",
+      "layout": "adaptive_sidebar_dashboard",
+      "key_components": [
+        "request_submission_form",
+        "ai_urgency_classifier",
+        "request_status_pipeline",
+        "vendor_suggestion_cards",
+        "cost_estimate_widget",
+        "photo_attachment_zone",
+        "communication_thread",
+        "maintenance_history"
+      ]
+    },
+    {
+      "route": "/leases",
+      "name": "Lease Management",
+      "purpose": "Digital lease lifecycle — creation, e-signatures, renewals, and AI-assisted term optimization",
+      "layout": "adaptive_sidebar_dashboard",
+      "key_components": [
+        "lease_list_with_status_badges",
+        "lease_builder_wizard",
+        "e_signature_integration",
+        "renewal_reminder_cards",
+        "ai_term_suggestions",
+        "document_preview",
+        "expiration_timeline"
+      ]
+    },
+    {
+      "route": "/payments",
+      "name": "Payment Collection",
+      "purpose": "Automated rent collection with multiple payment methods, late fee management, and financial reporting",
+      "layout": "adaptive_sidebar_dashboard",
+      "key_components": [
+        "payment_overview_cards",
+        "collection_status_table",
+        "payment_method_manager",
+        "auto_reminder_settings",
+        "late_fee_configuration",
+        "receipt_generator",
+        "financial_summary_charts",
+        "payout_history"
+      ]
+    },
+    {
+      "route": "/admin",
+      "name": "Admin",
+      "purpose": "Platform administration — user management, system settings, audit logs",
+      "layout": "adaptive_sidebar_dashboard",
+      "key_components": [
+        "user_management_table",
+        "role_permission_matrix",
+        "system_settings_panels",
+        "audit_log_viewer",
+        "platform_analytics",
+        "feature_flag_toggles"
+      ]
+    },
+    {
+      "route": "/profile-setup",
+      "name": "Profile Setup",
+      "purpose": "Post-registration onboarding — collect role-specific information to personalize the experience",
+      "layout": "centered_card_fullscreen",
+      "key_components": [
+        "multi_step_form",
+        "role_specific_fields",
+        "property_import_wizard",
+        "progress_bar",
+        "skip_option",
+        "completion_celebration"
+      ]
+    },
+    {
+      "route": "/landing/small-landlords",
+      "name": "Small Landlords Landing",
+      "purpose": "SEO landing page targeting independent landlords with 1–10 units — emphasize simplicity and cost savings",
+      "layout": "long_form_landing",
+      "key_components": [
+        "pain_point_hero",
+        "before_after_comparison",
+        "feature_highlight_sections",
+        "roi_calculator",
+        "testimonials",
+        "pricing_teaser",
+        "lead_capture_form"
+      ]
+    },
+    {
+      "route": "/landing/appfolio-alternative",
+      "name": "AppFolio Alternative Landing",
+      "purpose": "SEO competitor comparison page — position as modern AI-native alternative to AppFolio",
+      "layout": "long_form_landing",
+      "key_components": [
+        "comparison_hero",
+        "feature_comparison_table",
+        "pricing_comparison",
+        "migration_ease_section",
+        "testimonials_from_switchers",
+        "cta_with_free_trial"
+      ]
+    },
+    {
+      "route": "/landing/ai-property-management",
+      "name": "AI Property Management Landing",
+      "purpose": "SEO landing page for 'AI property management' keyword — showcase AI capabilities",
+      "layout": "long_form_landing",
+      "key_components": [
+        "ai_capabilities_hero",
+        "workflow_automation_demos",
+        "predictive_insights_showcase",
+        "integration_grid",
+        "case_study_section",
+        "lead_capture_form"
+      ]
+    },
+    {
+      "route": "/landing/rent-collection",
+      "name": "Rent Collection Landing",
+      "purpose": "SEO landing page for online rent collection — emphasize automation and payment flexibility",
+      "layout": "long_form_landing",
+      "key_components": [
+        "payment_methods_hero",
+        "automation_workflow_visual",
+        "fee_comparison",
+        "security_trust_badges",
+        "setup_steps",
+        "lead_capture_form"
+      ]
+    },
+    {
+      "route": "/landing/tenant-screening",
+      "name": "Tenant Screening Landing",
+      "purpose": "SEO landing page for tenant screening — highlight AI-powered screening accuracy",
+      "layout": "long_form_landing",
+      "key_components": [
+        "screening_process_hero",
+        "ai_scoring_explanation",
+        "report_sample_preview",
+        "compliance_badges",
+        "pricing_section",
+        "lead_capture_form"
+      ]
+    },
+    {
+      "route": "/landing/pricing-comparison",
+      "name": "Pricing Comparison Landing",
+      "purpose": "SEO landing page comparing pricing across competitors — drive cost-conscious conversions",
+      "layout": "long_form_landing",
+      "key_components": [
+        "savings_hero",
+        "multi_competitor_comparison_table",
+        "hidden_fees_callout",
+        "value_proposition_cards",
+        "roi_calculator",
+        "cta_section"
+      ]
+    },
+    {
+      "route": "/landing/automate-management",
+      "name": "Automate Management Landing",
+      "purpose": "SEO landing page for property management automation — showcase time savings",
+      "layout": "long_form_landing",
+      "key_components": [
+        "time_savings_hero",
+        "automation_workflow_diagram",
+        "task_comparison_before_after",
+        "integration_logos",
+        "testimonials",
+        "lead_capture_form"
+      ]
+    }
+  ],
+
+  "feature_specs": [
+    {
+      "name": "AI Adaptive Dashboard",
+      "description": "Dashboard that automatically reorganizes widgets, metrics, and insights based on user role (landlord, tenant, developer) and behavior patterns. Surfaces what matters most without manual configuration.",
+      "ui_approach": "Card-based grid layout with drag-to-reorder. AI silently tracks interaction frequency and reorders cards. Role detection on first login sets initial layout. Skeleton loading animations during data fetch. Metric cards animate on data update.",
+      "priority": "critical"
+    },
+    {
+      "name": "Command Palette",
+      "description": "Global Cmd+K / Ctrl+K quick-access panel for searching properties, tenants, actions, and navigating anywhere in the app instantly.",
+      "ui_approach": "Modal overlay with search input, categorized results list, keyboard navigation, recent actions history. Slide-down entrance animation. Fuzzy search across all entities.",
+      "priority": "high"
+    },
+    {
+      "name": "AI Rent Optimization",
+      "description": "Predictive rent pricing engine that analyzes market comparables, vacancy risk, seasonal trends, and property condition to recommend optimal rent prices.",
+      "ui_approach": "Inline widget on property detail and landlord portal. Shows current vs recommended rent with confidence score. Sparkline chart showing market trend. No 'AI-powered' badge — the intelligence is self-evident from the data presented.",
+      "priority": "critical"
+    },
+    {
+      "name": "Smart Maintenance Triage",
+      "description": "AI auto-classifies maintenance requests by urgency (emergency, urgent, routine), suggests appropriate vendors, and estimates repair costs from description and photos.",
+      "ui_approach": "Progressive form with natural language description field. AI classification appears as colored urgency badge after submission. Vendor suggestions appear as cards with ratings. Cost estimate shown as a range bar. All AI outputs feel like native UI, not chatbot responses.",
+      "priority": "critical"
+    },
+    {
+      "name": "Predictive Vacancy Alerts",
+      "description": "AI analyzes lease expiration dates, tenant behavior signals, market conditions, and historical patterns to predict vacancy risk and recommend proactive retention strategies.",
+      "ui_approach": "Dashboard alert cards with risk level (low/medium/high) color coding. Timeline visualization showing upcoming expirations. AI recommendations slide in as contextual suggestions near each at-risk property. Progressive disclosure — summary first, details on click.",
+      "priority": "high"
+    },
+    {
+      "name": "AI Tenant Screening",
+      "description": "Comprehensive applicant evaluation combining credit, background, income verification, and rental history into a single AI-generated screening score with explanations.",
+      "ui_approach": "Application pipeline board (Kanban-style). Each applicant card shows AI score as a circular gauge. Click to expand detailed breakdown. Side-by-side comparison mode for multiple applicants. Score factors shown as horizontal bar chart. Compliance disclaimers shown inline, not as modal interruptions.",
+      "priority": "critical"
+    },
+    {
+      "name": "Smart Scheduling & Booking",
+      "description": "AI-optimized property showing scheduler that considers travel time between properties, applicant preferences, and landlord availability to suggest optimal time slots.",
+      "ui_approach": "Calendar widget with AI-suggested slots highlighted. Drag-to-schedule interaction. Confirmation flow as a lightweight modal. Google Maps integration showing route optimization between showings. Micro-animation on booking confirmation.",
+      "priority": "high"
+    },
+    {
+      "name": "Automated Payment Collection",
+      "description": "Multi-method rent collection (ACH, card, digital wallets) with automated reminders, late fee calculation, receipt generation, and payout management.",
+      "ui_approach": "Payment dashboard with status cards (collected, pending, overdue) using color-coded badges. Reminder configuration as a settings panel with preview. Payment history as a filterable table with export. Progress bars for monthly collection goals.",
+      "priority": "critical"
+    },
+    {
+      "name": "Digital Lease Management",
+      "description": "End-to-end lease lifecycle from template-based creation through e-signatures to renewal management, with AI suggesting optimal lease terms based on market data.",
+      "ui_approach": "Multi-step wizard for lease creation with progressive disclosure. Document preview panel. E-signature flow embedded inline. Renewal alerts as dashboard cards. AI term suggestions appear as subtle inline hints near relevant fields, not as separate panels.",
+      "priority": "high"
+    },
+    {
+      "name": "Role-Based Portal System",
+      "description": "Distinct portal experiences for tenants, landlords, and developers — each with tailored navigation, features, and AI insights relevant to their role.",
+      "ui_approach": "Shared adaptive sidebar layout with role-specific navigation items, color-coded section headers, and contextual AI widgets. Portal switcher for users with multiple roles. Consistent component library ensures visual cohesion across portals while content differs.",
+      "priority": "critical"
+    },
+    {
+      "name": "AI Property Insights",
+      "description": "Contextual intelligence layer that surfaces relevant insights (market trends, comparable properties, neighborhood data, investment metrics) wherever property data is displayed.",
+      "ui_approach": "Inline insight cards that appear contextually — on property detail pages, in the dashboard, during lease creation. Expandable with progressive disclosure. Data visualizations use consistent chart components. Insights feel like native content, not a bolted-on feature.",
+      "priority": "high"
+    },
+    {
+      "name": "Dark Mode",
+      "description": "System-aware dark theme with polished implementation across all pages and components.",
+      "ui_approach": "CSS custom properties for all colors. Automatic detection of system preference with manual toggle in settings. Smooth transition animation between modes. Dark surfaces use subtle elevation differentiation rather than borders. Charts and visualizations adapt color palettes.",
+      "priority": "medium"
+    },
+    {
+      "name": "Progressive Onboarding",
+      "description": "Multi-step post-registration flow that collects role-specific information, imports existing properties, and personalizes the dashboard — with the option to skip and configure later.",
+      "ui_approach": "Full-screen centered card with step progress bar. Role selection as large clickable cards with illustrations. Property import as a drag-and-drop zone or manual form. Completion celebration with confetti micro-animation. Each step validates before advancing.",
+      "priority": "high"
+    },
+    {
+      "name": "Natural Language Search",
+      "description": "Search properties, tenants, and documents using natural language queries like 'vacant 2-bedrooms under $2000 near downtown'.",
+      "ui_approach": "Prominent search bar with typeahead suggestions. Query is parsed into visible filter chips that users can modify. Results update with animated transitions. Available in both the property listing page and command palette.",
+      "priority": "medium"
+    }
+  ],
+
+  "colors": {
+    "primary": "#2C3E50",
+    "secondary": "#8B7355",
+    "accent": "#C9956B",
+    "background": "#FAF6F1",
+    "text_primary": "#1A1A2E",
+    "surface": "#FFFFFF",
+    "text_secondary": "#6599AC",
+    "text_muted": "#94A3B8",
+    "border": "#CBD5E1",
+    "success": "#34D399",
+    "warning": "#FDE047",
+    "error": "#EF4444",
+    "dark_mode": {
+      "primary": "#E8D5C4",
+      "secondary": "#C9956B",
+      "accent": "#D4A574",
+      "background": "#0F1419",
+      "text_primary": "#F0EDE8",
+      "surface": "#1A2028",
+      "text_secondary": "#8BA5B5",
+      "text_muted": "#64748B",
+      "border": "#2D3748"
+    },
+    "semantic": {
+      "info": "#3B82F6",
+      "vacancy_risk_low": "#34D399",
+      "vacancy_risk_medium": "#FBBF24",
+      "vacancy_risk_high": "#EF4444",
+      "ai_insight": "#8B7355",
+      "portal_tenant": "#3B82F6",
+      "portal_landlord": "#C9956B",
+      "portal_developer": "#6366F1"
+    }
+  },
+
+  "typography": {
+    "display": {
+      "font": "Instrument Serif",
+      "fallback": "serif",
+      "weights": [400, 700],
+      "usage": "Headlines, hero text, page titles, feature section headers"
+    },
+    "body": {
+      "font": "DM Sans",
+      "fallback": "sans-serif",
+      "weights": [400, 500, 600, 700],
+      "usage": "Body copy, UI labels, buttons, form fields, navigation"
+    },
+    "mono": {
+      "font": "Roboto Mono",
+      "fallback": "monospace",
+      "weights": [400, 500],
+      "usage": "Code snippets, API references, financial figures, property IDs"
+    },
+    "scale": {
+      "hero": "3.75rem",
+      "h1": "3rem",
+      "h2": "2.25rem",
+      "h3": "1.875rem",
+      "h4": "1.5rem",
+      "h5": "1.25rem",
+      "body_lg": "1.125rem",
+      "body": "1rem",
+      "body_sm": "0.875rem",
+      "caption": "0.75rem"
+    }
+  },
+
+  "spacing": {
+    "unit": "0.25rem",
+    "scale": {
+      "xs": "0.25rem",
+      "sm": "0.5rem",
+      "md": "1rem",
+      "lg": "1.5rem",
+      "xl": "2rem",
+      "2xl": "3rem",
+      "3xl": "4rem",
+      "4xl": "6rem"
+    },
+    "container_max_width": "1280px",
+    "section_padding": "4rem",
+    "card_padding": "1.5rem"
+  },
+
+  "border_radius": {
+    "sm": "0.125rem",
+    "md": "0.375rem",
+    "lg": "0.5rem",
+    "xl": "0.75rem",
+    "2xl": "1rem",
+    "full": "9999px"
+  },
+
+  "shadows": {
+    "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+    "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+    "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+    "xl": "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+    "card_hover": "0 14px 28px rgba(0, 0, 0, 0.08), 0 6px 10px rgba(0, 0, 0, 0.04)"
+  },
+
+  "animations": {
+    "durations": {
+      "instant": "100ms",
+      "fast": "200ms",
+      "normal": "300ms",
+      "slow": "500ms",
+      "decorative": "700ms"
+    },
+    "easings": {
+      "default": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "in": "cubic-bezier(0.4, 0, 1, 1)",
+      "out": "cubic-bezier(0, 0, 0.2, 1)",
+      "bounce": "cubic-bezier(0.34, 1.56, 0.64, 1)"
+    },
+    "catalog": [
+      "skeleton_loading_shimmer",
+      "property_card_filter_transition",
+      "onboarding_step_completion_check",
+      "multi_step_progress_bar_fill",
+      "metric_card_value_count_up",
+      "mobile_swipe_property_browse",
+      "section_fade_slide_in",
+      "ai_suggestion_slide_in",
+      "command_palette_slide_down",
+      "modal_scale_up_entrance",
+      "toast_notification_slide",
+      "booking_confirmation_pulse",
+      "vacancy_alert_gentle_pulse"
+    ]
+  },
+
+  "component_patterns": {
+    "buttons": {
+      "primary": "bg-accent text-white font-body font-semibold rounded-lg px-6 py-3 hover:shadow-md transition-all duration-200",
+      "secondary": "bg-transparent border-2 border-primary text-primary font-body font-semibold rounded-lg px-6 py-3 hover:bg-primary hover:text-white transition-all duration-200",
+      "ghost": "bg-transparent text-secondary font-body font-medium px-4 py-2 hover:bg-background rounded-md transition-all duration-200"
+    },
+    "cards": {
+      "default": "bg-surface rounded-xl shadow-sm border border-border p-6 hover:shadow-card_hover transition-shadow duration-300",
+      "metric": "bg-surface rounded-xl shadow-sm border border-border p-5 with-count-up-animation",
+      "property": "bg-surface rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:-translate-y-1"
+    },
+    "forms": {
+      "input": "w-full border border-border rounded-lg px-4 py-3 font-body text-text_primary bg-surface focus:ring-2 focus:ring-accent focus:border-transparent transition-all duration-200",
+      "label": "font-body font-medium text-text_primary text-sm mb-1.5 block",
+      "error": "font-body text-error text-sm mt-1"
+    },
+    "navigation": {
+      "sidebar": "adaptive collapsible, role-based sections, icon + label, active state with accent left border",
+      "topbar": "logo left, nav center, auth/profile right, command palette shortcut hint",
+      "command_palette": "modal overlay, search input, categorized results, keyboard nav, recent history"
+    }
+  },
+
+  "layout_system": {
+    "public_pages": {
+      "wrapper": "Layout component with Navbar + Footer",
+      "max_width": "1280px",
+      "section_spacing": "4rem vertical padding"
+    },
+    "auth_pages": {
+      "wrapper": "No Layout — fullscreen centered card",
+      "background": "Branded gradient or subtle pattern"
+    },
+    "dashboard_pages": {
+      "wrapper": "Adaptive sidebar + content area",
+      "sidebar_width": "280px collapsed to 64px",
+      "content_padding": "1.5rem"
+    },
+    "landing_pages": {
+      "wrapper": "Layout component with Navbar + Footer",
+      "max_width": "1280px",
+      "style": "Long-form with alternating sections, lead capture focus"
+    }
+  },
+
+  "accessibility": {
+    "color_contrast": "WCAG AA minimum (4.5:1 for normal text, 3:1 for large text)",
+    "focus_indicators": "Visible focus ring using accent color on all interactive elements",
+    "skip_navigation": "Skip-to-main-content link on all pages",
+    "aria_labels": "All interactive elements and dynamic content regions",
+    "keyboard_navigation": "Full keyboard support including command palette",
+    "screen_reader": "Semantic HTML, ARIA landmarks, live regions for dynamic updates",
+    "motion": "Respect prefers-reduced-motion media query"
+  },
+
+  "responsive_breakpoints": {
+    "sm": "640px",
+    "md": "768px",
+    "lg": "1024px",
+    "xl": "1280px",
+    "2xl": "1536px"
+  }
+}

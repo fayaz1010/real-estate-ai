@@ -1,35 +1,54 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono&family=Space+Grotesk:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif&family=DM+Sans:wght@400;500;600;700&family=Roboto+Mono&family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --color-primary: #161d23;
-  --color-primary-light: #576e6a;
-  --color-primary-dark: #0a1628;
-  --color-secondary: #576e6a;
-  --color-accent: #e5b80b;
-  --color-background: #ffffff;
-  --color-surface: #f0f9ff;
+  /* Warm & Trustworthy palette */
+  --color-primary: #2C3E50;
+  --color-primary-light: #3d556b;
+  --color-primary-dark: #1a2836;
+  --color-secondary: #8B7355;
+  --color-accent: #C9956B;
+  --color-background: #FAF6F1;
+  --color-surface: #ffffff;
   --color-surface-elevated: #ffffff;
-  --color-text-primary: #161d23;
-  --color-text-secondary: #576e6a;
-  --color-text-muted: #a1a1aa;
-  --color-border: #d1d5db;
-  --color-success: #16a34a;
-  --color-warning: #f59e0b;
-  --color-error: #dc2626;
+  --color-text-primary: #1A1A2E;
+  --color-text-secondary: #6599ac;
+  --color-text-muted: #94a3b8;
+  --color-border: #cbd5e1;
+  --color-success: #34d399;
+  --color-warning: #fde047;
+  --color-error: #ef4444;
+
+  /* Typography */
+  --font-display: "Instrument Serif", serif;
+  --font-heading: "Instrument Serif", serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-mono: "Roboto Mono", monospace;
+
+  /* Spacing */
+  --spacing-unit: 8px;
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-24: 6rem;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  font-family: "DM Sans", system-ui, -apple-system, sans-serif;
   line-height: 1.6;
   font-weight: 400;
-  color: var(--color-text-primary);
-  background-color: var(--color-background);
+  color: #1A1A2E;
+  background-color: #FAF6F1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -40,7 +59,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Instrument Serif", serif;
   letter-spacing: -0.01em;
 }
 
@@ -50,30 +69,36 @@ h1 {
 
 @layer components {
   .btn-primary {
-    @apply bg-realestate-primary text-white font-inter font-medium px-6 py-3 rounded-lg
-           hover:bg-realestate-primary/90 transition-all duration-200
-           focus:outline-none focus:ring-2 focus:ring-realestate-accent focus:ring-offset-2;
+    @apply bg-primary text-white font-body font-medium px-6 py-3 rounded-lg
+           hover:bg-primary/90 transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2;
   }
 
   .btn-accent {
-    @apply bg-realestate-accent text-realestate-primary font-inter font-semibold px-6 py-3 rounded-lg
-           hover:bg-realestate-accent/90 transition-all duration-200
-           focus:outline-none focus:ring-2 focus:ring-realestate-accent focus:ring-offset-2;
+    @apply bg-accent text-white font-body font-semibold px-6 py-3 rounded-lg
+           hover:bg-accent/90 transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply bg-secondary text-white font-body font-medium px-6 py-3 rounded-lg
+           hover:bg-secondary/90 transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2;
   }
 
   .btn-outline {
-    @apply border border-realestate-primary text-realestate-primary font-inter font-medium px-6 py-3 rounded-lg
-           hover:bg-realestate-primary hover:text-white transition-all duration-200
-           focus:outline-none focus:ring-2 focus:ring-realestate-primary focus:ring-offset-2;
+    @apply border border-primary text-primary font-body font-medium px-6 py-3 rounded-lg
+           hover:bg-primary hover:text-white transition-all duration-200
+           focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   }
 
   .card {
-    @apply bg-white rounded-lg shadow-realestate-sm border border-gray-100 p-6
+    @apply bg-white rounded-lg shadow-realestate-sm border border-realestate-border p-6
            hover:shadow-realestate-md transition-shadow duration-200;
   }
 
   .card-elevated {
-    @apply bg-white rounded-lg shadow-realestate-md border border-gray-100 p-6
+    @apply bg-white rounded-lg shadow-realestate-md border border-realestate-border p-6
            hover:shadow-realestate-lg transition-shadow duration-200;
   }
 
@@ -82,11 +107,11 @@ h1 {
   }
 
   .text-display {
-    @apply font-space-grotesk font-bold tracking-tight;
+    @apply font-display font-bold tracking-tight;
   }
 
   .text-heading {
-    @apply font-space-grotesk font-semibold;
+    @apply font-display font-semibold;
   }
 }
 

@@ -300,11 +300,43 @@ declare module "lucide-react" {
   export const ZoomOut: ComponentType<LucideProps>;
 
   // Additional icons available in lucide-react v0.294.0
+  export const ArrowBigRight: ComponentType<LucideProps>;
+  export const BadgeCheck: ComponentType<LucideProps>;
+  export const Banknote: ComponentType<LucideProps>;
+  export const BarChart3: ComponentType<LucideProps>;
+  export const Brain: ComponentType<LucideProps>;
   export const Building: ComponentType<LucideProps>;
   export const Building2: ComponentType<LucideProps>;
+  export const CalendarCheck: ComponentType<LucideProps>;
+  export const CalendarDays: ComponentType<LucideProps>;
+  export const CalendarX: ComponentType<LucideProps>;
+  export const CheckCircle2: ComponentType<LucideProps>;
+  export const CircleDollarSign: ComponentType<LucideProps>;
+  export const ClipboardCheck: ComponentType<LucideProps>;
   export const ClipboardList: ComponentType<LucideProps>;
-
-  // Add more icons as needed
+  export const Crown: ComponentType<LucideProps>;
+  export const FileBarChart: ComponentType<LucideProps>;
+  export const Gauge: ComponentType<LucideProps>;
+  export const Grid2X2: ComponentType<LucideProps>;
+  export const Hammer: ComponentType<LucideProps>;
+  export const HeadphonesIcon: ComponentType<LucideProps>;
+  export const KeyRound: ComponentType<LucideProps>;
+  export const LayoutDashboard: ComponentType<LucideProps>;
+  export const LayoutGrid: ComponentType<LucideProps>;
+  export const LayoutList: ComponentType<LucideProps>;
+  export const Lightbulb: ComponentType<LucideProps>;
+  export const ListChecks: ComponentType<LucideProps>;
+  export const MessageSquarePlus: ComponentType<LucideProps>;
+  export const Minus: ComponentType<LucideProps>;
+  export const Scale: ComponentType<LucideProps>;
+  export const ScrollText: ComponentType<LucideProps>;
+  export const Settings2: ComponentType<LucideProps>;
+  export const ShieldCheck: ComponentType<LucideProps>;
+  export const Sparkles: ComponentType<LucideProps>;
+  export const Stars: ComponentType<LucideProps>;
+  export const Wallet: ComponentType<LucideProps>;
+  export const Workflow: ComponentType<LucideProps>;
+  export const Wrench: ComponentType<LucideProps>
 
   // Lucide icon context for dynamic icon rendering
   export const icons: Record<string, ComponentType<LucideProps>>;

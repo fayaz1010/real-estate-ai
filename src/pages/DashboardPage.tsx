@@ -9,7 +9,7 @@ import {
   ClipboardList,
   FileText,
   CreditCard,
-  Tool,
+  Hammer,
   BarChart,
   Settings,
   LogOut,
@@ -88,7 +88,7 @@ const AI_INSIGHTS = [
     description:
       "HVAC system at 42 Elm Street is predicted to require servicing within 14 days based on usage patterns and seasonal data.",
     action: "Schedule Service",
-    icon: Tool,
+    icon: Hammer,
     severity: "warning",
   },
   {
@@ -155,7 +155,7 @@ const RECENT_ACTIVITIES = [
     action: "Maintenance Resolved",
     detail: "Plumbing repair completed at 15 Willow Lane",
     time: "3 hrs ago",
-    icon: Tool,
+    icon: Hammer,
     color: "text-amber-500",
     bgColor: "bg-amber-50",
   },
@@ -223,7 +223,7 @@ const NAV_ITEMS = [
   { label: "Applications", icon: FileText, href: "/dashboard/applications", active: false },
   { label: "Leases", icon: FileText, href: "/dashboard/leases", active: false },
   { label: "Payments", icon: CreditCard, href: "/dashboard/payments", active: false },
-  { label: "Maintenance", icon: Tool, href: "/dashboard/maintenance", active: false },
+  { label: "Maintenance", icon: Hammer, href: "/dashboard/maintenance", active: false },
   { label: "Reports", icon: BarChart, href: "/dashboard/reports", active: false },
   { label: "Settings", icon: Settings, href: "/dashboard/settings", active: false },
 ];

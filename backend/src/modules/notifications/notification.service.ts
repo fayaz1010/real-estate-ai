@@ -1,34 +1,11 @@
 // Notification Service
-import {
-  NotificationType,
-  NotificationChannel,
-  NotificationStatus,
-} from "@prisma/client";
-import nodemailer from "nodemailer";
+import { NotificationType } from "@prisma/client";
 
 import prisma from "../../config/database";
-import { config } from "../../config/env";
 import { AppError } from "../../middleware/errorHandler";
+import { sendEmail, wrapEmailTemplate, COLORS, FONTS } from "../../utils/email";
 
-// Email transporter (lazy-initialized)
-let transporter: nodemailer.Transporter | null = null;
-
-function getTransporter(): nodemailer.Transporter {
-  if (!transporter) {
-    transporter = nodemailer.createTransport({
-      host: config.smtp.host,
-      port: config.smtp.port,
-      secure: config.smtp.secure,
-      auth: {
-        user: config.smtp.user,
-        pass: config.smtp.pass,
-      },
-    });
-  }
-  return transporter;
-}
-
-// Email templates
+// Email templates (using design system typography and colors)
 const EMAIL_TEMPLATES: Record<
   string,
   { subject: string; body: (vars: Record<string, string>) => string }
@@ -36,41 +13,41 @@ const EMAIL_TEMPLATES: Record<
   INSPECTION_CONFIRMATION: {
     subject: "Inspection Confirmed – {{propertyTitle}}",
     body: (vars) => `
-      <h2>Inspection Confirmed</h2>
+      <h2 style="margin: 0 0 16px; color: ${COLORS.primary}; font-family: ${FONTS.display}; font-size: 20px;">Inspection Confirmed</h2>
       <p>Hi ${vars.userName},</p>
       <p>Your inspection for <strong>${vars.propertyTitle}</strong> has been confirmed.</p>
       <p><strong>Date:</strong> ${vars.date}</p>
       <p><strong>Time:</strong> ${vars.time}</p>
       <p><strong>Type:</strong> ${vars.type}</p>
-      ${vars.meetingLink ? `<p><strong>Meeting Link:</strong> <a href="${vars.meetingLink}">${vars.meetingLink}</a></p>` : ""}
-      <p>Please arrive on time. If you need to reschedule, please do so at least 24 hours in advance.</p>
+      ${vars.meetingLink ? `<p><strong>Meeting Link:</strong> <a href="${vars.meetingLink}" style="color: ${COLORS.secondary};">${vars.meetingLink}</a></p>` : ""}
+      <p style="color: ${COLORS.textMuted}; font-size: 13px;">Please arrive on time. If you need to reschedule, please do so at least 24 hours in advance.</p>
     `,
   },
   INSPECTION_REMINDER: {
     subject: "Reminder: Inspection in {{reminderTime}} – {{propertyTitle}}",
     body: (vars) => `
-      <h2>Inspection Reminder</h2>
+      <h2 style="margin: 0 0 16px; color: ${COLORS.primary}; font-family: ${FONTS.display}; font-size: 20px;">Inspection Reminder</h2>
       <p>Hi ${vars.userName},</p>
       <p>This is a reminder that your inspection for <strong>${vars.propertyTitle}</strong> is coming up in <strong>${vars.reminderTime}</strong>.</p>
       <p><strong>Date:</strong> ${vars.date}</p>
       <p><strong>Time:</strong> ${vars.time}</p>
-      ${vars.meetingLink ? `<p><strong>Meeting Link:</strong> <a href="${vars.meetingLink}">${vars.meetingLink}</a></p>` : ""}
+      ${vars.meetingLink ? `<p><strong>Meeting Link:</strong> <a href="${vars.meetingLink}" style="color: ${COLORS.secondary};">${vars.meetingLink}</a></p>` : ""}
     `,
   },
   INSPECTION_CANCELLATION: {
     subject: "Inspection Cancelled – {{propertyTitle}}",
     body: (vars) => `
-      <h2>Inspection Cancelled</h2>
+      <h2 style="margin: 0 0 16px; color: ${COLORS.primary}; font-family: ${FONTS.display}; font-size: 20px;">Inspection Cancelled</h2>
       <p>Hi ${vars.userName},</p>
       <p>The inspection for <strong>${vars.propertyTitle}</strong> scheduled on ${vars.date} at ${vars.time} has been cancelled.</p>
-      ${vars.reason ? `<p><strong>Reason:</strong> ${vars.reason}</p>` : ""}
+      ${vars.reason ? `<div style="padding: 12px 16px; background-color: #f1f3f4; border-left: 4px solid ${COLORS.accent}; border-radius: 4px; margin: 12px 0;"><p style="margin: 0;"><strong>Reason:</strong> ${vars.reason}</p></div>` : ""}
       <p>You can reschedule a new inspection at any time.</p>
     `,
   },
   INSPECTION_RESCHEDULE: {
     subject: "Inspection Rescheduled – {{propertyTitle}}",
     body: (vars) => `
-      <h2>Inspection Rescheduled</h2>
+      <h2 style="margin: 0 0 16px; color: ${COLORS.primary}; font-family: ${FONTS.display}; font-size: 20px;">Inspection Rescheduled</h2>
       <p>Hi ${vars.userName},</p>
       <p>Your inspection for <strong>${vars.propertyTitle}</strong> has been rescheduled.</p>
       <p><strong>New Date:</strong> ${vars.newDate}</p>
@@ -80,7 +57,7 @@ const EMAIL_TEMPLATES: Record<
   INSPECTION_CHECK_IN: {
     subject: "Tenant Checked In – {{propertyTitle}}",
     body: (vars) => `
-      <h2>Tenant Checked In</h2>
+      <h2 style="margin: 0 0 16px; color: ${COLORS.primary}; font-family: ${FONTS.display}; font-size: 20px;">Tenant Checked In</h2>
       <p>Hi ${vars.userName},</p>
       <p><strong>${vars.tenantName}</strong> has checked in for the inspection at <strong>${vars.propertyTitle}</strong>.</p>
       <p><strong>Time:</strong> ${vars.time}</p>
@@ -89,7 +66,7 @@ const EMAIL_TEMPLATES: Record<
   INSPECTION_CHECK_OUT: {
     subject: "Inspection Completed – {{propertyTitle}}",
     body: (vars) => `
-      <h2>Inspection Completed</h2>
+      <h2 style="margin: 0 0 16px; color: ${COLORS.primary}; font-family: ${FONTS.display}; font-size: 20px;">Inspection Completed</h2>
       <p>Hi ${vars.userName},</p>
       <p>The inspection for <strong>${vars.propertyTitle}</strong> has been completed.</p>
       <p><strong>${vars.tenantName}</strong> has checked out.</p>
@@ -98,7 +75,7 @@ const EMAIL_TEMPLATES: Record<
   INSPECTION_FOLLOW_UP: {
     subject: "How was your inspection? – {{propertyTitle}}",
     body: (vars) => `
-      <h2>We'd love your feedback!</h2>
+      <h2 style="margin: 0 0 16px; color: ${COLORS.primary}; font-family: ${FONTS.display}; font-size: 20px;">We'd love your feedback!</h2>
       <p>Hi ${vars.userName},</p>
       <p>Thanks for visiting <strong>${vars.propertyTitle}</strong>. We'd love to hear about your experience.</p>
       <p>If you're interested in applying, you can do so directly from your dashboard.</p>
@@ -107,7 +84,7 @@ const EMAIL_TEMPLATES: Record<
   INSPECTION_NO_SHOW: {
     subject: "Missed Inspection – {{propertyTitle}}",
     body: (vars) => `
-      <h2>Missed Inspection</h2>
+      <h2 style="margin: 0 0 16px; color: ${COLORS.primary}; font-family: ${FONTS.display}; font-size: 20px;">Missed Inspection</h2>
       <p>Hi ${vars.userName},</p>
       <p>It looks like you missed your inspection for <strong>${vars.propertyTitle}</strong> scheduled on ${vars.date} at ${vars.time}.</p>
       <p>If this was a mistake, please reschedule at your earliest convenience.</p>
@@ -202,12 +179,10 @@ export class NotificationService {
     });
 
     try {
-      const mail = getTransporter();
-      await mail.sendMail({
-        from: `"${config.smtp.fromName}" <${config.smtp.fromEmail}>`,
+      await sendEmail({
         to: user.email,
         subject,
-        html: `<div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">${html}</div>`,
+        html: wrapEmailTemplate(subject, html),
       });
 
       await prisma.notification.update({
@@ -582,15 +557,14 @@ export class NotificationService {
     }
 
     if (type === "email") {
-      const mail = getTransporter();
-      await mail.sendMail({
-        from: `"${config.smtp.fromName}" <${config.smtp.fromEmail}>`,
+      const bodyHtml = `
+        <h2 style="margin: 0 0 16px; color: ${COLORS.primary}; font-family: ${FONTS.display}; font-size: 20px;">Test Notification</h2>
+        <p>Hi ${user.firstName}, this is a test ${type} notification using template: <strong>${template}</strong>.</p>
+      `;
+      await sendEmail({
         to: user.email,
         subject: "Test Notification – RealEstateAI",
-        html: `<div style="font-family: Arial, sans-serif; padding: 20px;">
-          <h2>Test Notification</h2>
-          <p>Hi ${user.firstName}, this is a test ${type} notification using template: ${template}.</p>
-        </div>`,
+        html: wrapEmailTemplate("Test Notification", bodyHtml),
       });
     }
 

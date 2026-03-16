@@ -1,0 +1,155 @@
+/* Mobile Layout */
+.mobile-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f1f3f4;
+  color: #091a2b;
+}
+
+.mobile-layout main {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 4rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Bottom Navigation */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: #ffffff;
+  border-top: 1px solid #e5e7eb;
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.mobile-bottom-nav button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  gap: 0.25rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.mobile-bottom-nav button span {
+  font-size: 0.75rem;
+}
+
+/* Camera Components */
+.camera-container {
+  position: relative;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.camera-container video {
+  width: 100%;
+  display: block;
+}
+
+.camera-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  color: #ffffff;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.camera-btn:active {
+  opacity: 0.8;
+}
+
+.camera-btn-primary {
+  background-color: #091a2b;
+}
+
+.camera-btn-accent {
+  background-color: #3b4876;
+}
+
+.camera-btn-secondary {
+  background-color: #005163;
+}
+
+/* Photo Gallery */
+.photo-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background-color: #f1f3f4;
+  border-radius: 0.5rem;
+}
+
+.photo-gallery-item {
+  position: relative;
+  aspect-ratio: 1;
+}
+
+.photo-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.375rem;
+}
+
+/* Fullscreen Photo Viewer */
+.photo-fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.9);
+}
+
+.photo-fullscreen img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 374px) {
+  .photo-gallery {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 480px) and (max-width: 767px) {
+  .photo-gallery {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: env(safe-area-inset-bottom)) {
+  .mobile-bottom-nav {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .mobile-layout main {
+    padding-bottom: calc(4rem + env(safe-area-inset-bottom));
+  }
+}

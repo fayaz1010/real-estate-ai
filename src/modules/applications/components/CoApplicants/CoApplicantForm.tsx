@@ -272,7 +272,7 @@ const CoApplicantForm: React.FC<CoApplicantFormProps> = ({
                       const updated = [...income];
                       updated[index] = {
                         ...updated[index],
-                        frequency: e.target.value as "hourly" | "weekly" | "biweekly" | "monthly" | "annual",
+                        frequency: e.target.value as "hourly" | "weekly" | "biweekly" | "monthly" | "annually",
                       };
                       setIncome(updated);
                     }}

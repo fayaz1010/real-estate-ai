@@ -1,0 +1,33 @@
+/*
+ * RealEstate AI - Global Design System Styles
+ * Personality: Warm, trustworthy, grounded
+ * Universal khaki tones with deep navy for authority
+ */
+
+/* Base design system tokens applied globally */
+:root {
+  --ds-primary: #2C3E50;
+  --ds-secondary: #8B7355;
+  --ds-accent: #C9956B;
+  --ds-background: #FAF6F1;
+  --ds-text-primary: #1A1A2E;
+  --ds-font-display: "Instrument Serif", serif;
+  --ds-font-body: "DM Sans", sans-serif;
+}
+
+/* Ensure consistent background and text color */
+html,
+body {
+  background-color: #FAF6F1;
+  color: #1A1A2E;
+}
+
+/* Display typography */
+.font-display {
+  font-family: "Instrument Serif", serif;
+}
+
+/* Body typography */
+.font-body {
+  font-family: "DM Sans", sans-serif;
+}
