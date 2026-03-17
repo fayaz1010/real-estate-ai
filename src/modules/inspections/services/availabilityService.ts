@@ -1,15 +1,13 @@
 // PLACEHOLDER FILE: src/modules/inspections/services/availabilityService.ts
 // TODO: Add your implementation here
 
-import axios from "axios";
+import apiClient from "@/api/client";
 
 import {
   AvailabilitySlot,
   RecurringSchedule,
   BlackoutDate,
 } from "../types/inspection.types";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
 
 class AvailabilityService {
   /**
@@ -20,8 +18,8 @@ class AvailabilityService {
     startDate: string;
     endDate: string;
   }): Promise<AvailabilitySlot[]> {
-    const response = await axios.get<AvailabilitySlot[]>(
-      `${API_URL}/availability/slots`,
+    const response = await apiClient.get<AvailabilitySlot[]>(
+      "/availability/slots",
       { params },
     );
     return response.data;
@@ -33,8 +31,8 @@ class AvailabilityService {
   async createRecurringSchedule(
     data: Omit<RecurringSchedule, "id" | "createdAt" | "updatedAt">,
   ): Promise<RecurringSchedule> {
-    const response = await axios.post<RecurringSchedule>(
-      `${API_URL}/availability/recurring`,
+    const response = await apiClient.post<RecurringSchedule>(
+      "/availability/recurring",
       data,
     );
     return response.data;
@@ -46,8 +44,8 @@ class AvailabilityService {
   async getRecurringSchedules(
     propertyId: string,
   ): Promise<RecurringSchedule[]> {
-    const response = await axios.get<RecurringSchedule[]>(
-      `${API_URL}/availability/recurring`,
+    const response = await apiClient.get<RecurringSchedule[]>(
+      "/availability/recurring",
       { params: { propertyId } },
     );
     return response.data;
@@ -60,8 +58,8 @@ class AvailabilityService {
     id: string,
     updates: Partial<RecurringSchedule>,
   ): Promise<RecurringSchedule> {
-    const response = await axios.patch<RecurringSchedule>(
-      `${API_URL}/availability/recurring/${id}`,
+    const response = await apiClient.patch<RecurringSchedule>(
+      `/availability/recurring/${id}`,
       updates,
     );
     return response.data;
@@ -71,8 +69,8 @@ class AvailabilityService {
    * Delete recurring schedule
    */
   async deleteRecurringSchedule(id: string): Promise<{ success: boolean }> {
-    const response = await axios.delete<{ success: boolean }>(
-      `${API_URL}/availability/recurring/${id}`,
+    const response = await apiClient.delete<{ success: boolean }>(
+      `/availability/recurring/${id}`,
     );
     return response.data;
   }
@@ -93,8 +91,8 @@ class AvailabilityService {
   async createBlackoutDate(
     data: Omit<BlackoutDate, "id" | "createdAt">,
   ): Promise<BlackoutDate> {
-    const response = await axios.post<BlackoutDate>(
-      `${API_URL}/availability/blackout`,
+    const response = await apiClient.post<BlackoutDate>(
+      "/availability/blackout",
       data,
     );
     return response.data;
@@ -104,8 +102,8 @@ class AvailabilityService {
    * Get blackout dates for a property
    */
   async getBlackoutDates(propertyId: string): Promise<BlackoutDate[]> {
-    const response = await axios.get<BlackoutDate[]>(
-      `${API_URL}/availability/blackout`,
+    const response = await apiClient.get<BlackoutDate[]>(
+      "/availability/blackout",
       { params: { propertyId } },
     );
     return response.data;
@@ -115,8 +113,8 @@ class AvailabilityService {
    * Delete blackout date
    */
   async deleteBlackoutDate(id: string): Promise<{ success: boolean }> {
-    const response = await axios.delete<{ success: boolean }>(
-      `${API_URL}/availability/blackout/${id}`,
+    const response = await apiClient.delete<{ success: boolean }>(
+      `/availability/blackout/${id}`,
     );
     return response.data;
   }
@@ -129,8 +127,8 @@ class AvailabilityService {
     startDate: string,
     endDate: string,
   ): Promise<AvailabilitySlot[]> {
-    const response = await axios.get<AvailabilitySlot[]>(
-      `${API_URL}/availability/landlord/${landlordId}`,
+    const response = await apiClient.get<AvailabilitySlot[]>(
+      `/availability/landlord/${landlordId}`,
       { params: { startDate, endDate } },
     );
     return response.data;
@@ -146,8 +144,8 @@ class AvailabilityService {
       "id" | "propertyId" | "createdAt" | "updatedAt"
     >,
   ): Promise<RecurringSchedule[]> {
-    const response = await axios.post<RecurringSchedule[]>(
-      `${API_URL}/availability/recurring/bulk`,
+    const response = await apiClient.post<RecurringSchedule[]>(
+      "/availability/recurring/bulk",
       {
         propertyIds,
         ...scheduleData,
@@ -165,8 +163,8 @@ class AvailabilityService {
     startTime: string;
     endTime: string;
   }): Promise<{ available: boolean; reason?: string }> {
-    const response = await axios.get<{ available: boolean; reason?: string }>(
-      `${API_URL}/availability/check`,
+    const response = await apiClient.get<{ available: boolean; reason?: string }>(
+      "/availability/check",
       { params },
     );
     return response.data;

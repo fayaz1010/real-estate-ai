@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+
+import { PageMeta } from "../components/seo";
 import {
   Zap,
   Shield,
@@ -80,6 +82,12 @@ const team = [
 export const AboutPage: React.FC = () => {
   return (
     <main className="min-h-screen bg-white" role="main">
+      <PageMeta
+        title="About Us"
+        description="Learn about RealEstate AI, our mission to transform property management with artificial intelligence, and the team behind the platform."
+        keywords="about RealEstate AI, property management company, AI proptech, property management team"
+        canonicalUrl="https://realestate-ai.com/about"
+      />
       {/* Hero Section */}
       <section
         className="relative pt-24 pb-20 bg-realestate-primary overflow-hidden"

@@ -1,29 +1,5 @@
-// PLACEHOLDER FILE: services\creditCheckService.ts
-// TODO: Add your implementation here
-
+import apiClient from "@/api/client";
 import { CreditCheckResult } from "../types/application.types";
-
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
-
-const apiCall = async (endpoint: string, options: RequestInit = {}) => {
-  const token = localStorage.getItem("accessToken");
-
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token ? `Bearer ${token}` : "",
-      ...options.headers,
-    },
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "API request failed");
-  }
-
-  return response.json();
-};
 
 export interface CreditCheckRequest {
   firstName: string;
@@ -99,125 +75,86 @@ export interface CreditCheckOrder {
 }
 
 export const creditCheckService = {
-  /**
-   * Get available credit check packages
-   */
   getPackages: async (): Promise<CreditCheckPackage[]> => {
-    return apiCall("/credit-checks/packages");
+    const { data } = await apiClient.get<CreditCheckPackage[]>("/credit-checks/packages");
+    return data;
   },
 
-  /**
-   * Order a credit check
-   */
   orderCreditCheck: async (
     applicationId: string,
     packageId: string,
-    data: CreditCheckRequest,
+    reqData: CreditCheckRequest,
   ): Promise<CreditCheckOrder> => {
-    return apiCall(`/applications/${applicationId}/credit-check`, {
-      method: "POST",
-      body: JSON.stringify({ packageId, ...data }),
-    });
-  },
-
-  /**
-   * Get credit check status
-   */
-  getCreditCheckStatus: async (
-    applicationId: string,
-  ): Promise<CreditCheckOrder> => {
-    return apiCall(`/applications/${applicationId}/credit-check`);
-  },
-
-  /**
-   * Get full credit report
-   */
-  getCreditReport: async (applicationId: string): Promise<CreditReport> => {
-    return apiCall(`/applications/${applicationId}/credit-check/report`);
-  },
-
-  /**
-   * Download credit report PDF
-   */
-  downloadCreditReportPDF: async (applicationId: string): Promise<Blob> => {
-    const token = localStorage.getItem("accessToken");
-
-    const response = await fetch(
-      `${API_BASE}/applications/${applicationId}/credit-check/pdf`,
-      {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-      },
+    const { data } = await apiClient.post<CreditCheckOrder>(
+      `/applications/${applicationId}/credit-check`,
+      { packageId, ...reqData },
     );
-
-    if (!response.ok) {
-      throw new Error("PDF download failed");
-    }
-
-    return response.blob();
+    return data;
   },
 
-  /**
-   * Get credit check consent form
-   */
-  getConsentForm: async (): Promise<{
-    formHtml: string;
-    disclosures: string[];
-    legalNotices: string[];
-  }> => {
-    return apiCall("/credit-checks/consent-form");
+  getCreditCheckStatus: async (applicationId: string): Promise<CreditCheckOrder> => {
+    const { data } = await apiClient.get<CreditCheckOrder>(
+      `/applications/${applicationId}/credit-check`,
+    );
+    return data;
   },
 
-  /**
-   * Submit signed consent for credit check
-   */
+  getCreditReport: async (applicationId: string): Promise<CreditReport> => {
+    const { data } = await apiClient.get<CreditReport>(
+      `/applications/${applicationId}/credit-check/report`,
+    );
+    return data;
+  },
+
+  downloadCreditReportPDF: async (applicationId: string): Promise<Blob> => {
+    const { data } = await apiClient.get(
+      `/applications/${applicationId}/credit-check/pdf`,
+      { responseType: "blob" },
+    );
+    return data;
+  },
+
+  getConsentForm: async (): Promise<{ formHtml: string; disclosures: string[]; legalNotices: string[] }> => {
+    const { data } = await apiClient.get<{ formHtml: string; disclosures: string[]; legalNotices: string[] }>(
+      "/credit-checks/consent-form",
+    );
+    return data;
+  },
+
   submitConsent: async (
     applicationId: string,
     signature: string,
     ipAddress: string,
   ): Promise<{ consentRecorded: boolean }> => {
-    return apiCall(`/applications/${applicationId}/credit-check/consent`, {
-      method: "POST",
-      body: JSON.stringify({ signature, ipAddress }),
-    });
+    const { data } = await apiClient.post<{ consentRecorded: boolean }>(
+      `/applications/${applicationId}/credit-check/consent`,
+      { signature, ipAddress },
+    );
+    return data;
   },
 
-  /**
-   * Dispute credit check findings
-   */
   disputeCreditReport: async (
     applicationId: string,
-    items: {
-      type: "account" | "inquiry" | "public_record";
-      itemId: string;
-      reason: string;
-      explanation: string;
-    }[],
+    items: { type: "account" | "inquiry" | "public_record"; itemId: string; reason: string; explanation: string }[],
   ): Promise<{ disputeId: string }> => {
-    return apiCall(`/applications/${applicationId}/credit-check/dispute`, {
-      method: "POST",
-      body: JSON.stringify({ items }),
-    });
+    const { data } = await apiClient.post<{ disputeId: string }>(
+      `/applications/${applicationId}/credit-check/dispute`,
+      { items },
+    );
+    return data;
   },
 
-  /**
-   * Get credit score interpretation
-   */
   getCreditScoreInterpretation: async (
     score: number,
-  ): Promise<{
-    rating: "excellent" | "good" | "fair" | "poor" | "very_poor";
-    description: string;
-    recommendations: string[];
-  }> => {
-    return apiCall(`/credit-checks/interpret-score?score=${score}`);
+  ): Promise<{ rating: "excellent" | "good" | "fair" | "poor" | "very_poor"; description: string; recommendations: string[] }> => {
+    const { data } = await apiClient.get<{ rating: "excellent" | "good" | "fair" | "poor" | "very_poor"; description: string; recommendations: string[] }>(
+      `/credit-checks/interpret-score?score=${score}`,
+    );
+    return data;
   },
 
-  /**
-   * Get my credit check history
-   */
   getMyCreditCheckHistory: async (): Promise<CreditCheckOrder[]> => {
-    return apiCall("/credit-checks/history");
+    const { data } = await apiClient.get<CreditCheckOrder[]>("/credit-checks/history");
+    return data;
   },
 };

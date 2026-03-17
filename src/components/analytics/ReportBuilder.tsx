@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, Download, Loader2 } from 'lucide-react';
+import { FileText, Download, Loader } from 'lucide-react';
 import type { ReportConfig } from '../../types/analytics';
 import { generateCustomReport } from '../../services/analyticsService';
 
@@ -172,7 +172,7 @@ export const ReportBuilder: React.FC = () => {
               className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white transition-opacity disabled:opacity-50"
               style={{ backgroundColor: '#091a2b', fontFamily: 'Open Sans, sans-serif' }}
             >
-              {loading ? <Loader2 size={16} className="animate-spin" /> : <FileText size={16} />}
+              {loading ? <Loader size={16} className="animate-spin" /> : <FileText size={16} />}
               Generate Report
             </button>
             {report && (

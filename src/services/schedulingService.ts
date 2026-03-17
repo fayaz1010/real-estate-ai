@@ -1,7 +1,7 @@
 // FILE PATH: src/services/schedulingService.ts
 // Smart Scheduling & Booking System - API Service Layer
 
-import axios from "axios";
+import apiClient from "@/api/client";
 import type {
   Booking,
   BookingFilters,
@@ -12,15 +12,13 @@ import type {
   SmartSuggestion,
 } from "../types/scheduling";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
-
 class SchedulingService {
   /**
    * Fetch bookings for a given user and date range
    */
   async getBookings(filters?: BookingFilters): Promise<BookingsResponse> {
-    const response = await axios.get<BookingsResponse>(
-      `${API_URL}/bookings`,
+    const response = await apiClient.get<BookingsResponse>(
+      "/bookings",
       { params: filters },
     );
     return response.data;
@@ -30,7 +28,7 @@ class SchedulingService {
    * Fetch a single booking by ID
    */
   async getBookingById(id: string): Promise<Booking> {
-    const response = await axios.get<Booking>(`${API_URL}/bookings/${id}`);
+    const response = await apiClient.get<Booking>(`/bookings/${id}`);
     return response.data;
   }
 
@@ -38,7 +36,7 @@ class SchedulingService {
    * Create a new booking
    */
   async createBooking(data: CreateBookingDto): Promise<Booking> {
-    const response = await axios.post<Booking>(`${API_URL}/bookings`, data);
+    const response = await apiClient.post<Booking>("/bookings", data);
     return response.data;
   }
 
@@ -46,8 +44,8 @@ class SchedulingService {
    * Update an existing booking
    */
   async updateBooking(id: string, data: UpdateBookingDto): Promise<Booking> {
-    const response = await axios.patch<Booking>(
-      `${API_URL}/bookings/${id}`,
+    const response = await apiClient.patch<Booking>(
+      `/bookings/${id}`,
       data,
     );
     return response.data;
@@ -57,8 +55,8 @@ class SchedulingService {
    * Cancel a booking
    */
   async cancelBooking(id: string, reason?: string): Promise<Booking> {
-    const response = await axios.post<Booking>(
-      `${API_URL}/bookings/${id}/cancel`,
+    const response = await apiClient.post<Booking>(
+      `/bookings/${id}/cancel`,
       { reason },
     );
     return response.data;
@@ -72,8 +70,8 @@ class SchedulingService {
     startDate: string,
     endDate: string,
   ): Promise<AvailabilitySlot[]> {
-    const response = await axios.get<AvailabilitySlot[]>(
-      `${API_URL}/availability/${userId}`,
+    const response = await apiClient.get<AvailabilitySlot[]>(
+      `/availability/${userId}`,
       { params: { startDate, endDate } },
     );
     return response.data;
@@ -86,8 +84,8 @@ class SchedulingService {
     userId: string,
     slots: Omit<AvailabilitySlot, "id">[],
   ): Promise<AvailabilitySlot[]> {
-    const response = await axios.post<AvailabilitySlot[]>(
-      `${API_URL}/availability/${userId}`,
+    const response = await apiClient.post<AvailabilitySlot[]>(
+      `/availability/${userId}`,
       { slots },
     );
     return response.data;
@@ -97,7 +95,7 @@ class SchedulingService {
    * Delete an availability slot
    */
   async deleteAvailabilitySlot(slotId: string): Promise<void> {
-    await axios.delete(`${API_URL}/availability/slots/${slotId}`);
+    await apiClient.delete(`/availability/slots/${slotId}`);
   }
 
   /**
@@ -108,8 +106,8 @@ class SchedulingService {
     type: string,
     preferredDateRange?: { start: string; end: string },
   ): Promise<SmartSuggestion[]> {
-    const response = await axios.get<SmartSuggestion[]>(
-      `${API_URL}/bookings/smart-suggestions`,
+    const response = await apiClient.get<SmartSuggestion[]>(
+      "/bookings/smart-suggestions",
       { params: { propertyId, type, ...preferredDateRange } },
     );
     return response.data;

@@ -1,24 +1,4 @@
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
-
-const apiCall = async (endpoint: string, options: RequestInit = {}) => {
-  const token = localStorage.getItem("accessToken");
-
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token ? `Bearer ${token}` : "",
-      ...options.headers,
-    },
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "API request failed");
-  }
-
-  return response.json();
-};
+import apiClient from "@/api/client";
 
 export interface NotificationPreferences {
   newListings: boolean;
@@ -39,47 +19,42 @@ export const messagingService = {
     title: string,
     body: string,
   ): Promise<void> => {
-    await apiCall("/messaging/push/send", {
-      method: "POST",
-      body: JSON.stringify({ userId, title, body }),
-    });
+    await apiClient.post("/messaging/push/send", { userId, title, body });
   },
 
   sendSMSVerificationCode: async (phoneNumber: string): Promise<void> => {
-    await apiCall("/messaging/sms/send-code", {
-      method: "POST",
-      body: JSON.stringify({ phoneNumber }),
-    });
+    await apiClient.post("/messaging/sms/send-code", { phoneNumber });
   },
 
   verifySMSCode: async (
     phoneNumber: string,
     code: string,
   ): Promise<boolean> => {
-    const result = await apiCall("/messaging/sms/verify-code", {
-      method: "POST",
-      body: JSON.stringify({ phoneNumber, code }),
+    const response = await apiClient.post("/messaging/sms/verify-code", {
+      phoneNumber,
+      code,
     });
-    return result.verified;
+    return response.data.verified;
   },
 
   getNotificationPreferences: async (): Promise<NotificationPreferences> => {
-    return apiCall("/messaging/preferences");
+    const response = await apiClient.get<NotificationPreferences>(
+      "/messaging/preferences",
+    );
+    return response.data;
   },
 
   updateNotificationPreferences: async (
     preferences: NotificationPreferences,
   ): Promise<NotificationPreferences> => {
-    return apiCall("/messaging/preferences", {
-      method: "PUT",
-      body: JSON.stringify(preferences),
-    });
+    const response = await apiClient.put<NotificationPreferences>(
+      "/messaging/preferences",
+      preferences,
+    );
+    return response.data;
   },
 
   registerPushToken: async (token: string): Promise<void> => {
-    await apiCall("/messaging/push/register", {
-      method: "POST",
-      body: JSON.stringify({ token }),
-    });
+    await apiClient.post("/messaging/push/register", { token });
   },
 };

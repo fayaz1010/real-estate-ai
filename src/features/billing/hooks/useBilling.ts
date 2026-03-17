@@ -1,13 +1,11 @@
 import { useState, useCallback } from 'react';
-import axios from 'axios';
+import apiClient from '@/api/client';
 import type {
   Subscription,
   Invoice,
   Plan,
   BillingInterval,
 } from '../types';
-
-const API_BASE = '/api/billing';
 
 interface UseBillingReturn {
   subscription: Subscription | null;
@@ -31,7 +29,7 @@ export function useBilling(): UseBillingReturn {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get<{ data: Subscription }>(`${API_BASE}/subscription`);
+      const res = await apiClient.get<{ data: Subscription }>("/billing/subscription");
       setSubscription(res.data.data);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch subscription';
@@ -45,7 +43,7 @@ export function useBilling(): UseBillingReturn {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.get<{ data: Invoice[] }>(`${API_BASE}/invoices`);
+      const res = await apiClient.get<{ data: Invoice[] }>("/billing/invoices");
       setInvoices(res.data.data);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch invoices';
@@ -63,7 +61,7 @@ export function useBilling(): UseBillingReturn {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.post<{ data: Subscription }>(`${API_BASE}/subscribe`, {
+      const res = await apiClient.post<{ data: Subscription }>("/billing/subscribe", {
         plan,
         interval,
         paymentMethodId,
@@ -82,7 +80,7 @@ export function useBilling(): UseBillingReturn {
     setLoading(true);
     setError(null);
     try {
-      await axios.post(`${API_BASE}/cancel`, { cancelAtPeriodEnd });
+      await apiClient.post("/billing/cancel", { cancelAtPeriodEnd });
       await fetchSubscription();
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to cancel subscription';
@@ -97,7 +95,7 @@ export function useBilling(): UseBillingReturn {
     setLoading(true);
     setError(null);
     try {
-      const res = await axios.put<{ data: Subscription }>(`${API_BASE}/subscription`, {
+      const res = await apiClient.put<{ data: Subscription }>("/billing/subscription", {
         plan,
         interval,
       });

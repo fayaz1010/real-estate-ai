@@ -1,3 +1,4 @@
+import apiClient from "@/api/client";
 import type {
   Plan,
   PlanId,
@@ -8,9 +9,6 @@ import type {
   Subscription,
   UsageSummary,
 } from '@/types/billing';
-import axios from 'axios';
-
-const API_BASE = '/api/billing';
 
 // ---------------------------------------------------------------------------
 // Plan catalog (static — mirrors DB seed data)
@@ -109,7 +107,7 @@ export async function createCheckoutSession(
   planId: PlanId,
   interval: BillingInterval,
 ): Promise<CheckoutSessionResponse> {
-  const { data } = await axios.post<CheckoutSessionResponse>(`${API_BASE}/create-checkout`, {
+  const { data } = await apiClient.post<CheckoutSessionResponse>("/billing/create-checkout", {
     planId,
     interval,
     successUrl: `${window.location.origin}/billing?session_id={CHECKOUT_SESSION_ID}`,
@@ -119,25 +117,25 @@ export async function createCheckoutSession(
 }
 
 export async function createBillingPortalSession(): Promise<BillingPortalResponse> {
-  const { data } = await axios.post<BillingPortalResponse>(`${API_BASE}/portal`);
+  const { data } = await apiClient.post<BillingPortalResponse>("/billing/portal");
   return data;
 }
 
 export async function getCurrentSubscription(): Promise<Subscription | null> {
-  const { data } = await axios.get<Subscription | null>(`${API_BASE}/subscription`);
+  const { data } = await apiClient.get<Subscription | null>("/billing/subscription");
   return data;
 }
 
 export async function getInvoices(): Promise<Invoice[]> {
-  const { data } = await axios.get<Invoice[]>(`${API_BASE}/invoices`);
+  const { data } = await apiClient.get<Invoice[]>("/billing/invoices");
   return data;
 }
 
 export async function getUsageSummary(): Promise<UsageSummary> {
-  const { data } = await axios.get<UsageSummary>(`${API_BASE}/usage`);
+  const { data } = await apiClient.get<UsageSummary>("/billing/usage");
   return data;
 }
 
 export async function cancelSubscription(): Promise<void> {
-  await axios.post(`${API_BASE}/cancel`);
+  await apiClient.post("/billing/cancel");
 }

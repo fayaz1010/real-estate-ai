@@ -1,29 +1,5 @@
-// PLACEHOLDER FILE: services\verificationService.ts
-// TODO: Add your implementation here
-
+import apiClient from "@/api/client";
 import { VerificationStatus } from "../types/application.types";
-
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
-
-const apiCall = async (endpoint: string, options: RequestInit = {}) => {
-  const token = localStorage.getItem("accessToken");
-
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token ? `Bearer ${token}` : "",
-      ...options.headers,
-    },
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "API request failed");
-  }
-
-  return response.json();
-};
 
 export interface IdentityVerificationRequest {
   firstName: string;
@@ -40,7 +16,7 @@ export interface IdentityVerificationRequest {
 export interface IdentityVerificationResult {
   status: VerificationStatus;
   verified: boolean;
-  matchScore: number; // 0-100
+  matchScore: number;
   checks: {
     documentAuthenticity: boolean;
     faceMatch: boolean;
@@ -54,20 +30,15 @@ export interface IncomeVerificationRequest {
   employerName: string;
   annualIncome: number;
   employmentStartDate: string;
-  documents: string[]; // Document IDs
+  documents: string[];
 }
 
 export interface IncomeVerificationResult {
   status: VerificationStatus;
   verified: boolean;
   verifiedIncome: number;
-  method:
-    | "paystub"
-    | "bank_statement"
-    | "tax_return"
-    | "employer_letter"
-    | "plaid";
-  confidence: number; // 0-100
+  method: "paystub" | "bank_statement" | "tax_return" | "employer_letter" | "plaid";
+  confidence: number;
   verifiedAt?: string;
   message?: string;
 }
@@ -117,70 +88,54 @@ export interface PlaidAccountData {
 }
 
 export const verificationService = {
-  /**
-   * Verify identity using ID document and biometrics
-   */
   verifyIdentity: async (
     applicationId: string,
-    data: IdentityVerificationRequest,
+    reqData: IdentityVerificationRequest,
   ): Promise<IdentityVerificationResult> => {
-    return apiCall(`/applications/${applicationId}/verify-identity`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    const { data } = await apiClient.post<IdentityVerificationResult>(
+      `/applications/${applicationId}/verify-identity`,
+      reqData,
+    );
+    return data;
   },
 
-  /**
-   * Verify income from documents
-   */
   verifyIncome: async (
     applicationId: string,
-    data: IncomeVerificationRequest,
+    reqData: IncomeVerificationRequest,
   ): Promise<IncomeVerificationResult> => {
-    return apiCall(`/applications/${applicationId}/verify-income`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    const { data } = await apiClient.post<IncomeVerificationResult>(
+      `/applications/${applicationId}/verify-income`,
+      reqData,
+    );
+    return data;
   },
 
-  /**
-   * Verify employment
-   */
   verifyEmployment: async (
     applicationId: string,
-    data: EmploymentVerificationRequest,
+    reqData: EmploymentVerificationRequest,
   ): Promise<EmploymentVerificationResult> => {
-    return apiCall(`/applications/${applicationId}/verify-employment`, {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
+    const { data } = await apiClient.post<EmploymentVerificationResult>(
+      `/applications/${applicationId}/verify-employment`,
+      reqData,
+    );
+    return data;
   },
 
-  /**
-   * Get Plaid Link token for bank account verification
-   */
   getPlaidLinkToken: async (applicationId: string): Promise<PlaidLinkToken> => {
-    return apiCall(`/applications/${applicationId}/plaid/link-token`, {
-      method: "POST",
-    });
+    const { data } = await apiClient.post<PlaidLinkToken>(
+      `/applications/${applicationId}/plaid/link-token`,
+    );
+    return data;
   },
 
-  /**
-   * Exchange Plaid public token for account data
-   */
-  exchangePlaidToken: async (
-    applicationId: string,
-    publicToken: string,
-  ): Promise<PlaidAccountData> => {
-    return apiCall(`/applications/${applicationId}/plaid/exchange-token`, {
-      method: "POST",
-      body: JSON.stringify({ publicToken }),
-    });
+  exchangePlaidToken: async (applicationId: string, publicToken: string): Promise<PlaidAccountData> => {
+    const { data } = await apiClient.post<PlaidAccountData>(
+      `/applications/${applicationId}/plaid/exchange-token`,
+      { publicToken },
+    );
+    return data;
   },
 
-  /**
-   * Get verification status for all checks
-   */
   getVerificationStatus: async (
     applicationId: string,
   ): Promise<{
@@ -190,116 +145,84 @@ export const verificationService = {
     credit: VerificationStatus;
     background: VerificationStatus;
   }> => {
-    return apiCall(`/applications/${applicationId}/verification-status`);
+    const { data } = await apiClient.get(`/applications/${applicationId}/verification-status`);
+    return data;
   },
 
-  /**
-   * Request manual verification review
-   */
   requestManualReview: async (
     applicationId: string,
     verificationType: "identity" | "income" | "employment",
     notes?: string,
   ): Promise<void> => {
-    return apiCall(`/applications/${applicationId}/request-manual-review`, {
-      method: "POST",
-      body: JSON.stringify({ verificationType, notes }),
+    await apiClient.post(`/applications/${applicationId}/request-manual-review`, {
+      verificationType,
+      notes,
     });
   },
 
-  /**
-   * Resend verification email/SMS
-   */
   resendVerificationRequest: async (
     applicationId: string,
     verificationType: string,
     method: "email" | "sms",
   ): Promise<void> => {
-    return apiCall(`/applications/${applicationId}/resend-verification`, {
-      method: "POST",
-      body: JSON.stringify({ verificationType, method }),
+    await apiClient.post(`/applications/${applicationId}/resend-verification`, {
+      verificationType,
+      method,
     });
   },
 
-  /**
-   * Upload selfie for identity verification
-   */
-  uploadSelfie: async (
-    applicationId: string,
-    selfieBlob: Blob,
-  ): Promise<{ imageUrl: string }> => {
+  uploadSelfie: async (applicationId: string, selfieBlob: Blob): Promise<{ imageUrl: string }> => {
     const formData = new FormData();
     formData.append("selfie", selfieBlob, "selfie.jpg");
-
-    const token = localStorage.getItem("accessToken");
-
-    const response = await fetch(
-      `${API_BASE}/applications/${applicationId}/upload-selfie`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-        body: formData,
-      },
+    const { data } = await apiClient.post<{ imageUrl: string }>(
+      `/applications/${applicationId}/upload-selfie`,
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } },
     );
-
-    if (!response.ok) {
-      throw new Error("Selfie upload failed");
-    }
-
-    return response.json();
+    return data;
   },
 
-  /**
-   * Verify phone number with OTP
-   */
   sendPhoneVerificationCode: async (
     applicationId: string,
     phoneNumber: string,
   ): Promise<{ codeSent: boolean }> => {
-    return apiCall(`/applications/${applicationId}/verify-phone/send`, {
-      method: "POST",
-      body: JSON.stringify({ phoneNumber }),
-    });
+    const { data } = await apiClient.post<{ codeSent: boolean }>(
+      `/applications/${applicationId}/verify-phone/send`,
+      { phoneNumber },
+    );
+    return data;
   },
 
-  /**
-   * Confirm phone verification code
-   */
   confirmPhoneVerificationCode: async (
     applicationId: string,
     code: string,
   ): Promise<{ verified: boolean }> => {
-    return apiCall(`/applications/${applicationId}/verify-phone/confirm`, {
-      method: "POST",
-      body: JSON.stringify({ code }),
-    });
+    const { data } = await apiClient.post<{ verified: boolean }>(
+      `/applications/${applicationId}/verify-phone/confirm`,
+      { code },
+    );
+    return data;
   },
 
-  /**
-   * Verify email address
-   */
   sendEmailVerification: async (
     applicationId: string,
     email: string,
   ): Promise<{ emailSent: boolean }> => {
-    return apiCall(`/applications/${applicationId}/verify-email/send`, {
-      method: "POST",
-      body: JSON.stringify({ email }),
-    });
+    const { data } = await apiClient.post<{ emailSent: boolean }>(
+      `/applications/${applicationId}/verify-email/send`,
+      { email },
+    );
+    return data;
   },
 
-  /**
-   * Confirm email verification
-   */
   confirmEmailVerification: async (
     applicationId: string,
     token: string,
   ): Promise<{ verified: boolean }> => {
-    return apiCall(`/applications/${applicationId}/verify-email/confirm`, {
-      method: "POST",
-      body: JSON.stringify({ token }),
-    });
+    const { data } = await apiClient.post<{ verified: boolean }>(
+      `/applications/${applicationId}/verify-email/confirm`,
+      { token },
+    );
+    return data;
   },
 };

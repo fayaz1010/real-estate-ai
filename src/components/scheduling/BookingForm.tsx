@@ -12,7 +12,7 @@ import {
   Trash2,
   AlertCircle,
   CheckCircle,
-  Loader2,
+  Loader,
 } from "lucide-react";
 import type {
   BookingType,
@@ -403,7 +403,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
           className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#091a2b] text-white text-sm font-semibold rounded-lg hover:bg-[#005163] disabled:opacity-50 transition-colors font-['Open_Sans']"
         >
           {isSubmitting ? (
-            <Loader2 className="w-4 h-4 animate-spin" />
+            <Loader className="w-4 h-4 animate-spin" />
           ) : submitSuccess ? (
             <CheckCircle className="w-4 h-4" />
           ) : null}

@@ -1,11 +1,9 @@
 // Trial API Service - Handles free trial API calls
 
+import apiClient from "@/api/client";
 import { store } from "../../../store";
 import { setTrialExpirationDate } from "../../auth/store/authSlice";
 import { tokenManager } from "../../auth/utils/tokenManager";
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:4041/api";
 
 interface StartTrialData {
   firstName: string;
@@ -37,21 +35,9 @@ interface TrialStatusResponse {
 export async function startTrial(
   data: StartTrialData,
 ): Promise<StartTrialResponse> {
-  const response = await fetch(`${API_BASE_URL}/trial/start`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+  const response = await apiClient.post("/trial/start", data);
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(
-      error.error?.message || "Failed to start free trial",
-    );
-  }
-
-  const json = await response.json();
-  const result: StartTrialResponse = json.data;
+  const result: StartTrialResponse = response.data.data;
 
   // Store tokens
   tokenManager.setTokens(result.accessToken, result.refreshToken, 3600);
@@ -63,19 +49,9 @@ export async function startTrial(
 }
 
 export async function getTrialStatus(): Promise<TrialStatusResponse> {
-  const response = await fetch(`${API_BASE_URL}/trial/status`, {
-    headers: {
-      ...tokenManager.getAuthHeader(),
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await apiClient.get("/trial/status");
 
-  if (!response.ok) {
-    throw new Error("Failed to fetch trial status");
-  }
-
-  const json = await response.json();
-  const result: TrialStatusResponse = json.data;
+  const result: TrialStatusResponse = response.data.data;
 
   // Update Redux store with latest trial expiration
   if (result.trialExpirationDate) {

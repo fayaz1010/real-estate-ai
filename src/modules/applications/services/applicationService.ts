@@ -1,6 +1,4 @@
-// PLACEHOLDER FILE: services\applicationService.ts
-// TODO: Add your implementation here
-
+import apiClient from "@/api/client";
 import {
   Application,
   ApplicationFormData,
@@ -10,45 +8,21 @@ import {
   ApplicationDocument,
 } from "../types/application.types";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
-
-// Helper function for API calls
-const apiCall = async (endpoint: string, options: RequestInit = {}) => {
-  const token = localStorage.getItem("accessToken");
-
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token ? `Bearer ${token}` : "",
-      ...options.headers,
-    },
-  });
-
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.message || "API request failed");
-  }
-
-  return response.json();
-};
-
 export const applicationService = {
   /**
    * Create a new application
    */
   createApplication: async (propertyId: string): Promise<Application> => {
-    return apiCall("/applications", {
-      method: "POST",
-      body: JSON.stringify({ propertyId }),
-    });
+    const response = await apiClient.post("/applications", { propertyId });
+    return response.data;
   },
 
   /**
    * Get application by ID
    */
   getApplication: async (applicationId: string): Promise<Application> => {
-    return apiCall(`/applications/${applicationId}`);
+    const response = await apiClient.get(`/applications/${applicationId}`);
+    return response.data;
   },
 
   /**
@@ -58,28 +32,28 @@ export const applicationService = {
     applicationId: string,
     data: Partial<ApplicationFormData>,
   ): Promise<Application> => {
-    return apiCall(`/applications/${applicationId}`, {
-      method: "PATCH",
-      body: JSON.stringify(data),
-    });
+    const response = await apiClient.patch(
+      `/applications/${applicationId}`,
+      data,
+    );
+    return response.data;
   },
 
   /**
    * Submit application for review
    */
   submitApplication: async (applicationId: string): Promise<Application> => {
-    return apiCall(`/applications/${applicationId}/submit`, {
-      method: "POST",
-    });
+    const response = await apiClient.post(
+      `/applications/${applicationId}/submit`,
+    );
+    return response.data;
   },
 
   /**
    * Delete application (draft only)
    */
   deleteApplication: async (applicationId: string): Promise<void> => {
-    return apiCall(`/applications/${applicationId}`, {
-      method: "DELETE",
-    });
+    await apiClient.delete(`/applications/${applicationId}`);
   },
 
   /**
@@ -113,7 +87,10 @@ export const applicationService = {
     }
 
     const query = queryParams.toString();
-    return apiCall(`/applications/my-applications${query ? `?${query}` : ""}`);
+    const response = await apiClient.get(
+      `/applications/my-applications${query ? `?${query}` : ""}`,
+    );
+    return response.data;
   },
 
   /**
@@ -123,10 +100,11 @@ export const applicationService = {
     propertyIds: string[],
     applicationData: Partial<ApplicationFormData>,
   ): Promise<Application[]> => {
-    return apiCall("/applications/multi", {
-      method: "POST",
-      body: JSON.stringify({ propertyIds, applicationData }),
+    const response = await apiClient.post("/applications/multi", {
+      propertyIds,
+      applicationData,
     });
+    return response.data;
   },
 
   /**
@@ -145,7 +123,10 @@ export const applicationService = {
       queryParams.append("minScore", filters.minScore.toString());
     }
 
-    return apiCall(`/applications?${queryParams.toString()}`);
+    const response = await apiClient.get(
+      `/applications?${queryParams.toString()}`,
+    );
+    return response.data;
   },
 
   /**
@@ -155,7 +136,8 @@ export const applicationService = {
     propertyId?: string,
   ): Promise<ApplicationSummary> => {
     const query = propertyId ? `?propertyId=${propertyId}` : "";
-    return apiCall(`/applications/summary${query}`);
+    const response = await apiClient.get(`/applications/summary${query}`);
+    return response.data;
   },
 
   /**
@@ -165,10 +147,11 @@ export const applicationService = {
     applicationId: string,
     conditions?: string[],
   ): Promise<Application> => {
-    return apiCall(`/applications/${applicationId}/approve`, {
-      method: "POST",
-      body: JSON.stringify({ conditions }),
-    });
+    const response = await apiClient.post(
+      `/applications/${applicationId}/approve`,
+      { conditions },
+    );
+    return response.data;
   },
 
   /**
@@ -178,10 +161,11 @@ export const applicationService = {
     applicationId: string,
     reason: string,
   ): Promise<Application> => {
-    return apiCall(`/applications/${applicationId}/reject`, {
-      method: "POST",
-      body: JSON.stringify({ reason }),
-    });
+    const response = await apiClient.post(
+      `/applications/${applicationId}/reject`,
+      { reason },
+    );
+    return response.data;
   },
 
   /**
@@ -192,19 +176,21 @@ export const applicationService = {
     message: string,
     requiredFields: string[],
   ): Promise<Application> => {
-    return apiCall(`/applications/${applicationId}/request-more-info`, {
-      method: "POST",
-      body: JSON.stringify({ message, requiredFields }),
-    });
+    const response = await apiClient.post(
+      `/applications/${applicationId}/request-more-info`,
+      { message, requiredFields },
+    );
+    return response.data;
   },
 
   /**
    * Withdraw application
    */
   withdrawApplication: async (applicationId: string): Promise<Application> => {
-    return apiCall(`/applications/${applicationId}/withdraw`, {
-      method: "POST",
-    });
+    const response = await apiClient.post(
+      `/applications/${applicationId}/withdraw`,
+    );
+    return response.data;
   },
 
   /**
@@ -217,7 +203,10 @@ export const applicationService = {
     breakdown: any;
     rating: string;
   }> => {
-    return apiCall(`/applications/${applicationId}/score`);
+    const response = await apiClient.get(
+      `/applications/${applicationId}/score`,
+    );
+    return response.data;
   },
 
   /**
@@ -228,10 +217,11 @@ export const applicationService = {
     email: string,
     relationship: string,
   ): Promise<CoApplicant> => {
-    return apiCall(`/applications/${applicationId}/co-applicants`, {
-      method: "POST",
-      body: JSON.stringify({ email, relationship }),
-    });
+    const response = await apiClient.post(
+      `/applications/${applicationId}/co-applicants`,
+      { email, relationship },
+    );
+    return response.data;
   },
 
   /**
@@ -242,13 +232,11 @@ export const applicationService = {
     coApplicantId: string,
     data: Partial<CoApplicant>,
   ): Promise<CoApplicant> => {
-    return apiCall(
+    const response = await apiClient.patch(
       `/applications/${applicationId}/co-applicants/${coApplicantId}`,
-      {
-        method: "PATCH",
-        body: JSON.stringify(data),
-      },
+      data,
     );
+    return response.data;
   },
 
   /**
@@ -258,11 +246,8 @@ export const applicationService = {
     applicationId: string,
     coApplicantId: string,
   ): Promise<void> => {
-    return apiCall(
+    await apiClient.delete(
       `/applications/${applicationId}/co-applicants/${coApplicantId}`,
-      {
-        method: "DELETE",
-      },
     );
   },
 
@@ -278,25 +263,14 @@ export const applicationService = {
     formData.append("file", file);
     formData.append("type", type);
 
-    const token = localStorage.getItem("accessToken");
-
-    const response = await fetch(
-      `${API_BASE}/applications/${applicationId}/documents`,
+    const response = await apiClient.post<ApplicationDocument>(
+      `/applications/${applicationId}/documents`,
+      formData,
       {
-        method: "POST",
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-        body: formData,
+        headers: { "Content-Type": undefined as unknown as string },
       },
     );
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.message || "Document upload failed");
-    }
-
-    return response.json();
+    return response.data;
   },
 
   /**
@@ -306,12 +280,10 @@ export const applicationService = {
     applicationId: string,
     documentId: string,
   ): Promise<ApplicationDocument> => {
-    return apiCall(
+    const response = await apiClient.post(
       `/applications/${applicationId}/documents/${documentId}/parse`,
-      {
-        method: "POST",
-      },
     );
+    return response.data;
   },
 
   /**
@@ -321,16 +293,17 @@ export const applicationService = {
     applicationId: string,
     documentId: string,
   ): Promise<void> => {
-    return apiCall(`/applications/${applicationId}/documents/${documentId}`, {
-      method: "DELETE",
-    });
+    await apiClient.delete(
+      `/applications/${applicationId}/documents/${documentId}`,
+    );
   },
 
   /**
    * Get autofill data from previous applications
    */
   getAutofillData: async (): Promise<Partial<ApplicationFormData>> => {
-    return apiCall("/applications/autofill");
+    const response = await apiClient.get("/applications/autofill");
+    return response.data;
   },
 
   /**
@@ -342,32 +315,21 @@ export const applicationService = {
     applications: Application[];
     comparison: any;
   }> => {
-    return apiCall("/applications/compare", {
-      method: "POST",
-      body: JSON.stringify({ applicationIds }),
+    const response = await apiClient.post("/applications/compare", {
+      applicationIds,
     });
+    return response.data;
   },
 
   /**
    * Export application as PDF
    */
   exportApplicationPDF: async (applicationId: string): Promise<Blob> => {
-    const token = localStorage.getItem("accessToken");
-
-    const response = await fetch(
-      `${API_BASE}/applications/${applicationId}/export/pdf`,
-      {
-        headers: {
-          Authorization: token ? `Bearer ${token}` : "",
-        },
-      },
+    const response = await apiClient.get(
+      `/applications/${applicationId}/export/pdf`,
+      { responseType: "blob" },
     );
-
-    if (!response.ok) {
-      throw new Error("PDF export failed");
-    }
-
-    return response.blob();
+    return response.data;
   },
 
   /**
@@ -377,9 +339,10 @@ export const applicationService = {
     applicationId: string,
     notes: string,
   ): Promise<Application> => {
-    return apiCall(`/applications/${applicationId}/notes`, {
-      method: "POST",
-      body: JSON.stringify({ notes }),
-    });
+    const response = await apiClient.post(
+      `/applications/${applicationId}/notes`,
+      { notes },
+    );
+    return response.data;
   },
 };

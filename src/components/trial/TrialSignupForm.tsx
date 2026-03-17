@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader } from "lucide-react";
 import { startTrial } from "../../services/trialService";
 
 interface FormData {
@@ -209,7 +209,7 @@ export const TrialSignupForm: React.FC = () => {
         }}
       >
         {isSubmitting ? (
-          <Loader2 className="w-5 h-5 animate-spin" />
+          <Loader className="w-5 h-5 animate-spin" />
         ) : (
           "Start Free 14-Day Trial (no credit card)"
         )}

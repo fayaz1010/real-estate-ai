@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Loader2 } from 'lucide-react';
+import { fetchDashboardStats, type DashboardStats } from '../services/dashboardService';
 import {
   Layout,
   Users,
@@ -50,43 +52,28 @@ interface MockProperty {
   listedDate: string;
 }
 
-const MOCK_USERS: MockUser[] = [
-  { id: '1', name: 'Sarah Mitchell', email: 'sarah.mitchell@email.com', role: UserRole.LANDLORD, status: AccountStatus.ACTIVE, joinedDate: '2025-11-15', avatar: 'SM' },
-  { id: '2', name: 'James Rodriguez', email: 'james.r@email.com', role: UserRole.TENANT, status: AccountStatus.ACTIVE, joinedDate: '2025-12-02', avatar: 'JR' },
-  { id: '3', name: 'Amara Johnson', email: 'amara.j@email.com', role: UserRole.AGENT, status: AccountStatus.ACTIVE, joinedDate: '2026-01-08', avatar: 'AJ' },
-  { id: '4', name: 'David Chen', email: 'david.chen@email.com', role: UserRole.LANDLORD, status: AccountStatus.PENDING_VERIFICATION, joinedDate: '2026-01-20', avatar: 'DC' },
-  { id: '5', name: 'Emily Watson', email: 'emily.w@email.com', role: UserRole.TENANT, status: AccountStatus.ACTIVE, joinedDate: '2026-02-05', avatar: 'EW' },
-  { id: '6', name: 'Marcus Brown', email: 'marcus.b@email.com', role: UserRole.PROPERTY_MANAGER, status: AccountStatus.ACTIVE, joinedDate: '2026-02-14', avatar: 'MB' },
-  { id: '7', name: 'Lena Kowalski', email: 'lena.k@email.com', role: UserRole.TENANT, status: AccountStatus.SUSPENDED, joinedDate: '2025-10-30', avatar: 'LK' },
-  { id: '8', name: 'Robert Kim', email: 'robert.kim@email.com', role: UserRole.BUSINESS, status: AccountStatus.ACTIVE, joinedDate: '2026-03-01', avatar: 'RK' },
-];
+// Mock users/properties will be replaced with API data when available
+const INITIAL_USERS: MockUser[] = [];
+const INITIAL_PROPERTIES: MockProperty[] = [];
 
-const MOCK_PROPERTIES: MockProperty[] = [
-  { id: 'P1', title: 'Sunset View Apartments', address: '742 Sunset Blvd, Los Angeles, CA', type: 'Apartment', status: 'active', price: 2800, owner: 'Sarah Mitchell', listedDate: '2026-01-10' },
-  { id: 'P2', title: 'Riverside Townhouse', address: '15 River Rd, Austin, TX', type: 'Townhouse', status: 'active', price: 3200, owner: 'David Chen', listedDate: '2026-02-01' },
-  { id: 'P3', title: 'Downtown Loft', address: '200 Main St, New York, NY', type: 'Loft', status: 'pending', price: 4500, owner: 'Sarah Mitchell', listedDate: '2026-02-20' },
-  { id: 'P4', title: 'Green Valley House', address: '88 Oak Lane, Denver, CO', type: 'House', status: 'active', price: 2100, owner: 'Marcus Brown', listedDate: '2026-03-05' },
-  { id: 'P5', title: 'Harbor Point Condo', address: '55 Harbor Way, Miami, FL', type: 'Condo', status: 'inactive', price: 3800, owner: 'Robert Kim', listedDate: '2025-12-15' },
-];
-
-const PLATFORM_STATS = {
-  totalUsers: 12847,
-  totalProperties: 3256,
-  activeLeases: 1892,
-  monthlyRevenue: 284500,
-  userGrowth: 12.4,
-  propertyGrowth: 8.7,
-  leaseGrowth: 5.2,
-  revenueGrowth: 15.8,
+const INITIAL_PLATFORM_STATS = {
+  totalUsers: 0,
+  totalProperties: 0,
+  activeLeases: 0,
+  monthlyRevenue: 0,
+  userGrowth: 0,
+  propertyGrowth: 0,
+  leaseGrowth: 0,
+  revenueGrowth: 0,
 };
 
-const MONTHLY_REVENUE_DATA = [
-  { month: 'Oct', value: 210000 },
-  { month: 'Nov', value: 235000 },
-  { month: 'Dec', value: 248000 },
-  { month: 'Jan', value: 260000 },
-  { month: 'Feb', value: 272000 },
-  { month: 'Mar', value: 284500 },
+const INITIAL_REVENUE_DATA = [
+  { month: 'Oct', value: 0 },
+  { month: 'Nov', value: 0 },
+  { month: 'Dec', value: 0 },
+  { month: 'Jan', value: 0 },
+  { month: 'Feb', value: 0 },
+  { month: 'Mar', value: 0 },
 ];
 
 const NAV_ITEMS: { key: AdminSection; label: string; icon: React.ReactNode }[] = [
@@ -158,6 +145,60 @@ const AdminPage: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [roleFilter, setRoleFilter] = useState<string>('all');
   const [userSearchQuery, setUserSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [platformStats, setPlatformStats] = useState(INITIAL_PLATFORM_STATS);
+  const [users, setUsers] = useState<MockUser[]>(INITIAL_USERS);
+  const [properties, setProperties] = useState<MockProperty[]>(INITIAL_PROPERTIES);
+  const [revenueData, setRevenueData] = useState(INITIAL_REVENUE_DATA);
+
+  // Fetch real data from backend
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const data = await fetchDashboardStats();
+        if (cancelled) return;
+
+        // Map API data to admin panel format
+        setPlatformStats({
+          totalUsers: 0, // Would need admin endpoint
+          totalProperties: data.stats.properties,
+          activeLeases: 0,
+          monthlyRevenue: 0,
+          userGrowth: 0,
+          propertyGrowth: 0,
+          leaseGrowth: 0,
+          revenueGrowth: 0,
+        });
+
+        // Map recent properties to admin property format
+        if (data.recentProperties) {
+          setProperties(data.recentProperties.map((p) => ({
+            id: p.id,
+            title: p.title,
+            address: '',
+            type: 'Property',
+            status: p.status?.toLowerCase() === 'published' ? 'active' as const : 'pending' as const,
+            price: p.price,
+            owner: '',
+            listedDate: p.createdAt?.split('T')[0] ?? '',
+          })));
+        }
+      } catch {
+        // Keep initial state
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
+
+  const MOCK_USERS = users;
+  const MOCK_PROPERTIES = properties;
+  const PLATFORM_STATS = platformStats;
+  const MONTHLY_REVENUE_DATA = revenueData;
 
   const filteredUsers = MOCK_USERS.filter((u) => {
     const matchesRole = roleFilter === 'all' || u.role === roleFilter;
@@ -168,7 +209,7 @@ const AdminPage: React.FC = () => {
     return matchesRole && matchesSearch;
   });
 
-  const maxRevenue = Math.max(...MONTHLY_REVENUE_DATA.map((d) => d.value));
+  const maxRevenue = Math.max(...MONTHLY_REVENUE_DATA.map((d) => d.value), 1);
 
   const renderOverview = () => (
     <div className="space-y-8 animate-fade-in">

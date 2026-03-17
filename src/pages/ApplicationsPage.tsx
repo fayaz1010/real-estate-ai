@@ -22,8 +22,10 @@ import {
   Home,
   Star,
 } from "lucide-react";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { Loader2 } from "lucide-react";
+import { fetchApplications, fetchSmartScore, type ApplicationData } from "../services/dashboardService";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -60,192 +62,48 @@ interface MockApplication {
   timeline: TimelineEvent[];
 }
 
-// ─── Mock Data ───────────────────────────────────────────────────────────────
-
-const MOCK_APPLICATIONS: MockApplication[] = [
-  {
-    id: "APP-001",
-    applicantName: "Sarah Mitchell",
-    initials: "SM",
-    avatarColor: "bg-blue-600",
-    property: "Luxury Penthouse - 42 Marina Blvd",
-    appliedDate: "2026-03-10",
-    aiScore: 92,
-    status: "Approved",
-    scoring: [
-      { label: "Credit Score", score: 85, maxScore: 100 },
-      { label: "Income Verification", score: 92, maxScore: 100 },
-      { label: "Rental History", score: 78, maxScore: 100 },
-      { label: "Background Check", score: 95, maxScore: 100 },
-    ],
-    timeline: [
-      { date: "2026-03-10", title: "Application Submitted", description: "Applicant submitted all required documents.", completed: true },
-      { date: "2026-03-11", title: "Under Review", description: "Application assigned to review team.", completed: true },
-      { date: "2026-03-13", title: "Background Check Complete", description: "No issues found.", completed: true },
-      { date: "2026-03-14", title: "Income Verified", description: "Employment and income confirmed.", completed: true },
-      { date: "2026-03-15", title: "Approved", description: "Application approved by property manager.", completed: true },
-    ],
-  },
-  {
-    id: "APP-002",
-    applicantName: "James Thornton",
-    initials: "JT",
-    avatarColor: "bg-emerald-600",
-    property: "Modern Apartment - 15 Park Ave",
-    appliedDate: "2026-03-12",
-    aiScore: 78,
-    status: "Under Review",
-    scoring: [
-      { label: "Credit Score", score: 72, maxScore: 100 },
-      { label: "Income Verification", score: 88, maxScore: 100 },
-      { label: "Rental History", score: 65, maxScore: 100 },
-      { label: "Background Check", score: 90, maxScore: 100 },
-    ],
-    timeline: [
-      { date: "2026-03-12", title: "Application Submitted", description: "Applicant submitted all required documents.", completed: true },
-      { date: "2026-03-13", title: "Under Review", description: "Application assigned to review team.", completed: true },
-      { date: "2026-03-14", title: "Background Check Complete", description: "No issues found.", completed: true },
-      { date: "2026-03-15", title: "Income Verification", description: "Pending employer response.", completed: false },
-    ],
-  },
-  {
-    id: "APP-003",
-    applicantName: "Emily Rodriguez",
-    initials: "ER",
-    avatarColor: "bg-purple-600",
-    property: "Townhouse - 88 Elm Street",
-    appliedDate: "2026-03-08",
-    aiScore: 45,
-    status: "Rejected",
-    scoring: [
-      { label: "Credit Score", score: 38, maxScore: 100 },
-      { label: "Income Verification", score: 52, maxScore: 100 },
-      { label: "Rental History", score: 40, maxScore: 100 },
-      { label: "Background Check", score: 55, maxScore: 100 },
-    ],
-    timeline: [
-      { date: "2026-03-08", title: "Application Submitted", description: "Applicant submitted all required documents.", completed: true },
-      { date: "2026-03-09", title: "Under Review", description: "Application assigned to review team.", completed: true },
-      { date: "2026-03-10", title: "Background Check Complete", description: "Minor concerns flagged.", completed: true },
-      { date: "2026-03-12", title: "Rejected", description: "Did not meet minimum credit requirements.", completed: true },
-    ],
-  },
-  {
-    id: "APP-004",
-    applicantName: "David Chen",
-    initials: "DC",
-    avatarColor: "bg-amber-600",
-    property: "Studio - 200 Central Square",
-    appliedDate: "2026-03-14",
-    aiScore: 88,
-    status: "Conditionally Approved",
-    scoring: [
-      { label: "Credit Score", score: 80, maxScore: 100 },
-      { label: "Income Verification", score: 95, maxScore: 100 },
-      { label: "Rental History", score: 82, maxScore: 100 },
-      { label: "Background Check", score: 98, maxScore: 100 },
-    ],
-    timeline: [
-      { date: "2026-03-14", title: "Application Submitted", description: "Applicant submitted all required documents.", completed: true },
-      { date: "2026-03-14", title: "Under Review", description: "Fast-tracked for premium listing.", completed: true },
-      { date: "2026-03-15", title: "Background Check Complete", description: "No issues found.", completed: true },
-      { date: "2026-03-16", title: "Conditionally Approved", description: "Approved pending guarantor confirmation.", completed: true },
-    ],
-  },
-  {
-    id: "APP-005",
-    applicantName: "Olivia Park",
-    initials: "OP",
-    avatarColor: "bg-rose-600",
-    property: "Luxury Penthouse - 42 Marina Blvd",
-    appliedDate: "2026-03-15",
-    aiScore: 63,
-    status: "Under Review",
-    scoring: [
-      { label: "Credit Score", score: 60, maxScore: 100 },
-      { label: "Income Verification", score: 70, maxScore: 100 },
-      { label: "Rental History", score: 55, maxScore: 100 },
-      { label: "Background Check", score: 68, maxScore: 100 },
-    ],
-    timeline: [
-      { date: "2026-03-15", title: "Application Submitted", description: "Applicant submitted all required documents.", completed: true },
-      { date: "2026-03-16", title: "Under Review", description: "Application assigned to review team.", completed: true },
-      { date: "2026-03-17", title: "Background Check", description: "In progress.", completed: false },
-    ],
-  },
-  {
-    id: "APP-006",
-    applicantName: "Marcus Williams",
-    initials: "MW",
-    avatarColor: "bg-teal-600",
-    property: "Modern Apartment - 15 Park Ave",
-    appliedDate: "2026-03-09",
-    aiScore: 81,
-    status: "Approved",
-    scoring: [
-      { label: "Credit Score", score: 76, maxScore: 100 },
-      { label: "Income Verification", score: 85, maxScore: 100 },
-      { label: "Rental History", score: 80, maxScore: 100 },
-      { label: "Background Check", score: 88, maxScore: 100 },
-    ],
-    timeline: [
-      { date: "2026-03-09", title: "Application Submitted", description: "Applicant submitted all required documents.", completed: true },
-      { date: "2026-03-10", title: "Under Review", description: "Application assigned to review team.", completed: true },
-      { date: "2026-03-11", title: "Background Check Complete", description: "No issues found.", completed: true },
-      { date: "2026-03-12", title: "Income Verified", description: "Employment and income confirmed.", completed: true },
-      { date: "2026-03-13", title: "Approved", description: "Application approved.", completed: true },
-    ],
-  },
-  {
-    id: "APP-007",
-    applicantName: "Natasha Petrova",
-    initials: "NP",
-    avatarColor: "bg-indigo-600",
-    property: "Townhouse - 88 Elm Street",
-    appliedDate: "2026-03-16",
-    aiScore: 71,
-    status: "Submitted",
-    scoring: [
-      { label: "Credit Score", score: 68, maxScore: 100 },
-      { label: "Income Verification", score: 74, maxScore: 100 },
-      { label: "Rental History", score: 70, maxScore: 100 },
-      { label: "Background Check", score: 72, maxScore: 100 },
-    ],
-    timeline: [
-      { date: "2026-03-16", title: "Application Submitted", description: "Applicant submitted all required documents.", completed: true },
-    ],
-  },
-  {
-    id: "APP-008",
-    applicantName: "Alex Nakamura",
-    initials: "AN",
-    avatarColor: "bg-cyan-600",
-    property: "Studio - 200 Central Square",
-    appliedDate: "2026-03-11",
-    aiScore: 96,
-    status: "Approved",
-    scoring: [
-      { label: "Credit Score", score: 95, maxScore: 100 },
-      { label: "Income Verification", score: 98, maxScore: 100 },
-      { label: "Rental History", score: 90, maxScore: 100 },
-      { label: "Background Check", score: 100, maxScore: 100 },
-    ],
-    timeline: [
-      { date: "2026-03-11", title: "Application Submitted", description: "Applicant submitted all required documents.", completed: true },
-      { date: "2026-03-11", title: "Under Review", description: "Fast-tracked due to high AI score.", completed: true },
-      { date: "2026-03-12", title: "Background Check Complete", description: "No issues found.", completed: true },
-      { date: "2026-03-12", title: "Income Verified", description: "Employment and income confirmed.", completed: true },
-      { date: "2026-03-13", title: "Approved", description: "Application approved by property manager.", completed: true },
-    ],
-  },
+// ─── Avatar colors for consistent display ────────────────────────────────────
+const AVATAR_COLORS = [
+  "bg-blue-600", "bg-emerald-600", "bg-purple-600", "bg-amber-600",
+  "bg-rose-600", "bg-teal-600", "bg-indigo-600", "bg-cyan-600",
 ];
 
-const STATS = {
-  total: 24,
-  underReview: 8,
-  approved: 12,
-  rejected: 4,
-};
+function mapApplicationStatus(status: string): ApplicationStatus {
+  const s = status.toUpperCase();
+  if (s === "APPROVED") return "Approved";
+  if (s === "REJECTED") return "Rejected";
+  if (s === "SUBMITTED" || s === "PENDING") return "Submitted";
+  if (s === "UNDER_REVIEW" || s === "IN_REVIEW") return "Under Review";
+  if (s === "CONDITIONALLY_APPROVED") return "Conditionally Approved";
+  return "Submitted";
+}
+
+function apiDataToMockApplication(data: ApplicationData, index: number): MockApplication {
+  const name = data.primaryApplicant
+    ? `${data.primaryApplicant.firstName} ${data.primaryApplicant.lastName}`
+    : `Applicant ${index + 1}`;
+  const initials = name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+
+  return {
+    id: data.id,
+    applicantName: name,
+    initials,
+    avatarColor: AVATAR_COLORS[index % AVATAR_COLORS.length],
+    property: data.property?.title ?? "Property",
+    appliedDate: data.createdAt?.split("T")[0] ?? new Date().toISOString().split("T")[0],
+    aiScore: 0, // Will be filled by AI scoring
+    status: mapApplicationStatus(data.status),
+    scoring: [
+      { label: "Credit Score", score: 0, maxScore: 100 },
+      { label: "Income Verification", score: 0, maxScore: 100 },
+      { label: "Rental History", score: 0, maxScore: 100 },
+      { label: "Background Check", score: 0, maxScore: 100 },
+    ],
+    timeline: [
+      { date: data.createdAt?.split("T")[0] ?? "", title: "Application Submitted", description: "Applicant submitted all required documents.", completed: true },
+    ],
+  };
+}
 
 type FilterOption = "All" | "Pending" | "Approved" | "Rejected";
 
@@ -311,12 +169,12 @@ function formatDate(dateStr: string): string {
 
 // ─── Sub-Components ──────────────────────────────────────────────────────────
 
-const StatsBar: React.FC = () => {
+const StatsBar: React.FC<{ stats: { total: number; underReview: number; approved: number; rejected: number } }> = ({ stats: s }) => {
   const items = [
-    { label: "Total Applications", value: STATS.total, icon: <FileText className="w-5 h-5" />, color: "text-realestate-accent", bg: "bg-realestate-accent/10" },
-    { label: "Under Review", value: STATS.underReview, icon: <Clock className="w-5 h-5" />, color: "text-yellow-600", bg: "bg-yellow-50" },
-    { label: "Approved", value: STATS.approved, icon: <CheckCircle className="w-5 h-5" />, color: "text-green-600", bg: "bg-green-50" },
-    { label: "Rejected", value: STATS.rejected, icon: <XCircle className="w-5 h-5" />, color: "text-red-600", bg: "bg-red-50" },
+    { label: "Total Applications", value: s.total, icon: <FileText className="w-5 h-5" />, color: "text-realestate-accent", bg: "bg-realestate-accent/10" },
+    { label: "Under Review", value: s.underReview, icon: <Clock className="w-5 h-5" />, color: "text-yellow-600", bg: "bg-yellow-50" },
+    { label: "Approved", value: s.approved, icon: <CheckCircle className="w-5 h-5" />, color: "text-green-600", bg: "bg-green-50" },
+    { label: "Rejected", value: s.rejected, icon: <XCircle className="w-5 h-5" />, color: "text-red-600", bg: "bg-red-50" },
   ];
 
   return (
@@ -814,25 +672,78 @@ const ApplicationsPage: React.FC = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [compareMode, setCompareMode] = useState(false);
   const [compareIds, setCompareIds] = useState<string[]>([]);
+  const [applications, setApplications] = useState<MockApplication[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [appStats, setAppStats] = useState({ total: 0, underReview: 0, approved: 0, rejected: 0 });
+
+  // Fetch applications from backend and AI scoring
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      setLoading(true);
+      try {
+        const data = await fetchApplications();
+        if (cancelled) return;
+
+        const mapped = (Array.isArray(data) ? data : []).map(apiDataToMockApplication);
+
+        // Fetch AI scores for each application
+        const scored = await Promise.all(
+          mapped.map(async (app) => {
+            try {
+              const score = await fetchSmartScore(app.id);
+              return {
+                ...app,
+                aiScore: score.overallScore,
+                scoring: score.categories.map((c) => ({
+                  label: c.label,
+                  score: c.score,
+                  maxScore: c.maxScore,
+                })),
+              };
+            } catch {
+              return app;
+            }
+          }),
+        );
+
+        if (!cancelled) {
+          setApplications(scored);
+          setAppStats({
+            total: scored.length,
+            underReview: scored.filter((a) => a.status === "Under Review" || a.status === "Submitted").length,
+            approved: scored.filter((a) => a.status === "Approved" || a.status === "Conditionally Approved").length,
+            rejected: scored.filter((a) => a.status === "Rejected").length,
+          });
+        }
+      } catch {
+        // Keep empty on error
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+    load();
+    return () => { cancelled = true; };
+  }, []);
 
   const filteredApplications = useMemo(() => {
-    if (filter === "All") return MOCK_APPLICATIONS;
+    if (filter === "All") return applications;
     if (filter === "Pending") {
-      return MOCK_APPLICATIONS.filter(
+      return applications.filter(
         (app) => app.status === "Submitted" || app.status === "Under Review" || app.status === "Conditionally Approved"
       );
     }
-    return MOCK_APPLICATIONS.filter((app) => app.status === filter);
-  }, [filter]);
+    return applications.filter((app) => app.status === filter);
+  }, [filter, applications]);
 
   const selectedApplication = useMemo(
-    () => MOCK_APPLICATIONS.find((app) => app.id === selectedId) ?? null,
-    [selectedId]
+    () => applications.find((app) => app.id === selectedId) ?? null,
+    [selectedId, applications]
   );
 
   const compareApplications = useMemo(
-    () => MOCK_APPLICATIONS.filter((app) => compareIds.includes(app.id)),
-    [compareIds]
+    () => applications.filter((app) => compareIds.includes(app.id)),
+    [compareIds, applications]
   );
 
   const handleSelect = (id: string) => {
@@ -921,8 +832,16 @@ const ApplicationsPage: React.FC = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
         {/* Stats Bar */}
         <section className="mb-6 sm:mb-8" aria-label="Application statistics">
-          <StatsBar />
+          <StatsBar stats={appStats} />
         </section>
+
+        {/* Loading State */}
+        {loading && (
+          <div className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-realestate-accent" />
+            <span className="ml-3 text-sm text-gray-500">Loading applications...</span>
+          </div>
+        )}
 
         {/* Compare Mode Toggle */}
         <div className="flex items-center justify-between mb-4">

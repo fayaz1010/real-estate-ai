@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+
+import { PageMeta } from "../components/seo";
 import {
   Mail,
   Phone,
@@ -162,6 +164,12 @@ export const ContactPage: React.FC = () => {
 
   return (
     <main className="min-h-screen bg-white" role="main">
+      <PageMeta
+        title="Contact Us"
+        description="Get in touch with RealEstate AI. Whether you have a question, want a demo, or need support, our team is ready to help. Response within one business day."
+        keywords="contact RealEstate AI, property management support, demo request"
+        canonicalUrl="https://realestate-ai.com/contact"
+      />
       {/* Hero Section */}
       <section
         className="relative pt-24 pb-16 bg-realestate-primary overflow-hidden"

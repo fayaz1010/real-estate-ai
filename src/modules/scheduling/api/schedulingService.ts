@@ -1,5 +1,5 @@
 // Scheduling API Service - Calendar Event Management
-import axios from "axios";
+import apiClient from "@/api/client";
 
 import type {
   Booking,
@@ -8,8 +8,6 @@ import type {
   CreateBookingDto,
   UpdateBookingDto,
 } from "../../../types/scheduling";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
 
 interface ApiBooking {
   id: string;
@@ -87,8 +85,8 @@ class SchedulingService {
     if (filters?.page) params.page = String(filters.page);
     if (filters?.limit) params.limit = String(filters.limit);
 
-    const response = await axios.get<ApiResponse<ApiBookingsData>>(
-      `${API_URL}/bookings`,
+    const response = await apiClient.get<ApiResponse<ApiBookingsData>>(
+      "/bookings",
       { params },
     );
 
@@ -108,8 +106,8 @@ class SchedulingService {
     if (filters?.page) params.page = String(filters.page);
     if (filters?.limit) params.limit = String(filters.limit);
 
-    const response = await axios.get<ApiResponse<ApiBookingsData>>(
-      `${API_URL}/bookings/my-bookings`,
+    const response = await apiClient.get<ApiResponse<ApiBookingsData>>(
+      "/bookings/my-bookings",
       { params },
     );
 
@@ -123,8 +121,8 @@ class SchedulingService {
   }
 
   async getBookingById(id: string): Promise<Booking> {
-    const response = await axios.get<ApiResponse<ApiBooking>>(
-      `${API_URL}/bookings/${id}`,
+    const response = await apiClient.get<ApiResponse<ApiBooking>>(
+      `/bookings/${id}`,
     );
     return mapApiBooking(response.data.data);
   }
@@ -140,8 +138,8 @@ class SchedulingService {
       notes: data.notes,
     };
 
-    const response = await axios.post<ApiResponse<ApiBooking>>(
-      `${API_URL}/bookings`,
+    const response = await apiClient.post<ApiResponse<ApiBooking>>(
+      "/bookings",
       payload,
     );
     return mapApiBooking(response.data.data);
@@ -157,15 +155,15 @@ class SchedulingService {
     if (data.status) payload.status = data.status.toUpperCase();
     if (data.notes !== undefined) payload.notes = data.notes;
 
-    const response = await axios.patch<ApiResponse<ApiBooking>>(
-      `${API_URL}/bookings/${id}`,
+    const response = await apiClient.patch<ApiResponse<ApiBooking>>(
+      `/bookings/${id}`,
       payload,
     );
     return mapApiBooking(response.data.data);
   }
 
   async deleteBooking(id: string): Promise<void> {
-    await axios.delete(`${API_URL}/bookings/${id}`);
+    await apiClient.delete(`/bookings/${id}`);
   }
 
   async getBookingsForDateRange(

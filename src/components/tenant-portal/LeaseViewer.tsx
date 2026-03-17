@@ -5,7 +5,7 @@ import {
   DollarSign,
   Download,
   AlertTriangle,
-  PawPrint,
+  Heart,
   Shield,
 } from 'lucide-react';
 import { formatCurrency } from '../../lib/utils';
@@ -115,7 +115,7 @@ export const LeaseViewer: React.FC = () => {
             {/* Pet Policy */}
             <div className="bg-[#f8f9fa] rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
-                <PawPrint className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
+                <Heart className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
                 <h3 className="text-sm font-medium text-gray-700">Pet Policy</h3>
               </div>
               <p className="text-sm text-gray-800">{lease.petPolicy}</p>

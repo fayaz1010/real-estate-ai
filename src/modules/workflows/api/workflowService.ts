@@ -1,66 +1,48 @@
+import apiClient from "@/api/client";
 import type {
   Workflow,
   WorkflowExecution,
   WorkflowFormData,
 } from "../../../features/workflows/types";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
-
-const apiCall = async <T>(
-  endpoint: string,
-  options: RequestInit = {},
-): Promise<T> => {
-  const token = localStorage.getItem("accessToken");
-  const response = await fetch(`${API_BASE}${endpoint}`, {
-    ...options,
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: token ? `Bearer ${token}` : "",
-      ...options.headers,
-    },
-  });
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: "Request failed" }));
-    throw new Error(error.error?.message || error.message || "Request failed");
-  }
-
-  const result = await response.json();
-  return result.data as T;
-};
-
 export const workflowService = {
-  getAll: () => apiCall<Workflow[]>("/workflows"),
+  getAll: async (): Promise<Workflow[]> => {
+    const response = await apiClient.get("/workflows");
+    return response.data.data;
+  },
 
-  getById: (id: string) => apiCall<Workflow>(`/workflows/${id}`),
+  getById: async (id: string): Promise<Workflow> => {
+    const response = await apiClient.get(`/workflows/${id}`);
+    return response.data.data;
+  },
 
-  create: (data: WorkflowFormData) =>
-    apiCall<Workflow>("/workflows", {
-      method: "POST",
-      body: JSON.stringify(data),
-    }),
+  create: async (data: WorkflowFormData): Promise<Workflow> => {
+    const response = await apiClient.post("/workflows", data);
+    return response.data.data;
+  },
 
-  update: (id: string, data: Partial<WorkflowFormData>) =>
-    apiCall<Workflow>(`/workflows/${id}`, {
-      method: "PATCH",
-      body: JSON.stringify(data),
-    }),
+  update: async (id: string, data: Partial<WorkflowFormData>): Promise<Workflow> => {
+    const response = await apiClient.patch(`/workflows/${id}`, data);
+    return response.data.data;
+  },
 
-  delete: (id: string) =>
-    apiCall<{ deleted: boolean }>(`/workflows/${id}`, {
-      method: "DELETE",
-    }),
+  delete: async (id: string): Promise<{ deleted: boolean }> => {
+    const response = await apiClient.delete(`/workflows/${id}`);
+    return response.data.data;
+  },
 
-  toggle: (id: string) =>
-    apiCall<Workflow>(`/workflows/${id}/toggle`, {
-      method: "POST",
-    }),
+  toggle: async (id: string): Promise<Workflow> => {
+    const response = await apiClient.post(`/workflows/${id}/toggle`);
+    return response.data.data;
+  },
 
-  execute: (id: string) =>
-    apiCall<WorkflowExecution>(`/workflows/${id}/execute`, {
-      method: "POST",
-    }),
+  execute: async (id: string): Promise<WorkflowExecution> => {
+    const response = await apiClient.post(`/workflows/${id}/execute`);
+    return response.data.data;
+  },
 
-  getExecutions: (id: string) =>
-    apiCall<WorkflowExecution[]>(`/workflows/${id}/executions`),
+  getExecutions: async (id: string): Promise<WorkflowExecution[]> => {
+    const response = await apiClient.get(`/workflows/${id}/executions`);
+    return response.data.data;
+  },
 };

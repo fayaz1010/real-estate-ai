@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Building2,
-  DoorOpen,
+  DoorClosed,
   Users,
   DollarSign,
   TrendingUp,
@@ -26,7 +26,7 @@ const metricCards = [
   {
     key: 'totalUnits' as const,
     label: 'Total Units',
-    icon: DoorOpen,
+    icon: DoorClosed,
     format: (v: number) => v.toLocaleString(),
     color: '#005163',
   },

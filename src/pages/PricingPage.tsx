@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+
+import { PageMeta } from "../components/seo";
 import {
   Check,
   X,
@@ -419,6 +421,12 @@ export default function PricingPage() {
 
   return (
     <div className="pt-24 pb-20 bg-white">
+      <PageMeta
+        title="Pricing Plans"
+        description="Simple, transparent pricing for AI-powered property management. Start free with a 14-day trial, scale as you grow. Plans from $49/mo for small landlords to custom enterprise solutions."
+        keywords="property management pricing, landlord software cost, AI property management plans"
+        canonicalUrl="https://realestate-ai.com/pricing"
+      />
       {/* ---- Header ---- */}
       <section className="section-container text-center mb-12 animate-fade-in">
         <h1 className="text-display text-4xl sm:text-5xl text-realestate-primary mb-4">

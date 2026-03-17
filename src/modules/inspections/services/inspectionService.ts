@@ -3,7 +3,7 @@
 // Module 1.3: Inspection Booking & Scheduling System - API Service Layer
 // ============================================================================
 
-import axios from "axios";
+import apiClient from "@/api/client";
 
 import {
   Inspection,
@@ -18,15 +18,13 @@ import {
   AvailableSlotsResponse,
 } from "../types/inspection.types";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
-
 class InspectionService {
   /**
    * Request a new inspection
    */
   async requestInspection(data: InspectionBookingRequest): Promise<Inspection> {
-    const response = await axios.post<Inspection>(
-      `${API_URL}/inspections/request`,
+    const response = await apiClient.post<Inspection>(
+      "/inspections/request",
       data,
     );
     return response.data;
@@ -36,8 +34,8 @@ class InspectionService {
    * Create inspection (admin/landlord)
    */
   async createInspection(data: CreateInspectionDto): Promise<Inspection> {
-    const response = await axios.post<Inspection>(
-      `${API_URL}/inspections`,
+    const response = await apiClient.post<Inspection>(
+      "/inspections",
       data,
     );
     return response.data;
@@ -56,8 +54,8 @@ class InspectionService {
     page?: number;
     limit?: number;
   }): Promise<InspectionsResponse> {
-    const response = await axios.get<InspectionsResponse>(
-      `${API_URL}/inspections`,
+    const response = await apiClient.get<InspectionsResponse>(
+      "/inspections",
       { params: filters },
     );
     return response.data;
@@ -67,8 +65,8 @@ class InspectionService {
    * Get inspection by ID
    */
   async getInspectionById(id: string): Promise<Inspection> {
-    const response = await axios.get<Inspection>(
-      `${API_URL}/inspections/${id}`,
+    const response = await apiClient.get<Inspection>(
+      `/inspections/${id}`,
     );
     return response.data;
   }
@@ -80,8 +78,8 @@ class InspectionService {
     id: string,
     updates: UpdateInspectionDto,
   ): Promise<Inspection> {
-    const response = await axios.patch<Inspection>(
-      `${API_URL}/inspections/${id}`,
+    const response = await apiClient.patch<Inspection>(
+      `/inspections/${id}`,
       updates,
     );
     return response.data;
@@ -91,8 +89,8 @@ class InspectionService {
    * Confirm inspection
    */
   async confirmInspection(id: string): Promise<Inspection> {
-    const response = await axios.post<Inspection>(
-      `${API_URL}/inspections/${id}/confirm`,
+    const response = await apiClient.post<Inspection>(
+      `/inspections/${id}/confirm`,
     );
     return response.data;
   }
@@ -101,8 +99,8 @@ class InspectionService {
    * Cancel inspection
    */
   async cancelInspection(id: string, reason: string): Promise<Inspection> {
-    const response = await axios.post<Inspection>(
-      `${API_URL}/inspections/${id}/cancel`,
+    const response = await apiClient.post<Inspection>(
+      `/inspections/${id}/cancel`,
       { reason },
     );
     return response.data;
@@ -117,8 +115,8 @@ class InspectionService {
     newTime: string,
     reason?: string,
   ): Promise<Inspection> {
-    const response = await axios.post<Inspection>(
-      `${API_URL}/inspections/${id}/reschedule`,
+    const response = await apiClient.post<Inspection>(
+      `/inspections/${id}/reschedule`,
       { newDate, newTime, reason },
     );
     return response.data;
@@ -128,8 +126,8 @@ class InspectionService {
    * Check in to inspection
    */
   async checkInInspection(id: string, data: CheckInDto): Promise<Inspection> {
-    const response = await axios.post<Inspection>(
-      `${API_URL}/inspections/${id}/checkin`,
+    const response = await apiClient.post<Inspection>(
+      `/inspections/${id}/checkin`,
       data,
     );
     return response.data;
@@ -139,8 +137,8 @@ class InspectionService {
    * Check out from inspection
    */
   async checkOutInspection(id: string, data: CheckOutDto): Promise<Inspection> {
-    const response = await axios.post<Inspection>(
-      `${API_URL}/inspections/${id}/checkout`,
+    const response = await apiClient.post<Inspection>(
+      `/inspections/${id}/checkout`,
       data,
     );
     return response.data;
@@ -150,8 +148,8 @@ class InspectionService {
    * Mark as no-show
    */
   async markAsNoShow(id: string): Promise<Inspection> {
-    const response = await axios.post<Inspection>(
-      `${API_URL}/inspections/${id}/no-show`,
+    const response = await apiClient.post<Inspection>(
+      `/inspections/${id}/no-show`,
     );
     return response.data;
   }
@@ -160,7 +158,7 @@ class InspectionService {
    * Delete inspection
    */
   async deleteInspection(id: string): Promise<void> {
-    await axios.delete(`${API_URL}/inspections/${id}`);
+    await apiClient.delete(`/inspections/${id}`);
   }
 
   /**
@@ -170,8 +168,8 @@ class InspectionService {
     propertyId: string,
     date?: string,
   ): Promise<AvailableSlotsResponse> {
-    const response = await axios.get<AvailableSlotsResponse>(
-      `${API_URL}/properties/${propertyId}/available-slots`,
+    const response = await apiClient.get<AvailableSlotsResponse>(
+      `/properties/${propertyId}/available-slots`,
       { params: { date } },
     );
     return response.data;
@@ -184,8 +182,8 @@ class InspectionService {
     landlordId: string,
     dateRange: "7d" | "30d" | "90d" | "all" = "30d",
   ): Promise<InspectionAnalytics> {
-    const response = await axios.get<InspectionAnalytics>(
-      `${API_URL}/landlords/${landlordId}/inspection-analytics`,
+    const response = await apiClient.get<InspectionAnalytics>(
+      `/landlords/${landlordId}/inspection-analytics`,
       { params: { dateRange } },
     );
     return response.data;
@@ -198,8 +196,8 @@ class InspectionService {
     propertyId: string,
     dateRange: "7d" | "30d" | "90d" | "all" = "30d",
   ): Promise<PropertyInspectionMetrics> {
-    const response = await axios.get<PropertyInspectionMetrics>(
-      `${API_URL}/properties/${propertyId}/inspection-metrics`,
+    const response = await apiClient.get<PropertyInspectionMetrics>(
+      `/properties/${propertyId}/inspection-metrics`,
       { params: { dateRange } },
     );
     return response.data;
@@ -209,15 +207,15 @@ class InspectionService {
    * Send reminder for inspection
    */
   async sendReminder(id: string, type: "24h" | "2h" | "30m"): Promise<void> {
-    await axios.post(`${API_URL}/inspections/${id}/reminder`, { type });
+    await apiClient.post(`/inspections/${id}/reminder`, { type });
   }
 
   /**
    * Get upcoming inspections for tenant
    */
   async getUpcomingInspections(tenantId: string): Promise<Inspection[]> {
-    const response = await axios.get<Inspection[]>(
-      `${API_URL}/tenants/${tenantId}/upcoming-inspections`,
+    const response = await apiClient.get<Inspection[]>(
+      `/tenants/${tenantId}/upcoming-inspections`,
     );
     return response.data;
   }
@@ -230,8 +228,8 @@ class InspectionService {
     page?: number,
     limit?: number,
   ): Promise<InspectionsResponse> {
-    const response = await axios.get<InspectionsResponse>(
-      `${API_URL}/tenants/${tenantId}/past-inspections`,
+    const response = await apiClient.get<InspectionsResponse>(
+      `/tenants/${tenantId}/past-inspections`,
       { params: { page, limit } },
     );
     return response.data;
@@ -251,8 +249,8 @@ class InspectionService {
       limit?: number;
     },
   ): Promise<InspectionsResponse> {
-    const response = await axios.get<InspectionsResponse>(
-      `${API_URL}/landlords/${landlordId}/inspections`,
+    const response = await apiClient.get<InspectionsResponse>(
+      `/landlords/${landlordId}/inspections`,
       { params: filters },
     );
     return response.data;
@@ -271,8 +269,8 @@ class InspectionService {
       limit?: number;
     },
   ): Promise<InspectionsResponse> {
-    const response = await axios.get<InspectionsResponse>(
-      `${API_URL}/properties/${propertyId}/inspections`,
+    const response = await apiClient.get<InspectionsResponse>(
+      `/properties/${propertyId}/inspections`,
       { params: filters },
     );
     return response.data;
@@ -286,8 +284,8 @@ class InspectionService {
     status: string,
     reason?: string,
   ): Promise<Inspection[]> {
-    const response = await axios.post<Inspection[]>(
-      `${API_URL}/inspections/bulk-status`,
+    const response = await apiClient.post<Inspection[]>(
+      "/inspections/bulk-status",
       { inspectionIds, status, reason },
     );
     return response.data;
@@ -303,7 +301,7 @@ class InspectionService {
     endDate?: string;
     format?: "csv" | "excel";
   }): Promise<Blob> {
-    const response = await axios.get(`${API_URL}/inspections/export`, {
+    const response = await apiClient.get("/inspections/export", {
       params: filters,
       responseType: "blob",
     });

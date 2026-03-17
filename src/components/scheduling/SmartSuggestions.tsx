@@ -8,7 +8,7 @@ import {
   TrendingUp,
   Calendar,
   ChevronRight,
-  Loader2,
+  Loader,
   RefreshCw,
   Zap,
   ThumbsUp,
@@ -130,7 +130,7 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
       {loading ? (
         <div className="flex items-center justify-center py-8">
           <div className="text-center">
-            <Loader2 className="w-8 h-8 text-[#3b4876] animate-spin mx-auto mb-2" />
+            <Loader className="w-8 h-8 text-[#3b4876] animate-spin mx-auto mb-2" />
             <p className="text-xs text-gray-500 font-['Open_Sans']">
               Analyzing schedules and availability...
             </p>

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Clock,
-  Loader2,
+  Loader,
   CheckCircle2,
   XCircle,
 } from 'lucide-react';
@@ -22,7 +22,7 @@ const statusConfig = {
   },
   in_progress: {
     label: 'In Progress',
-    icon: Loader2,
+    icon: Loader,
     bgColor: 'bg-blue-50',
     textColor: 'text-blue-700',
     borderColor: 'border-blue-200',

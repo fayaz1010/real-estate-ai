@@ -3,6 +3,8 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+
+import { PageMeta } from "../components/seo";
 import {
   Shield,
   CreditCard,
@@ -832,6 +834,12 @@ const CTABanner: React.FC = () => (
 const HomePage: React.FC = () => {
   return (
     <>
+      <PageMeta
+        title="AI-Powered Property Management"
+        description="RealEstate AI is an AI-powered property management platform that automates tenant screening, rent collection, maintenance predictions, and more. Start your free 14-day trial today."
+        keywords="property management, AI, tenant screening, rent collection, predictive maintenance, landlord software"
+        canonicalUrl="https://realestate-ai.com/"
+      />
       <HeroSection />
       <SocialProofBar />
       <FeatureCards />

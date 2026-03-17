@@ -1,9 +1,5 @@
 import { z } from "zod";
-
-import { tokenManager } from "../../auth/utils/tokenManager";
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:4041/api";
+import apiClient from "@/api/client";
 
 // ==========================================
 // Response Schemas (Zod)
@@ -130,34 +126,18 @@ export interface ReportFilters {
 // Service
 // ==========================================
 
-function buildQuery(filters?: ReportFilters): string {
-  if (!filters) return "";
-  const params = new URLSearchParams();
-  if (filters.startDate) params.set("startDate", filters.startDate);
-  if (filters.endDate) params.set("endDate", filters.endDate);
-  if (filters.propertyId) params.set("propertyId", filters.propertyId);
-  const qs = params.toString();
-  return qs ? `?${qs}` : "";
+function buildParams(filters?: ReportFilters): Record<string, string> | undefined {
+  if (!filters) return undefined;
+  const params: Record<string, string> = {};
+  if (filters.startDate) params.startDate = filters.startDate;
+  if (filters.endDate) params.endDate = filters.endDate;
+  if (filters.propertyId) params.propertyId = filters.propertyId;
+  return Object.keys(params).length > 0 ? params : undefined;
 }
 
-async function apiGet<T>(path: string, schema: z.ZodType<T>): Promise<T> {
-  const response = await fetch(`${API_BASE_URL}${path}`, {
-    headers: {
-      ...tokenManager.getAuthHeader(),
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(
-      (error as { error?: { message?: string } }).error?.message ||
-        "Request failed",
-    );
-  }
-
-  const json = await response.json();
-  const data = (json as { data?: unknown }).data ?? json;
+async function apiGet<T>(path: string, schema: z.ZodType<T>, filters?: ReportFilters): Promise<T> {
+  const response = await apiClient.get(path, { params: buildParams(filters) });
+  const data = response.data?.data ?? response.data;
   return schema.parse(data);
 }
 
@@ -167,42 +147,27 @@ class AccountingService {
   }
 
   async getIncomeStatement(filters?: ReportFilters): Promise<IncomeStatement> {
-    return apiGet(
-      `/accounting/income-statement${buildQuery(filters)}`,
-      IncomeStatementSchema,
-    );
+    return apiGet("/accounting/income-statement", IncomeStatementSchema, filters);
   }
 
   async getBalanceSheet(filters?: ReportFilters): Promise<BalanceSheet> {
-    return apiGet(
-      `/accounting/balance-sheet${buildQuery(filters)}`,
-      BalanceSheetSchema,
-    );
+    return apiGet("/accounting/balance-sheet", BalanceSheetSchema, filters);
   }
 
   async getCashFlowStatement(
     filters?: ReportFilters,
   ): Promise<CashFlowStatement> {
-    return apiGet(
-      `/accounting/cash-flow${buildQuery(filters)}`,
-      CashFlowStatementSchema,
-    );
+    return apiGet("/accounting/cash-flow", CashFlowStatementSchema, filters);
   }
 
   async getRentCollectionReport(
     filters?: ReportFilters,
   ): Promise<RentCollectionReport> {
-    return apiGet(
-      `/accounting/rent-collection${buildQuery(filters)}`,
-      RentCollectionReportSchema,
-    );
+    return apiGet("/accounting/rent-collection", RentCollectionReportSchema, filters);
   }
 
   async getExpenseReport(filters?: ReportFilters): Promise<ExpenseReport> {
-    return apiGet(
-      `/accounting/expenses${buildQuery(filters)}`,
-      ExpenseReportSchema,
-    );
+    return apiGet("/accounting/expenses", ExpenseReportSchema, filters);
   }
 
   async getProperties(): Promise<PropertyOption[]> {

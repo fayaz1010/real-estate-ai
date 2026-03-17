@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "4041:4041"
+    environment:
+      - NODE_ENV=production
+      - PORT=4041
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/realestate
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
+      - VITE_VAPID_PUBLIC_KEY=${VITE_VAPID_PUBLIC_KEY}
+      - VITE_STRIPE_PUBLISHABLE_KEY=${VITE_STRIPE_PUBLISHABLE_KEY}
+      - VITE_STRIPE_PRICE_STARTER=${VITE_STRIPE_PRICE_STARTER}
+      - VITE_STRIPE_PRICE_PROFESSIONAL=${VITE_STRIPE_PRICE_PROFESSIONAL}
+      - VITE_STRIPE_PRICE_BUSINESS=${VITE_STRIPE_PRICE_BUSINESS}
+      - VITE_STRIPE_PRICE_ENTERPRISE=${VITE_STRIPE_PRICE_ENTERPRISE}
+      - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:15-alpine
+    ports:
+      - "5433:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=realestate
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

@@ -217,6 +217,7 @@ model User {
   subscription            Subscription?
   featureUsages           UserFeatureUsage[]
   tipDismissals           TipDismissal[]
+  pushSubscriptions       PushSubscription[] @relation("UserPushSubscriptions")
 
   @@index([email])
   @@index([role])
@@ -581,6 +582,23 @@ model NotificationPreference {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@index([userId])
+}
+
+model PushSubscription {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation("UserPushSubscriptions", fields: [userId], references: [id], onDelete: Cascade)
+
+  endpoint  String
+  p256dh    String
+  auth      String
+  userAgent String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, endpoint])
   @@index([userId])
 }
 

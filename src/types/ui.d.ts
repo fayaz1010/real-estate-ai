@@ -85,26 +85,3 @@ declare module "@/components/theme-provider" {
   export { ThemeProvider, type ThemeProviderProps };
 }
 
-// Add declarations for Lucide icons
-declare module "lucide-react" {
-  import * as LucideIcons from "lucide-react";
-  export * from "lucide-react";
-
-  // Re-export all Lucide icons
-  export const Home: React.FC<LucideIcons.LucideProps>;
-  export const MapPin: React.FC<LucideIcons.LucideProps>;
-  export const ArrowRight: React.FC<LucideIcons.LucideProps>;
-  export const DollarSign: React.FC<LucideIcons.LucideProps>;
-  export const TrendingUp: React.FC<LucideIcons.LucideProps>;
-  export const TrendingDown: React.FC<LucideIcons.LucideProps>;
-  export const Info: React.FC<LucideIcons.LucideProps>;
-  export const Calendar: React.FC<LucideIcons.LucideProps>;
-  export const Percent: React.FC<LucideIcons.LucideProps>;
-  export const Clock: React.FC<LucideIcons.LucideProps>;
-  export const Check: React.FC<LucideIcons.LucideProps>;
-  export const X: React.FC<LucideIcons.LucideProps>;
-  export const Mail: React.FC<LucideIcons.LucideProps>;
-  export const Phone: React.FC<LucideIcons.LucideProps>;
-  export const MessageSquare: React.FC<LucideIcons.LucideProps>;
-  export const User: React.FC<LucideIcons.LucideProps>;
-}

@@ -96,7 +96,7 @@ export const RevenueAnalytics: React.FC<RevenueAnalyticsProps> = ({ data }) => {
               tickFormatter={formatCurrency}
             />
             <Tooltip
-              formatter={(value: number) => [`$${value.toLocaleString()}`, undefined]}
+              formatter={(value) => [`$${Number(value).toLocaleString()}`, undefined]}
               contentStyle={{
                 borderRadius: 8,
                 border: '1px solid #e5e7eb',

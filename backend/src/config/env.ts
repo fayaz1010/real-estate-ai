@@ -74,6 +74,13 @@ export const config = {
     clientSecret: process.env.GOOGLE_CLIENT_SECRET || "",
   },
 
+  // VAPID (Web Push)
+  vapid: {
+    publicKey: process.env.VAPID_PUBLIC_KEY || "",
+    privateKey: process.env.VAPID_PRIVATE_KEY || "",
+    subject: process.env.VAPID_SUBJECT || "mailto:noreply@realestateai.com",
+  },
+
   // Feature Flags
   features: {
     emailVerification: process.env.FEATURE_EMAIL_VERIFICATION === "true",

@@ -76,6 +76,12 @@ router.delete(
   notificationController.cancelReminders,
 );
 
+// ─── Push notifications ─────────────────────────────────────────────
+router.get("/push/vapid-public-key", notificationController.getVapidPublicKey);
+router.post("/push/subscribe", authenticate, notificationController.subscribePush);
+router.post("/push/unsubscribe", authenticate, notificationController.unsubscribePush);
+router.post("/push/send", authenticate, notificationController.sendPushNotification);
+
 // ─── Admin / utility ────────────────────────────────────────────────
 router.post("/test", authenticate, notificationController.testNotification);
 router.get("/templates", authenticate, notificationController.getTemplates);

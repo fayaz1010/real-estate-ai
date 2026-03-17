@@ -11,7 +11,7 @@ import {
   Search,
   ChevronRight,
   XCircle,
-  CalendarClock,
+  CalendarCheck,
   CheckCircle,
 } from "lucide-react";
 import type { Booking, BookingType } from "../../types/scheduling";
@@ -60,7 +60,7 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
   if (upcoming.length === 0) {
     return (
       <div className="text-center py-10">
-        <CalendarClock className="w-12 h-12 text-gray-300 mx-auto mb-3" aria-hidden="true" />
+        <CalendarCheck className="w-12 h-12 text-gray-300 mx-auto mb-3" aria-hidden="true" />
         <p className="text-sm text-gray-500 font-['Open_Sans']">No upcoming bookings</p>
         <p className="text-xs text-gray-400 font-['Open_Sans'] mt-1">
           Create a new booking to get started.
@@ -155,7 +155,7 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
                       onClick={() => onReschedule?.(booking)}
                       className="inline-flex items-center gap-1 text-xs font-semibold text-[#3b4876] hover:text-[#091a2b] transition-colors font-['Open_Sans']"
                     >
-                      <CalendarClock className="w-3 h-3" /> Reschedule
+                      <CalendarCheck className="w-3 h-3" /> Reschedule
                     </button>
                     <button
                       onClick={() => handleCancel(booking.id)}

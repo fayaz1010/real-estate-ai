@@ -6,7 +6,7 @@ import {
   Clock,
   Plus,
   Trash2,
-  CalendarOff,
+  Calendar,
   RotateCcw,
   Check,
 } from "lucide-react";
@@ -214,7 +214,7 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({ onSave }) => 
       {/* Blackout Dates */}
       <div>
         <h4 className="text-base font-bold text-[#091a2b] font-['Montserrat'] flex items-center gap-2 mb-3">
-          <CalendarOff className="w-4 h-4 text-red-500" aria-hidden="true" />
+          <Calendar className="w-4 h-4 text-red-500" aria-hidden="true" />
           Blackout Dates
         </h4>
         <p className="text-xs text-gray-500 font-['Open_Sans'] mb-3">
@@ -263,7 +263,7 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({ onSave }) => 
                   className="flex items-center justify-between px-3 py-2 bg-red-50 rounded-lg border border-red-200"
                 >
                   <div className="flex items-center gap-2 text-sm font-['Open_Sans']">
-                    <CalendarOff className="w-3.5 h-3.5 text-red-500" aria-hidden="true" />
+                    <Calendar className="w-3.5 h-3.5 text-red-500" aria-hidden="true" />
                     <span className="font-medium text-red-800">
                       {new Date(b.date).toLocaleDateString("en-US", {
                         weekday: "short", month: "short", day: "numeric", year: "numeric",

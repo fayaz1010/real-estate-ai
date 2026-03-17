@@ -1,5 +1,5 @@
 // Property Image Upload Routes
-import fs from "fs";
+import os from "os";
 import path from "path";
 
 import { Router, Request, Response } from "express";
@@ -11,17 +11,18 @@ import { authenticate } from "../../middleware/auth";
 import { asyncHandler } from "../../middleware/errorHandler";
 import { AppError } from "../../middleware/errorHandler";
 import { successResponse } from "../../utils/response";
+import { propertyStorage } from "../storage/cloud-storage.service";
 
-// Ensure upload directory exists
-const uploadDir = path.resolve(config.uploadPath, "properties");
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
+// Multer configuration - use temp directory (files are moved to cloud storage after upload)
+const tempUploadDir = path.join(os.tmpdir(), "realestate-uploads");
+import fs from "fs";
+if (!fs.existsSync(tempUploadDir)) {
+  fs.mkdirSync(tempUploadDir, { recursive: true });
 }
 
-// Multer configuration
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => {
-    cb(null, uploadDir);
+    cb(null, tempUploadDir);
   },
   filename: (_req, file, cb) => {
     const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
@@ -67,6 +68,19 @@ router.post(
 
     if (!req.file) throw new AppError("No image file provided", 400);
 
+    // Upload to cloud storage (placeholder)
+    const cloudKey = `${propertyId}/${req.file.filename}`;
+    const uploadResult = await propertyStorage.upload(
+      req.file.path,
+      cloudKey,
+      req.file.mimetype,
+    );
+
+    // Clean up temp file
+    if (fs.existsSync(req.file.path)) {
+      fs.unlinkSync(req.file.path);
+    }
+
     const imageCount = await prisma.propertyImage.count({
       where: { propertyId },
     });
@@ -74,14 +88,14 @@ router.post(
     const image = await prisma.propertyImage.create({
       data: {
         propertyId,
-        url: `/uploads/properties/${req.file.filename}`,
+        url: uploadResult.file.url,
         caption: req.body.caption || null,
         order: imageCount,
         isPrimary: imageCount === 0,
       },
     });
 
-    return successResponse(res, { image }, "Image uploaded", 201);
+    return successResponse(res, { image }, "Image uploaded to cloud storage", 201);
   }),
 );
 
@@ -108,12 +122,25 @@ router.post(
       where: { propertyId },
     });
 
+    // Upload all files to cloud storage
+    const uploadResults = await Promise.all(
+      files.map(async (file) => {
+        const cloudKey = `${propertyId}/${file.filename}`;
+        const result = await propertyStorage.upload(file.path, cloudKey, file.mimetype);
+        // Clean up temp file
+        if (fs.existsSync(file.path)) {
+          fs.unlinkSync(file.path);
+        }
+        return result;
+      }),
+    );
+
     const images = await Promise.all(
-      files.map((file, index) =>
+      uploadResults.map((result, index) =>
         prisma.propertyImage.create({
           data: {
             propertyId,
-            url: `/uploads/properties/${file.filename}`,
+            url: result.file.url,
             order: existingCount + index,
             isPrimary: existingCount === 0 && index === 0,
           },
@@ -124,7 +151,7 @@ router.post(
     return successResponse(
       res,
       { images },
-      `${images.length} images uploaded`,
+      `${images.length} images uploaded to cloud storage`,
       201,
     );
   }),
@@ -149,11 +176,9 @@ router.delete(
     });
     if (!image) throw new AppError("Image not found", 404);
 
-    // Delete file from disk
-    const filePath = path.resolve(".", image.url);
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
-    }
+    // Delete file from cloud storage
+    const cloudKey = image.url.replace(/^\/cloud\/property-images\//, "");
+    await propertyStorage.delete(cloudKey);
 
     await prisma.propertyImage.delete({ where: { id: imageId } });
 

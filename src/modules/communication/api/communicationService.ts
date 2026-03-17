@@ -1,8 +1,5 @@
-import { tokenManager } from "../../auth/utils/tokenManager";
+import apiClient from "@/api/client";
 import type { Message, Conversation } from "../../../types/communication";
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:4041/api";
 
 interface MessagesResponse {
   messages: Message[];
@@ -29,24 +26,11 @@ interface CreateConversationPayload {
 }
 
 class CommunicationService {
-  private getHeaders(): HeadersInit {
-    return {
-      ...tokenManager.getAuthHeader(),
-      "Content-Type": "application/json",
-    };
-  }
-
   async getConversations(): Promise<ConversationsResponse> {
-    const response = await fetch(`${API_BASE_URL}/communication/conversations`, {
-      headers: this.getHeaders(),
-    });
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new Error(error.message || "Failed to fetch conversations");
-    }
-
-    return response.json();
+    const response = await apiClient.get<ConversationsResponse>(
+      "/communication/conversations",
+    );
+    return response.data;
   }
 
   async getMessages(
@@ -54,75 +38,35 @@ class CommunicationService {
     page = 1,
     limit = 50,
   ): Promise<MessagesResponse> {
-    const params = new URLSearchParams({
-      page: String(page),
-      limit: String(limit),
-    });
-
-    const response = await fetch(
-      `${API_BASE_URL}/communication/conversations/${conversationId}/messages?${params}`,
-      { headers: this.getHeaders() },
+    const response = await apiClient.get<MessagesResponse>(
+      `/communication/conversations/${conversationId}/messages`,
+      { params: { page, limit } },
     );
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new Error(error.message || "Failed to fetch messages");
-    }
-
-    return response.json();
+    return response.data;
   }
 
   async sendMessage(payload: SendMessagePayload): Promise<Message> {
-    const response = await fetch(
-      `${API_BASE_URL}/communication/conversations/${payload.conversationId}/messages`,
-      {
-        method: "POST",
-        headers: this.getHeaders(),
-        body: JSON.stringify({ content: payload.content }),
-      },
+    const response = await apiClient.post<Message>(
+      `/communication/conversations/${payload.conversationId}/messages`,
+      { content: payload.content },
     );
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new Error(error.message || "Failed to send message");
-    }
-
-    return response.json();
+    return response.data;
   }
 
   async createConversation(
     payload: CreateConversationPayload,
   ): Promise<Conversation> {
-    const response = await fetch(
-      `${API_BASE_URL}/communication/conversations`,
-      {
-        method: "POST",
-        headers: this.getHeaders(),
-        body: JSON.stringify(payload),
-      },
+    const response = await apiClient.post<Conversation>(
+      "/communication/conversations",
+      payload,
     );
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new Error(error.message || "Failed to create conversation");
-    }
-
-    return response.json();
+    return response.data;
   }
 
   async markAsRead(conversationId: string): Promise<void> {
-    const response = await fetch(
-      `${API_BASE_URL}/communication/conversations/${conversationId}/read`,
-      {
-        method: "PUT",
-        headers: this.getHeaders(),
-      },
+    await apiClient.put(
+      `/communication/conversations/${conversationId}/read`,
     );
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({}));
-      throw new Error(error.message || "Failed to mark as read");
-    }
   }
 }
 

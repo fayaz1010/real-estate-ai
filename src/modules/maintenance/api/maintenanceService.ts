@@ -1,4 +1,4 @@
-import { tokenManager } from "../../auth/utils/tokenManager";
+import apiClient from "@/api/client";
 
 export interface MaintenancePrediction {
   propertyId: string;
@@ -9,40 +9,22 @@ export interface MaintenancePrediction {
   recommendedAction: string;
 }
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:4041/api";
-
 class MaintenanceService {
-  private async request<T>(endpoint: string): Promise<T> {
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, {
-      headers: {
-        "Content-Type": "application/json",
-        ...tokenManager.getAuthHeader(),
-      },
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => null);
-      throw new Error(
-        errorData?.message || `Request failed with status ${response.status}`,
-      );
-    }
-
-    return response.json();
-  }
-
   async getAllPredictions(): Promise<MaintenancePrediction[]> {
-    return this.request<MaintenancePrediction[]>(
+    const response = await apiClient.get<MaintenancePrediction[]>(
       "/maintenance/predictions",
     );
+    return response.data;
   }
 
   async getPredictionsForProperty(
     propertyId: string,
   ): Promise<MaintenancePrediction[]> {
-    return this.request<MaintenancePrediction[]>(
-      `/maintenance/predictions?propertyId=${encodeURIComponent(propertyId)}`,
+    const response = await apiClient.get<MaintenancePrediction[]>(
+      "/maintenance/predictions",
+      { params: { propertyId } },
     );
+    return response.data;
   }
 }
 

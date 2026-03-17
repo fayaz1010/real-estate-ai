@@ -9,8 +9,7 @@ import {
   ChevronRight,
   Clock,
   AlertTriangle,
-  Bed,
-  Bath,
+  Droplets,
   Maximize,
 } from 'lucide-react';
 import { cn, formatCurrency } from '../../lib/utils';
@@ -115,11 +114,11 @@ export const TenantDashboard: React.FC = () => {
                 <span>{formatCurrency(unitInfo.rent)}/mo</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Bed className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
+                <Home className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
                 <span>{unitInfo.bedrooms} bed{unitInfo.bedrooms !== 1 ? 's' : ''}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Bath className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
+                <Droplets className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
                 <span>{unitInfo.bathrooms} bath{unitInfo.bathrooms !== 1 ? 's' : ''}</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">

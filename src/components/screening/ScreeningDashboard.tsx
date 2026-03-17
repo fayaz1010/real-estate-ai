@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowDown } from 'lucide-react';
 import type { ScreeningRequest } from '@/types/screening';
 import { screeningService } from '@/services/screeningService';
 import { BackgroundCheckStatus } from './BackgroundCheckStatus';
@@ -116,7 +116,7 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
         style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
       >
         {label}
-        <ArrowUpDown
+        <ArrowDown
           className={`w-3 h-3 ${sortField === field ? 'opacity-100' : 'opacity-40'}`}
           aria-hidden="true"
         />

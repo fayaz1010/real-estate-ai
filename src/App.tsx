@@ -41,6 +41,7 @@ import {
   PricingComparisonPage,
   AutomateManagementPage,
 } from "./pages/landing";
+import GoogleCallbackPage from "./pages/GoogleCallbackPage";
 import { store } from "./store";
 
 interface ErrorBoundaryProps {
@@ -213,6 +214,7 @@ const AppContent: React.FC = () => {
           <Route path="/auth/login" element={<AuthPage />} />
           <Route path="/auth/register" element={<AuthPage />} />
           <Route path="/auth/forgot-password" element={<AuthPage />} />
+          <Route path="/auth/google/callback" element={<GoogleCallbackPage />} />
           <Route path="/trial/signup" element={<TrialSignupPage />} />
 
           {/* Legacy auth routes - redirect */}

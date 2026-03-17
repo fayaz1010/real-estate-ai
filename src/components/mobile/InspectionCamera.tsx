@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Star, StarOff } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { CameraCapture } from './CameraCapture';
 
 interface InspectionPhoto {
@@ -72,7 +72,7 @@ export function InspectionCamera({ onPhotoSaved }: InspectionCameraProps) {
               color: important ? '#ffffff' : '#091a2b',
             }}
           >
-            {important ? <Star size={16} /> : <StarOff size={16} />}
+            {important ? <Star size={16} /> : <Star size={16} />}
             {important ? 'Marked as Important' : 'Mark as Important'}
           </button>
 

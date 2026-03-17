@@ -1,6 +1,4 @@
-import axios from 'axios';
-
-const API_BASE = '/api/payments';
+import apiClient from "@/api/client";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -53,14 +51,14 @@ export interface SubscriptionDetails {
 // ---------------------------------------------------------------------------
 
 export async function createPaymentIntent(paymentId: string): Promise<PaymentIntentResponse> {
-  const { data } = await axios.post<{ data: PaymentIntentResponse }>(
-    `${API_BASE}/${paymentId}/pay`,
+  const { data } = await apiClient.post<{ data: PaymentIntentResponse }>(
+    `/payments/${paymentId}/pay`,
   );
   return data.data;
 }
 
 export async function confirmPaymentIntent(paymentId: string): Promise<void> {
-  await axios.post(`${API_BASE}/${paymentId}/confirm`);
+  await apiClient.post(`/payments/${paymentId}/confirm`);
 }
 
 // ---------------------------------------------------------------------------
@@ -68,26 +66,26 @@ export async function confirmPaymentIntent(paymentId: string): Promise<void> {
 // ---------------------------------------------------------------------------
 
 export async function getPaymentMethods(): Promise<PaymentMethod[]> {
-  const { data } = await axios.get<{ data: PaymentMethod[] }>(
-    `${API_BASE}/payment-methods`,
+  const { data } = await apiClient.get<{ data: PaymentMethod[] }>(
+    "/payments/payment-methods",
   );
   return data.data;
 }
 
 export async function addPaymentMethod(paymentMethodId: string): Promise<PaymentMethod> {
-  const { data } = await axios.post<{ data: PaymentMethod }>(
-    `${API_BASE}/payment-methods`,
+  const { data } = await apiClient.post<{ data: PaymentMethod }>(
+    "/payments/payment-methods",
     { paymentMethodId },
   );
   return data.data;
 }
 
 export async function setDefaultPaymentMethod(paymentMethodId: string): Promise<void> {
-  await axios.put(`${API_BASE}/payment-methods/${paymentMethodId}/default`);
+  await apiClient.put(`/payments/payment-methods/${paymentMethodId}/default`);
 }
 
 export async function removePaymentMethod(paymentMethodId: string): Promise<void> {
-  await axios.delete(`${API_BASE}/payment-methods/${paymentMethodId}`);
+  await apiClient.delete(`/payments/payment-methods/${paymentMethodId}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -95,15 +93,15 @@ export async function removePaymentMethod(paymentMethodId: string): Promise<void
 // ---------------------------------------------------------------------------
 
 export async function getOutstandingBalance(): Promise<OutstandingBalance> {
-  const { data } = await axios.get<{ data: OutstandingBalance }>(
-    `${API_BASE}/my-payments?status=PAYMENT_PENDING`,
+  const { data } = await apiClient.get<{ data: OutstandingBalance }>(
+    "/payments/my-payments?status=PAYMENT_PENDING",
   );
   return data.data;
 }
 
 export async function getSubscriptionDetails(): Promise<SubscriptionDetails | null> {
-  const { data } = await axios.get<{ data: SubscriptionDetails | null }>(
-    '/api/billing/subscription',
+  const { data } = await apiClient.get<{ data: SubscriptionDetails | null }>(
+    "/billing/subscription",
   );
   return data.data;
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, CheckSquare, Building, MessageSquare, GripVertical, Trash2 } from 'lucide-react';
+import { Mail, CheckSquare, Building, MessageSquare, MoreVertical, Trash2 } from 'lucide-react';
 import type { WorkflowStep, WorkflowStepType } from '../../types/workflow';
 
 const STEP_TYPES: { value: WorkflowStepType; label: string; icon: React.ReactNode }[] = [
@@ -162,7 +162,7 @@ export const WorkflowStepEditor: React.FC<WorkflowStepEditorProps> = ({ step, on
     <div className="border border-gray-200 rounded-lg p-4 bg-white">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <GripVertical className="w-4 h-4 text-gray-300 cursor-grab" />
+          <MoreVertical className="w-4 h-4 text-gray-300 cursor-grab" />
           <span className="text-xs font-bold text-[#3b4876] bg-[#3b4876]/10 px-2 py-0.5 rounded" style={{ fontFamily: 'Open Sans, sans-serif' }}>
             Step {step.order}
           </span>

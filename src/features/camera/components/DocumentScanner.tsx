@@ -7,6 +7,8 @@ import {
   ZoomIn,
   Sliders,
   X,
+  Scan,
+  Contrast,
 } from 'lucide-react';
 import { useCamera } from '../hooks/useCamera';
 import {

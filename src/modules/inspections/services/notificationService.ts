@@ -1,18 +1,5 @@
 // Notification Service - Frontend client for backend notification API
-import axios from "axios";
-
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4041/api";
-
-// Axios instance with auth interceptor
-const api = axios.create({ baseURL: API_URL });
-
-api.interceptors.request.use((config) => {
-  const token = localStorage.getItem("accessToken");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+import apiClient from "@/api/client";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -85,7 +72,7 @@ class NotificationService {
     limit = 20,
     unreadOnly = false,
   ): Promise<NotificationsResponse> {
-    const response = await api.get<ApiResponse<NotificationsResponse>>(
+    const response = await apiClient.get<ApiResponse<NotificationsResponse>>(
       "/notifications",
       { params: { page, limit, unreadOnly } },
     );
@@ -93,14 +80,14 @@ class NotificationService {
   }
 
   async markAsRead(notificationId: string): Promise<Notification> {
-    const response = await api.patch<ApiResponse<Notification>>(
+    const response = await apiClient.patch<ApiResponse<Notification>>(
       `/notifications/${notificationId}/read`,
     );
     return unwrap(response);
   }
 
   async markAllAsRead(): Promise<{ updated: number }> {
-    const response = await api.post<ApiResponse<{ updated: number }>>(
+    const response = await apiClient.post<ApiResponse<{ updated: number }>>(
       "/notifications/read-all",
     );
     return unwrap(response);
@@ -111,7 +98,7 @@ class NotificationService {
   async sendInspectionConfirmation(
     inspectionId: string,
   ): Promise<{ success: boolean }> {
-    const response = await api.post<ApiResponse<{ success: boolean }>>(
+    const response = await apiClient.post<ApiResponse<{ success: boolean }>>(
       `/notifications/inspection/${inspectionId}/confirmation`,
     );
     return unwrap(response);
@@ -121,7 +108,7 @@ class NotificationService {
     inspectionId: string,
     type: "24h" | "2h" | "30m",
   ): Promise<{ success: boolean }> {
-    const response = await api.post<ApiResponse<{ success: boolean }>>(
+    const response = await apiClient.post<ApiResponse<{ success: boolean }>>(
       `/notifications/inspection/${inspectionId}/reminder`,
       { type },
     );
@@ -132,7 +119,7 @@ class NotificationService {
     inspectionId: string,
     reason: string,
   ): Promise<{ success: boolean }> {
-    const response = await api.post<ApiResponse<{ success: boolean }>>(
+    const response = await apiClient.post<ApiResponse<{ success: boolean }>>(
       `/notifications/inspection/${inspectionId}/cancellation`,
       { reason },
     );
@@ -144,7 +131,7 @@ class NotificationService {
     newDate: string,
     newTime: string,
   ): Promise<{ success: boolean }> {
-    const response = await api.post<ApiResponse<{ success: boolean }>>(
+    const response = await apiClient.post<ApiResponse<{ success: boolean }>>(
       `/notifications/inspection/${inspectionId}/reschedule`,
       { newDate, newTime },
     );
@@ -154,7 +141,7 @@ class NotificationService {
   async sendCheckInNotification(
     inspectionId: string,
   ): Promise<{ success: boolean }> {
-    const response = await api.post<ApiResponse<{ success: boolean }>>(
+    const response = await apiClient.post<ApiResponse<{ success: boolean }>>(
       `/notifications/inspection/${inspectionId}/check-in`,
     );
     return unwrap(response);
@@ -163,14 +150,14 @@ class NotificationService {
   async sendCheckOutNotification(
     inspectionId: string,
   ): Promise<{ success: boolean }> {
-    const response = await api.post<ApiResponse<{ success: boolean }>>(
+    const response = await apiClient.post<ApiResponse<{ success: boolean }>>(
       `/notifications/inspection/${inspectionId}/check-out`,
     );
     return unwrap(response);
   }
 
   async sendFollowUp(inspectionId: string): Promise<{ success: boolean }> {
-    const response = await api.post<ApiResponse<{ success: boolean }>>(
+    const response = await apiClient.post<ApiResponse<{ success: boolean }>>(
       `/notifications/inspection/${inspectionId}/follow-up`,
     );
     return unwrap(response);
@@ -179,21 +166,21 @@ class NotificationService {
   async sendNoShowNotification(
     inspectionId: string,
   ): Promise<{ success: boolean }> {
-    const response = await api.post<ApiResponse<{ success: boolean }>>(
+    const response = await apiClient.post<ApiResponse<{ success: boolean }>>(
       `/notifications/inspection/${inspectionId}/no-show`,
     );
     return unwrap(response);
   }
 
   async scheduleReminders(inspectionId: string): Promise<{ success: boolean }> {
-    const response = await api.post<ApiResponse<{ success: boolean }>>(
+    const response = await apiClient.post<ApiResponse<{ success: boolean }>>(
       `/notifications/inspection/${inspectionId}/schedule-reminders`,
     );
     return unwrap(response);
   }
 
   async cancelReminders(inspectionId: string): Promise<{ success: boolean }> {
-    const response = await api.delete<ApiResponse<{ success: boolean }>>(
+    const response = await apiClient.delete<ApiResponse<{ success: boolean }>>(
       `/notifications/inspection/${inspectionId}/reminders`,
     );
     return unwrap(response);
@@ -204,7 +191,7 @@ class NotificationService {
   async getNotificationPreferences(
     userId: string,
   ): Promise<NotificationPreferences> {
-    const response = await api.get<ApiResponse<NotificationPreferences>>(
+    const response = await apiClient.get<ApiResponse<NotificationPreferences>>(
       `/notifications/preferences/${userId}`,
     );
     return unwrap(response);
@@ -214,7 +201,7 @@ class NotificationService {
     userId: string,
     preferences: Partial<NotificationPreferences>,
   ): Promise<NotificationPreferences> {
-    const response = await api.patch<ApiResponse<NotificationPreferences>>(
+    const response = await apiClient.patch<ApiResponse<NotificationPreferences>>(
       `/notifications/preferences/${userId}`,
       preferences,
     );
@@ -228,7 +215,7 @@ class NotificationService {
     type: "email" | "sms" | "push",
     template: string,
   ): Promise<{ success: boolean }> {
-    const response = await api.post<ApiResponse<{ success: boolean }>>(
+    const response = await apiClient.post<ApiResponse<{ success: boolean }>>(
       "/notifications/test",
       { userId, type, template },
     );
@@ -236,7 +223,7 @@ class NotificationService {
   }
 
   async getTemplates(): Promise<Record<string, NotificationTemplate>> {
-    const response = await api.get<
+    const response = await apiClient.get<
       ApiResponse<Record<string, NotificationTemplate>>
     >("/notifications/templates");
     return unwrap(response);
@@ -246,9 +233,36 @@ class NotificationService {
     inspectionIds: string[];
     type: "confirmation" | "reminder" | "cancellation";
   }): Promise<{ success: boolean; failed: string[] }> {
-    const response = await api.post<
+    const response = await apiClient.post<
       ApiResponse<{ success: boolean; failed: string[] }>
     >("/notifications/batch", params);
+    return unwrap(response);
+  }
+
+  // ─── Push notifications ────────────────────────────────────────
+
+  async getVapidPublicKey(): Promise<string> {
+    const response = await apiClient.get<ApiResponse<{ publicKey: string }>>(
+      "/notifications/push/vapid-public-key",
+    );
+    return unwrap(response).publicKey;
+  }
+
+  async subscribePush(
+    subscription: PushSubscriptionJSON,
+  ): Promise<{ id: string }> {
+    const response = await apiClient.post<ApiResponse<{ id: string }>>(
+      "/notifications/push/subscribe",
+      { subscription, userAgent: navigator.userAgent },
+    );
+    return unwrap(response);
+  }
+
+  async unsubscribePush(endpoint: string): Promise<{ success: boolean }> {
+    const response = await apiClient.post<ApiResponse<{ success: boolean }>>(
+      "/notifications/push/unsubscribe",
+      { endpoint },
+    );
     return unwrap(response);
   }
 
@@ -273,7 +287,7 @@ class NotificationService {
       return { success: false };
     }
     // For email, trigger via the follow-up endpoint as a workaround
-    const response = await api.post<ApiResponse<{ success: boolean }>>(
+    const response = await apiClient.post<ApiResponse<{ success: boolean }>>(
       `/notifications/inspection/${inspectionId}/follow-up`,
     );
     return unwrap(response);

@@ -1,9 +1,19 @@
 // Server Entry Point
+import http from "http";
+
 import app from "./app";
 import prisma from "./config/database";
 import { config } from "./config/env";
+import { initWebSocket } from "./websocket";
+import sseRouter from "./websocket/sseHandler";
 
 const PORT = config.port;
+
+// Create HTTP server from Express app so WebSocket can attach to it
+const server = http.createServer(app);
+
+// Mount SSE fallback route
+app.use(sseRouter);
 
 const startServer = async () => {
   try {
@@ -11,11 +21,15 @@ const startServer = async () => {
     await prisma.$connect();
     console.log("✅ Database connected");
 
+    // Initialize WebSocket server
+    initWebSocket(server);
+
     // Start server
-    app.listen(PORT, () => {
+    server.listen(PORT, () => {
       console.log(`🚀 Server running on port ${PORT}`);
       console.log(`📍 Environment: ${config.nodeEnv}`);
       console.log(`🌐 API: http://localhost:${PORT}/api`);
+      console.log(`🔌 WebSocket: ws://localhost:${PORT}/ws`);
       console.log(`💚 Health: http://localhost:${PORT}/health`);
     });
   } catch (error) {

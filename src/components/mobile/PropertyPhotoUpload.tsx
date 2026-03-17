@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Camera, ImagePlus } from 'lucide-react';
+import { Camera, Image } from 'lucide-react';
 import { CameraCapture } from './CameraCapture';
 import { PhotoGallery } from './PhotoGallery';
 
@@ -51,7 +51,7 @@ export function PropertyPhotoUpload() {
           className="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition-colors"
           style={{ backgroundColor: '#005163' }}
         >
-          <ImagePlus size={20} />
+          <Image size={20} />
           Gallery
         </button>
         <input

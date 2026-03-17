@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 import { PropertyIntelligence } from "../../../../components/PropertyIntelligence";
+import { PropertyJsonLd } from "../../../../components/seo";
 import { useProperties } from "../../hooks/useProperties";
 import { propertyService } from "../../services/propertyService";
 
@@ -222,36 +223,20 @@ export const PropertyDetailsPage: React.FC = () => {
         />
       )}
 
-      {/* SEO Meta Tags (would be in <head> in real app) */}
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type":
-            selectedProperty.listingType === "sale"
-              ? "SingleFamilyResidence"
-              : "Apartment",
-          name: selectedProperty.title,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: selectedProperty.address.street,
-            addressLocality: selectedProperty.address.city,
-            addressRegion: selectedProperty.address.state,
-            postalCode: selectedProperty.address.zipCode,
-            addressCountry: selectedProperty.address.country,
-          },
-          geo: {
-            "@type": "GeoCoordinates",
-            latitude: selectedProperty.address.latitude,
-            longitude: selectedProperty.address.longitude,
-          },
-          numberOfRooms: selectedProperty.details.bedrooms,
-          floorSize: {
-            "@type": "QuantitativeValue",
-            value: selectedProperty.details.sqft,
-            unitCode: "SQF",
-          },
-        })}
-      </script>
+      {/* SEO Structured Data */}
+      <PropertyJsonLd
+        property={{
+          title: selectedProperty.title,
+          description: selectedProperty.description,
+          address: selectedProperty.address.street,
+          price: selectedProperty.pricing.price,
+          images: selectedProperty.media.images.map((img) => img.url),
+          bedrooms: selectedProperty.details.bedrooms,
+          bathrooms: selectedProperty.details.bathrooms,
+          area: selectedProperty.details.sqft,
+          listingType: selectedProperty.listingType,
+        }}
+      />
     </div>
   );
 };

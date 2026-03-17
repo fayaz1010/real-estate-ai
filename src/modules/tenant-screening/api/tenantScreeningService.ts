@@ -1,7 +1,4 @@
-import { tokenManager } from "../../auth/utils/tokenManager";
-
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:4041/api";
+import apiClient from "@/api/client";
 
 export interface EmploymentEntry {
   employerName: string;
@@ -56,23 +53,11 @@ class TenantScreeningService {
   async submitTenantScreeningForm(
     formData: TenantScreeningFormData,
   ): Promise<TenantScreeningResponse> {
-    const response = await fetch(`${API_BASE_URL}/tenant-screening`, {
-      method: "POST",
-      headers: {
-        ...tokenManager.getAuthHeader(),
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
-    });
-
-    if (!response.ok) {
-      const error = await response.json().catch(() => null);
-      throw new Error(
-        error?.message || "Failed to submit tenant screening form",
-      );
-    }
-
-    return response.json();
+    const response = await apiClient.post<TenantScreeningResponse>(
+      "/tenant-screening",
+      formData,
+    );
+    return response.data;
   }
 }
 

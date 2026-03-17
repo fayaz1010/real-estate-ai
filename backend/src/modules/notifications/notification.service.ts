@@ -11,6 +11,7 @@ import {
   INSPECTION_EMAIL_SENDERS,
 } from "../../utils/emailService";
 import type { InspectionEmailVars } from "../../utils/emailService";
+import pushService from "./push.service";
 
 export class NotificationService {
   // ─── Core: create + deliver ───────────────────────────────────────
@@ -54,6 +55,28 @@ export class NotificationService {
           );
         },
       );
+    }
+
+    // Send push notification if enabled
+    if (preferences.push) {
+      await pushService
+        .sendToUser(params.userId, {
+          title: params.title,
+          body: params.message,
+          tag: params.type,
+          data: {
+            notificationId: notification.id,
+            type: params.type,
+            inspectionId: params.inspectionId,
+            propertyId: params.propertyId,
+          },
+        })
+        .catch((err) => {
+          console.error(
+            `Push delivery failed for notification ${notification.id}:`,
+            err instanceof Error ? err.message : err,
+          );
+        });
     }
 
     return notification;
@@ -476,6 +499,14 @@ export class NotificationService {
         to: user.email,
         subject: "Test Notification – RealEstateAI",
         html: wrapEmailTemplate("Test Notification", bodyHtml),
+      });
+    }
+
+    if (type === "push") {
+      await pushService.sendToUser(userId, {
+        title: "Test Notification",
+        body: `This is a test push notification (template: ${template})`,
+        tag: "test",
       });
     }
 

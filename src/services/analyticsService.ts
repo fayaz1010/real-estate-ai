@@ -1,3 +1,4 @@
+import apiClient from '@/api/client';
 import type {
   PortfolioMetrics,
   OccupancyData,
@@ -7,28 +8,6 @@ import type {
   PropertyBreakdown,
   AIInsight,
 } from '../types/analytics';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4041/api';
-
-function getAuthHeaders(): Record<string, string> {
-  const token = localStorage.getItem('accessToken');
-  return {
-    'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-}
-
-async function apiCall<T>(url: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
-    ...options,
-    headers: { ...getAuthHeaders(), ...options?.headers },
-  });
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'Request failed' }));
-    throw new Error(error.message || 'Request failed');
-  }
-  return response.json();
-}
 
 function buildQuery(params: Record<string, string | string[]>): string {
   const searchParams = new URLSearchParams();
@@ -150,48 +129,39 @@ function generateMockAIInsights(): AIInsight[] {
     {
       type: 'vacancy_alert',
       title: 'Predicted Vacancy Risk — Oak Ridge Condos Unit 4B',
-      description:
-        'Based on lease expiration patterns and tenant engagement data, Unit 4B has a 73% probability of vacancy within the next 60 days.',
+      description: 'Based on lease expiration patterns and tenant engagement data, Unit 4B has a 73% probability of vacancy within the next 60 days.',
       impact: 'high',
       actionable: true,
-      recommendation:
-        'Initiate early lease renewal outreach. Consider offering a 3% rent discount for a 12-month renewal to reduce turnover costs.',
+      recommendation: 'Initiate early lease renewal outreach. Consider offering a 3% rent discount for a 12-month renewal to reduce turnover costs.',
     },
     {
       type: 'rent_optimization',
       title: 'Below-Market Rent — Sunset Apartments',
-      description:
-        'Comparable properties within a 2-mile radius are renting 8-12% higher. Current avg rent of $1,650 is below market rate of $1,820.',
+      description: 'Comparable properties within a 2-mile radius are renting 8-12% higher. Current avg rent of $1,650 is below market rate of $1,820.',
       impact: 'high',
       actionable: true,
-      recommendation:
-        'Gradually adjust rent by 5% at next renewal cycle across 6 units. Estimated additional annual revenue: $12,240.',
+      recommendation: 'Gradually adjust rent by 5% at next renewal cycle across 6 units. Estimated additional annual revenue: $12,240.',
     },
     {
       type: 'maintenance_forecast',
       title: 'HVAC System Maintenance Due — Harbor View Complex',
-      description:
-        'Predictive analysis of work order history indicates HVAC systems in Building B are approaching failure threshold. Average unit age: 8.2 years.',
+      description: 'Predictive analysis of work order history indicates HVAC systems in Building B are approaching failure threshold. Average unit age: 8.2 years.',
       impact: 'medium',
       actionable: true,
-      recommendation:
-        'Schedule preventive HVAC inspections for Building B within 30 days. Estimated preventive cost: $3,200 vs. emergency repair: $8,500.',
+      recommendation: 'Schedule preventive HVAC inspections for Building B within 30 days. Estimated preventive cost: $3,200 vs. emergency repair: $8,500.',
     },
     {
       type: 'rent_optimization',
       title: 'Seasonal Demand Opportunity — Riverside Villas',
-      description:
-        'Historical data shows 22% higher demand for waterfront units during Q2. Two units are coming available in April.',
+      description: 'Historical data shows 22% higher demand for waterfront units during Q2. Two units are coming available in April.',
       impact: 'medium',
       actionable: true,
-      recommendation:
-        'List upcoming vacancies at 6% premium ($1,950 vs. $1,840). Seasonal demand supports higher pricing through September.',
+      recommendation: 'List upcoming vacancies at 6% premium ($1,950 vs. $1,840). Seasonal demand supports higher pricing through September.',
     },
     {
       type: 'vacancy_alert',
       title: 'Low Renewal Risk — Cedar Heights',
-      description:
-        'All 8 current tenants show high engagement scores and on-time payment history. Portfolio-wide renewal probability: 91%.',
+      description: 'All 8 current tenants show high engagement scores and on-time payment history. Portfolio-wide renewal probability: 91%.',
       impact: 'low',
       actionable: false,
     },
@@ -203,9 +173,8 @@ function generateMockAIInsights(): AIInsight[] {
 export async function getPortfolioMetrics(propertyIds: string[]): Promise<PortfolioMetrics> {
   try {
     const query = buildQuery({ propertyIds });
-    return await apiCall<PortfolioMetrics>(
-      `${API_BASE_URL}/analytics/portfolio-metrics?${query}`,
-    );
+    const { data } = await apiClient.get<PortfolioMetrics>(`/analytics/portfolio-metrics?${query}`);
+    return data;
   } catch {
     return generateMockPortfolioMetrics();
   }
@@ -218,9 +187,8 @@ export async function getOccupancyData(
 ): Promise<OccupancyData[]> {
   try {
     const query = buildQuery({ propertyIds, startDate, endDate });
-    return await apiCall<OccupancyData[]>(
-      `${API_BASE_URL}/analytics/occupancy-data?${query}`,
-    );
+    const { data } = await apiClient.get<OccupancyData[]>(`/analytics/occupancy-data?${query}`);
+    return data;
   } catch {
     return generateMockOccupancyData(startDate, endDate);
   }
@@ -233,9 +201,8 @@ export async function getRevenueTrends(
 ): Promise<RevenueTrend[]> {
   try {
     const query = buildQuery({ propertyIds, startDate, endDate });
-    return await apiCall<RevenueTrend[]>(
-      `${API_BASE_URL}/analytics/revenue-trends?${query}`,
-    );
+    const { data } = await apiClient.get<RevenueTrend[]>(`/analytics/revenue-trends?${query}`);
+    return data;
   } catch {
     return generateMockRevenueTrends(startDate, endDate);
   }
@@ -248,22 +215,18 @@ export async function getMaintenanceTrends(
 ): Promise<MaintenanceTrends[]> {
   try {
     const query = buildQuery({ propertyIds, startDate, endDate });
-    return await apiCall<MaintenanceTrends[]>(
-      `${API_BASE_URL}/analytics/maintenance-trends?${query}`,
-    );
+    const { data } = await apiClient.get<MaintenanceTrends[]>(`/analytics/maintenance-trends?${query}`);
+    return data;
   } catch {
     return generateMockMaintenanceTrends(startDate, endDate);
   }
 }
 
-export async function getPropertyBreakdown(
-  propertyIds: string[],
-): Promise<PropertyBreakdown[]> {
+export async function getPropertyBreakdown(propertyIds: string[]): Promise<PropertyBreakdown[]> {
   try {
     const query = buildQuery({ propertyIds });
-    return await apiCall<PropertyBreakdown[]>(
-      `${API_BASE_URL}/analytics/property-breakdown?${query}`,
-    );
+    const { data } = await apiClient.get<PropertyBreakdown[]>(`/analytics/property-breakdown?${query}`);
+    return data;
   } catch {
     return generateMockPropertyBreakdown();
   }
@@ -271,13 +234,8 @@ export async function getPropertyBreakdown(
 
 export async function generateCustomReport(config: ReportConfig): Promise<Record<string, unknown>> {
   try {
-    return await apiCall<Record<string, unknown>>(
-      `${API_BASE_URL}/analytics/custom-report`,
-      {
-        method: 'POST',
-        body: JSON.stringify(config),
-      },
-    );
+    const { data } = await apiClient.post<Record<string, unknown>>('/analytics/custom-report', config);
+    return data;
   } catch {
     return {
       generated: new Date().toISOString(),
@@ -289,7 +247,8 @@ export async function generateCustomReport(config: ReportConfig): Promise<Record
 
 export async function getAIInsights(): Promise<AIInsight[]> {
   try {
-    return await apiCall<AIInsight[]>(`${API_BASE_URL}/analytics/ai-insights`);
+    const { data } = await apiClient.get<AIInsight[]>('/analytics/ai-insights');
+    return data;
   } catch {
     return generateMockAIInsights();
   }

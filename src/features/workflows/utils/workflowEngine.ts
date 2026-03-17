@@ -181,7 +181,7 @@ async function executeOptimizeListingSEO(config: Record<string, unknown>, contex
 }
 
 async function executeStep(step: WorkflowStep, context: WorkflowContext): Promise<StepExecutionResult> {
-  const config = step.configuration as Record<string, unknown>;
+  const config: Record<string, unknown> = { ...step.configuration };
 
   let result: StepExecutionResult;
 

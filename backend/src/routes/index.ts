@@ -2,6 +2,7 @@
 import { Router } from "express";
 
 import accountingRoutes from "../modules/accounting/accounting.routes";
+import aiRoutes from "../modules/ai/ai.routes";
 import applicationRoutes from "../modules/applications/application.routes";
 import authRoutes from "../modules/auth/auth.routes";
 import inspectionRoutes from "../modules/inspections/inspection.routes";
@@ -18,6 +19,7 @@ const router = Router();
 
 // Module routes
 router.use("/auth", authRoutes);
+router.use("/ai", aiRoutes);
 router.use("/properties", propertyRoutes);
 router.use("/properties", uploadRoutes);
 router.use("/inspections", inspectionRoutes);
@@ -38,6 +40,7 @@ router.get("/", (req, res) => {
     status: "active",
     modules: {
       auth: "/api/auth",
+      ai: "/api/ai",
       properties: "/api/properties",
       inspections: "/api/inspections",
       applications: "/api/applications",

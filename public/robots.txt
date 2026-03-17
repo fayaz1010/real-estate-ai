@@ -5,4 +5,17 @@ Disallow: /admin
 Disallow: /inspections
 Disallow: /applications
 Disallow: /profile-setup
+Disallow: /onboarding
+Disallow: /tenant-portal
+Disallow: /landlord-portal
+Disallow: /developer-portal
+Disallow: /maintenance
+Disallow: /leases
+Disallow: /payments
+Disallow: /communication
+Disallow: /reporting
+Disallow: /accounting
+Disallow: /scheduling
+Disallow: /workflows
+
 Sitemap: https://realestate-ai.com/sitemap.xml

@@ -1,63 +1,42 @@
+import apiClient from '@/api/client';
 import type { Workflow, WorkflowStep } from '../types/workflow';
-
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4041/api';
-
-function getAuthHeaders(): Record<string, string> {
-  const token = localStorage.getItem('accessToken');
-  return {
-    'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {}),
-  };
-}
-
-async function apiCall<T>(url: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(url, {
-    ...options,
-    headers: { ...getAuthHeaders(), ...options?.headers },
-  });
-  if (!response.ok) {
-    const error = await response.json().catch(() => ({ message: 'Request failed' }));
-    throw new Error(error.message || 'Request failed');
-  }
-  return response.json();
-}
 
 export const workflowService = {
   async createWorkflow(
     userId: string,
     data: Omit<Workflow, 'id' | 'createdAt' | 'lastRunAt' | 'runCount'>,
   ): Promise<Workflow> {
-    return apiCall<Workflow>(`${API_BASE_URL}/workflows`, {
-      method: 'POST',
-      body: JSON.stringify({ ...data, userId }),
-    });
+    const { data: result } = await apiClient.post<Workflow>('/workflows', { ...data, userId });
+    return result;
   },
 
   async getWorkflow(id: string): Promise<Workflow | null> {
     try {
-      return await apiCall<Workflow>(`${API_BASE_URL}/workflows/${id}`);
+      const { data } = await apiClient.get<Workflow>(`/workflows/${id}`);
+      return data;
     } catch {
       return null;
     }
   },
 
   async getWorkflows(userId: string): Promise<Workflow[]> {
-    return apiCall<Workflow[]>(`${API_BASE_URL}/workflows?userId=${encodeURIComponent(userId)}`);
+    const { data } = await apiClient.get<Workflow[]>(
+      `/workflows?userId=${encodeURIComponent(userId)}`,
+    );
+    return data;
   },
 
-  async updateWorkflow(id: string, data: Partial<Workflow>): Promise<Workflow> {
-    return apiCall<Workflow>(`${API_BASE_URL}/workflows/${id}`, {
-      method: 'PATCH',
-      body: JSON.stringify(data),
-    });
+  async updateWorkflow(id: string, updates: Partial<Workflow>): Promise<Workflow> {
+    const { data } = await apiClient.patch<Workflow>(`/workflows/${id}`, updates);
+    return data;
   },
 
   async deleteWorkflow(id: string): Promise<void> {
-    await apiCall<void>(`${API_BASE_URL}/workflows/${id}`, { method: 'DELETE' });
+    await apiClient.delete(`/workflows/${id}`);
   },
 
   async executeWorkflow(id: string): Promise<void> {
-    await apiCall<void>(`${API_BASE_URL}/workflows/${id}/execute`, { method: 'POST' });
+    await apiClient.post(`/workflows/${id}/execute`);
   },
 };
 

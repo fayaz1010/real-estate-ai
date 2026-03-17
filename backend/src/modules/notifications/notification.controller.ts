@@ -5,6 +5,7 @@ import { asyncHandler } from "../../middleware/errorHandler";
 import { successResponse } from "../../utils/response";
 
 import notificationService from "./notification.service";
+import pushService from "./push.service";
 
 export class NotificationController {
   // ─── Inspection notification triggers ─────────────────────────────
@@ -194,6 +195,56 @@ export class NotificationController {
       type,
     );
     return successResponse(res, result, "Batch notifications processed");
+  });
+  // ─── Push notifications ──────────────────────────────────────────
+
+  subscribePush = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user!.userId;
+    const { subscription, userAgent } = req.body;
+
+    if (!subscription?.endpoint || !subscription?.keys?.p256dh || !subscription?.keys?.auth) {
+      return res.status(400).json({
+        success: false,
+        error: { code: "INVALID_SUBSCRIPTION", message: "Invalid push subscription object" },
+      });
+    }
+
+    const result = await pushService.subscribe(userId, subscription, userAgent);
+    return successResponse(res, { id: result.id }, "Push subscription saved", 201);
+  });
+
+  unsubscribePush = asyncHandler(async (req: Request, res: Response) => {
+    const userId = req.user!.userId;
+    const { endpoint } = req.body;
+
+    if (!endpoint) {
+      return res.status(400).json({
+        success: false,
+        error: { code: "MISSING_ENDPOINT", message: "Endpoint is required" },
+      });
+    }
+
+    const result = await pushService.unsubscribe(userId, endpoint);
+    return successResponse(res, result, "Push subscription removed");
+  });
+
+  getVapidPublicKey = asyncHandler(async (_req: Request, res: Response) => {
+    const publicKey = pushService.getPublicKey();
+    return successResponse(res, { publicKey });
+  });
+
+  sendPushNotification = asyncHandler(async (req: Request, res: Response) => {
+    const { userId, title, body, data } = req.body;
+
+    if (!userId || !title || !body) {
+      return res.status(400).json({
+        success: false,
+        error: { code: "MISSING_FIELDS", message: "userId, title, and body are required" },
+      });
+    }
+
+    const result = await pushService.sendToUser(userId, { title, body, data });
+    return successResponse(res, result, "Push notification sent");
   });
 }
 
