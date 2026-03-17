@@ -18,7 +18,7 @@ COPY package.json package-lock.json tsconfig.json vite.config.ts tailwind.config
 COPY src ./src
 COPY public ./public
 COPY prisma ./prisma
-RUN npm run build
+RUN npx vite build
 
 # Stage 3: Build backend
 FROM node:18-alpine AS backend-build
