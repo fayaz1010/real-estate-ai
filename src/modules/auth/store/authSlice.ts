@@ -18,8 +18,8 @@ export const login = createAsyncThunk(
   async (credentials: LoginCredentials, { rejectWithValue }) => {
     try {
       return await authService.login(credentials);
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(error instanceof Error ? error.message : String(error));
     }
   },
 );
@@ -29,8 +29,8 @@ export const register = createAsyncThunk(
   async (registerData: RegisterData, { rejectWithValue }) => {
     try {
       return await authService.register(registerData);
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(error instanceof Error ? error.message : String(error));
     }
   },
 );
@@ -46,8 +46,8 @@ export const refreshAuth = createAsyncThunk(
       const tokens = await authService.refreshToken();
       const user = await authService.getCurrentUser();
       return { user, tokens };
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(error instanceof Error ? error.message : String(error));
     }
   },
 );
@@ -57,8 +57,8 @@ export const loadUser = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       return await authService.getCurrentUser();
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(error instanceof Error ? error.message : String(error));
     }
   },
 );
@@ -69,8 +69,8 @@ export const verifyEmail = createAsyncThunk(
     try {
       await authService.verifyEmail(token);
       return true;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(error instanceof Error ? error.message : String(error));
     }
   },
 );

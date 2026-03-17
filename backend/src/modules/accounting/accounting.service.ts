@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-nocheck -- Prisma models not yet generated
 import prisma from "../../config/database";
 
 interface DateRange {

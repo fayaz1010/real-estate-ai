@@ -75,7 +75,7 @@ export class PaymentController {
     if (webhookSecret && sig) {
       try {
         const stripe = new Stripe(config.stripe.secretKey, {
-          apiVersion: "2024-06-20" as any,
+          apiVersion: "2024-06-20" as Stripe.LatestApiVersion,
         });
         const event = stripe.webhooks.constructEvent(
           req.body,

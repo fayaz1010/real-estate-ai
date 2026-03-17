@@ -12,7 +12,7 @@ import {
   resetForm,
   updateApplication,
 } from "../store/applicationSlice";
-import { ApplicationFormData } from "../types/application.types";
+import { Application, ApplicationFormData } from "../types/application.types";
 import {
   calculateApplicationScore,
   getScoreRating,
@@ -57,14 +57,14 @@ export const useApplicationForm = () => {
       const score = calculateApplicationScore({
         ...currentApplication,
         ...localFormData,
-      } as any);
+      } as Partial<Application>);
       setRealTimeScore(score);
     }
   }, [localFormData, currentApplication]);
 
   // Update form field
   const updateField = useCallback(
-    (field: keyof ApplicationFormData, value: any) => {
+    (field: keyof ApplicationFormData, value: ApplicationFormData[keyof ApplicationFormData]) => {
       setLocalFormData((prev) => ({
         ...prev,
         [field]: value,
@@ -79,11 +79,11 @@ export const useApplicationForm = () => {
 
   // Update nested field (e.g., personalInfo.firstName)
   const updateNestedField = useCallback(
-    (parent: keyof ApplicationFormData, field: string, value: any) => {
+    (parent: keyof ApplicationFormData, field: string, value: unknown) => {
       setLocalFormData((prev) => ({
         ...prev,
         [parent]: {
-          ...(prev[parent] as any),
+          ...(prev[parent] as Record<string, unknown>),
           [field]: value,
         },
       }));
@@ -92,7 +92,7 @@ export const useApplicationForm = () => {
       dispatch(
         updateFormData({
           [parent]: {
-            ...(localFormData[parent] as any),
+            ...(localFormData[parent] as Record<string, unknown>),
             [field]: value,
           },
         }),
@@ -103,8 +103,8 @@ export const useApplicationForm = () => {
 
   // Add item to array field (e.g., employment, income)
   const addArrayItem = useCallback(
-    (field: keyof ApplicationFormData, item: any) => {
-      const currentArray = (localFormData[field] as any[]) || [];
+    (field: keyof ApplicationFormData, item: unknown) => {
+      const currentArray = (localFormData[field] as unknown[]) || [];
       setLocalFormData((prev) => ({
         ...prev,
         [field]: [...currentArray, item],
@@ -122,8 +122,8 @@ export const useApplicationForm = () => {
 
   // Update array item
   const updateArrayItem = useCallback(
-    (field: keyof ApplicationFormData, index: number, item: any) => {
-      const currentArray = [...((localFormData[field] as any[]) || [])];
+    (field: keyof ApplicationFormData, index: number, item: unknown) => {
+      const currentArray = [...((localFormData[field] as unknown[]) || [])];
       currentArray[index] = item;
 
       setLocalFormData((prev) => ({
@@ -144,7 +144,7 @@ export const useApplicationForm = () => {
   // Remove array item
   const removeArrayItem = useCallback(
     (field: keyof ApplicationFormData, index: number) => {
-      const currentArray = [...((localFormData[field] as any[]) || [])];
+      const currentArray = [...((localFormData[field] as unknown[]) || [])];
       currentArray.splice(index, 1);
 
       setLocalFormData((prev) => ({
@@ -211,7 +211,8 @@ export const useApplicationForm = () => {
   const getStepCompletion = useCallback(
     (step: number): number => {
       switch (step) {
-        case 0: { // Personal Info
+        case 0: {
+          // Personal Info
           const personalInfo = localFormData.personalInfo || {};
           const personalFields = [
             "firstName",

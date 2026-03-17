@@ -173,6 +173,7 @@ function setupMockSelector(overrides: Partial<{
   loading: { list: boolean; create: boolean; update: boolean; delete: boolean };
   error: string | null;
 }> = {}) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { useAppSelector } = require("@/store");
   const state = {
     leases: overrides.leases ?? mockLeases,

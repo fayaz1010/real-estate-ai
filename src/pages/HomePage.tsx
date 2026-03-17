@@ -50,10 +50,9 @@ const HeroSection: React.FC = () => (
         </h1>
 
         <p className="font-inter text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
-          AI that actively manages your properties — predicting maintenance issues,
-          optimizing rent prices, screening tenants, and reducing vacancy — so you
-          manage more units with{" "}
-          <strong className="text-white">less effort</strong>.
+          AI-powered property management that automates rent collection, tenant
+          screening, and maintenance — so you can grow your portfolio without
+          growing your workload.
         </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
@@ -206,8 +205,8 @@ const FeatureCards: React.FC = () => (
           Everything You Need to Manage Smarter
         </h2>
         <p className="font-inter text-gray-500 max-w-2xl mx-auto">
-          From screening to scheduling, our AI handles the heavy lifting so you
-          can focus on growing your portfolio.
+          Manage smarter. Grow faster. Stress less. From screening to scheduling,
+          our AI handles the heavy lifting so you can focus on growing your portfolio.
         </p>
       </div>
 

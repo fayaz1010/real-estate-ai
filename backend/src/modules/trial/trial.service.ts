@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-nocheck -- Prisma models not yet generated
 // Trial Service - Business Logic
 import prisma from "../../config/database";
 import { AppError } from "../../middleware/errorHandler";

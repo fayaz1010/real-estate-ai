@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-nocheck -- Prisma models not yet generated
 // Push Notification Service - Web Push integration
 import webpush from "web-push";
 

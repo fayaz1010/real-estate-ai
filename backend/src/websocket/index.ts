@@ -16,7 +16,7 @@ interface IncomingMessage {
   type: "auth" | "subscribe" | "unsubscribe" | "message" | "typing";
   token?: string;
   channel?: string;
-  data?: any;
+  data?: Record<string, unknown>;
 }
 
 const clients: Map<WebSocket, AuthenticatedClient> = new Map();
@@ -316,7 +316,7 @@ function broadcastPresence(
 /**
  * Broadcast a message to all clients subscribed to a channel
  */
-export function broadcast(channel: string, event: string, data: any): void {
+export function broadcast(channel: string, event: string, data: unknown): void {
   const payload = JSON.stringify({ channel, event, data });
 
   clients.forEach((client) => {
@@ -339,7 +339,7 @@ export function sendToUser(
   userId: string,
   channel: string,
   event: string,
-  data: any,
+  data: unknown,
 ): void {
   const payload = JSON.stringify({ channel, event, data });
 
@@ -381,7 +381,7 @@ export function removeSseClient(id: string): void {
 /**
  * Broadcast to all SSE clients
  */
-function broadcastToSse(channel: string, event: string, data: any): void {
+function broadcastToSse(channel: string, event: string, data: unknown): void {
   const payload = JSON.stringify({ channel, event, data });
 
   sseClients.forEach((client) => {

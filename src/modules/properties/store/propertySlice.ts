@@ -6,6 +6,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { propertyService } from "../services/propertyService";
 import {
   Property,
+  PropertyFormData,
   PropertyState,
   SearchFilters,
 } from "../types/property.types";
@@ -16,8 +17,8 @@ export const fetchProperties = createAsyncThunk(
   async (filters: SearchFilters | undefined, { rejectWithValue }) => {
     try {
       return await propertyService.getProperties(filters);
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(error instanceof Error ? error.message : String(error));
     }
   },
 );
@@ -27,19 +28,19 @@ export const fetchPropertyById = createAsyncThunk(
   async (id: string, { rejectWithValue }) => {
     try {
       return await propertyService.getPropertyById(id);
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(error instanceof Error ? error.message : String(error));
     }
   },
 );
 
 export const createProperty = createAsyncThunk(
   "properties/createProperty",
-  async (propertyData: any, { rejectWithValue }) => {
+  async (propertyData: Partial<PropertyFormData>, { rejectWithValue }) => {
     try {
       return await propertyService.createProperty(propertyData);
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(error instanceof Error ? error.message : String(error));
     }
   },
 );
@@ -52,8 +53,8 @@ export const updateProperty = createAsyncThunk(
   ) => {
     try {
       return await propertyService.updateProperty(id, updates);
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(error instanceof Error ? error.message : String(error));
     }
   },
 );
@@ -64,8 +65,8 @@ export const deleteProperty = createAsyncThunk(
     try {
       await propertyService.deleteProperty(id);
       return id;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(error instanceof Error ? error.message : String(error));
     }
   },
 );

@@ -23,7 +23,7 @@ export const usePropertyForm = (initialData?: Partial<PropertyFormData>) => {
 
   // Update form field
   const updateField = useCallback(
-    (field: string, value: any) => {
+    (field: string, value: unknown) => {
       setFormData((prev) => ({ ...prev, [field]: value }));
       setIsDirty(true);
       // Clear error for this field
@@ -39,17 +39,17 @@ export const usePropertyForm = (initialData?: Partial<PropertyFormData>) => {
   );
 
   // Update nested field (e.g., address.street)
-  const updateNestedField = useCallback((path: string, value: any) => {
+  const updateNestedField = useCallback((path: string, value: unknown) => {
     const keys = path.split(".");
     setFormData((prev) => {
       const newData = { ...prev };
-      let current: any = newData;
+      let current: Record<string, unknown> = newData as Record<string, unknown>;
 
       for (let i = 0; i < keys.length - 1; i++) {
         if (!current[keys[i]]) {
           current[keys[i]] = {};
         }
-        current = current[keys[i]];
+        current = current[keys[i]] as Record<string, unknown>;
       }
 
       current[keys[keys.length - 1]] = value;
@@ -76,16 +76,17 @@ export const usePropertyForm = (initialData?: Partial<PropertyFormData>) => {
       try {
         let result;
         if (propertyId) {
-          result = await editProperty(propertyId, formData as any);
+          result = await editProperty(propertyId, formData as Partial<PropertyFormData>);
         } else {
           result = await addProperty(formData as PropertyFormData);
         }
 
         setIsDirty(false);
         return { success: true, data: result };
-      } catch (error: any) {
-        setErrors({ submit: error.message });
-        return { success: false, error: error.message };
+      } catch (error: unknown) {
+        const message = error instanceof Error ? error.message : String(error);
+        setErrors({ submit: message });
+        return { success: false, error: message };
       } finally {
         setIsSubmitting(false);
       }

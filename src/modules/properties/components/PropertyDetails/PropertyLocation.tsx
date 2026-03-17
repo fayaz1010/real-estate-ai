@@ -90,7 +90,7 @@ export const PropertyLocation: React.FC<PropertyLocationProps> = ({
         const request: google.maps.places.PlaceSearchRequest = {
           location,
           radius: 2000, // 2km radius
-          type: type as any,
+          type: type as google.maps.places.PlaceType1,
         };
 
         try {
@@ -166,7 +166,7 @@ export const PropertyLocation: React.FC<PropertyLocationProps> = ({
   }, [selectedTypes, nearbyPlaces]);
 
   const getIconForType = (type: string) => {
-    const iconMap: Record<string, any> = {
+    const iconMap: Record<string, React.ComponentType<{ className?: string; size?: number }>> = {
       Restaurant: Coffee,
       Cafe: Coffee,
       Grocery: ShoppingCart,

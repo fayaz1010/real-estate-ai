@@ -40,7 +40,7 @@ export const TimeSlotGrid: React.FC<TimeSlotGridProps> = ({
 
   // Group slots by time of day
   const groupedSlots = slots.reduce(
-    (acc: any, slot: any) => {
+    (acc: Record<string, typeof slots>, slot: (typeof slots)[number]) => {
       const timeOfDay = getTimeOfDay(slot.start);
       if (!acc[timeOfDay]) {
         acc[timeOfDay] = [];
@@ -102,7 +102,7 @@ export const TimeSlotGrid: React.FC<TimeSlotGridProps> = ({
               {timeOfDay}
             </h5>
             <div className="grid grid-cols-2 gap-2">
-              {groupedSlots[timeOfDay].map((slot: any) => {
+              {groupedSlots[timeOfDay].map((slot) => {
                 const isSelected = selectedTime === slot.start;
                 const isAvailable = slot.available;
                 const isFull = slot.bookingsCount >= slot.maxBookings;

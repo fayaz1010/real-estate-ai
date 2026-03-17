@@ -28,8 +28,9 @@ export const useProfile = () => {
         dispatch(updateUser(updatedUser));
         setSuccess("Profile updated successfully");
         return updatedUser;
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        setError(message);
         throw err;
       } finally {
         setIsUpdating(false);
@@ -64,8 +65,9 @@ export const useProfile = () => {
         dispatch(updateUser({ avatar: avatarUrl }));
         setSuccess("Avatar updated successfully");
         return avatarUrl;
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        setError(message);
         throw err;
       } finally {
         setIsUpdating(false);
@@ -86,8 +88,9 @@ export const useProfile = () => {
       try {
         await userService.changePassword(currentPassword, newPassword);
         setSuccess("Password changed successfully");
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        setError(message);
         throw err;
       } finally {
         setIsUpdating(false);
@@ -111,8 +114,9 @@ export const useProfile = () => {
       try {
         await userService.updateNotificationPreferences(preferences);
         setSuccess("Preferences updated successfully");
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        setError(message);
         throw err;
       } finally {
         setIsUpdating(false);
@@ -136,8 +140,9 @@ export const useProfile = () => {
       try {
         await userService.updateLandlordProfile(updates);
         setSuccess("Landlord profile updated successfully");
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        setError(message);
         throw err;
       } finally {
         setIsUpdating(false);
@@ -163,8 +168,9 @@ export const useProfile = () => {
       try {
         await userService.updateTenantProfile(updates);
         setSuccess("Tenant profile updated successfully");
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        setError(message);
         throw err;
       } finally {
         setIsUpdating(false);
@@ -190,8 +196,9 @@ export const useProfile = () => {
       try {
         await userService.updateAgentProfile(updates);
         setSuccess("Agent profile updated successfully");
-      } catch (err: any) {
-        setError(err.message);
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        setError(message);
         throw err;
       } finally {
         setIsUpdating(false);
@@ -209,8 +216,9 @@ export const useProfile = () => {
 
     try {
       await userService.deleteAccount(password);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      setError(message);
       throw err;
     } finally {
       setIsUpdating(false);

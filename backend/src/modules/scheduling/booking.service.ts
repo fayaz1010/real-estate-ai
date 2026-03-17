@@ -1,4 +1,4 @@
-// @ts-nocheck
+// @ts-nocheck -- Prisma models not yet generated
 // Booking Service
 import { BookingType } from "@prisma/client";
 

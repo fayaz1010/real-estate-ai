@@ -57,7 +57,7 @@ export const propertyValidation = {
    * Validate address
    */
   validateAddress: (
-    address: any,
+    address: Record<string, unknown>,
   ): { valid: boolean; errors: Record<string, string> } => {
     const errors: Record<string, string> = {};
 
@@ -136,7 +136,7 @@ export const propertyValidation = {
    * Validate property details
    */
   validateDetails: (
-    details: any,
+    details: Record<string, unknown>,
   ): { valid: boolean; errors: Record<string, string> } => {
     const errors: Record<string, string> = {};
 
