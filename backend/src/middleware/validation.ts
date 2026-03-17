@@ -5,7 +5,7 @@ import { z, ZodSchema } from "zod";
 import { errorResponse } from "../utils/response";
 
 export const validate = (schema: ZodSchema) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     try {
       schema.parse({
         body: req.body,
@@ -15,18 +15,19 @@ export const validate = (schema: ZodSchema) => {
       next();
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
-        const errors = error.errors.map((err) => ({
+        const errors = (error as any).errors?.map((err: any) => ({
           field: err.path.join("."),
           message: err.message,
-        }));
+        })) || [{ field: "unknown", message: error.message }];
 
-        return errorResponse(
+        errorResponse(
           res,
           "Validation failed",
           400,
           "VALIDATION_ERROR",
           errors,
         );
+        return;
       }
       next(error);
     }
@@ -35,24 +36,25 @@ export const validate = (schema: ZodSchema) => {
 
 // Validate body only
 export const validateBody = (schema: ZodSchema) => {
-  return (req: Request, res: Response, next: NextFunction) => {
+  return (req: Request, res: Response, next: NextFunction): void => {
     try {
       schema.parse(req.body);
       next();
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
-        const errors = error.errors.map((err) => ({
+        const errors = (error as any).errors?.map((err: any) => ({
           field: err.path.join("."),
           message: err.message,
-        }));
+        })) || [{ field: "unknown", message: error.message }];
 
-        return errorResponse(
+        errorResponse(
           res,
           "Validation failed",
           400,
           "VALIDATION_ERROR",
           errors,
         );
+        return;
       }
       next(error);
     }

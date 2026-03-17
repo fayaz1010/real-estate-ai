@@ -83,8 +83,8 @@ export const v1ErrorHandler = (
       error: {
         code: error.code,
         message: error.message,
-        ...(error.details && { details: error.details }),
-        ...(config.nodeEnv === "development" && { stack: error.stack }),
+        ...(error.details ? { details: error.details } : {}),
+        ...(config.nodeEnv === "development" ? { stack: error.stack } : {}),
       },
     });
     return;

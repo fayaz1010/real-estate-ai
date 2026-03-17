@@ -21,7 +21,7 @@ export class NotificationService {
     type: NotificationType;
     title: string;
     message: string;
-    data?: Record<string, unknown>;
+    data?: Record<string, any>;
     inspectionId?: string;
     propertyId?: string;
     emailVars?: Record<string, string>;

@@ -3,7 +3,7 @@ import prisma from "../../config/database";
 import { AppError } from "../../middleware/errorHandler";
 
 export class InspectionService {
-  async create(userId: string, data: Record<string, unknown>) {
+  async create(userId: string, data: Record<string, any>) {
     // Verify property exists
     const property = await prisma.property.findUnique({
       where: { id: data.propertyId },
@@ -18,7 +18,7 @@ export class InspectionService {
         ...data,
         userId,
         status: "SCHEDULED",
-      },
+      } as any,
       include: {
         property: {
           select: {
@@ -41,10 +41,10 @@ export class InspectionService {
     return inspection;
   }
 
-  async getAll(filters: Record<string, unknown> = {}) {
+  async getAll(filters: Record<string, any> = {}) {
     const { page = 1, limit = 20, propertyId, userId, status } = filters;
 
-    const where: Record<string, unknown> = {};
+    const where: Record<string, any> = {};
     if (propertyId) where.propertyId = propertyId;
     if (userId) where.userId = userId;
     if (status) where.status = status;

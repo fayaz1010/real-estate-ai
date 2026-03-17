@@ -4,10 +4,10 @@ import { AppError } from "../../middleware/errorHandler";
 
 export class PropertyService {
   // Create property
-  async create(ownerId: string, data: Record<string, unknown>) {
+  async create(ownerId: string, data: Record<string, any>) {
     // Generate slug from title
     const slug =
-      data.title.toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + Date.now();
+      (data.title as string).toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + Date.now();
 
     const property = await prisma.property.create({
       data: {
@@ -15,7 +15,7 @@ export class PropertyService {
         slug,
         ownerId,
         status: "DRAFT",
-      },
+      } as any,
       include: {
         images: true,
         owner: {
@@ -33,7 +33,7 @@ export class PropertyService {
   }
 
   // Get all properties with filters
-  async getAll(filters: Record<string, unknown> = {}) {
+  async getAll(filters: Record<string, any> = {}) {
     const {
       page = 1,
       limit = 20,
@@ -46,7 +46,7 @@ export class PropertyService {
       search,
     } = filters;
 
-    const where: Record<string, unknown> = {
+    const where: Record<string, any> = {
       deletedAt: null,
       status: status || "ACTIVE", // Default to ACTIVE properties
     };
@@ -54,11 +54,11 @@ export class PropertyService {
     if (propertyType) where.propertyType = propertyType;
     if (minPrice || maxPrice) {
       where.price = {};
-      if (minPrice) where.price.gte = parseFloat(minPrice);
-      if (maxPrice) where.price.lte = parseFloat(maxPrice);
+      if (minPrice) where.price.gte = parseFloat(minPrice as string);
+      if (maxPrice) where.price.lte = parseFloat(maxPrice as string);
     }
-    if (bedrooms) where.bedrooms = parseInt(bedrooms);
-    if (bathrooms) where.bathrooms = parseFloat(bathrooms);
+    if (bedrooms) where.bedrooms = parseInt(bedrooms as string);
+    if (bathrooms) where.bathrooms = parseFloat(bathrooms as string);
     if (search) {
       where.OR = [
         { title: { contains: search, mode: "insensitive" } },
