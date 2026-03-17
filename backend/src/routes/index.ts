@@ -3,9 +3,9 @@ import { Router } from "express";
 
 import accountingRoutes from "../modules/accounting/accounting.routes";
 import aiRoutes from "../modules/ai/ai.routes";
-import contactRoutes from "../modules/contact/contact.routes";
 import applicationRoutes from "../modules/applications/application.routes";
 import authRoutes from "../modules/auth/auth.routes";
+import contactRoutes from "../modules/contact/contact.routes";
 import inspectionRoutes from "../modules/inspections/inspection.routes";
 import leaseRoutes from "../modules/leases/lease.routes";
 import notificationRoutes from "../modules/notifications/notification.routes";
@@ -15,6 +15,10 @@ import uploadRoutes from "../modules/properties/upload.routes";
 import bookingRoutes from "../modules/scheduling/booking.routes";
 import trialRoutes from "../modules/trial/trial.routes";
 import workflowRoutes from "../modules/workflows/workflow.routes";
+
+import adminRoutes from "./admin.routes";
+import maintenanceRoutes from "./maintenance.routes";
+import tenantRoutes from "./tenant.routes";
 
 const router = Router();
 
@@ -33,6 +37,9 @@ router.use("/bookings", bookingRoutes);
 router.use("/trial", trialRoutes);
 router.use("/workflows", workflowRoutes);
 router.use("/contact", contactRoutes);
+router.use("/maintenance", maintenanceRoutes);
+router.use("/admin", adminRoutes);
+router.use("/tenants", tenantRoutes);
 
 // API info endpoint
 router.get("/", (req, res) => {
@@ -53,6 +60,9 @@ router.get("/", (req, res) => {
       bookings: "/api/bookings",
       trial: "/api/trial",
       workflows: "/api/workflows",
+      maintenance: "/api/maintenance",
+      admin: "/api/admin",
+      tenants: "/api/tenants",
     },
   });
 });

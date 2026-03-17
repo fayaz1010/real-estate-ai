@@ -188,7 +188,7 @@ export const PricingComparisonPage: React.FC = () => {
             <span className="text-realestate-accent"> Pricing Comparison</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-300 font-inter max-w-3xl mx-auto leading-relaxed mb-10">
-            See how RealEstate AI's flat-rate pricing stacks up against AppFolio,
+            See how RealEstate AI&apos;s flat-rate pricing stacks up against AppFolio,
             Buildium, Rent Manager, TenantCloud, and Yardi Breeze. Transparent
             pricing with no hidden fees.
           </p>
@@ -323,11 +323,11 @@ export const PricingComparisonPage: React.FC = () => {
               id="scenarios-heading"
               className="text-heading text-realestate-primary font-space-grotesk mb-4"
             >
-              What You'd Actually Pay by Portfolio Size
+              What You&apos;d Actually Pay by Portfolio Size
             </h2>
             <p className="text-gray-600 font-inter max-w-2xl mx-auto">
               Here is what property management software typically costs at different
-              portfolio sizes, compared with RealEstate AI's flat-rate pricing.
+              portfolio sizes, compared with RealEstate AI&apos;s flat-rate pricing.
             </p>
           </div>
           <div className="max-w-3xl mx-auto">
@@ -425,7 +425,7 @@ export const PricingComparisonPage: React.FC = () => {
                   ))}
                 </div>
                 <blockquote className="text-gray-600 font-inter leading-relaxed mb-6">
-                  "{testimonial.quote}"
+                  &quot;{testimonial.quote}&quot;
                 </blockquote>
                 <div>
                   <p className="font-semibold text-realestate-primary font-space-grotesk">
@@ -453,7 +453,7 @@ export const PricingComparisonPage: React.FC = () => {
             </h2>
             <p className="text-gray-300 font-inter max-w-2xl mx-auto mb-8 text-lg">
               Get more features at a fraction of the cost. Start free, upgrade
-              when you're ready, and never worry about per-unit fees again.
+              when you&apos;re ready, and never worry about per-unit fees again.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link

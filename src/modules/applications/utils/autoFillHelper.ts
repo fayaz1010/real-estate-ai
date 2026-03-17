@@ -7,6 +7,7 @@ import {
   IncomeInfo,
   Address,
   ApplicationFormData,
+  RentalHistoryEntry,
 } from "../types/application.types";
 
 export interface AutoFillSource {
@@ -77,7 +78,7 @@ export const mergeAutoFillData = (
   sorted.forEach((suggestion) => {
     Object.entries(suggestion.data).forEach(([key, value]) => {
       if (!(key in merged)) {
-        (merged as any)[key] = value;
+        (merged as Record<string, unknown>)[key] = value;
       }
     });
   });
@@ -91,7 +92,7 @@ export const mergeAutoFillData = (
 export const applyDocumentData = (
   currentForm: Partial<ApplicationFormData>,
   documentType: string,
-  extractedData: Record<string, any>,
+  extractedData: Record<string, unknown>,
 ): Partial<ApplicationFormData> => {
   const updated = { ...currentForm };
 
@@ -210,7 +211,7 @@ const detectBrowserAutofill = (): Partial<ApplicationFormData> | null => {
 };
 
 const mapPreviousApplicationToForm = (
-  application: any,
+  application: Partial<ApplicationFormData>,
 ): Partial<ApplicationFormData> => {
   return {
     personalInfo: application.personalInfo,
@@ -224,16 +225,16 @@ const mapPreviousApplicationToForm = (
   };
 };
 
-const mapUserProfileToForm = (profile: any): Partial<ApplicationFormData> => {
+const mapUserProfileToForm = (profile: Record<string, unknown>): Partial<ApplicationFormData> => {
   const formData: Partial<ApplicationFormData> = {};
 
   if (profile.firstName || profile.lastName) {
     formData.personalInfo = {
-      firstName: profile.firstName,
-      lastName: profile.lastName,
-      email: profile.email,
-      phone: profile.phone,
-      currentAddress: profile.address,
+      firstName: profile.firstName as string,
+      lastName: profile.lastName as string,
+      email: profile.email as string,
+      phone: profile.phone as string,
+      currentAddress: profile.address as Address,
     };
   }
 
@@ -242,10 +243,10 @@ const mapUserProfileToForm = (profile: any): Partial<ApplicationFormData> => {
 
 const mergeEmploymentFromPaystub = (
   current: Partial<EmploymentInfo>[],
-  paystubData: any,
+  paystubData: Record<string, unknown>,
 ): Partial<EmploymentInfo>[] => {
   const newEmployment: Partial<EmploymentInfo> = {
-    employerName: paystubData.employerName,
+    employerName: paystubData.employerName as string,
     isCurrent: true,
     verificationStatus: "pending",
   };
@@ -253,7 +254,7 @@ const mergeEmploymentFromPaystub = (
   // Check if employer already exists
   const existingIndex = current.findIndex(
     (e) =>
-      e.employerName?.toLowerCase() === paystubData.employerName?.toLowerCase(),
+      e.employerName?.toLowerCase() === (paystubData.employerName as string)?.toLowerCase(),
   );
 
   if (existingIndex >= 0) {
@@ -268,13 +269,13 @@ const mergeEmploymentFromPaystub = (
 
 const mergeIncomeFromPaystub = (
   current: Partial<IncomeInfo>[],
-  paystubData: any,
+  paystubData: Record<string, unknown>,
 ): Partial<IncomeInfo>[] => {
   const frequency = determinePayFrequency(paystubData);
 
   const newIncome: Partial<IncomeInfo> = {
     source: "employment",
-    amount: paystubData.grossPay || 0,
+    amount: (paystubData.grossPay as number) || 0,
     frequency,
     verificationStatus: "pending",
   };
@@ -292,24 +293,24 @@ const mergeIncomeFromPaystub = (
 
 const mergePersonalInfoFromID = (
   current: Partial<PersonalInfo>,
-  idData: any,
+  idData: Record<string, unknown>,
 ): Partial<PersonalInfo> => {
   return {
     ...current,
-    firstName: idData.firstName || current.firstName,
-    lastName: idData.lastName || current.lastName,
-    middleName: idData.middleName || current.middleName,
-    dateOfBirth: idData.dateOfBirth || current.dateOfBirth,
-    idType: idData.idType || current.idType,
-    idNumber: idData.idNumber || current.idNumber,
-    idExpiration: idData.expirationDate || current.idExpiration,
-    currentAddress: idData.address || current.currentAddress,
+    firstName: (idData.firstName as string) || current.firstName,
+    lastName: (idData.lastName as string) || current.lastName,
+    middleName: (idData.middleName as string) || current.middleName,
+    dateOfBirth: (idData.dateOfBirth as string) || current.dateOfBirth,
+    idType: (idData.idType as PersonalInfo["idType"]) || current.idType,
+    idNumber: (idData.idNumber as string) || current.idNumber,
+    idExpiration: (idData.expirationDate as string) || current.idExpiration,
+    currentAddress: (idData.address as Address) || current.currentAddress,
   };
 };
 
 const mergeIncomeFromBankStatement = (
   current: Partial<IncomeInfo>[],
-  bankData: any,
+  _bankData: Record<string, unknown>,
 ): Partial<IncomeInfo>[] => {
   // Could analyze deposits to estimate income
   // This is a simplified version
@@ -317,17 +318,17 @@ const mergeIncomeFromBankStatement = (
 };
 
 const mergeRentalHistoryFromLease = (
-  current: Partial<any>[],
-  leaseData: any,
-): Partial<any>[] => {
-  const newHistory = {
-    landlordName: leaseData.landlordName,
-    landlordPhone: leaseData.landlordPhone,
-    landlordEmail: leaseData.landlordEmail,
-    monthlyRent: leaseData.monthlyRent,
-    startDate: leaseData.leaseStartDate,
-    endDate: leaseData.leaseEndDate,
-    address: leaseData.propertyAddress,
+  current: Partial<RentalHistoryEntry>[],
+  leaseData: Record<string, unknown>,
+): Partial<RentalHistoryEntry>[] => {
+  const newHistory: Partial<RentalHistoryEntry> = {
+    landlordName: leaseData.landlordName as string,
+    landlordPhone: leaseData.landlordPhone as string,
+    landlordEmail: leaseData.landlordEmail as string,
+    monthlyRent: leaseData.monthlyRent as number,
+    startDate: leaseData.leaseStartDate as string,
+    endDate: leaseData.leaseEndDate as string,
+    address: leaseData.propertyAddress as Address,
     canContact: true,
     verificationStatus: "pending",
   };
@@ -336,12 +337,12 @@ const mergeRentalHistoryFromLease = (
 };
 
 const determinePayFrequency = (
-  paystubData: any,
+  paystubData: Record<string, unknown>,
 ): "weekly" | "biweekly" | "monthly" => {
   // Analyze pay period to determine frequency
   if (paystubData.payPeriodStart && paystubData.payPeriodEnd) {
-    const start = new Date(paystubData.payPeriodStart);
-    const end = new Date(paystubData.payPeriodEnd);
+    const start = new Date(paystubData.payPeriodStart as string);
+    const end = new Date(paystubData.payPeriodEnd as string);
     const days = Math.round(
       (end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24),
     );

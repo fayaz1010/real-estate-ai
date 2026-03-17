@@ -3,10 +3,10 @@ import prisma from "../../config/database";
 import { AppError } from "../../middleware/errorHandler";
 
 export class InspectionService {
-  async create(userId: string, data: Record<string, any>) {
+  async create(userId: string, data: Record<string, unknown>) {
     // Verify property exists
     const property = await prisma.property.findUnique({
-      where: { id: data.propertyId },
+      where: { id: data.propertyId as string },
     });
 
     if (!property) {
@@ -18,7 +18,7 @@ export class InspectionService {
         ...data,
         userId,
         status: "SCHEDULED",
-      } as any,
+      } as Parameters<typeof prisma.inspection.create>[0]["data"],
       include: {
         property: {
           select: {
@@ -41,10 +41,10 @@ export class InspectionService {
     return inspection;
   }
 
-  async getAll(filters: Record<string, any> = {}) {
+  async getAll(filters: Record<string, unknown> = {}) {
     const { page = 1, limit = 20, propertyId, userId, status } = filters;
 
-    const where: Record<string, any> = {};
+    const where: Record<string, unknown> = {};
     if (propertyId) where.propertyId = propertyId;
     if (userId) where.userId = userId;
     if (status) where.status = status;
@@ -69,8 +69,8 @@ export class InspectionService {
             },
           },
         },
-        skip: (page - 1) * limit,
-        take: limit,
+        skip: ((page as number) - 1) * (limit as number),
+        take: limit as number,
         orderBy: { scheduledDate: "asc" },
       }),
       prisma.inspection.count({ where }),
@@ -82,7 +82,7 @@ export class InspectionService {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit),
+        pages: Math.ceil(total / (limit as number)),
       },
     };
   }

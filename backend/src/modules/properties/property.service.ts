@@ -4,10 +4,12 @@ import { AppError } from "../../middleware/errorHandler";
 
 export class PropertyService {
   // Create property
-  async create(ownerId: string, data: Record<string, any>) {
+  async create(ownerId: string, data: Record<string, unknown>) {
     // Generate slug from title
     const slug =
-      (data.title as string).toLowerCase().replace(/[^a-z0-9]+/g, "-") + "-" + Date.now();
+      (data.title as string).toLowerCase().replace(/[^a-z0-9]+/g, "-") +
+      "-" +
+      Date.now();
 
     const property = await prisma.property.create({
       data: {
@@ -15,7 +17,7 @@ export class PropertyService {
         slug,
         ownerId,
         status: "DRAFT",
-      } as any,
+      } as Parameters<typeof prisma.property.create>[0]["data"],
       include: {
         images: true,
         owner: {
@@ -33,7 +35,7 @@ export class PropertyService {
   }
 
   // Get all properties with filters
-  async getAll(filters: Record<string, any> = {}) {
+  async getAll(filters: Record<string, unknown> = {}) {
     const {
       page = 1,
       limit = 20,
@@ -46,16 +48,17 @@ export class PropertyService {
       search,
     } = filters;
 
-    const where: Record<string, any> = {
+    const where: Record<string, unknown> = {
       deletedAt: null,
       status: status || "ACTIVE", // Default to ACTIVE properties
     };
 
     if (propertyType) where.propertyType = propertyType;
     if (minPrice || maxPrice) {
-      where.price = {};
-      if (minPrice) where.price.gte = parseFloat(minPrice as string);
-      if (maxPrice) where.price.lte = parseFloat(maxPrice as string);
+      const price: Record<string, number> = {};
+      if (minPrice) price.gte = parseFloat(minPrice as string);
+      if (maxPrice) price.lte = parseFloat(maxPrice as string);
+      where.price = price;
     }
     if (bedrooms) where.bedrooms = parseInt(bedrooms as string);
     if (bathrooms) where.bathrooms = parseFloat(bathrooms as string);
@@ -81,8 +84,8 @@ export class PropertyService {
             },
           },
         },
-        skip: (page - 1) * limit,
-        take: limit,
+        skip: ((page as number) - 1) * (limit as number),
+        take: limit as number,
         orderBy: { createdAt: "desc" },
       }),
       prisma.property.count({ where }),
@@ -94,7 +97,7 @@ export class PropertyService {
         page,
         limit,
         total,
-        pages: Math.ceil(total / limit),
+        pages: Math.ceil(total / (limit as number)),
       },
     };
   }

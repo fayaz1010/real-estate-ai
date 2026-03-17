@@ -15,10 +15,10 @@ export const validate = (schema: ZodSchema) => {
       next();
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
-        const errors = (error as any).errors?.map((err: any) => ({
+        const errors = error.errors.map((err) => ({
           field: err.path.join("."),
           message: err.message,
-        })) || [{ field: "unknown", message: error.message }];
+        }));
 
         errorResponse(
           res,
@@ -42,10 +42,10 @@ export const validateBody = (schema: ZodSchema) => {
       next();
     } catch (error: unknown) {
       if (error instanceof z.ZodError) {
-        const errors = (error as any).errors?.map((err: any) => ({
+        const errors = error.errors.map((err) => ({
           field: err.path.join("."),
           message: err.message,
-        })) || [{ field: "unknown", message: error.message }];
+        }));
 
         errorResponse(
           res,

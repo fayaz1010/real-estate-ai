@@ -167,7 +167,7 @@ export const SmallLandlordsPage: React.FC = () => {
               id="pain-points-heading"
               className="text-heading text-realestate-primary font-space-grotesk mb-4"
             >
-              Managing Rentals Shouldn't Feel Like a Second Job
+              Managing Rentals Shouldn&apos;t Feel Like a Second Job
             </h2>
             <p className="text-gray-600 font-inter max-w-2xl mx-auto">
               Most property management software is designed for large firms with
@@ -304,7 +304,7 @@ export const SmallLandlordsPage: React.FC = () => {
                   ))}
                 </div>
                 <blockquote className="text-gray-600 font-inter leading-relaxed mb-6">
-                  "{testimonial.quote}"
+                  &quot;{testimonial.quote}&quot;
                 </blockquote>
                 <div>
                   <p className="font-semibold text-realestate-primary font-space-grotesk">

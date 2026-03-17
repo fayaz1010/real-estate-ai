@@ -17,7 +17,6 @@ jest.mock("@/api/client", () => ({
 }));
 
 // ─── Type import ────────────────────────────────────────────────────────────
-
 import type { Lease } from "@/modules/leases/api/leaseService";
 
 // ─── Mock lease slice actions ───────────────────────────────────────────────

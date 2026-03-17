@@ -9,9 +9,12 @@ import {
   ChevronRight,
   FolderKanban,
   GitBranch,
+  Loader2,
   UserCheck,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
+
+import apiClient from "@/api/client";
 
 // ---------------------------------------------------------------------------
 // Types
@@ -38,72 +41,28 @@ interface Lead {
 }
 
 // ---------------------------------------------------------------------------
-// Mock Data (structured for easy API replacement)
+// Fallback Data (used when API is unavailable)
 // ---------------------------------------------------------------------------
 
-const mockProjects: Project[] = [
-  {
-    name: "Project Alpha",
-    description: "Developing a new feature for tenant screening.",
-    status: "In Development",
-  },
-  {
-    name: "Project Beta",
-    description: "Improving the rent collection process.",
-    status: "Completed",
-  },
-  {
-    name: "Project Gamma",
-    description: "Building an AI-powered maintenance prediction engine.",
-    status: "In Development",
-  },
-  {
-    name: "Project Delta",
-    description: "Redesigning the landlord onboarding flow.",
-    status: "On Hold",
-  },
+const fallbackProjects: Project[] = [
+  { name: "Project Alpha", description: "Developing a new feature for tenant screening.", status: "In Development" },
+  { name: "Project Beta", description: "Improving the rent collection process.", status: "Completed" },
+  { name: "Project Gamma", description: "Building an AI-powered maintenance prediction engine.", status: "In Development" },
+  { name: "Project Delta", description: "Redesigning the landlord onboarding flow.", status: "On Hold" },
 ];
 
-const mockPipeline: PipelineEntry[] = [
+const fallbackPipeline: PipelineEntry[] = [
   { projectName: "Project Alpha", stage: "Development" },
   { projectName: "Project Beta", stage: "Deployment" },
   { projectName: "Project Gamma", stage: "Testing" },
   { projectName: "Project Delta", stage: "Planning" },
 ];
 
-const mockLeads: Lead[] = [
-  {
-    contactInfo: {
-      name: "John Doe",
-      email: "john.doe@example.com",
-      phone: "555-123-4567",
-    },
-    status: "New",
-  },
-  {
-    contactInfo: {
-      name: "Jane Smith",
-      email: "jane.smith@example.com",
-      phone: "555-987-6543",
-    },
-    status: "Contacted",
-  },
-  {
-    contactInfo: {
-      name: "Robert Chen",
-      email: "robert.chen@example.com",
-      phone: "555-456-7890",
-    },
-    status: "Qualified",
-  },
-  {
-    contactInfo: {
-      name: "Maria Garcia",
-      email: "maria.garcia@example.com",
-      phone: "555-321-9876",
-    },
-    status: "Converted",
-  },
+const fallbackLeads: Lead[] = [
+  { contactInfo: { name: "John Doe", email: "john.doe@example.com", phone: "555-123-4567" }, status: "New" },
+  { contactInfo: { name: "Jane Smith", email: "jane.smith@example.com", phone: "555-987-6543" }, status: "Contacted" },
+  { contactInfo: { name: "Robert Chen", email: "robert.chen@example.com", phone: "555-456-7890" }, status: "Qualified" },
+  { contactInfo: { name: "Maria Garcia", email: "maria.garcia@example.com", phone: "555-321-9876" }, status: "Converted" },
 ];
 
 // ---------------------------------------------------------------------------
@@ -150,7 +109,7 @@ const TABS: { key: Tab; label: string; icon: React.ElementType }[] = [
 // Sub-components
 // ---------------------------------------------------------------------------
 
-function ProjectsSection() {
+function ProjectsSection({ projects }: { projects: Project[] }) {
   return (
     <section aria-label="Developer projects">
       <h2
@@ -160,7 +119,7 @@ function ProjectsSection() {
         Projects
       </h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
-        {mockProjects.map((project) => (
+        {projects.map((project) => (
           <div
             key={project.name}
             className="rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden"
@@ -225,7 +184,7 @@ function ProjectsSection() {
   );
 }
 
-function PipelinesSection() {
+function PipelinesSection({ pipeline }: { pipeline: PipelineEntry[] }) {
   const stageIndex = (stage: string) =>
     PIPELINE_STAGES.indexOf(stage as (typeof PIPELINE_STAGES)[number]);
 
@@ -253,7 +212,7 @@ function PipelinesSection() {
 
       {/* Pipeline rows */}
       <div className="space-y-4">
-        {mockPipeline.map((entry) => {
+        {pipeline.map((entry) => {
           const currentIdx = stageIndex(entry.stage);
           return (
             <div
@@ -327,7 +286,7 @@ function PipelinesSection() {
   );
 }
 
-function LeadsSection() {
+function LeadsSection({ leads }: { leads: Lead[] }) {
   return (
     <section aria-label="Leads">
       <h2
@@ -375,7 +334,7 @@ function LeadsSection() {
             </tr>
           </thead>
           <tbody>
-            {mockLeads.map((lead) => (
+            {leads.map((lead) => (
               <tr
                 key={lead.contactInfo.email}
                 className="border-t hover:bg-gray-50/50 transition-colors"
@@ -429,7 +388,7 @@ function LeadsSection() {
 
       {/* Mobile cards */}
       <div className="md:hidden space-y-3">
-        {mockLeads.map((lead) => (
+        {leads.map((lead) => (
           <div
             key={lead.contactInfo.email}
             className="rounded-xl shadow-sm p-4"
@@ -476,6 +435,46 @@ function LeadsSection() {
 
 export const DeveloperPortalPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<Tab>("projects");
+  const [projects, setProjects] = useState<Project[]>(fallbackProjects);
+  const [pipeline, setPipeline] = useState<PipelineEntry[]>(fallbackPipeline);
+  const [leads, setLeads] = useState<Lead[]>(fallbackLeads);
+  const [loading, setLoading] = useState(true);
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const [projRes, pipeRes, leadsRes] = await Promise.allSettled([
+        apiClient.get("/developer/projects"),
+        apiClient.get("/developer/pipeline"),
+        apiClient.get("/developer/leads"),
+      ]);
+      if (projRes.status === "fulfilled" && projRes.value.data?.data) {
+        setProjects(projRes.value.data.data);
+      }
+      if (pipeRes.status === "fulfilled" && pipeRes.value.data?.data) {
+        setPipeline(pipeRes.value.data.data);
+      }
+      if (leadsRes.status === "fulfilled" && leadsRes.value.data?.data) {
+        setLeads(leadsRes.value.data.data);
+      }
+    } catch {
+      // Fallback data already set
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#FAF6F1" }}>
+        <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#8B7355" }} />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#FAF6F1" }}>
@@ -535,9 +534,9 @@ export const DeveloperPortalPage: React.FC = () => {
 
       {/* Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === "projects" && <ProjectsSection />}
-        {activeTab === "pipelines" && <PipelinesSection />}
-        {activeTab === "leads" && <LeadsSection />}
+        {activeTab === "projects" && <ProjectsSection projects={projects} />}
+        {activeTab === "pipelines" && <PipelinesSection pipeline={pipeline} />}
+        {activeTab === "leads" && <LeadsSection leads={leads} />}
       </main>
     </div>
   );
