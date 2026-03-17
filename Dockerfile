@@ -1,4 +1,6 @@
-FROM node:18-alpine
+FROM node:18-slim
+
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
@@ -6,13 +8,13 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 
 # Install root dependencies
-RUN npm ci --ignore-scripts
+RUN npm ci
 
 # Copy backend package files
 COPY backend/package.json backend/package-lock.json ./backend/
 
 # Install backend dependencies
-RUN cd backend && npm ci --ignore-scripts
+RUN cd backend && npm ci
 
 # Copy all source code
 COPY . .
