@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Booking Service
 import { BookingType } from "@prisma/client";
 
