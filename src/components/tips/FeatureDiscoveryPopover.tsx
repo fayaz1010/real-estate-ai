@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useFeatureDiscovery } from '@/hooks/useFeatureDiscovery';
-import { TipsNotificationBell } from './TipsNotificationBell';
-import { TipCard } from './TipCard';
-import { cn } from '@/lib/utils';
+import React, { useEffect, useRef, useState } from "react";
+
+import { TipCard } from "./TipCard";
+import { TipsNotificationBell } from "./TipsNotificationBell";
+
+import { useFeatureDiscovery } from "@/hooks/useFeatureDiscovery";
+import { cn } from "@/lib/utils";
 
 interface FeatureDiscoveryPopoverProps {
   className?: string;
@@ -22,13 +24,13 @@ export const FeatureDiscoveryPopover: React.FC<
       }
     }
     if (open) {
-      document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener("mousedown", handleClickOutside);
     }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
   return (
-    <div ref={ref} className={cn('relative', className)}>
+    <div ref={ref} className={cn("relative", className)}>
       <TipsNotificationBell
         count={undismissedTips.length}
         onClick={() => setOpen((prev) => !prev)}
@@ -48,7 +50,7 @@ export const FeatureDiscoveryPopover: React.FC<
           <div className="max-h-96 overflow-y-auto p-3">
             {undismissedTips.length === 0 ? (
               <p className="px-2 py-6 text-center font-body text-sm text-primary/50">
-                You're all caught up — no new tips right now.
+                You&apos;re all caught up — no new tips right now.
               </p>
             ) : (
               <div className="flex flex-col gap-3">

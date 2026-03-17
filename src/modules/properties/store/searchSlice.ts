@@ -12,6 +12,7 @@ import {
   SavedSearch,
   Property,
   SortOption,
+  MapBounds,
 } from "../types/property.types";
 
 // Async thunks
@@ -20,8 +21,10 @@ export const searchProperties = createAsyncThunk(
   async (filters: SearchFilters, { rejectWithValue }) => {
     try {
       return await searchService.searchProperties(filters);
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -38,8 +41,10 @@ export const saveSearch = createAsyncThunk(
   ) => {
     try {
       return await searchService.saveSearch(name, filters, alertsEnabled);
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -49,8 +54,10 @@ export const fetchSavedSearches = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       return await searchService.getSavedSearches();
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -61,8 +68,10 @@ export const deleteSavedSearch = createAsyncThunk(
     try {
       await searchService.deleteSavedSearch(id);
       return id;
-    } catch (error: any) {
-      return rejectWithValue(error.message);
+    } catch (error: unknown) {
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -104,10 +113,13 @@ const searchSlice = createSlice({
         sortOrder: "desc",
       };
     },
-    setMapBounds: (state, action) => {
+    setMapBounds: (state, action: PayloadAction<MapBounds | null>) => {
       state.mapBounds = action.payload;
     },
-    setMapCenter: (state, action) => {
+    setMapCenter: (
+      state,
+      action: PayloadAction<{ lat: number; lng: number } | null>,
+    ) => {
       state.mapCenter = action.payload;
     },
     setMapZoom: (state, action: PayloadAction<number>) => {

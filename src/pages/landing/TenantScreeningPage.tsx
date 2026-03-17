@@ -1,5 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import {
   Search,
   Shield,
@@ -12,6 +10,9 @@ import {
   Cpu,
   Clock,
 } from "lucide-react";
+import React from "react";
+import { Link } from "react-router-dom";
+
 import { PageMeta } from "../../components/seo/PageMeta";
 
 const features = [
@@ -127,7 +128,11 @@ const jsonLd = {
 
 export const TenantScreeningPage: React.FC = () => {
   return (
-    <main className="min-h-screen" role="main" style={{ backgroundColor: "#F5F8F4" }}>
+    <main
+      className="min-h-screen"
+      role="main"
+      style={{ backgroundColor: "#F5F8F4" }}
+    >
       <PageMeta
         title="Tenant Screening Software"
         description="Simplify tenant screening with RealEstate AI. Get background checks, credit reports, and eviction history in minutes."
@@ -158,7 +163,10 @@ export const TenantScreeningPage: React.FC = () => {
         <div className="section-container relative z-10 text-center">
           <span
             className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-6 font-inter"
-            style={{ backgroundColor: "rgba(184, 212, 163, 0.2)", color: "#B8D4A3" }}
+            style={{
+              backgroundColor: "rgba(184, 212, 163, 0.2)",
+              color: "#B8D4A3",
+            }}
           >
             AI-Powered Tenant Screening
           </span>
@@ -170,8 +178,9 @@ export const TenantScreeningPage: React.FC = () => {
             <span style={{ color: "#B8D4A3" }}>Screening</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-200 font-inter max-w-3xl mx-auto leading-relaxed mb-10">
-            Screen tenants faster and smarter with AI. Get comprehensive background checks,
-            credit reports, eviction history, and AI-powered risk scores — all in minutes.
+            Screen tenants faster and smarter with AI. Get comprehensive
+            background checks, credit reports, eviction history, and AI-powered
+            risk scores — all in minutes.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -199,7 +208,11 @@ export const TenantScreeningPage: React.FC = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16" style={{ backgroundColor: "#F5F8F4" }} aria-labelledby="stats-heading">
+      <section
+        className="py-16"
+        style={{ backgroundColor: "#F5F8F4" }}
+        aria-labelledby="stats-heading"
+      >
         <div className="section-container">
           <h2 id="stats-heading" className="sr-only">
             Screening Statistics
@@ -231,7 +244,10 @@ export const TenantScreeningPage: React.FC = () => {
           <div className="text-center mb-14">
             <span
               className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-4 font-inter"
-              style={{ backgroundColor: "rgba(184, 212, 163, 0.2)", color: "#5B7F63" }}
+              style={{
+                backgroundColor: "rgba(184, 212, 163, 0.2)",
+                color: "#5B7F63",
+              }}
             >
               Core Features
             </span>
@@ -242,9 +258,12 @@ export const TenantScreeningPage: React.FC = () => {
             >
               Screening Made Simple and Smart
             </h2>
-            <p className="font-inter max-w-2xl mx-auto" style={{ color: "#8FAE7E" }}>
-              Everything you need to find reliable tenants and protect your investment,
-              powered by artificial intelligence.
+            <p
+              className="font-inter max-w-2xl mx-auto"
+              style={{ color: "#8FAE7E" }}
+            >
+              Everything you need to find reliable tenants and protect your
+              investment, powered by artificial intelligence.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
@@ -272,7 +291,10 @@ export const TenantScreeningPage: React.FC = () => {
                   >
                     {feature.title}
                   </h3>
-                  <p className="font-inter leading-relaxed" style={{ color: "#8FAE7E" }}>
+                  <p
+                    className="font-inter leading-relaxed"
+                    style={{ color: "#8FAE7E" }}
+                  >
                     {feature.description}
                   </p>
                 </article>
@@ -292,7 +314,10 @@ export const TenantScreeningPage: React.FC = () => {
           <div className="text-center mb-14">
             <span
               className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-4 font-inter"
-              style={{ backgroundColor: "rgba(184, 212, 163, 0.2)", color: "#B8D4A3" }}
+              style={{
+                backgroundColor: "rgba(184, 212, 163, 0.2)",
+                color: "#B8D4A3",
+              }}
             >
               Advanced Capabilities
             </span>
@@ -303,8 +328,8 @@ export const TenantScreeningPage: React.FC = () => {
               Go Beyond Traditional Screening
             </h2>
             <p className="text-gray-200 font-inter max-w-2xl mx-auto">
-              RealEstate AI adds intelligent analysis that goes beyond what manual
-              screening can achieve.
+              RealEstate AI adds intelligent analysis that goes beyond what
+              manual screening can achieve.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -343,12 +368,18 @@ export const TenantScreeningPage: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-white" aria-labelledby="testimonials-heading">
+      <section
+        className="py-20 bg-white"
+        aria-labelledby="testimonials-heading"
+      >
         <div className="section-container">
           <div className="text-center mb-14">
             <span
               className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-4 font-inter"
-              style={{ backgroundColor: "rgba(184, 212, 163, 0.2)", color: "#5B7F63" }}
+              style={{
+                backgroundColor: "rgba(184, 212, 163, 0.2)",
+                color: "#5B7F63",
+              }}
             >
               Landlord Reviews
             </span>
@@ -384,10 +415,16 @@ export const TenantScreeningPage: React.FC = () => {
                   &ldquo;{testimonial.quote}&rdquo;
                 </blockquote>
                 <div>
-                  <p className="font-semibold font-space-grotesk" style={{ color: "#5B7F63" }}>
+                  <p
+                    className="font-semibold font-space-grotesk"
+                    style={{ color: "#5B7F63" }}
+                  >
                     {testimonial.name}
                   </p>
-                  <p className="text-sm font-inter" style={{ color: "#8FAE7E" }}>
+                  <p
+                    className="text-sm font-inter"
+                    style={{ color: "#8FAE7E" }}
+                  >
                     {testimonial.role}
                   </p>
                 </div>
@@ -398,7 +435,11 @@ export const TenantScreeningPage: React.FC = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20" style={{ backgroundColor: "#F5F8F4" }} aria-labelledby="cta-heading">
+      <section
+        className="py-20"
+        style={{ backgroundColor: "#F5F8F4" }}
+        aria-labelledby="cta-heading"
+      >
         <div className="section-container">
           <div
             className="p-10 md:p-16 text-center rounded-3xl shadow-lg"
@@ -413,8 +454,9 @@ export const TenantScreeningPage: React.FC = () => {
               Screen Smarter, Not Harder
             </h2>
             <p className="text-gray-300 font-inter max-w-2xl mx-auto mb-8 text-lg">
-              Let AI handle the heavy lifting. Get comprehensive tenant screening
-              reports with AI risk scores in under 10 minutes. Free to start.
+              Let AI handle the heavy lifting. Get comprehensive tenant
+              screening reports with AI risk scores in under 10 minutes. Free to
+              start.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link

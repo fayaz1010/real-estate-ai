@@ -1,4 +1,4 @@
-﻿// PLACEHOLDER FILE: utils\documentParser.ts
+// PLACEHOLDER FILE: utils\documentParser.ts
 // TODO: Add your implementation here
 
 import { Address } from "../types/application.types";
@@ -13,7 +13,7 @@ export interface ParsedDocument {
     | "employment_letter"
     | "unknown";
   confidence: number; // 0-100
-  extractedData: Record<string, any>;
+  extractedData: Record<string, unknown>;
   rawText?: string;
 }
 
@@ -86,7 +86,7 @@ export const parseDocument = async (
     const detectedType = documentType || detectDocumentType(rawText);
 
     // Parse based on type
-    let extractedData: Record<string, any> = {};
+    let extractedData: Record<string, unknown> = {};
     let confidence = 0;
 
     switch (detectedType) {
@@ -131,7 +131,7 @@ export const parseDocument = async (
     }
 
     return {
-      type: detectedType as any,
+      type: detectedType as ParsedDocument["type"],
       confidence,
       extractedData,
       rawText,
@@ -425,7 +425,7 @@ const parseLease = (text: string): Partial<LeaseData> => {
  * Calculate confidence score based on required fields
  */
 const calculateConfidence = (
-  data: Record<string, any>,
+  data: Record<string, unknown>,
   requiredFields: string[],
 ): number => {
   const foundFields = requiredFields.filter((field) => {

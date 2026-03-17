@@ -7,7 +7,9 @@ import accountingController from "./accounting.controller";
 const router = Router();
 
 router.use(authenticate);
-router.use(authorize("LANDLORD", "PROPERTY_MANAGER", "BUSINESS", "ADMIN", "SUPER_ADMIN"));
+router.use(
+  authorize("LANDLORD", "PROPERTY_MANAGER", "BUSINESS", "ADMIN", "SUPER_ADMIN"),
+);
 
 router.get("/summary", accountingController.getDashboardSummary);
 router.get("/income-statement", accountingController.getIncomeStatement);

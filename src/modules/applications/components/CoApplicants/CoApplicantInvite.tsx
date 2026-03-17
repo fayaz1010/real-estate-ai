@@ -111,7 +111,16 @@ const CoApplicantInvite: React.FC<CoApplicantInviteProps> = ({
             </label>
             <select
               value={relationship}
-              onChange={(e) => setRelationship(e.target.value as "spouse" | "partner" | "roommate" | "family" | "other")}
+              onChange={(e) =>
+                setRelationship(
+                  e.target.value as
+                    | "spouse"
+                    | "partner"
+                    | "roommate"
+                    | "family"
+                    | "other",
+                )
+              }
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
               <option value="spouse">Spouse</option>

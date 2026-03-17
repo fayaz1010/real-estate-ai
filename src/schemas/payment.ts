@@ -3,30 +3,30 @@
  * Aligns with the Prisma Payment model.
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * Valid payment types matching the Prisma PaymentType enum.
  */
 export const PAYMENT_TYPES = [
-  'RENT',
-  'DEPOSIT',
-  'LATE_FEE',
-  'MAINTENANCE',
-  'UTILITY',
-  'OTHER',
+  "RENT",
+  "DEPOSIT",
+  "LATE_FEE",
+  "MAINTENANCE",
+  "UTILITY",
+  "OTHER",
 ] as const;
 
 /**
  * Valid payment statuses matching the Prisma PaymentStatus enum.
  */
 export const PAYMENT_STATUSES = [
-  'PAYMENT_PENDING',
-  'PAID',
-  'OVERDUE',
-  'PARTIAL',
-  'REFUNDED',
-  'PAYMENT_CANCELLED',
+  "PAYMENT_PENDING",
+  "PAID",
+  "OVERDUE",
+  "PARTIAL",
+  "REFUNDED",
+  "PAYMENT_CANCELLED",
 ] as const;
 
 /**
@@ -39,8 +39,8 @@ export const PaymentSchema = z.object({
   payerId: z.string().uuid(),
   type: z.enum(PAYMENT_TYPES),
   status: z.enum(PAYMENT_STATUSES),
-  amount: z.number().positive('Amount must be positive'),
-  currency: z.string().length(3).default('USD'),
+  amount: z.number().positive("Amount must be positive"),
+  currency: z.string().length(3).default("USD"),
   dueDate: z.coerce.date(),
   paidAt: z.coerce.date().nullable(),
   stripePaymentIntentId: z.string().nullable(),
@@ -57,10 +57,10 @@ export type PaymentSchemaType = z.infer<typeof PaymentSchema>;
  * Zod schema for processing/creating a new payment.
  */
 export const ProcessPaymentSchema = z.object({
-  leaseId: z.string().uuid('Valid lease ID is required'),
+  leaseId: z.string().uuid("Valid lease ID is required"),
   type: z.enum(PAYMENT_TYPES),
-  amount: z.number().positive('Amount must be positive'),
-  currency: z.string().length(3).default('USD'),
+  amount: z.number().positive("Amount must be positive"),
+  currency: z.string().length(3).default("USD"),
   dueDate: z.coerce.date(),
   stripePaymentIntentId: z.string().optional(),
   description: z.string().max(500).optional(),

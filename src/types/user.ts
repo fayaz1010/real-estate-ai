@@ -3,12 +3,12 @@
  */
 
 export enum UserRole {
-  TENANT = 'TENANT',
-  LANDLORD = 'LANDLORD',
-  AGENT = 'AGENT',
-  PROPERTY_MANAGER = 'PROPERTY_MANAGER',
-  BUSINESS = 'BUSINESS',
-  ADMIN = 'ADMIN',
+  TENANT = "TENANT",
+  LANDLORD = "LANDLORD",
+  AGENT = "AGENT",
+  PROPERTY_MANAGER = "PROPERTY_MANAGER",
+  BUSINESS = "BUSINESS",
+  ADMIN = "ADMIN",
 }
 
 export interface TenantProfile {

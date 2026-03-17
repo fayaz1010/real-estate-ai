@@ -1,5 +1,3 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
-import Webcam from 'react-webcam';
 import {
   Camera,
   RotateCcw,
@@ -8,11 +6,13 @@ import {
   Wrench,
   FileText,
   SwitchCamera,
-} from 'lucide-react';
+} from "lucide-react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
+import Webcam from "react-webcam";
 
 /* ── Types ─────────────────────────────────────────────── */
 
-export type CaptureMode = 'property' | 'maintenance' | 'document';
+export type CaptureMode = "property" | "maintenance" | "document";
 
 export interface CameraCaptureProps {
   /** Which capture context to use — affects labels and aspect hints */
@@ -30,32 +30,34 @@ const modeConfig: Record<
   { label: string; icon: React.ElementType; hint: string }
 > = {
   property: {
-    label: 'Property Photo',
+    label: "Property Photo",
     icon: Building,
-    hint: 'Hold your device in landscape for best results',
+    hint: "Hold your device in landscape for best results",
   },
   maintenance: {
-    label: 'Maintenance Issue',
+    label: "Maintenance Issue",
     icon: Wrench,
-    hint: 'Focus on the area that needs attention',
+    hint: "Focus on the area that needs attention",
   },
   document: {
-    label: 'Document Scan',
+    label: "Document Scan",
     icon: FileText,
-    hint: 'Align the document within the frame and hold steady',
+    hint: "Align the document within the frame and hold steady",
   },
 };
 
 /* ── Component ─────────────────────────────────────────── */
 
 export const CameraCapture: React.FC<CameraCaptureProps> = ({
-  mode = 'property',
+  mode = "property",
   onCapture,
   onClose,
 }) => {
   const webcamRef = useRef<Webcam>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
-  const [facingMode, setFacingMode] = useState<'environment' | 'user'>('environment');
+  const [facingMode, setFacingMode] = useState<"environment" | "user">(
+    "environment",
+  );
   const [cameraReady, setCameraReady] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -79,20 +81,22 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
     setCameraReady(false);
     if (err instanceof DOMException) {
       switch (err.name) {
-        case 'NotAllowedError':
-          setError('Camera access was denied. Please grant camera permissions in your browser settings.');
+        case "NotAllowedError":
+          setError(
+            "Camera access was denied. Please grant camera permissions in your browser settings.",
+          );
           break;
-        case 'NotFoundError':
-          setError('No camera device found on this device.');
+        case "NotFoundError":
+          setError("No camera device found on this device.");
           break;
-        case 'NotReadableError':
-          setError('Camera is already in use by another application.');
+        case "NotReadableError":
+          setError("Camera is already in use by another application.");
           break;
         default:
           setError(`Camera error: ${err.message}`);
       }
     } else {
-      setError('Unable to access the camera. Please check your permissions.');
+      setError("Unable to access the camera. Please check your permissions.");
     }
   }, []);
 
@@ -110,25 +114,25 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
   }, []);
 
   const toggleFacingMode = useCallback(() => {
-    setFacingMode((prev) => (prev === 'environment' ? 'user' : 'environment'));
+    setFacingMode((prev) => (prev === "environment" ? "user" : "environment"));
   }, []);
 
   /* ── Styles (inline for portability) ─────────────────── */
 
   const buttonBase: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
     gap: 8,
-    border: 'none',
+    border: "none",
     borderRadius: 8,
-    cursor: 'pointer',
+    cursor: "pointer",
     fontFamily: "'Inter', sans-serif",
     fontSize: 15,
     fontWeight: 500,
     minHeight: 44,
-    padding: '12px 20px',
-    transition: 'opacity 200ms ease',
+    padding: "12px 20px",
+    transition: "opacity 200ms ease",
   };
 
   /* ── Render ──────────────────────────────────────────── */
@@ -136,29 +140,29 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
   return (
     <div
       style={{
-        display: 'flex',
-        flexDirection: 'column',
+        display: "flex",
+        flexDirection: "column",
         gap: 16,
-        width: '100%',
+        width: "100%",
         maxWidth: 480,
-        margin: '0 auto',
+        margin: "0 auto",
       }}
     >
       {/* Header */}
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <ModeIcon size={20} style={{ color: '#8B7355' }} />
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <ModeIcon size={20} style={{ color: "#8B7355" }} />
           <span
             style={{
               fontFamily: "'DM Serif Display', serif",
               fontSize: 18,
-              color: '#2D2A26',
+              color: "#2D2A26",
             }}
           >
             {config.label}
@@ -170,8 +174,8 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
             aria-label="Close camera"
             style={{
               ...buttonBase,
-              backgroundColor: 'transparent',
-              color: '#2D2A26',
+              backgroundColor: "transparent",
+              color: "#2D2A26",
               padding: 8,
               minWidth: 44,
             }}
@@ -186,7 +190,7 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
         style={{
           margin: 0,
           fontSize: 13,
-          color: '#A0926B',
+          color: "#A0926B",
           fontFamily: "'Inter', sans-serif",
         }}
       >
@@ -200,8 +204,8 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
           style={{
             padding: 12,
             fontSize: 14,
-            color: '#991b1b',
-            backgroundColor: '#fef2f2',
+            color: "#991b1b",
+            backgroundColor: "#fef2f2",
             borderRadius: 8,
             fontFamily: "'Inter', sans-serif",
           }}
@@ -214,11 +218,11 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
       {!capturedImage && !error && (
         <div
           style={{
-            position: 'relative',
+            position: "relative",
             borderRadius: 12,
-            overflow: 'hidden',
-            backgroundColor: '#000',
-            aspectRatio: mode === 'document' ? '3/4' : '4/3',
+            overflow: "hidden",
+            backgroundColor: "#000",
+            aspectRatio: mode === "document" ? "3/4" : "4/3",
           }}
         >
           <Webcam
@@ -234,21 +238,21 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
             onUserMedia={handleUserMedia}
             onUserMediaError={handleUserMediaError}
             style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
             }}
           />
 
           {/* Document scan guide overlay */}
-          {mode === 'document' && cameraReady && (
+          {mode === "document" && cameraReady && (
             <div
               style={{
-                position: 'absolute',
-                inset: '10%',
-                border: '2px dashed rgba(196, 168, 130, 0.7)',
+                position: "absolute",
+                inset: "10%",
+                border: "2px dashed rgba(196, 168, 130, 0.7)",
                 borderRadius: 8,
-                pointerEvents: 'none',
+                pointerEvents: "none",
               }}
             />
           )}
@@ -260,16 +264,16 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
         <div
           style={{
             borderRadius: 12,
-            overflow: 'hidden',
-            border: '2px solid #C4A882',
+            overflow: "hidden",
+            border: "2px solid #C4A882",
           }}
         >
           <img
             src={capturedImage}
             alt={`Captured ${config.label.toLowerCase()}`}
             style={{
-              width: '100%',
-              display: 'block',
+              width: "100%",
+              display: "block",
             }}
           />
         </div>
@@ -278,9 +282,9 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
       {/* Action Buttons */}
       <div
         style={{
-          display: 'flex',
+          display: "flex",
           gap: 12,
-          flexWrap: 'wrap',
+          flexWrap: "wrap",
         }}
       >
         {!capturedImage && !error && (
@@ -291,8 +295,8 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
               style={{
                 ...buttonBase,
                 flex: 1,
-                backgroundColor: cameraReady ? '#8B7355' : '#C4A882',
-                color: '#fff',
+                backgroundColor: cameraReady ? "#8B7355" : "#C4A882",
+                color: "#fff",
                 opacity: cameraReady ? 1 : 0.6,
               }}
             >
@@ -305,10 +309,10 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
               aria-label="Switch camera"
               style={{
                 ...buttonBase,
-                backgroundColor: '#FAF6F1',
-                color: '#8B7355',
-                border: '1px solid #C4A882',
-                padding: '12px 16px',
+                backgroundColor: "#FAF6F1",
+                color: "#8B7355",
+                border: "1px solid #C4A882",
+                padding: "12px 16px",
               }}
             >
               <SwitchCamera size={20} />
@@ -322,8 +326,8 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
             style={{
               ...buttonBase,
               flex: 1,
-              backgroundColor: '#A0926B',
-              color: '#fff',
+              backgroundColor: "#A0926B",
+              color: "#fff",
             }}
           >
             <RotateCcw size={20} />
@@ -337,8 +341,8 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
             style={{
               ...buttonBase,
               flex: 1,
-              backgroundColor: '#8B7355',
-              color: '#fff',
+              backgroundColor: "#8B7355",
+              color: "#fff",
             }}
           >
             <Camera size={20} />

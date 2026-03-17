@@ -114,8 +114,7 @@ export class WorkflowService {
       where: { id: workflowId, userId },
     });
     if (!workflow) throw new AppError("Workflow not found", 404);
-    if (!workflow.isActive)
-      throw new AppError("Workflow is not active", 400);
+    if (!workflow.isActive) throw new AppError("Workflow is not active", 400);
 
     const execution = await prisma.workflowExecution.create({
       data: {

@@ -48,7 +48,9 @@ export class AuthService {
         firstName: data.firstName,
         lastName: data.lastName,
         phone: data.phone,
-        role: data.role as Parameters<typeof prisma.user.create>[0]["data"]["role"],
+        role: data.role as Parameters<
+          typeof prisma.user.create
+        >[0]["data"]["role"],
         status: "PENDING_VERIFICATION",
       },
       select: {

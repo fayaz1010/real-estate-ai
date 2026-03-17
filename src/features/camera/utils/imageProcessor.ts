@@ -5,12 +5,12 @@
 export function generateThumbnail(
   dataUrl: string,
   maxWidth = 200,
-  maxHeight = 200
+  maxHeight = 200,
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement("canvas");
       let { width, height } = img;
 
       if (width > maxWidth || height > maxHeight) {
@@ -21,15 +21,15 @@ export function generateThumbnail(
 
       canvas.width = width;
       canvas.height = height;
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       if (!ctx) {
-        reject(new Error('Failed to get canvas context'));
+        reject(new Error("Failed to get canvas context"));
         return;
       }
       ctx.drawImage(img, 0, 0, width, height);
-      resolve(canvas.toDataURL('image/jpeg', 0.7));
+      resolve(canvas.toDataURL("image/jpeg", 0.7));
     };
-    img.onerror = () => reject(new Error('Failed to load image'));
+    img.onerror = () => reject(new Error("Failed to load image"));
     img.src = dataUrl;
   });
 }
@@ -41,7 +41,7 @@ export function blobToDataUrl(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onloadend = () => resolve(reader.result as string);
-    reader.onerror = () => reject(new Error('Failed to read blob'));
+    reader.onerror = () => reject(new Error("Failed to read blob"));
     reader.readAsDataURL(blob);
   });
 }
@@ -55,22 +55,22 @@ export function applyPerspectiveCorrection(
   dataUrl: string,
   corners: { x: number; y: number }[],
   outputWidth = 800,
-  outputHeight = 1100
+  outputHeight = 1100,
 ): Promise<string> {
   return new Promise((resolve, reject) => {
     if (corners.length !== 4) {
-      reject(new Error('Exactly 4 corner points are required'));
+      reject(new Error("Exactly 4 corner points are required"));
       return;
     }
 
     const img = new Image();
     img.onload = () => {
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement("canvas");
       canvas.width = outputWidth;
       canvas.height = outputHeight;
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       if (!ctx) {
-        reject(new Error('Failed to get canvas context'));
+        reject(new Error("Failed to get canvas context"));
         return;
       }
 
@@ -103,9 +103,9 @@ export function applyPerspectiveCorrection(
         }
       }
 
-      resolve(canvas.toDataURL('image/jpeg', 0.9));
+      resolve(canvas.toDataURL("image/jpeg", 0.9));
     };
-    img.onerror = () => reject(new Error('Failed to load image'));
+    img.onerror = () => reject(new Error("Failed to load image"));
     img.src = dataUrl;
   });
 }
@@ -115,19 +115,19 @@ export function applyPerspectiveCorrection(
  */
 export function enhanceImage(
   dataUrl: string,
-  options: { brightness?: number; contrast?: number; grayscale?: boolean } = {}
+  options: { brightness?: number; contrast?: number; grayscale?: boolean } = {},
 ): Promise<string> {
   const { brightness = 0, contrast = 0, grayscale = false } = options;
 
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement("canvas");
       canvas.width = img.width;
       canvas.height = img.height;
-      const ctx = canvas.getContext('2d');
+      const ctx = canvas.getContext("2d");
       if (!ctx) {
-        reject(new Error('Failed to get canvas context'));
+        reject(new Error("Failed to get canvas context"));
         return;
       }
 
@@ -135,14 +135,14 @@ export function enhanceImage(
       const filters: string[] = [];
       if (brightness !== 0) filters.push(`brightness(${1 + brightness / 100})`);
       if (contrast !== 0) filters.push(`contrast(${1 + contrast / 100})`);
-      if (grayscale) filters.push('grayscale(1)');
+      if (grayscale) filters.push("grayscale(1)");
 
-      ctx.filter = filters.length > 0 ? filters.join(' ') : 'none';
+      ctx.filter = filters.length > 0 ? filters.join(" ") : "none";
       ctx.drawImage(img, 0, 0);
 
-      resolve(canvas.toDataURL('image/jpeg', 0.9));
+      resolve(canvas.toDataURL("image/jpeg", 0.9));
     };
-    img.onerror = () => reject(new Error('Failed to load image'));
+    img.onerror = () => reject(new Error("Failed to load image"));
     img.src = dataUrl;
   });
 }
@@ -151,11 +151,11 @@ export function enhanceImage(
  * Convert a canvas video frame capture to a data URL.
  */
 export function captureVideoFrame(video: HTMLVideoElement): string {
-  const canvas = document.createElement('canvas');
+  const canvas = document.createElement("canvas");
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
-  const ctx = canvas.getContext('2d');
-  if (!ctx) throw new Error('Failed to get canvas context');
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Failed to get canvas context");
   ctx.drawImage(video, 0, 0);
-  return canvas.toDataURL('image/jpeg', 0.92);
+  return canvas.toDataURL("image/jpeg", 0.92);
 }

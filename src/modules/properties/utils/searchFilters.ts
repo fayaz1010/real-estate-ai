@@ -1,7 +1,14 @@
 // FILE PATH: src/modules/properties/utils/searchFilters.ts
 // Module 1.2: Property Listings Management - Search Filter Utilities
 
-import { Property, SearchFilters, MapBounds } from "../types/property.types";
+import {
+  Property,
+  SearchFilters,
+  MapBounds,
+  ListingType,
+  PropertyType,
+  SortOption,
+} from "../types/property.types";
 
 export const searchFilterUtils = {
   /**
@@ -327,9 +334,9 @@ export const searchFilterUtils = {
 
     if (params.has("location")) filters.location = params.get("location")!;
     if (params.has("listingType"))
-      filters.listingType = params.get("listingType") as any;
+      filters.listingType = params.get("listingType") as ListingType;
     if (params.has("propertyType")) {
-      filters.propertyType = params.getAll("propertyType") as any[];
+      filters.propertyType = params.getAll("propertyType") as PropertyType[];
     }
     if (params.has("priceMin"))
       filters.priceMin = Number(params.get("priceMin"));
@@ -345,9 +352,10 @@ export const searchFilterUtils = {
       filters.petFriendly = params.get("petFriendly") === "true";
     if (params.has("furnished"))
       filters.furnished = params.get("furnished") === "true";
-    if (params.has("sortBy")) filters.sortBy = params.get("sortBy") as any;
+    if (params.has("sortBy"))
+      filters.sortBy = params.get("sortBy") as SortOption;
     if (params.has("sortOrder"))
-      filters.sortOrder = params.get("sortOrder") as any;
+      filters.sortOrder = params.get("sortOrder") as "asc" | "desc";
     if (params.has("page")) filters.page = Number(params.get("page"));
     if (params.has("limit")) filters.limit = Number(params.get("limit"));
 

@@ -1,10 +1,10 @@
-import { SetupGuide } from '../types/onboarding';
+import { SetupGuide } from "../types/onboarding";
 
 export const setupGuides: SetupGuide[] = [
   {
-    slug: 'verify-email',
-    title: 'Verify Your Email Address',
-    category: 'account',
+    slug: "verify-email",
+    title: "Verify Your Email Address",
+    category: "account",
     content: `# Verify Your Email Address
 
 Confirming your email address is the first step to securing your account and unlocking all platform features.
@@ -28,9 +28,9 @@ Confirming your email address is the first step to securing your account and unl
 `,
   },
   {
-    slug: 'setup-two-factor',
-    title: 'Set Up Two-Factor Authentication',
-    category: 'account',
+    slug: "setup-two-factor",
+    title: "Set Up Two-Factor Authentication",
+    category: "account",
     content: `# Set Up Two-Factor Authentication
 
 Two-factor authentication (2FA) adds a critical layer of security to your account by requiring a second form of verification when you log in.
@@ -58,9 +58,9 @@ Two-factor authentication (2FA) adds a critical layer of security to your accoun
 `,
   },
   {
-    slug: 'add-first-property',
-    title: 'Add Your First Property',
-    category: 'properties',
+    slug: "add-first-property",
+    title: "Add Your First Property",
+    category: "properties",
     content: `# Add Your First Property
 
 Getting your first property listed is the foundation for managing your real estate portfolio on our platform.
@@ -91,9 +91,9 @@ Once published, your property appears in search results and is ready to receive 
 `,
   },
   {
-    slug: 'setup-rent-collection',
-    title: 'Set Up Rent Collection',
-    category: 'properties',
+    slug: "setup-rent-collection",
+    title: "Set Up Rent Collection",
+    category: "properties",
     content: `# Set Up Rent Collection
 
 Automate your rent collection to ensure timely payments and reduce administrative work.
@@ -121,9 +121,9 @@ View all payment history under **Billing > Payment History**. Export reports for
 `,
   },
   {
-    slug: 'invite-tenants',
-    title: 'Invite Your Tenants to the Portal',
-    category: 'tenants',
+    slug: "invite-tenants",
+    title: "Invite Your Tenants to the Portal",
+    category: "tenants",
     content: `# Invite Your Tenants to the Portal
 
 Give your tenants access to their own portal where they can pay rent, submit maintenance requests, and communicate with you.
@@ -155,9 +155,9 @@ For multiple tenants:
 `,
   },
   {
-    slug: 'setup-tenant-screening',
-    title: 'Set Up Tenant Screening',
-    category: 'tenants',
+    slug: "setup-tenant-screening",
+    title: "Set Up Tenant Screening",
+    category: "tenants",
     content: `# Set Up Tenant Screening
 
 Tenant screening helps you make informed decisions by providing background checks, credit reports, and rental history verification.
@@ -188,9 +188,9 @@ All screening is conducted in compliance with the Fair Credit Reporting Act (FCR
 `,
   },
   {
-    slug: 'connect-bank-account',
-    title: 'Connect Your Bank Account',
-    category: 'billing',
+    slug: "connect-bank-account",
+    title: "Connect Your Bank Account",
+    category: "billing",
     content: `# Connect Your Bank Account
 
 Link your bank account to receive rent payments, process refunds, and manage your property finances all in one place.
@@ -217,9 +217,9 @@ Link your bank account to receive rent payments, process refunds, and manage you
 `,
   },
   {
-    slug: 'setup-payment-reminders',
-    title: 'Set Up Payment Reminders',
-    category: 'billing',
+    slug: "setup-payment-reminders",
+    title: "Set Up Payment Reminders",
+    category: "billing",
     content: `# Set Up Payment Reminders
 
 Automated payment reminders help ensure on-time rent payments and reduce the need for manual follow-ups.
@@ -249,9 +249,9 @@ Automated payment reminders help ensure on-time rent payments and reduce the nee
 `,
   },
   {
-    slug: 'connect-google-calendar',
-    title: 'Connect Your Google Calendar',
-    category: 'integrations',
+    slug: "connect-google-calendar",
+    title: "Connect Your Google Calendar",
+    category: "integrations",
     content: `# Connect Your Google Calendar
 
 Sync your RealEstateAI events with Google Calendar to keep all your property management activities in one place.
@@ -283,9 +283,9 @@ Sync your RealEstateAI events with Google Calendar to keep all your property man
 `,
   },
   {
-    slug: 'connect-stripe',
-    title: 'Connect Your Stripe Account',
-    category: 'integrations',
+    slug: "connect-stripe",
+    title: "Connect Your Stripe Account",
+    category: "integrations",
     content: `# Connect Your Stripe Account
 
 Stripe integration enables secure online payment processing for rent collection, deposits, and fees.

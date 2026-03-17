@@ -1,10 +1,6 @@
 // FILE PATH: src/pages/HomePage.tsx
 // RealEstate AI - Homepage / Landing Page
 
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
-import { PageMeta } from "../components/seo";
 import {
   Shield,
   CreditCard,
@@ -24,6 +20,10 @@ import {
   PieChart,
   Activity,
 } from "lucide-react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
+import { PageMeta } from "../components/seo";
 
 /* ------------------------------------------------------------------ */
 /*  1. HERO SECTION                                                    */
@@ -44,9 +44,7 @@ const HeroSection: React.FC = () => (
       <div className="max-w-3xl mx-auto text-center animate-fade-in">
         <h1 className="text-display text-4xl sm:text-5xl md:text-6xl text-white leading-tight mb-6">
           Property Management,{" "}
-          <span className="text-realestate-accent">
-            Powered by AI
-          </span>
+          <span className="text-realestate-accent">Powered by AI</span>
         </h1>
 
         <p className="font-inter text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
@@ -205,8 +203,9 @@ const FeatureCards: React.FC = () => (
           Everything You Need to Manage Smarter
         </h2>
         <p className="font-inter text-gray-500 max-w-2xl mx-auto">
-          Manage smarter. Grow faster. Stress less. From screening to scheduling,
-          our AI handles the heavy lifting so you can focus on growing your portfolio.
+          Manage smarter. Grow faster. Stress less. From screening to
+          scheduling, our AI handles the heavy lifting so you can focus on
+          growing your portfolio.
         </p>
       </div>
 
@@ -267,10 +266,7 @@ const stats = [
 ];
 
 const AIShowcase: React.FC = () => (
-  <section
-    className="py-20 bg-[#F0F9FF]"
-    aria-labelledby="ai-showcase-heading"
-  >
+  <section className="py-20 bg-[#F0F9FF]" aria-labelledby="ai-showcase-heading">
     <div className="section-container">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         {/* Left - Text Content */}
@@ -366,10 +362,7 @@ const AIShowcase: React.FC = () => (
                   />
                 </div>
                 {/* Bar chart mock */}
-                <div
-                  className="flex items-end gap-2 h-32"
-                  aria-hidden="true"
-                >
+                <div className="flex items-end gap-2 h-32" aria-hidden="true">
                   {[40, 55, 45, 70, 60, 80, 75, 90, 85, 95, 88, 100].map(
                     (h, i) => (
                       <div
@@ -377,7 +370,7 @@ const AIShowcase: React.FC = () => (
                         className="flex-1 rounded-t-md bg-gradient-to-t from-realestate-accent/80 to-realestate-accent/30 transition-all duration-300"
                         style={{ height: `${h}%` }}
                       />
-                    )
+                    ),
                   )}
                 </div>
                 <div className="flex justify-between mt-2 text-[10px] text-gray-400 font-inter">
@@ -616,7 +609,9 @@ interface TestimonialCardProps {
   testimonial: (typeof testimonials)[number];
 }
 
-const TestimonialCard: React.FC<TestimonialCardProps> = ({ testimonial: t }) => (
+const TestimonialCard: React.FC<TestimonialCardProps> = ({
+  testimonial: t,
+}) => (
   <blockquote className="card-elevated flex flex-col h-full">
     <div className="flex gap-0.5 mb-4">
       {Array.from({ length: t.rating }).map((_, i) => (
@@ -656,7 +651,12 @@ const tiers = [
     price: "$49",
     period: "/mo",
     description: "For small landlords getting started",
-    features: ["Up to 25 units", "AI tenant screening", "Rent collection", "Email support"],
+    features: [
+      "Up to 25 units",
+      "AI tenant screening",
+      "Rent collection",
+      "Email support",
+    ],
     highlighted: false,
   },
   {
@@ -754,7 +754,10 @@ const PricingPreview: React.FC = () => (
 
             <ul className="space-y-2 mb-6">
               {tier.features.map((f) => (
-                <li key={f} className="flex items-start gap-2 text-sm font-inter text-gray-600">
+                <li
+                  key={f}
+                  className="flex items-start gap-2 text-sm font-inter text-gray-600"
+                >
                   <Zap
                     className="w-4 h-4 text-realestate-accent mt-0.5 shrink-0"
                     aria-hidden="true"
@@ -767,9 +770,7 @@ const PricingPreview: React.FC = () => (
             <Link
               to={tier.name === "Enterprise" ? "/contact" : "/auth/register"}
               className={`block text-center text-sm font-semibold py-2.5 rounded-lg transition-all duration-200 ${
-                tier.highlighted
-                  ? "btn-accent"
-                  : "btn-outline"
+                tier.highlighted ? "btn-accent" : "btn-outline"
               }`}
             >
               {tier.name === "Enterprise" ? "Contact Sales" : "Get Started"}

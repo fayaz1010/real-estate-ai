@@ -1,19 +1,15 @@
-import {
-  CardElement,
-  useStripe,
-  useElements,
-} from '@stripe/react-stripe-js';
-import type { StripeCardElementChangeEvent } from '@stripe/stripe-js';
-import { CreditCard, Shield, AlertCircle, CheckCircle } from 'lucide-react';
-import React, { useState } from 'react';
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import type { StripeCardElementChangeEvent } from "@stripe/stripe-js";
+import { CreditCard, Shield, AlertCircle, CheckCircle } from "lucide-react";
+import React, { useState } from "react";
 
-import { COLORS, TYPOGRAPHY } from '@/types';
+import { COLORS, TYPOGRAPHY } from "@/types";
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-export type PaymentTypeOption = 'rent' | 'deposit' | 'subscription';
+export type PaymentTypeOption = "rent" | "deposit" | "subscription";
 
 interface ChargeBreakdown {
   label: string;
@@ -37,11 +33,11 @@ const CARD_ELEMENT_OPTIONS = {
   style: {
     base: {
       fontFamily: TYPOGRAPHY.bodyFont,
-      fontSize: '16px',
+      fontSize: "16px",
       color: COLORS.textPrimary,
-      '::placeholder': { color: '#94a3b8' },
+      "::placeholder": { color: "#94a3b8" },
     },
-    invalid: { color: '#ef4444' },
+    invalid: { color: "#ef4444" },
   },
 };
 
@@ -50,35 +46,35 @@ const CARD_ELEMENT_OPTIONS = {
 // ---------------------------------------------------------------------------
 
 function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
   }).format(amount);
 }
 
 function friendlyStripeError(code: string | undefined): string {
   switch (code) {
-    case 'card_declined':
-      return 'Your card was declined. Please try a different card.';
-    case 'insufficient_funds':
-      return 'Insufficient funds. Please try a different payment method.';
-    case 'incorrect_number':
-      return 'The card number is incorrect. Please check and try again.';
-    case 'expired_card':
-      return 'Your card has expired. Please use a different card.';
-    case 'incorrect_cvc':
-      return 'The CVC code is incorrect. Please check and try again.';
-    case 'processing_error':
-      return 'An error occurred while processing your card. Please try again.';
+    case "card_declined":
+      return "Your card was declined. Please try a different card.";
+    case "insufficient_funds":
+      return "Insufficient funds. Please try a different payment method.";
+    case "incorrect_number":
+      return "The card number is incorrect. Please check and try again.";
+    case "expired_card":
+      return "Your card has expired. Please use a different card.";
+    case "incorrect_cvc":
+      return "The CVC code is incorrect. Please check and try again.";
+    case "processing_error":
+      return "An error occurred while processing your card. Please try again.";
     default:
-      return 'Payment failed. Please check your card details and try again.';
+      return "Payment failed. Please check your card details and try again.";
   }
 }
 
 const PAYMENT_TYPE_LABELS: Record<PaymentTypeOption, string> = {
-  rent: 'Rent Payment',
-  deposit: 'Security Deposit',
-  subscription: 'Subscription Fee',
+  rent: "Rent Payment",
+  deposit: "Security Deposit",
+  subscription: "Subscription Fee",
 };
 
 // ---------------------------------------------------------------------------
@@ -120,7 +116,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
 
     const cardElement = elements.getElement(CardElement);
     if (!cardElement) {
-      setError('Card element not found.');
+      setError("Card element not found.");
       setProcessing(false);
       return;
     }
@@ -130,18 +126,20 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
         payment_method: {
           card: cardElement,
         },
-        setup_future_usage: saveCard ? 'off_session' : undefined,
+        setup_future_usage: saveCard ? "off_session" : undefined,
       });
 
     if (stripeError) {
-      const message = friendlyStripeError(stripeError.decline_code ?? stripeError.code);
+      const message = friendlyStripeError(
+        stripeError.decline_code ?? stripeError.code,
+      );
       setError(message);
       onError?.(message);
       setProcessing(false);
       return;
     }
 
-    if (paymentIntent?.status === 'succeeded') {
+    if (paymentIntent?.status === "succeeded") {
       setSucceeded(true);
       onSuccess();
     }
@@ -164,7 +162,7 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
           Payment Successful!
         </h3>
         <p className="text-sm text-gray-600">
-          Your {PAYMENT_TYPE_LABELS[paymentType].toLowerCase()} of{' '}
+          Your {PAYMENT_TYPE_LABELS[paymentType].toLowerCase()} of{" "}
           {formatCurrency(amount)} has been processed. A confirmation will be
           sent to your email.
         </p>
@@ -196,7 +194,9 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
                 className="flex items-center justify-between text-sm text-gray-600"
               >
                 <span>{item.label}</span>
-                <span className="font-medium">{formatCurrency(item.amount)}</span>
+                <span className="font-medium">
+                  {formatCurrency(item.amount)}
+                </span>
               </li>
             ))}
             <li className="flex items-center justify-between border-t border-gray-100 pt-2 text-base font-semibold">
@@ -262,17 +262,25 @@ export const CheckoutForm: React.FC<CheckoutFormProps> = ({
         style={{ backgroundColor: COLORS.primary }}
       >
         <Shield className="h-5 w-5" />
-        {processing ? 'Processing...' : 'Securely Pay Now'}
+        {processing ? "Processing..." : "Securely Pay Now"}
       </button>
 
       {/* Terms */}
       <p className="text-center text-xs text-gray-500">
-        By completing this payment you agree to our{' '}
-        <a href="/terms" className="underline" style={{ color: COLORS.secondary }}>
+        By completing this payment you agree to our{" "}
+        <a
+          href="/terms"
+          className="underline"
+          style={{ color: COLORS.secondary }}
+        >
           Terms of Service
-        </a>{' '}
-        and{' '}
-        <a href="/privacy" className="underline" style={{ color: COLORS.secondary }}>
+        </a>{" "}
+        and{" "}
+        <a
+          href="/privacy"
+          className="underline"
+          style={{ color: COLORS.secondary }}
+        >
           Privacy Policy
         </a>
         .

@@ -29,7 +29,8 @@ export interface DeleteResult {
 }
 
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
-const bucketName = process.env.CLOUDFLARE_BUCKET_NAME || "real-estate-ai-images";
+const bucketName =
+  process.env.CLOUDFLARE_BUCKET_NAME || "real-estate-ai-images";
 const region = process.env.CLOUDFLARE_REGION || "auto";
 
 const s3Client = new S3Client({

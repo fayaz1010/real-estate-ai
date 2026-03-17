@@ -3,8 +3,6 @@
 // Module 1.3: Inspection Booking & Scheduling System - API Service Layer
 // ============================================================================
 
-import apiClient from "@/api/client";
-
 import {
   Inspection,
   InspectionBookingRequest,
@@ -17,6 +15,8 @@ import {
   InspectionsResponse,
   AvailableSlotsResponse,
 } from "../types/inspection.types";
+
+import apiClient from "@/api/client";
 
 class InspectionService {
   /**
@@ -34,10 +34,7 @@ class InspectionService {
    * Create inspection (admin/landlord)
    */
   async createInspection(data: CreateInspectionDto): Promise<Inspection> {
-    const response = await apiClient.post<Inspection>(
-      "/inspections",
-      data,
-    );
+    const response = await apiClient.post<Inspection>("/inspections", data);
     return response.data;
   }
 
@@ -54,10 +51,9 @@ class InspectionService {
     page?: number;
     limit?: number;
   }): Promise<InspectionsResponse> {
-    const response = await apiClient.get<InspectionsResponse>(
-      "/inspections",
-      { params: filters },
-    );
+    const response = await apiClient.get<InspectionsResponse>("/inspections", {
+      params: filters,
+    });
     return response.data;
   }
 
@@ -65,9 +61,7 @@ class InspectionService {
    * Get inspection by ID
    */
   async getInspectionById(id: string): Promise<Inspection> {
-    const response = await apiClient.get<Inspection>(
-      `/inspections/${id}`,
-    );
+    const response = await apiClient.get<Inspection>(`/inspections/${id}`);
     return response.data;
   }
 

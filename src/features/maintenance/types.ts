@@ -1,10 +1,10 @@
 export enum MaintenanceSystemType {
-  HVAC = 'HVAC',
-  PLUMBING = 'PLUMBING',
-  ELECTRICAL = 'ELECTRICAL',
-  ROOFING = 'ROOFING',
-  APPLIANCE = 'APPLIANCE',
-  STRUCTURAL = 'STRUCTURAL',
+  HVAC = "HVAC",
+  PLUMBING = "PLUMBING",
+  ELECTRICAL = "ELECTRICAL",
+  ROOFING = "ROOFING",
+  APPLIANCE = "APPLIANCE",
+  STRUCTURAL = "STRUCTURAL",
 }
 
 export interface MaintenanceRecord {

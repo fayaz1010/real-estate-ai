@@ -1,7 +1,8 @@
-import React, { useState, useRef } from 'react';
-import { Camera, Image } from 'lucide-react';
-import { CameraCapture } from './CameraCapture';
-import { PhotoGallery } from './PhotoGallery';
+import { Camera, Image } from "lucide-react";
+import React, { useState, useRef } from "react";
+
+import { CameraCapture } from "./CameraCapture";
+import { PhotoGallery } from "./PhotoGallery";
 
 export function PropertyPhotoUpload() {
   const [photos, setPhotos] = useState<string[]>([]);
@@ -21,14 +22,14 @@ export function PropertyPhotoUpload() {
       const reader = new FileReader();
       reader.onload = (event) => {
         const result = event.target?.result;
-        if (typeof result === 'string') {
+        if (typeof result === "string") {
           setPhotos((prev) => [...prev, result]);
         }
       };
       reader.readAsDataURL(file);
     });
 
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const handleRemove = (index: number) => {
@@ -41,7 +42,7 @@ export function PropertyPhotoUpload() {
         <button
           onClick={() => setShowCamera(true)}
           className="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition-colors"
-          style={{ backgroundColor: '#091a2b' }}
+          style={{ backgroundColor: "#091a2b" }}
         >
           <Camera size={20} />
           Camera
@@ -49,7 +50,7 @@ export function PropertyPhotoUpload() {
         <button
           onClick={() => fileInputRef.current?.click()}
           className="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition-colors"
-          style={{ backgroundColor: '#005163' }}
+          style={{ backgroundColor: "#005163" }}
         >
           <Image size={20} />
           Gallery
@@ -65,7 +66,10 @@ export function PropertyPhotoUpload() {
       </div>
 
       {showCamera && (
-        <div className="border rounded-lg p-3" style={{ borderColor: '#091a2b' }}>
+        <div
+          className="border rounded-lg p-3"
+          style={{ borderColor: "#091a2b" }}
+        >
           <CameraCapture onCapture={handleCapture} />
         </div>
       )}

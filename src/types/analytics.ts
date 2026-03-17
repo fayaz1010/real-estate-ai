@@ -33,7 +33,7 @@ export interface MaintenanceTrends {
 export interface ReportConfig {
   metrics: string[];
   dateRange: { startDate: string; endDate: string };
-  groupBy: 'property' | 'month' | 'quarter' | 'year';
+  groupBy: "property" | "month" | "quarter" | "year";
 }
 
 export interface PropertyBreakdown {
@@ -43,10 +43,10 @@ export interface PropertyBreakdown {
 }
 
 export interface AIInsight {
-  type: 'vacancy_alert' | 'rent_optimization' | 'maintenance_forecast';
+  type: "vacancy_alert" | "rent_optimization" | "maintenance_forecast";
   title: string;
   description: string;
-  impact: 'high' | 'medium' | 'low';
+  impact: "high" | "medium" | "low";
   actionable: boolean;
   recommendation?: string;
 }

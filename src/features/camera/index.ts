@@ -1,14 +1,14 @@
 // Types
-export type { CapturedPhoto, CameraConfig, PhotoAnnotation } from './types';
+export type { CapturedPhoto, CameraConfig, PhotoAnnotation } from "./types";
 
 // Components
-export { CameraViewfinder } from './components/CameraViewfinder';
-export { PhotoAnnotator } from './components/PhotoAnnotator';
-export { PhotoGallery } from './components/PhotoGallery';
-export { DocumentScanner } from './components/DocumentScanner';
+export { CameraViewfinder } from "./components/CameraViewfinder";
+export { PhotoAnnotator } from "./components/PhotoAnnotator";
+export { PhotoGallery } from "./components/PhotoGallery";
+export { DocumentScanner } from "./components/DocumentScanner";
 
 // Hooks
-export { useCamera } from './hooks/useCamera';
+export { useCamera } from "./hooks/useCamera";
 
 // Utils
 export {
@@ -17,4 +17,4 @@ export {
   applyPerspectiveCorrection,
   enhanceImage,
   captureVideoFrame,
-} from './utils/imageProcessor';
+} from "./utils/imageProcessor";

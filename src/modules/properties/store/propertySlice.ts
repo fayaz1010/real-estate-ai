@@ -18,7 +18,9 @@ export const fetchProperties = createAsyncThunk(
     try {
       return await propertyService.getProperties(filters);
     } catch (error: unknown) {
-      return rejectWithValue(error instanceof Error ? error.message : String(error));
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -29,7 +31,9 @@ export const fetchPropertyById = createAsyncThunk(
     try {
       return await propertyService.getPropertyById(id);
     } catch (error: unknown) {
-      return rejectWithValue(error instanceof Error ? error.message : String(error));
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -40,7 +44,9 @@ export const createProperty = createAsyncThunk(
     try {
       return await propertyService.createProperty(propertyData);
     } catch (error: unknown) {
-      return rejectWithValue(error instanceof Error ? error.message : String(error));
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -54,7 +60,9 @@ export const updateProperty = createAsyncThunk(
     try {
       return await propertyService.updateProperty(id, updates);
     } catch (error: unknown) {
-      return rejectWithValue(error instanceof Error ? error.message : String(error));
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -66,7 +74,9 @@ export const deleteProperty = createAsyncThunk(
       await propertyService.deleteProperty(id);
       return id;
     } catch (error: unknown) {
-      return rejectWithValue(error instanceof Error ? error.message : String(error));
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );

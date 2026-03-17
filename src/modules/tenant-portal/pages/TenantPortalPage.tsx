@@ -1,34 +1,29 @@
-import { useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
-import {
-  Home,
-  CreditCard,
-  Wrench,
-  ChevronRight,
-  Menu,
-  X,
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { TenantDashboard } from '../components/TenantDashboard';
-import { MaintenanceRequestForm } from '../components/MaintenanceRequestForm';
-import { PaymentHistory } from '../components/PaymentHistory';
+import { Home, CreditCard, Wrench, ChevronRight, Menu, X } from "lucide-react";
+import { useState, useCallback } from "react";
+import { Link } from "react-router-dom";
 
-type TabKey = 'dashboard' | 'payments' | 'maintenance';
+import { MaintenanceRequestForm } from "../components/MaintenanceRequestForm";
+import { PaymentHistory } from "../components/PaymentHistory";
+import { TenantDashboard } from "../components/TenantDashboard";
+
+import { cn } from "@/lib/utils";
+
+type TabKey = "dashboard" | "payments" | "maintenance";
 
 const TABS: { key: TabKey; label: string; icon: React.ElementType }[] = [
-  { key: 'dashboard', label: 'Overview', icon: Home },
-  { key: 'payments', label: 'Payments', icon: CreditCard },
-  { key: 'maintenance', label: 'Maintenance', icon: Wrench },
+  { key: "dashboard", label: "Overview", icon: Home },
+  { key: "payments", label: "Payments", icon: CreditCard },
+  { key: "maintenance", label: "Maintenance", icon: Wrench },
 ];
 
 export const TenantPortalPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<TabKey>('dashboard');
+  const [activeTab, setActiveTab] = useState<TabKey>("dashboard");
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const handleNavigate = useCallback((tab: string) => {
     setActiveTab(tab as TabKey);
     setSidebarOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   return (
@@ -39,7 +34,7 @@ export const TenantPortalPage: React.FC = () => {
           type="button"
           onClick={() => setSidebarOpen((o) => !o)}
           className="p-1.5 rounded-lg hover:bg-white/10 transition-colors"
-          aria-label={sidebarOpen ? 'Close navigation' : 'Open navigation'}
+          aria-label={sidebarOpen ? "Close navigation" : "Open navigation"}
         >
           {sidebarOpen ? (
             <X className="w-5 h-5" />
@@ -56,9 +51,9 @@ export const TenantPortalPage: React.FC = () => {
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 left-0 z-40 w-64 bg-tenant-primary text-white transform transition-transform duration-200',
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full',
-          'md:translate-x-0',
+          "fixed inset-y-0 left-0 z-40 w-64 bg-tenant-primary text-white transform transition-transform duration-200",
+          sidebarOpen ? "translate-x-0" : "-translate-x-full",
+          "md:translate-x-0",
         )}
         aria-label="Tenant navigation"
       >
@@ -84,17 +79,17 @@ export const TenantPortalPage: React.FC = () => {
                     type="button"
                     onClick={() => handleNavigate(tab.key)}
                     className={cn(
-                      'w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors font-open-sans',
+                      "w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors font-open-sans",
                       isActive
-                        ? 'bg-white/15 text-white font-medium'
-                        : 'text-gray-300 hover:bg-white/10 hover:text-white',
+                        ? "bg-white/15 text-white font-medium"
+                        : "text-gray-300 hover:bg-white/10 hover:text-white",
                     )}
-                    aria-current={isActive ? 'page' : undefined}
+                    aria-current={isActive ? "page" : undefined}
                   >
                     <tab.icon
                       className={cn(
-                        'w-4 h-4',
-                        isActive ? 'text-white' : 'text-gray-400',
+                        "w-4 h-4",
+                        isActive ? "text-white" : "text-gray-400",
                       )}
                       aria-hidden="true"
                     />
@@ -127,10 +122,7 @@ export const TenantPortalPage: React.FC = () => {
       )}
 
       {/* Main Content */}
-      <main
-        className="md:ml-64 min-h-screen pt-14 md:pt-0"
-        role="main"
-      >
+      <main className="md:ml-64 min-h-screen pt-14 md:pt-0" role="main">
         {/* Mobile tab bar */}
         <div className="md:hidden sticky top-14 z-20 bg-white border-b border-gray-200 px-2">
           <div className="flex">
@@ -142,12 +134,12 @@ export const TenantPortalPage: React.FC = () => {
                   type="button"
                   onClick={() => handleNavigate(tab.key)}
                   className={cn(
-                    'flex-1 flex items-center justify-center gap-1.5 py-3 text-xs font-medium transition-colors border-b-2',
+                    "flex-1 flex items-center justify-center gap-1.5 py-3 text-xs font-medium transition-colors border-b-2",
                     isActive
-                      ? 'text-tenant-primary border-tenant-primary'
-                      : 'text-gray-400 border-transparent hover:text-gray-600',
+                      ? "text-tenant-primary border-tenant-primary"
+                      : "text-gray-400 border-transparent hover:text-gray-600",
                   )}
-                  aria-current={isActive ? 'page' : undefined}
+                  aria-current={isActive ? "page" : undefined}
                 >
                   <tab.icon className="w-4 h-4" aria-hidden="true" />
                   {tab.label}
@@ -158,11 +150,11 @@ export const TenantPortalPage: React.FC = () => {
         </div>
 
         <div className="p-4 sm:p-6 lg:p-8 max-w-6xl">
-          {activeTab === 'dashboard' && (
+          {activeTab === "dashboard" && (
             <TenantDashboard onNavigate={handleNavigate} />
           )}
-          {activeTab === 'payments' && <PaymentHistory />}
-          {activeTab === 'maintenance' && <MaintenanceRequestForm />}
+          {activeTab === "payments" && <PaymentHistory />}
+          {activeTab === "maintenance" && <MaintenanceRequestForm />}
         </div>
       </main>
     </div>

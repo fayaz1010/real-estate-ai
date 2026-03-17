@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { getPredictiveMaintenanceInsights, getPropertyRiskScore } from '@/services/predictiveMaintenanceService';
-import { PredictiveMaintenanceInsight } from '@/types/maintenance';
-import RiskAssessmentCard from './RiskAssessmentCard';
-import MaintenanceTimeline from './MaintenanceTimeline';
-import AIInsightsPanel from './AIInsightsPanel';
+import React, { useState, useEffect } from "react";
+
+import AIInsightsPanel from "./AIInsightsPanel";
+import MaintenanceTimeline from "./MaintenanceTimeline";
+import RiskAssessmentCard from "./RiskAssessmentCard";
+
+import {
+  getPredictiveMaintenanceInsights,
+  getPropertyRiskScore,
+} from "@/services/predictiveMaintenanceService";
+import { PredictiveMaintenanceInsight } from "@/types/maintenance";
 
 interface PredictiveMaintenanceDashboardProps {
   propertyId: string;
 }
 
-const PredictiveMaintenanceDashboard: React.FC<PredictiveMaintenanceDashboardProps> = ({ propertyId }) => {
+const PredictiveMaintenanceDashboard: React.FC<
+  PredictiveMaintenanceDashboardProps
+> = ({ propertyId }) => {
   const [insights, setInsights] = useState<PredictiveMaintenanceInsight[]>([]);
   const [propertyRiskScore, setPropertyRiskScore] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
@@ -45,7 +52,10 @@ const PredictiveMaintenanceDashboard: React.FC<PredictiveMaintenanceDashboardPro
       <h2 className="text-2xl font-display font-bold text-[#091a2b] mb-6">
         Predictive Maintenance Dashboard
       </h2>
-      <RiskAssessmentCard propertyId={propertyId} riskScore={propertyRiskScore} />
+      <RiskAssessmentCard
+        propertyId={propertyId}
+        riskScore={propertyRiskScore}
+      />
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <MaintenanceTimeline insights={insights} />
         <AIInsightsPanel insights={insights} />

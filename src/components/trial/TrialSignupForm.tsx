@@ -1,6 +1,7 @@
+import { Eye, EyeOff, Loader } from "lucide-react";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Eye, EyeOff, Loader } from "lucide-react";
+
 import { startTrial } from "../../services/trialService";
 
 interface FormData {

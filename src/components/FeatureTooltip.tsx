@@ -1,11 +1,12 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
+import { cn } from "@/lib/utils";
 import {
   getContextTip,
   markTipAsDismissed,
   shouldShowTip,
-} from '@/services/tipsService';
-import { cn } from '@/lib/utils';
+} from "@/services/tipsService";
 
 interface FeatureTooltipProps {
   tipId: string;
@@ -14,7 +15,7 @@ interface FeatureTooltipProps {
   className?: string;
 }
 
-type Placement = 'top' | 'bottom' | 'left' | 'right';
+type Placement = "top" | "bottom" | "left" | "right";
 
 interface Position {
   top: number;
@@ -38,66 +39,54 @@ function computePosition(
   const spaceRight = window.innerWidth - targetRect.right;
   const spaceLeft = targetRect.left;
 
-  let placement: Placement = 'bottom';
+  let placement: Placement = "bottom";
   let top = 0;
   let left = 0;
 
   if (spaceBelow >= tooltipRect.height + gap) {
-    placement = 'bottom';
+    placement = "bottom";
     top = targetRect.bottom + gap + scrollY;
     left =
-      targetRect.left +
-      targetRect.width / 2 -
-      tooltipRect.width / 2 +
-      scrollX;
+      targetRect.left + targetRect.width / 2 - tooltipRect.width / 2 + scrollX;
   } else if (spaceAbove >= tooltipRect.height + gap) {
-    placement = 'top';
+    placement = "top";
     top = targetRect.top - tooltipRect.height - gap + scrollY;
     left =
-      targetRect.left +
-      targetRect.width / 2 -
-      tooltipRect.width / 2 +
-      scrollX;
+      targetRect.left + targetRect.width / 2 - tooltipRect.width / 2 + scrollX;
   } else if (spaceRight >= tooltipRect.width + gap) {
-    placement = 'right';
+    placement = "right";
     top =
-      targetRect.top +
-      targetRect.height / 2 -
-      tooltipRect.height / 2 +
-      scrollY;
+      targetRect.top + targetRect.height / 2 - tooltipRect.height / 2 + scrollY;
     left = targetRect.right + gap + scrollX;
   } else if (spaceLeft >= tooltipRect.width + gap) {
-    placement = 'left';
+    placement = "left";
     top =
-      targetRect.top +
-      targetRect.height / 2 -
-      tooltipRect.height / 2 +
-      scrollY;
+      targetRect.top + targetRect.height / 2 - tooltipRect.height / 2 + scrollY;
     left = targetRect.left - tooltipRect.width - gap + scrollX;
   } else {
     // Fallback: below, clamped
-    placement = 'bottom';
+    placement = "bottom";
     top = targetRect.bottom + gap + scrollY;
     left =
-      targetRect.left +
-      targetRect.width / 2 -
-      tooltipRect.width / 2 +
-      scrollX;
+      targetRect.left + targetRect.width / 2 - tooltipRect.width / 2 + scrollX;
   }
 
   // Clamp horizontal
-  left = Math.max(8, Math.min(left, window.innerWidth - tooltipRect.width - 8 + scrollX));
+  left = Math.max(
+    8,
+    Math.min(left, window.innerWidth - tooltipRect.width - 8 + scrollX),
+  );
 
   return { top, left, placement };
 }
 
 const arrowClasses: Record<Placement, string> = {
   bottom:
-    'bottom-full left-1/2 -translate-x-1/2 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-[#FAF6F1]',
-  top: 'top-full left-1/2 -translate-x-1/2 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FAF6F1]',
+    "bottom-full left-1/2 -translate-x-1/2 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-[#FAF6F1]",
+  top: "top-full left-1/2 -translate-x-1/2 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FAF6F1]",
   right:
-    'right-full top-1/2 -translate-y-1/2 border-t-8 border-b-8 border-r-8 border-t-transparent border-b-transparent border-r-[#FAF6F1]',
-  left: 'left-full top-1/2 -translate-y-1/2 border-t-8 border-b-8 border-l-8 border-t-transparent border-b-transparent border-l-[#FAF6F1]',
+    "right-full top-1/2 -translate-y-1/2 border-t-8 border-b-8 border-r-8 border-t-transparent border-b-transparent border-r-[#FAF6F1]",
+  left: "left-full top-1/2 -translate-y-1/2 border-t-8 border-b-8 border-l-8 border-t-transparent border-b-transparent border-l-[#FAF6F1]",
 };
 
 export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
@@ -155,12 +144,12 @@ export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
     // Initial position
     requestAnimationFrame(updatePosition);
 
-    window.addEventListener('resize', updatePosition);
-    window.addEventListener('scroll', updatePosition, true);
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
 
     return () => {
-      window.removeEventListener('resize', updatePosition);
-      window.removeEventListener('scroll', updatePosition, true);
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
     };
   }, [visible, targetElementId]);
 
@@ -172,20 +161,24 @@ export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
       role="tooltip"
       aria-label={tip.title}
       className={cn(
-        'absolute z-50 w-80 rounded-xl border border-[#8B7355]/15 shadow-lg transition-opacity duration-200',
-        position ? 'opacity-100' : 'opacity-0',
+        "absolute z-50 w-80 rounded-xl border border-[#8B7355]/15 shadow-lg transition-opacity duration-200",
+        position ? "opacity-100" : "opacity-0",
         className,
       )}
       style={
         position
-          ? { top: position.top, left: position.left, backgroundColor: '#FAF6F1' }
-          : { top: -9999, left: -9999, backgroundColor: '#FAF6F1' }
+          ? {
+              top: position.top,
+              left: position.left,
+              backgroundColor: "#FAF6F1",
+            }
+          : { top: -9999, left: -9999, backgroundColor: "#FAF6F1" }
       }
     >
       {/* Arrow */}
       {position && (
         <span
-          className={cn('absolute h-0 w-0', arrowClasses[position.placement])}
+          className={cn("absolute h-0 w-0", arrowClasses[position.placement])}
           aria-hidden="true"
         />
       )}
@@ -194,14 +187,14 @@ export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
       <div className="flex items-start justify-between gap-2 px-4 pt-4 pb-2">
         <h4
           className="font-display text-sm font-semibold"
-          style={{ color: '#2D2A26' }}
+          style={{ color: "#2D2A26" }}
         >
           {tip.title}
         </h4>
         <button
           onClick={dismissPermanently}
           className="shrink-0 rounded-md p-1 transition-colors hover:bg-[#8B7355]/10"
-          style={{ color: '#8B7355' }}
+          style={{ color: "#8B7355" }}
           aria-label="Dismiss tip"
         >
           <X className="h-4 w-4" />
@@ -211,7 +204,7 @@ export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
       {/* Body */}
       <p
         className="px-4 pb-3 font-body text-sm leading-relaxed"
-        style={{ color: '#2D2A26', opacity: 0.75 }}
+        style={{ color: "#2D2A26", opacity: 0.75 }}
       >
         {tip.description}
       </p>
@@ -227,15 +220,15 @@ export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
           />
           <span
             className="font-body text-xs"
-            style={{ color: '#2D2A26', opacity: 0.6 }}
+            style={{ color: "#2D2A26", opacity: 0.6 }}
           >
-            Don't show again
+            Don&apos;t show again
           </span>
         </label>
         <button
           onClick={dismiss}
           className="rounded-lg px-4 py-1.5 font-body text-xs font-medium text-white transition-colors hover:opacity-90 active:scale-95"
-          style={{ backgroundColor: '#C4A882' }}
+          style={{ backgroundColor: "#C4A882" }}
         >
           Got it
         </button>

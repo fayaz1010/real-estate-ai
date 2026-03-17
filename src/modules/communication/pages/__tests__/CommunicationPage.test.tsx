@@ -1,7 +1,7 @@
-import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import React from "react";
+import { Provider } from "react-redux";
 import "@testing-library/jest-dom";
 
 import communicationReducer from "../../store/communicationSlice";
@@ -23,7 +23,12 @@ jest.mock("../../api/communicationService", () => ({
           id: "conv-1",
           subject: "Lease Question",
           participants: [
-            { userId: "user-2", role: "manager", name: "Jane Smith", avatarUrl: null },
+            {
+              userId: "user-2",
+              role: "manager",
+              name: "Jane Smith",
+              avatarUrl: null,
+            },
           ],
           propertyId: "prop-1",
           lastMessage: {
@@ -42,7 +47,12 @@ jest.mock("../../api/communicationService", () => ({
           id: "conv-2",
           subject: "Maintenance Request",
           participants: [
-            { userId: "user-3", role: "agent", name: "Bob Wilson", avatarUrl: null },
+            {
+              userId: "user-3",
+              role: "agent",
+              name: "Bob Wilson",
+              avatarUrl: null,
+            },
           ],
           propertyId: "prop-2",
           lastMessage: null,
@@ -155,7 +165,9 @@ describe("CommunicationPage", () => {
         screen.getByText("When does my lease expire?"),
       ).toBeInTheDocument();
       // "Let me check on that" appears both in sidebar preview and message list
-      expect(screen.getAllByText("Let me check on that").length).toBeGreaterThanOrEqual(1);
+      expect(
+        screen.getAllByText("Let me check on that").length,
+      ).toBeGreaterThanOrEqual(1);
     });
   });
 
@@ -177,7 +189,9 @@ describe("CommunicationPage", () => {
     fireEvent.click(screen.getByText("Lease Question"));
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText("Type a message...")).toBeInTheDocument();
+      expect(
+        screen.getByPlaceholderText("Type a message..."),
+      ).toBeInTheDocument();
     });
 
     const textarea = screen.getByPlaceholderText("Type a message...");
@@ -185,9 +199,7 @@ describe("CommunicationPage", () => {
     fireEvent.click(screen.getByText("Send"));
 
     await waitFor(() => {
-      expect(
-        screen.getByText("Thanks for checking!"),
-      ).toBeInTheDocument();
+      expect(screen.getByText("Thanks for checking!")).toBeInTheDocument();
     });
   });
 });

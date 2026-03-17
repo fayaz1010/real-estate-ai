@@ -2,8 +2,8 @@
 // Push Notification Service - Web Push integration
 import webpush from "web-push";
 
-import config from "../../config/env";
 import prisma from "../../config/database";
+import config from "../../config/env";
 
 // Configure web-push with VAPID keys
 if (config.vapid.publicKey && config.vapid.privateKey) {

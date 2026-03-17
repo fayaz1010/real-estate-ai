@@ -4,9 +4,7 @@ import { useCallback, useState } from "react";
 import useWebSocket from "@/hooks/useWebSocket";
 import type { WebSocketMessage } from "@/services/webSocketService";
 
-interface SchedulingUpdate {
-  [key: string]: any;
-}
+type SchedulingUpdate = Record<string, unknown>;
 
 interface UseRealtimeSchedulingReturn {
   schedulingUpdate: SchedulingUpdate | null;

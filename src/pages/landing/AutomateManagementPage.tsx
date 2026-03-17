@@ -1,5 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import {
   ArrowRight,
   Star,
@@ -18,6 +16,8 @@ import {
   Users,
   GitBranch,
 } from "lucide-react";
+import React from "react";
+import { Link } from "react-router-dom";
 
 const steps = [
   {
@@ -71,10 +71,27 @@ const steps = [
 ];
 
 const automationBenefits = [
-  { icon: Clock, title: "Save 15+ Hours/Week", description: "Eliminate repetitive tasks and focus on portfolio growth." },
-  { icon: TrendingUp, title: "Increase Revenue 8%", description: "AI rent optimization maximizes income across every unit." },
-  { icon: Users, title: "Improve Tenant Satisfaction", description: "Faster responses and self-service portals keep tenants happy." },
-  { icon: Zap, title: "Scale Without Hiring", description: "Manage more units without adding staff or overhead." },
+  {
+    icon: Clock,
+    title: "Save 15+ Hours/Week",
+    description: "Eliminate repetitive tasks and focus on portfolio growth.",
+  },
+  {
+    icon: TrendingUp,
+    title: "Increase Revenue 8%",
+    description: "AI rent optimization maximizes income across every unit.",
+  },
+  {
+    icon: Users,
+    title: "Improve Tenant Satisfaction",
+    description:
+      "Faster responses and self-service portals keep tenants happy.",
+  },
+  {
+    icon: Zap,
+    title: "Scale Without Hiring",
+    description: "Manage more units without adding staff or overhead.",
+  },
 ];
 
 const testimonials = [
@@ -163,19 +180,26 @@ export const AutomateManagementPage: React.FC = () => {
               The Case for Automating Property Management
             </h2>
             <p className="text-gray-600 font-inter max-w-2xl mx-auto">
-              Manual property management does not scale. As your portfolio grows,
-              the hours multiply, mistakes compound, and your quality of life
-              suffers. AI automation breaks this cycle by handling routine tasks
-              with greater speed, accuracy, and consistency than any human team.
+              Manual property management does not scale. As your portfolio
+              grows, the hours multiply, mistakes compound, and your quality of
+              life suffers. AI automation breaks this cycle by handling routine
+              tasks with greater speed, accuracy, and consistency than any human
+              team.
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {automationBenefits.map((benefit) => {
               const IconComponent = benefit.icon;
               return (
-                <article key={benefit.title} className="card-elevated p-6 text-center">
+                <article
+                  key={benefit.title}
+                  className="card-elevated p-6 text-center"
+                >
                   <div className="w-12 h-12 bg-realestate-accent/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                    <IconComponent className="w-6 h-6 text-realestate-accent" aria-hidden="true" />
+                    <IconComponent
+                      className="w-6 h-6 text-realestate-accent"
+                      aria-hidden="true"
+                    />
                   </div>
                   <h3 className="font-semibold text-realestate-primary font-space-grotesk mb-2">
                     {benefit.title}
@@ -230,7 +254,10 @@ export const AutomateManagementPage: React.FC = () => {
                         <span className="sm:hidden w-8 h-8 bg-realestate-accent text-realestate-primary rounded-lg flex items-center justify-center text-sm font-bold font-space-grotesk">
                           {step.number}
                         </span>
-                        <IconComponent className="w-5 h-5 text-realestate-secondary" aria-hidden="true" />
+                        <IconComponent
+                          className="w-5 h-5 text-realestate-secondary"
+                          aria-hidden="true"
+                        />
                         <h3 className="text-xl font-semibold text-realestate-primary font-space-grotesk">
                           {step.title}
                         </h3>
@@ -240,9 +267,14 @@ export const AutomateManagementPage: React.FC = () => {
                       </p>
                       <div className="bg-realestate-accent/5 border border-realestate-accent/20 rounded-xl p-4">
                         <div className="flex items-start gap-2">
-                          <Zap className="w-4 h-4 text-realestate-accent flex-shrink-0 mt-0.5" aria-hidden="true" />
+                          <Zap
+                            className="w-4 h-4 text-realestate-accent flex-shrink-0 mt-0.5"
+                            aria-hidden="true"
+                          />
                           <p className="text-sm text-gray-700 font-inter">
-                            <span className="font-semibold text-realestate-primary">Pro Tip:</span>{" "}
+                            <span className="font-semibold text-realestate-primary">
+                              Pro Tip:
+                            </span>{" "}
                             {step.tip}
                           </p>
                         </div>
@@ -257,7 +289,10 @@ export const AutomateManagementPage: React.FC = () => {
       </section>
 
       {/* What You Can Automate Checklist */}
-      <section className="py-20 bg-realestate-primary" aria-labelledby="automate-list-heading">
+      <section
+        className="py-20 bg-realestate-primary"
+        aria-labelledby="automate-list-heading"
+      >
         <div className="section-container">
           <div className="text-center mb-14">
             <h2
@@ -285,7 +320,10 @@ export const AutomateManagementPage: React.FC = () => {
               "Utility billing and cost tracking",
             ].map((item) => (
               <div key={item} className="flex items-center gap-3">
-                <CheckCircle className="w-5 h-5 text-realestate-accent flex-shrink-0" aria-hidden="true" />
+                <CheckCircle
+                  className="w-5 h-5 text-realestate-accent flex-shrink-0"
+                  aria-hidden="true"
+                />
                 <p className="text-gray-300 font-inter text-sm">{item}</p>
               </div>
             ))}
@@ -311,7 +349,10 @@ export const AutomateManagementPage: React.FC = () => {
               { value: "3x", label: "Portfolio Scale" },
               { value: "60%", label: "Lower Costs" },
             ].map((stat) => (
-              <div key={stat.label} className="card-elevated text-center p-6 md:p-8">
+              <div
+                key={stat.label}
+                className="card-elevated text-center p-6 md:p-8"
+              >
                 <p className="text-3xl md:text-4xl font-bold text-realestate-accent font-space-grotesk mb-2">
                   {stat.value}
                 </p>
@@ -323,7 +364,10 @@ export const AutomateManagementPage: React.FC = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-white" aria-labelledby="testimonials-heading">
+      <section
+        className="py-20 bg-white"
+        aria-labelledby="testimonials-heading"
+      >
         <div className="section-container">
           <div className="text-center mb-14">
             <span className="inline-block px-4 py-1.5 bg-realestate-accent/10 text-realestate-accent font-semibold text-sm rounded-full mb-4 font-inter">
@@ -349,7 +393,7 @@ export const AutomateManagementPage: React.FC = () => {
                   ))}
                 </div>
                 <blockquote className="text-gray-600 font-inter leading-relaxed mb-6">
-                  "{testimonial.quote}"
+                  &ldquo;{testimonial.quote}&rdquo;
                 </blockquote>
                 <div>
                   <p className="font-semibold text-realestate-primary font-space-grotesk">

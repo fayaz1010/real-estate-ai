@@ -1,4 +1,3 @@
-import React, { useState, useEffect, useCallback } from "react";
 import {
   Plus,
   Zap,
@@ -14,6 +13,12 @@ import {
   ChevronRight,
   Activity,
 } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+
+import {
+  defaultWorkflows,
+  type WorkflowTemplate,
+} from "../../../features/workflows/templates/defaultWorkflows";
 import type {
   Workflow,
   WorkflowFormData,
@@ -23,12 +28,8 @@ import {
   TRIGGER_TYPE_LABELS,
   WorkflowTriggerType,
 } from "../../../features/workflows/types";
-import {
-  defaultWorkflows,
-  type WorkflowTemplate,
-} from "../../../features/workflows/templates/defaultWorkflows";
-import { WorkflowBuilder } from "../components/WorkflowBuilder";
 import { workflowService } from "../api/workflowService";
+import { WorkflowBuilder } from "../components/WorkflowBuilder";
 
 type ViewMode = "list" | "create" | "edit" | "templates";
 
@@ -39,9 +40,7 @@ const TRIGGER_ICONS: Record<string, React.ReactNode> = {
   [WorkflowTriggerType.MAINTENANCE_REQUEST]: (
     <AlertTriangle className="w-4 h-4" />
   ),
-  [WorkflowTriggerType.PAYMENT_RECEIVED]: (
-    <CheckCircle2 className="w-4 h-4" />
-  ),
+  [WorkflowTriggerType.PAYMENT_RECEIVED]: <CheckCircle2 className="w-4 h-4" />,
   [WorkflowTriggerType.SCHEDULED]: <Clock className="w-4 h-4" />,
 };
 
@@ -87,7 +86,9 @@ export const WorkflowsPage: React.FC = () => {
       await fetchWorkflows();
       setViewMode("list");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to create workflow");
+      setError(
+        err instanceof Error ? err.message : "Failed to create workflow",
+      );
     } finally {
       setIsSaving(false);
     }
@@ -102,7 +103,9 @@ export const WorkflowsPage: React.FC = () => {
       setViewMode("list");
       setEditingWorkflow(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to update workflow");
+      setError(
+        err instanceof Error ? err.message : "Failed to update workflow",
+      );
     } finally {
       setIsSaving(false);
     }
@@ -113,7 +116,9 @@ export const WorkflowsPage: React.FC = () => {
       await workflowService.delete(id);
       setWorkflows((prev) => prev.filter((w) => w.id !== id));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to delete workflow");
+      setError(
+        err instanceof Error ? err.message : "Failed to delete workflow",
+      );
     }
   };
 
@@ -121,10 +126,14 @@ export const WorkflowsPage: React.FC = () => {
     try {
       const updated = await workflowService.toggle(id);
       setWorkflows((prev) =>
-        prev.map((w) => (w.id === id ? { ...w, isActive: updated.isActive } : w)),
+        prev.map((w) =>
+          w.id === id ? { ...w, isActive: updated.isActive } : w,
+        ),
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to toggle workflow");
+      setError(
+        err instanceof Error ? err.message : "Failed to toggle workflow",
+      );
     }
   };
 

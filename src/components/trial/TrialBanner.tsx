@@ -1,6 +1,7 @@
+import { Clock, ArrowRight } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Clock, ArrowRight } from "lucide-react";
+
 import type { TrialStatus } from "../../types/trial";
 
 interface TrialBannerProps {
@@ -10,10 +11,7 @@ interface TrialBannerProps {
 export const TrialBanner: React.FC<TrialBannerProps> = ({ trialStatus }) => {
   if (!trialStatus.isTrialing || trialStatus.hasConverted) return null;
 
-  const urgencyClass =
-    trialStatus.daysRemaining <= 3
-      ? "animate-pulse"
-      : "";
+  const urgencyClass = trialStatus.daysRemaining <= 3 ? "animate-pulse" : "";
 
   return (
     <div

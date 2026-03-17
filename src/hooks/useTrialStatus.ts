@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
-import type { TrialStatus } from "../types/trial";
+
 import { getTrialStatus } from "../services/trialService";
+import type { TrialStatus } from "../types/trial";
 
 export function useTrialStatus() {
   const [trialStatus, setTrialStatus] = useState<TrialStatus | null>(null);

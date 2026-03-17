@@ -1,34 +1,41 @@
-@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif&family=DM+Sans:wght@400;500;600;700&family=Roboto+Mono&family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&family=JetBrains+Mono&family=DM+Sans:wght@400;500;600;700&family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Warm & Trustworthy palette */
-  --color-primary: #2C3E50;
-  --color-primary-light: #3d556b;
-  --color-primary-dark: #1a2836;
-  --color-secondary: #8B7355;
-  --color-accent: #C9956B;
+  /* Nature-Inspired Warmth Color Palette */
+  --color-primary: #8B7355;
+  --color-primary-light: #A0926B;
+  --color-primary-dark: #6B5A43;
+  --color-secondary: #A0926B;
+  --color-accent: #C4A882;
   --color-background: #FAF6F1;
   --color-surface: #ffffff;
   --color-surface-elevated: #ffffff;
-  --color-text-primary: #1A1A2E;
-  --color-text-secondary: #6599ac;
+  --color-text-primary: #2D2A26;
+  --color-text-secondary: #6B5A43;
   --color-text-muted: #94a3b8;
   --color-border: #cbd5e1;
   --color-success: #34d399;
   --color-warning: #fde047;
   --color-error: #ef4444;
 
-  /* Typography */
-  --font-display: "Instrument Serif", serif;
-  --font-heading: "Instrument Serif", serif;
-  --font-body: "DM Sans", sans-serif;
-  --font-mono: "Roboto Mono", monospace;
+  /* RGB channel values for Tailwind opacity support */
+  --primary-rgb: 139 115 85;
+  --secondary-rgb: 160 146 107;
+  --accent-rgb: 196 168 130;
+  --background-rgb: 250 246 241;
+  --text-rgb: 45 42 38;
 
-  /* Spacing */
+  /* Typography */
+  --font-display: "DM Serif Display", serif;
+  --font-heading: "DM Serif Display", serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* Spacing (8px grid system) */
   --spacing-unit: 8px;
   --spacing-1: 0.25rem;
   --spacing-2: 0.5rem;
@@ -39,15 +46,29 @@
   --spacing-12: 3rem;
   --spacing-16: 4rem;
   --spacing-24: 6rem;
+
+  /* Design system spacing tokens */
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+  --space-3xl: 64px;
+
+  /* Responsive spacing defaults (mobile-first) */
+  --content-padding: 16px;
+  --content-margin: 8px;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "DM Sans", system-ui, -apple-system, sans-serif;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
   line-height: 1.6;
   font-weight: 400;
-  color: #1A1A2E;
+  color: #2D2A26;
   background-color: #FAF6F1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -59,7 +80,9 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Instrument Serif", serif;
+  font-family: "DM Serif Display", serif;
+  color: #2D2A26;
+  line-height: 1.2;
   letter-spacing: -0.01em;
 }
 
@@ -131,5 +154,38 @@ h1 {
 
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
+  }
+}
+
+/* Touch-friendly elements */
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+a.btn {
+  min-height: 44px;
+  min-width: 44px;
+  font-family: var(--font-body);
+}
+
+input,
+select,
+textarea {
+  font-size: 16px; /* Prevents iOS zoom on focus */
+  font-family: var(--font-body);
+}
+
+/* Responsive spacing overrides */
+@media (min-width: 641px) {
+  :root {
+    --content-padding: 24px;
+    --content-margin: 12px;
+  }
+}
+
+@media (min-width: 1025px) {
+  :root {
+    --content-padding: 32px;
+    --content-margin: 16px;
   }
 }

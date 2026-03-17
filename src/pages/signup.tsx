@@ -1,20 +1,21 @@
+import { Building2, Shield, Zap, BarChart3 } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Building2, Shield, Zap, BarChart3 } from "lucide-react";
+
 import { TrialSignupForm } from "../components/trial/TrialSignupForm";
 
 const benefits = [
   { icon: <Zap className="w-5 h-5" />, text: "AI-powered property management" },
   { icon: <Shield className="w-5 h-5" />, text: "Automated tenant screening" },
-  { icon: <BarChart3 className="w-5 h-5" />, text: "Predictive maintenance alerts" },
+  {
+    icon: <BarChart3 className="w-5 h-5" />,
+    text: "Predictive maintenance alerts",
+  },
 ];
 
 const SignupPage: React.FC = () => {
   return (
-    <div
-      className="min-h-screen flex"
-      style={{ backgroundColor: "#f1f3f4" }}
-    >
+    <div className="min-h-screen flex" style={{ backgroundColor: "#f1f3f4" }}>
       {/* Left panel – branding */}
       <div
         className="hidden lg:flex lg:w-1/2 flex-col justify-center px-16 xl:px-24"

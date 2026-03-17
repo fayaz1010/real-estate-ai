@@ -244,7 +244,7 @@ export const useInspection = (inspectionId?: string) => {
   const inspection = inspectionId ? inspectionById : currentInspection;
 
   const setCurrentInspection = useCallback(
-    (inspectionParam: any) => {
+    (inspectionParam: Parameters<typeof setCurrentInspectionAction>[0]) => {
       dispatch(setCurrentInspectionAction(inspectionParam));
     },
     [dispatch],

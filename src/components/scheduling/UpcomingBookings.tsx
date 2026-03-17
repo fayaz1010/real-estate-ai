@@ -1,7 +1,6 @@
 // FILE PATH: src/components/scheduling/UpcomingBookings.tsx
 // Smart Scheduling & Booking System - Upcoming Bookings List
 
-import React, { useState } from "react";
 import {
   Clock,
   MapPin,
@@ -14,15 +13,36 @@ import {
   CalendarCheck,
   CheckCircle,
 } from "lucide-react";
+import React, { useState } from "react";
+
 import type { Booking, BookingType } from "../../types/scheduling";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
-const TYPE_CONFIG: Record<BookingType, { icon: React.ReactNode; bg: string; text: string }> = {
-  viewing:     { icon: <Eye className="w-4 h-4" />,    bg: "bg-blue-100",   text: "text-blue-700" },
-  inspection:  { icon: <Search className="w-4 h-4" />, bg: "bg-orange-100", text: "text-orange-700" },
-  maintenance: { icon: <Wrench className="w-4 h-4" />, bg: "bg-green-100",  text: "text-green-700" },
-  meeting:     { icon: <Users className="w-4 h-4" />,  bg: "bg-purple-100", text: "text-purple-700" },
+const TYPE_CONFIG: Record<
+  BookingType,
+  { icon: React.ReactNode; bg: string; text: string }
+> = {
+  viewing: {
+    icon: <Eye className="w-4 h-4" />,
+    bg: "bg-blue-100",
+    text: "text-blue-700",
+  },
+  inspection: {
+    icon: <Search className="w-4 h-4" />,
+    bg: "bg-orange-100",
+    text: "text-orange-700",
+  },
+  maintenance: {
+    icon: <Wrench className="w-4 h-4" />,
+    bg: "bg-green-100",
+    text: "text-green-700",
+  },
+  meeting: {
+    icon: <Users className="w-4 h-4" />,
+    bg: "bg-purple-100",
+    text: "text-purple-700",
+  },
 };
 
 // ─── Props ───────────────────────────────────────────────────────────────────
@@ -46,7 +66,10 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
 
   const upcoming = [...bookings]
     .filter((b) => b.status !== "cancelled" && b.status !== "completed")
-    .sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+    .sort(
+      (a, b) =>
+        new Date(a.startTime).getTime() - new Date(b.startTime).getTime(),
+    );
 
   const handleCancel = (id: string) => {
     if (cancellingId === id) {
@@ -60,8 +83,13 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
   if (upcoming.length === 0) {
     return (
       <div className="text-center py-10">
-        <CalendarCheck className="w-12 h-12 text-gray-300 mx-auto mb-3" aria-hidden="true" />
-        <p className="text-sm text-gray-500 font-['Open_Sans']">No upcoming bookings</p>
+        <CalendarCheck
+          className="w-12 h-12 text-gray-300 mx-auto mb-3"
+          aria-hidden="true"
+        />
+        <p className="text-sm text-gray-500 font-['Open_Sans']">
+          No upcoming bookings
+        </p>
         <p className="text-xs text-gray-400 font-['Open_Sans'] mt-1">
           Create a new booking to get started.
         </p>
@@ -88,7 +116,9 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
             >
               <div className="flex items-start gap-3">
                 {/* Type Icon */}
-                <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${config.bg} ${config.text}`}>
+                <div
+                  className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${config.bg} ${config.text}`}
+                >
                   {config.icon}
                 </div>
 
@@ -97,20 +127,24 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <h4 className="text-sm font-semibold text-[#091a2b] font-['Open_Sans'] truncate">
-                        {booking.title || `${booking.type.charAt(0).toUpperCase() + booking.type.slice(1)} Booking`}
+                        {booking.title ||
+                          `${booking.type.charAt(0).toUpperCase() + booking.type.slice(1)} Booking`}
                       </h4>
                       <div className="flex items-center gap-3 mt-1 text-xs text-gray-500 font-['Open_Sans']">
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" aria-hidden="true" />
                           {start.toLocaleDateString("en-US", {
-                            month: "short", day: "numeric",
+                            month: "short",
+                            day: "numeric",
                           })}{" "}
                           {start.toLocaleTimeString("en-US", {
-                            hour: "numeric", minute: "2-digit",
+                            hour: "numeric",
+                            minute: "2-digit",
                           })}{" "}
                           –{" "}
                           {end.toLocaleTimeString("en-US", {
-                            hour: "numeric", minute: "2-digit",
+                            hour: "numeric",
+                            minute: "2-digit",
                           })}
                         </span>
                         <span className="flex items-center gap-1">
@@ -131,7 +165,8 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
                       ) : (
                         <Clock className="w-3 h-3" />
                       )}
-                      {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                      {booking.status.charAt(0).toUpperCase() +
+                        booking.status.slice(1)}
                     </span>
                   </div>
 
@@ -166,7 +201,9 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
                       }`}
                     >
                       <XCircle className="w-3 h-3" />
-                      {cancellingId === booking.id ? "Confirm Cancel" : "Cancel"}
+                      {cancellingId === booking.id
+                        ? "Confirm Cancel"
+                        : "Cancel"}
                     </button>
                   </div>
                 </div>

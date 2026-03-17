@@ -8,12 +8,25 @@ import { render } from "../test-utils";
 jest.mock("lucide-react", () => {
   const actual: Record<string, unknown> = {};
   const icons = [
-    "DollarSign", "CreditCard", "Calendar", "CheckCircle", "Clock",
-    "AlertTriangle", "Search", "Filter", "Download", "Plus", "TrendingUp",
-    "ChevronRight", "Building", "Users", "Loader2", "RefreshCw",
+    "DollarSign",
+    "CreditCard",
+    "Calendar",
+    "CheckCircle",
+    "Clock",
+    "AlertTriangle",
+    "Search",
+    "Filter",
+    "Download",
+    "Plus",
+    "TrendingUp",
+    "ChevronRight",
+    "Building",
+    "Users",
+    "Loader2",
+    "RefreshCw",
   ];
   icons.forEach((name) => {
-    actual[name] = (props: any) =>
+    actual[name] = (props: Record<string, unknown>) =>
       React.createElement("svg", { "data-testid": `icon-${name}`, ...props });
   });
   return actual;
@@ -25,7 +38,7 @@ const mockApiGet = jest.fn();
 jest.mock("@/api/client", () => ({
   __esModule: true,
   default: {
-    get: (...args: any[]) => mockApiGet(...args),
+    get: (...args: unknown[]) => mockApiGet(...args),
     post: jest.fn(),
     patch: jest.fn(),
     delete: jest.fn(),
@@ -181,7 +194,9 @@ describe("PaymentCollectionPage", () => {
       render(<PaymentCollectionPage />);
 
       await waitFor(() => {
-        expect(screen.getAllByText("Downtown Apartment").length).toBeGreaterThan(0);
+        expect(
+          screen.getAllByText("Downtown Apartment").length,
+        ).toBeGreaterThan(0);
       });
     });
 
@@ -190,7 +205,9 @@ describe("PaymentCollectionPage", () => {
       render(<PaymentCollectionPage />);
 
       await waitFor(() => {
-        expect(screen.getAllByText("Downtown Apartment").length).toBeGreaterThan(0);
+        expect(
+          screen.getAllByText("Downtown Apartment").length,
+        ).toBeGreaterThan(0);
         expect(screen.getByText("Suburban House")).toBeInTheDocument();
       });
     });
@@ -239,15 +256,15 @@ describe("PaymentCollectionPage", () => {
       await waitFor(() => {
         // Find status badges in table rows (span with rounded-full class)
         const receivedBadges = screen.getAllByText("Received");
-        const receivedBadge = receivedBadges.find(
-          (el) => el.closest("span")?.classList.contains("rounded-full"),
-        )?.closest("span");
+        const receivedBadge = receivedBadges
+          .find((el) => el.closest("span")?.classList.contains("rounded-full"))
+          ?.closest("span");
         expect(receivedBadge).toHaveClass("bg-green-100", "text-green-700");
 
         const overdueBadges = screen.getAllByText("Overdue");
-        const overdueBadge = overdueBadges.find(
-          (el) => el.closest("span")?.classList.contains("rounded-full"),
-        )?.closest("span");
+        const overdueBadge = overdueBadges
+          .find((el) => el.closest("span")?.classList.contains("rounded-full"))
+          ?.closest("span");
         expect(overdueBadge).toHaveClass("bg-red-100", "text-red-700");
       });
     });
@@ -345,8 +362,12 @@ describe("PaymentCollectionPage", () => {
       render(<PaymentCollectionPage />);
 
       await waitFor(() => {
-        expect(screen.getByRole("tablist", { name: /payment status filter/i })).toBeInTheDocument();
-        expect(screen.getByRole("tab", { name: /all payments/i })).toBeInTheDocument();
+        expect(
+          screen.getByRole("tablist", { name: /payment status filter/i }),
+        ).toBeInTheDocument();
+        expect(
+          screen.getByRole("tab", { name: /all payments/i }),
+        ).toBeInTheDocument();
       });
     });
 
@@ -413,7 +434,10 @@ describe("PaymentCollectionPage", () => {
       await waitFor(() => {
         const toggle = screen.getByRole("switch");
         expect(toggle).toHaveAttribute("aria-checked", "true");
-        expect(toggle).toHaveAttribute("aria-label", "Toggle automated payments");
+        expect(toggle).toHaveAttribute(
+          "aria-label",
+          "Toggle automated payments",
+        );
       });
     });
 
@@ -422,7 +446,9 @@ describe("PaymentCollectionPage", () => {
       render(<PaymentCollectionPage />);
 
       await waitFor(() => {
-        expect(screen.getByLabelText("Saved payment methods")).toBeInTheDocument();
+        expect(
+          screen.getByLabelText("Saved payment methods"),
+        ).toBeInTheDocument();
       });
     });
   });
@@ -436,7 +462,9 @@ describe("PaymentCollectionPage", () => {
 
       await waitFor(() => {
         expect(screen.getByText("Automated Payments")).toBeInTheDocument();
-        expect(screen.getByText("Auto-collect on due date")).toBeInTheDocument();
+        expect(
+          screen.getByText("Auto-collect on due date"),
+        ).toBeInTheDocument();
       });
     });
 

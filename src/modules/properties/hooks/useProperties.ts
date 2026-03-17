@@ -25,7 +25,7 @@ export const useProperties = () => {
 
   // Fetch all properties
   const loadProperties = useCallback(
-    (filters?: Record<string, any>) => {
+    (filters?: Record<string, unknown>) => {
       dispatch(fetchProperties(filters));
     },
     [dispatch],

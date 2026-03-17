@@ -1,8 +1,9 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft } from 'lucide-react';
-import { ScreeningReport } from '@/components/screening/ScreeningReport';
-import { Button } from '@/components/ui/button';
+import { ArrowLeft } from "lucide-react";
+import React from "react";
+import { useParams, useNavigate } from "react-router-dom";
+
+import { ScreeningReport } from "@/components/screening/ScreeningReport";
+import { Button } from "@/components/ui/button";
 
 export const ScreeningDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -26,7 +27,7 @@ export const ScreeningDetailsPage: React.FC = () => {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Button
           variant="ghost"
-          onClick={() => navigate('/screening')}
+          onClick={() => navigate("/screening")}
           className="mb-6"
         >
           <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />

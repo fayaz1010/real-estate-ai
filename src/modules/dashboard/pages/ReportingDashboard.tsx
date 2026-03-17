@@ -1,4 +1,3 @@
-import { useState, useEffect, useCallback } from "react";
 import {
   DollarSign,
   Home,
@@ -10,7 +9,8 @@ import {
   Filter,
   CalendarDays,
 } from "lucide-react";
-import { AnalyticsCard } from "../components/AnalyticsCard";
+import { useState, useEffect, useCallback } from "react";
+
 import {
   getTotalRevenue,
   getOccupancyRate,
@@ -19,6 +19,7 @@ import {
   getVacancyRate,
   getAverageDaysToRent,
 } from "../api/dashboardService";
+import { AnalyticsCard } from "../components/AnalyticsCard";
 
 interface MetricData {
   value: number;
@@ -227,7 +228,10 @@ export const ReportingDashboard: React.FC = () => {
 
             <div className="flex items-center gap-2">
               <Building className="w-4 h-4 text-[#005163]" />
-              <label className="text-sm text-[#091a2b]/70" htmlFor="property-select">
+              <label
+                className="text-sm text-[#091a2b]/70"
+                htmlFor="property-select"
+              >
                 Property
               </label>
               <select
@@ -252,9 +256,7 @@ export const ReportingDashboard: React.FC = () => {
             <AnalyticsCard
               key={card.title}
               title={card.title}
-              value={
-                card.data ? card.format(card.data.value) : "--"
-              }
+              value={card.data ? card.format(card.data.value) : "--"}
               changePercent={
                 card.data
                   ? calcChange(card.data.value, card.data.previousValue)

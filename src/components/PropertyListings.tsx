@@ -60,7 +60,9 @@ export const PropertyListings: React.FC = () => {
     if (type === "sold") {
       updateFilters({
         listingType: undefined,
-        status: ["sold"] as import("../modules/properties/types/property.types").PropertyStatus[],
+        status: [
+          "sold",
+        ] as import("../modules/properties/types/property.types").PropertyStatus[],
         page: 1,
       });
     } else {

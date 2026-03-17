@@ -1,6 +1,6 @@
+import { Clock, ArrowRight } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Clock, ArrowRight } from "lucide-react";
 
 interface TrialBannerProps {
   trialExpirationDate: string;

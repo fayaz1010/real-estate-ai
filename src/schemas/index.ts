@@ -113,11 +113,7 @@ export const MAINTENANCE_REQUEST_STATUSES = [
   "CLOSED",
 ] as const;
 
-export const MAINTENANCE_PRIORITIES = [
-  "HIGH",
-  "MEDIUM",
-  "LOW",
-] as const;
+export const MAINTENANCE_PRIORITIES = ["HIGH", "MEDIUM", "LOW"] as const;
 
 export const NOTIFICATION_TYPES = ["EMAIL", "IN_APP", "SMS", "PUSH"] as const;
 
@@ -454,7 +450,10 @@ export const LeaseSchema = z.object({
   monthlyRent: z.number().positive("Monthly rent must be positive"),
   depositAmount: z.number().nonnegative("Deposit must be non-negative"),
   depositPaid: z.boolean(),
-  lateFeeAmount: z.number().nonnegative("Late fee must be non-negative").default(0),
+  lateFeeAmount: z
+    .number()
+    .nonnegative("Late fee must be non-negative")
+    .default(0),
   lateFeeGraceDays: z.number().int().nonnegative().default(5),
   leaseDocumentUrl: z.string().url().nullable(),
   signedByTenant: z.boolean(),

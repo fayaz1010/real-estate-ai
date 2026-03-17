@@ -1,7 +1,6 @@
 // FILE PATH: src/components/scheduling/BookingForm.tsx
 // Smart Scheduling & Booking System - Booking Creation/Edit Form
 
-import React, { useState, useCallback } from "react";
 import {
   Calendar,
   Clock,
@@ -14,6 +13,8 @@ import {
   CheckCircle,
   Loader,
 } from "lucide-react";
+import React, { useState, useCallback } from "react";
+
 import type {
   BookingType,
   AttendeeRole,
@@ -86,18 +87,24 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const [propertyId, setPropertyId] = useState(initialData?.propertyId || "");
   const [unitId, setUnitId] = useState(initialData?.unitId || "");
   const [title, setTitle] = useState(initialData?.title || "");
-  const [description, setDescription] = useState(initialData?.description || "");
+  const [description, setDescription] = useState(
+    initialData?.description || "",
+  );
   const [startTime, setStartTime] = useState(
-    initialData ? new Date(initialData.startTime).toISOString().slice(0, 16) : "",
+    initialData
+      ? new Date(initialData.startTime).toISOString().slice(0, 16)
+      : "",
   );
   const [endTime, setEndTime] = useState(
     initialData ? new Date(initialData.endTime).toISOString().slice(0, 16) : "",
   );
   const [notes, setNotes] = useState(initialData?.notes || "");
   const [attendees, setAttendees] = useState<AttendeeInput[]>(
-    initialData?.attendees.map((a) => ({ name: a.name, email: a.email, role: a.role })) || [
-      { name: "", email: "", role: "tenant" },
-    ],
+    initialData?.attendees.map((a) => ({
+      name: a.name,
+      email: a.email,
+      role: a.role,
+    })) || [{ name: "", email: "", role: "tenant" }],
   );
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -114,7 +121,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
     if (startTime && endTime && new Date(startTime) >= new Date(endTime)) {
       newErrors.endTime = "End time must be after start time";
     }
-    const validAttendees = attendees.filter((a) => a.name.trim() && a.email.trim());
+    const validAttendees = attendees.filter(
+      (a) => a.name.trim() && a.email.trim(),
+    );
     if (validAttendees.length === 0) {
       newErrors.attendees = "At least one attendee is required";
     }
@@ -145,7 +154,11 @@ const BookingForm: React.FC<BookingFormProps> = ({
         description: description.trim() || undefined,
         attendees: attendees
           .filter((a) => a.name.trim() && a.email.trim())
-          .map((a) => ({ name: a.name.trim(), email: a.email.trim(), role: a.role })),
+          .map((a) => ({
+            name: a.name.trim(),
+            email: a.email.trim(),
+            role: a.role,
+          })),
         startTime,
         endTime,
         notes: notes.trim() || undefined,
@@ -167,7 +180,11 @@ const BookingForm: React.FC<BookingFormProps> = ({
   const removeAttendee = (index: number) =>
     setAttendees(attendees.filter((_, i) => i !== index));
 
-  const updateAttendee = (index: number, field: keyof AttendeeInput, value: string) => {
+  const updateAttendee = (
+    index: number,
+    field: keyof AttendeeInput,
+    value: string,
+  ) => {
     const updated = [...attendees];
     updated[index] = { ...updated[index], [field]: value };
     setAttendees(updated);
@@ -192,7 +209,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
       {/* Booking Type */}
       <div>
         <label className={labelClasses} htmlFor="booking-type">
-          <Calendar className="inline w-4 h-4 mr-1 -mt-0.5" aria-hidden="true" />
+          <Calendar
+            className="inline w-4 h-4 mr-1 -mt-0.5"
+            aria-hidden="true"
+          />
           Booking Type *
         </label>
         <select
@@ -202,7 +222,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
           className={fieldClasses}
         >
           {BOOKING_TYPES.map((t) => (
-            <option key={t.value} value={t.value}>{t.label}</option>
+            <option key={t.value} value={t.value}>
+              {t.label}
+            </option>
           ))}
         </select>
         {errors.type && (
@@ -216,7 +238,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className={labelClasses} htmlFor="property">
-            <MapPin className="inline w-4 h-4 mr-1 -mt-0.5" aria-hidden="true" />
+            <MapPin
+              className="inline w-4 h-4 mr-1 -mt-0.5"
+              aria-hidden="true"
+            />
             Property *
           </label>
           <select
@@ -227,7 +252,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
           >
             <option value="">Select property...</option>
             {MOCK_PROPERTIES.map((p) => (
-              <option key={p.id} value={p.id}>{p.title}</option>
+              <option key={p.id} value={p.id}>
+                {p.title}
+              </option>
             ))}
           </select>
           {errors.propertyId && (
@@ -237,7 +264,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
           )}
         </div>
         <div>
-          <label className={labelClasses} htmlFor="unit">Unit (optional)</label>
+          <label className={labelClasses} htmlFor="unit">
+            Unit (optional)
+          </label>
           <select
             id="unit"
             value={unitId}
@@ -246,7 +275,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
           >
             <option value="">No unit</option>
             {MOCK_UNITS.map((u) => (
-              <option key={u.id} value={u.id}>{u.label}</option>
+              <option key={u.id} value={u.id}>
+                {u.label}
+              </option>
             ))}
           </select>
         </div>
@@ -254,7 +285,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
       {/* Title */}
       <div>
-        <label className={labelClasses} htmlFor="title">Title (optional)</label>
+        <label className={labelClasses} htmlFor="title">
+          Title (optional)
+        </label>
         <input
           id="title"
           type="text"
@@ -268,7 +301,10 @@ const BookingForm: React.FC<BookingFormProps> = ({
       {/* Description */}
       <div>
         <label className={labelClasses} htmlFor="description">
-          <FileText className="inline w-4 h-4 mr-1 -mt-0.5" aria-hidden="true" />
+          <FileText
+            className="inline w-4 h-4 mr-1 -mt-0.5"
+            aria-hidden="true"
+          />
           Description (optional)
         </label>
         <textarea
@@ -302,7 +338,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
           )}
         </div>
         <div>
-          <label className={labelClasses} htmlFor="end-time">End Time *</label>
+          <label className={labelClasses} htmlFor="end-time">
+            End Time *
+          </label>
           <input
             id="end-time"
             type="datetime-local"
@@ -364,7 +402,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
                 aria-label={`Attendee ${i + 1} role`}
               >
                 {ATTENDEE_ROLES.map((r) => (
-                  <option key={r.value} value={r.value}>{r.label}</option>
+                  <option key={r.value} value={r.value}>
+                    {r.label}
+                  </option>
                 ))}
               </select>
               {attendees.length > 1 && (
@@ -384,7 +424,9 @@ const BookingForm: React.FC<BookingFormProps> = ({
 
       {/* Notes */}
       <div>
-        <label className={labelClasses} htmlFor="notes">Notes (optional)</label>
+        <label className={labelClasses} htmlFor="notes">
+          Notes (optional)
+        </label>
         <textarea
           id="notes"
           value={notes}

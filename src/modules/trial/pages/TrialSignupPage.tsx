@@ -1,12 +1,9 @@
+import { Eye, EyeOff, Loader, Building, Shield, Zap } from "lucide-react";
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { Eye, EyeOff, Loader, Building, Shield, Zap } from "lucide-react";
 
 import { useAppDispatch } from "../../../store";
-import {
-  setAuthenticated,
-  updateUser,
-} from "../../auth/store/authSlice";
+import { setAuthenticated, updateUser } from "../../auth/store/authSlice";
 import { startTrial } from "../api/trialService";
 
 interface FormData {
@@ -92,13 +89,17 @@ export const TrialSignupPage: React.FC = () => {
           email: result.user.email,
           firstName: result.user.firstName,
           lastName: result.user.lastName,
-        } as any),
+        }),
       );
       dispatch(setAuthenticated(true));
 
       navigate("/dashboard");
-    } catch (err: any) {
-      setServerError(err.message || "Something went wrong. Please try again.");
+    } catch (err: unknown) {
+      setServerError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong. Please try again.",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -111,10 +112,7 @@ export const TrialSignupPage: React.FC = () => {
   ];
 
   return (
-    <div
-      className="min-h-screen flex"
-      style={{ backgroundColor: "#f1f3f4" }}
-    >
+    <div className="min-h-screen flex" style={{ backgroundColor: "#f1f3f4" }}>
       {/* Left panel - branding */}
       <div
         className="hidden lg:flex lg:w-1/2 flex-col justify-center items-center p-12"
@@ -274,9 +272,7 @@ export const TrialSignupPage: React.FC = () => {
                   }}
                 />
                 {errors.lastName && (
-                  <p className="mt-1 text-xs text-red-500">
-                    {errors.lastName}
-                  </p>
+                  <p className="mt-1 text-xs text-red-500">{errors.lastName}</p>
                 )}
               </div>
             </div>
@@ -369,17 +365,11 @@ export const TrialSignupPage: React.FC = () => {
                   style={{ fontFamily: "'Open Sans', sans-serif" }}
                 >
                   I agree to the{" "}
-                  <Link
-                    to="/terms"
-                    className="underline hover:text-gray-900"
-                  >
+                  <Link to="/terms" className="underline hover:text-gray-900">
                     Terms of Service
                   </Link>{" "}
                   and{" "}
-                  <Link
-                    to="/privacy"
-                    className="underline hover:text-gray-900"
-                  >
+                  <Link to="/privacy" className="underline hover:text-gray-900">
                     Privacy Policy
                   </Link>
                 </span>

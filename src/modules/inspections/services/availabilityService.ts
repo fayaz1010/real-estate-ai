@@ -1,13 +1,13 @@
 // PLACEHOLDER FILE: src/modules/inspections/services/availabilityService.ts
 // TODO: Add your implementation here
 
-import apiClient from "@/api/client";
-
 import {
   AvailabilitySlot,
   RecurringSchedule,
   BlackoutDate,
 } from "../types/inspection.types";
+
+import apiClient from "@/api/client";
 
 class AvailabilityService {
   /**
@@ -163,10 +163,10 @@ class AvailabilityService {
     startTime: string;
     endTime: string;
   }): Promise<{ available: boolean; reason?: string }> {
-    const response = await apiClient.get<{ available: boolean; reason?: string }>(
-      "/availability/check",
-      { params },
-    );
+    const response = await apiClient.get<{
+      available: boolean;
+      reason?: string;
+    }>("/availability/check", { params });
     return response.data;
   }
 }

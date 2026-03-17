@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface ResponsiveContainerProps {
   children: React.ReactNode;
@@ -6,16 +6,19 @@ interface ResponsiveContainerProps {
 }
 
 const containerStyle: React.CSSProperties = {
-  width: '100%',
-  marginLeft: 'auto',
-  marginRight: 'auto',
-  backgroundColor: '#f1f3f4',
+  width: "100%",
+  marginLeft: "auto",
+  marginRight: "auto",
+  backgroundColor: "#f1f3f4",
   fontFamily: "'Open Sans', sans-serif",
-  minHeight: '100vh',
-  boxSizing: 'border-box',
+  minHeight: "100vh",
+  boxSizing: "border-box",
 };
 
-export function ResponsiveContainer({ children, className }: ResponsiveContainerProps) {
+export function ResponsiveContainer({
+  children,
+  className,
+}: ResponsiveContainerProps) {
   return (
     <>
       <style>{`
@@ -31,7 +34,7 @@ export function ResponsiveContainer({ children, className }: ResponsiveContainer
         }
       `}</style>
       <div
-        className={`responsive-container ${className ?? ''}`}
+        className={`responsive-container ${className ?? ""}`}
         style={containerStyle}
       >
         {children}

@@ -1,12 +1,13 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
+import { cn } from "@/lib/utils";
 import {
   type ContextTip,
   getAllContextTips,
   markTipAsDismissed,
   shouldShowTip,
-} from '@/services/tipsService';
-import { cn } from '@/lib/utils';
+} from "@/services/tipsService";
 
 interface OnboardingTourProps {
   /** Current page/context — only tips matching this context start the tour */
@@ -16,7 +17,7 @@ interface OnboardingTourProps {
   className?: string;
 }
 
-type Placement = 'top' | 'bottom' | 'left' | 'right';
+type Placement = "top" | "bottom" | "left" | "right";
 
 interface Position {
   top: number;
@@ -24,14 +25,14 @@ interface Position {
   placement: Placement;
 }
 
-const TOUR_COMPLETED_KEY = 'realEstateAI_tourCompleted';
+const TOUR_COMPLETED_KEY = "realEstateAI_tourCompleted";
 
 function isTourCompleted(): boolean {
-  return localStorage.getItem(TOUR_COMPLETED_KEY) === 'true';
+  return localStorage.getItem(TOUR_COMPLETED_KEY) === "true";
 }
 
 function markTourCompleted(): void {
-  localStorage.setItem(TOUR_COMPLETED_KEY, 'true');
+  localStorage.setItem(TOUR_COMPLETED_KEY, "true");
 }
 
 function computePosition(
@@ -52,29 +53,20 @@ function computePosition(
   let left: number;
 
   if (spaceBelow >= tooltipRect.height + gap) {
-    placement = 'bottom';
+    placement = "bottom";
     top = targetRect.bottom + gap + scrollY;
     left =
-      targetRect.left +
-      targetRect.width / 2 -
-      tooltipRect.width / 2 +
-      scrollX;
+      targetRect.left + targetRect.width / 2 - tooltipRect.width / 2 + scrollX;
   } else if (spaceAbove >= tooltipRect.height + gap) {
-    placement = 'top';
+    placement = "top";
     top = targetRect.top - tooltipRect.height - gap + scrollY;
     left =
-      targetRect.left +
-      targetRect.width / 2 -
-      tooltipRect.width / 2 +
-      scrollX;
+      targetRect.left + targetRect.width / 2 - tooltipRect.width / 2 + scrollX;
   } else {
-    placement = 'bottom';
+    placement = "bottom";
     top = targetRect.bottom + gap + scrollY;
     left =
-      targetRect.left +
-      targetRect.width / 2 -
-      tooltipRect.width / 2 +
-      scrollX;
+      targetRect.left + targetRect.width / 2 - tooltipRect.width / 2 + scrollX;
   }
 
   left = Math.max(
@@ -87,11 +79,11 @@ function computePosition(
 
 const arrowClasses: Record<Placement, string> = {
   bottom:
-    'bottom-full left-1/2 -translate-x-1/2 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-[#FAF6F1]',
-  top: 'top-full left-1/2 -translate-x-1/2 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FAF6F1]',
+    "bottom-full left-1/2 -translate-x-1/2 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-[#FAF6F1]",
+  top: "top-full left-1/2 -translate-x-1/2 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FAF6F1]",
   right:
-    'right-full top-1/2 -translate-y-1/2 border-t-8 border-b-8 border-r-8 border-t-transparent border-b-transparent border-r-[#FAF6F1]',
-  left: 'left-full top-1/2 -translate-y-1/2 border-t-8 border-b-8 border-l-8 border-t-transparent border-b-transparent border-l-[#FAF6F1]',
+    "right-full top-1/2 -translate-y-1/2 border-t-8 border-b-8 border-r-8 border-t-transparent border-b-transparent border-r-[#FAF6F1]",
+  left: "left-full top-1/2 -translate-y-1/2 border-t-8 border-b-8 border-l-8 border-t-transparent border-b-transparent border-l-[#FAF6F1]",
 };
 
 export const OnboardingTour: React.FC<OnboardingTourProps> = ({
@@ -136,7 +128,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
       if (!target || !tooltip) return;
 
       // Scroll target into view
-      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      target.scrollIntoView({ behavior: "smooth", block: "center" });
 
       requestAnimationFrame(() => {
         if (!tooltipRef.current) return;
@@ -146,11 +138,11 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
 
     // Small delay after scroll
     const timer = setTimeout(updatePosition, 300);
-    window.addEventListener('resize', updatePosition);
+    window.addEventListener("resize", updatePosition);
 
     return () => {
       clearTimeout(timer);
-      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener("resize", updatePosition);
     };
   }, [active, currentStep, currentTip]);
 
@@ -207,20 +199,24 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
         aria-label={`Tour step ${currentStep + 1} of ${steps.length}: ${currentTip.title}`}
         aria-modal="true"
         className={cn(
-          'absolute z-50 w-80 rounded-xl border border-[#8B7355]/15 shadow-xl transition-opacity duration-200',
-          position ? 'opacity-100' : 'opacity-0',
+          "absolute z-50 w-80 rounded-xl border border-[#8B7355]/15 shadow-xl transition-opacity duration-200",
+          position ? "opacity-100" : "opacity-0",
           className,
         )}
         style={
           position
-            ? { top: position.top, left: position.left, backgroundColor: '#FAF6F1' }
-            : { top: -9999, left: -9999, backgroundColor: '#FAF6F1' }
+            ? {
+                top: position.top,
+                left: position.left,
+                backgroundColor: "#FAF6F1",
+              }
+            : { top: -9999, left: -9999, backgroundColor: "#FAF6F1" }
         }
       >
         {/* Arrow */}
         {position && (
           <span
-            className={cn('absolute h-0 w-0', arrowClasses[position.placement])}
+            className={cn("absolute h-0 w-0", arrowClasses[position.placement])}
             aria-hidden="true"
           />
         )}
@@ -230,13 +226,13 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
           <div>
             <span
               className="mb-1 inline-block rounded-full px-2 py-0.5 font-body text-xs font-medium"
-              style={{ backgroundColor: '#C4A882', color: '#fff' }}
+              style={{ backgroundColor: "#C4A882", color: "#fff" }}
             >
               {currentStep + 1} / {steps.length}
             </span>
             <h4
               className="mt-1 font-display text-sm font-semibold"
-              style={{ color: '#2D2A26' }}
+              style={{ color: "#2D2A26" }}
             >
               {currentTip.title}
             </h4>
@@ -244,7 +240,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
           <button
             onClick={skipTour}
             className="shrink-0 rounded-md p-1 transition-colors hover:bg-[#8B7355]/10"
-            style={{ color: '#8B7355' }}
+            style={{ color: "#8B7355" }}
             aria-label="Skip tour"
           >
             <X className="h-4 w-4" />
@@ -254,7 +250,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
         {/* Body */}
         <p
           className="px-4 py-2 font-body text-sm leading-relaxed"
-          style={{ color: '#2D2A26', opacity: 0.75 }}
+          style={{ color: "#2D2A26", opacity: 0.75 }}
         >
           {currentTip.description}
         </p>
@@ -264,7 +260,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
           <button
             onClick={skipTour}
             className="font-body text-xs transition-colors hover:underline"
-            style={{ color: '#8B7355' }}
+            style={{ color: "#8B7355" }}
           >
             Skip Tour
           </button>
@@ -274,7 +270,7 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
               <button
                 onClick={goPrev}
                 className="flex items-center gap-1 rounded-lg border border-[#8B7355]/20 px-3 py-1.5 font-body text-xs font-medium transition-colors hover:bg-[#8B7355]/5 active:scale-95"
-                style={{ color: '#8B7355' }}
+                style={{ color: "#8B7355" }}
                 aria-label="Previous step"
               >
                 <ChevronLeft className="h-3.5 w-3.5" />
@@ -284,10 +280,10 @@ export const OnboardingTour: React.FC<OnboardingTourProps> = ({
             <button
               onClick={goNext}
               className="flex items-center gap-1 rounded-lg px-4 py-1.5 font-body text-xs font-medium text-white transition-colors hover:opacity-90 active:scale-95"
-              style={{ backgroundColor: '#C4A882' }}
-              aria-label={isLast ? 'Finish tour' : 'Next step'}
+              style={{ backgroundColor: "#C4A882" }}
+              aria-label={isLast ? "Finish tour" : "Next step"}
             >
-              {isLast ? 'Finish' : 'Next'}
+              {isLast ? "Finish" : "Next"}
               {!isLast && <ChevronRight className="h-3.5 w-3.5" />}
             </button>
           </div>

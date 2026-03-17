@@ -1,4 +1,3 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Crosshair,
   RotateCcw,
@@ -9,20 +8,22 @@ import {
   X,
   Scan,
   Contrast,
-} from 'lucide-react';
-import { useCamera } from '../hooks/useCamera';
+} from "lucide-react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
+import { useCamera } from "../hooks/useCamera";
 import {
   applyPerspectiveCorrection,
   captureVideoFrame,
   enhanceImage,
-} from '../utils/imageProcessor';
+} from "../utils/imageProcessor";
 
 interface DocumentScannerProps {
   onSave?: (dataUrl: string) => void;
   onClose?: () => void;
 }
 
-type ScanStep = 'capture' | 'adjust' | 'enhance' | 'preview';
+type ScanStep = "capture" | "adjust" | "enhance" | "preview";
 
 interface Corner {
   x: number;
@@ -40,16 +41,12 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
   onSave,
   onClose,
 }) => {
-  const {
-    videoRef,
-    isActive,
-    error,
-    startCamera,
-    stopCamera,
-  } = useCamera({ facingMode: 'environment' });
+  const { videoRef, isActive, error, startCamera, stopCamera } = useCamera({
+    facingMode: "environment",
+  });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [step, setStep] = useState<ScanStep>('capture');
+  const [step, setStep] = useState<ScanStep>("capture");
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
   const [corners, setCorners] = useState<Corner[]>(DEFAULT_CORNERS);
   const [draggingCorner, setDraggingCorner] = useState<number | null>(null);
@@ -63,7 +60,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
 
   // Start camera on mount
   useEffect(() => {
-    if (step === 'capture') {
+    if (step === "capture") {
       startCamera();
     }
     return () => stopCamera();
@@ -75,7 +72,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
     const dataUrl = captureVideoFrame(videoRef.current);
     setCapturedImage(dataUrl);
     setCorners(detectEdges(dataUrl));
-    setStep('adjust');
+    setStep("adjust");
     stopCamera();
   }, [videoRef, stopCamera]);
 
@@ -98,8 +95,8 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
       e.preventDefault();
 
       const rect = canvasRef.current.getBoundingClientRect();
-      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
 
       const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
       const y = Math.max(0, Math.min(1, (clientY - rect.top) / rect.height));
@@ -110,15 +107,15 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
         return updated;
       });
     },
-    [draggingCorner]
+    [draggingCorner],
   );
 
   // Draw adjustment overlay
   useEffect(() => {
-    if (step !== 'adjust' || !capturedImage || !canvasRef.current) return;
+    if (step !== "adjust" || !capturedImage || !canvasRef.current) return;
 
     const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const img = new Image();
@@ -128,7 +125,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
       ctx.drawImage(img, 0, 0);
 
       // Darken outside selection
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+      ctx.fillStyle = "rgba(0, 0, 0, 0.5)";
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Draw selected area
@@ -148,7 +145,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
       ctx.restore();
 
       // Draw border
-      ctx.strokeStyle = '#005163';
+      ctx.strokeStyle = "#005163";
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(pts[0].x, pts[0].y);
@@ -160,11 +157,11 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
 
       // Draw corner handles
       for (const pt of pts) {
-        ctx.fillStyle = '#005163';
+        ctx.fillStyle = "#005163";
         ctx.beginPath();
         ctx.arc(pt.x, pt.y, 12, 0, Math.PI * 2);
         ctx.fill();
-        ctx.fillStyle = 'white';
+        ctx.fillStyle = "white";
         ctx.beginPath();
         ctx.arc(pt.x, pt.y, 6, 0, Math.PI * 2);
         ctx.fill();
@@ -178,14 +175,17 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
     setIsProcessing(true);
 
     try {
-      const corrected = await applyPerspectiveCorrection(capturedImage, corners);
+      const corrected = await applyPerspectiveCorrection(
+        capturedImage,
+        corners,
+      );
       const enhanced = await enhanceImage(corrected, enhanceOptions);
       setProcessedImage(enhanced);
-      setStep('enhance');
+      setStep("enhance");
     } catch {
       // Fallback to unprocessed image
       setProcessedImage(capturedImage);
-      setStep('enhance');
+      setStep("enhance");
     } finally {
       setIsProcessing(false);
     }
@@ -196,7 +196,10 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
     setIsProcessing(true);
 
     try {
-      const corrected = await applyPerspectiveCorrection(capturedImage, corners);
+      const corrected = await applyPerspectiveCorrection(
+        capturedImage,
+        corners,
+      );
       const enhanced = await enhanceImage(corrected, enhanceOptions);
       setProcessedImage(enhanced);
     } catch {
@@ -214,7 +217,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
 
   const handleDownload = useCallback(() => {
     if (!processedImage) return;
-    const link = document.createElement('a');
+    const link = document.createElement("a");
     link.href = processedImage;
     link.download = `scanned-document-${Date.now()}.jpg`;
     link.click();
@@ -224,7 +227,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
     setCapturedImage(null);
     setProcessedImage(null);
     setCorners(DEFAULT_CORNERS);
-    setStep('capture');
+    setStep("capture");
     startCamera();
   }, [startCamera]);
 
@@ -232,8 +235,8 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
     (e: React.MouseEvent | React.TouchEvent) => {
       if (!canvasRef.current) return null;
       const rect = canvasRef.current.getBoundingClientRect();
-      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
 
       const x = (clientX - rect.left) / rect.width;
       const y = (clientY - rect.top) / rect.height;
@@ -251,7 +254,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
 
       return nearest;
     },
-    [corners]
+    [corners],
   );
 
   return (
@@ -259,17 +262,17 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
       {/* Header */}
       <div
         className="flex items-center justify-between p-4 border-b border-gray-700"
-        style={{ backgroundColor: '#091a2b' }}
+        style={{ backgroundColor: "#091a2b" }}
       >
         <h3
           className="text-white font-semibold"
-          style={{ fontFamily: 'Montserrat, sans-serif' }}
+          style={{ fontFamily: "Montserrat, sans-serif" }}
         >
           <Scan className="w-5 h-5 inline-block mr-2 -mt-0.5" />
           Document Scanner
         </h3>
         <div className="flex items-center gap-2">
-          {step !== 'capture' && (
+          {step !== "capture" && (
             <button
               onClick={handleRetake}
               className="p-2 rounded-lg text-gray-300 hover:bg-white/10 transition-colors"
@@ -292,37 +295,35 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
 
       {/* Step indicator */}
       <div className="flex items-center gap-0 px-4 py-2 bg-gray-800">
-        {(['capture', 'adjust', 'enhance'] as const).map((s, i) => (
+        {(["capture", "adjust", "enhance"] as const).map((s, i) => (
           <React.Fragment key={s}>
             <div
               className={`flex items-center gap-1.5 text-xs font-medium px-2 py-1 rounded-full ${
-                step === s || (['adjust', 'enhance', 'preview'].indexOf(step) > i - 1 && i < ['adjust', 'enhance', 'preview'].indexOf(step) + 1)
-                  ? 'text-white bg-white/15'
-                  : 'text-gray-500'
+                step === s ||
+                (["adjust", "enhance", "preview"].indexOf(step) > i - 1 &&
+                  i < ["adjust", "enhance", "preview"].indexOf(step) + 1)
+                  ? "text-white bg-white/15"
+                  : "text-gray-500"
               }`}
-              style={{ fontFamily: 'Open Sans, sans-serif' }}
+              style={{ fontFamily: "Open Sans, sans-serif" }}
             >
               <span
                 className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
                 style={{
-                  backgroundColor:
-                    step === s ? '#005163' : 'transparent',
-                  border:
-                    step !== s ? '1px solid currentColor' : 'none',
-                  color: step === s ? 'white' : undefined,
+                  backgroundColor: step === s ? "#005163" : "transparent",
+                  border: step !== s ? "1px solid currentColor" : "none",
+                  color: step === s ? "white" : undefined,
                 }}
               >
                 {i + 1}
               </span>
-              {s === 'capture'
-                ? 'Capture'
-                : s === 'adjust'
-                  ? 'Adjust'
-                  : 'Enhance'}
+              {s === "capture"
+                ? "Capture"
+                : s === "adjust"
+                  ? "Adjust"
+                  : "Enhance"}
             </div>
-            {i < 2 && (
-              <div className="flex-1 h-px bg-gray-600 mx-2" />
-            )}
+            {i < 2 && <div className="flex-1 h-px bg-gray-600 mx-2" />}
           </React.Fragment>
         ))}
       </div>
@@ -330,7 +331,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
       {/* Content area */}
       <div className="flex-1 flex flex-col">
         {/* Step: Capture */}
-        {step === 'capture' && (
+        {step === "capture" && (
           <div className="flex-1 relative">
             {isActive ? (
               <>
@@ -348,8 +349,8 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                     onClick={handleCapture}
                     className="px-6 py-3 rounded-xl text-white font-medium flex items-center gap-2 shadow-lg"
                     style={{
-                      backgroundColor: '#005163',
-                      fontFamily: 'Open Sans, sans-serif',
+                      backgroundColor: "#005163",
+                      fontFamily: "Open Sans, sans-serif",
                     }}
                   >
                     <Scan className="w-5 h-5" />
@@ -362,7 +363,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                 <Scan className="w-16 h-16 text-gray-500 mb-4" />
                 <p
                   className="text-gray-400 mb-4"
-                  style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  style={{ fontFamily: "Open Sans, sans-serif" }}
                 >
                   Position the document within the frame
                 </p>
@@ -370,22 +371,20 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                   onClick={startCamera}
                   className="px-6 py-3 rounded-lg text-white font-medium"
                   style={{
-                    backgroundColor: '#005163',
-                    fontFamily: 'Open Sans, sans-serif',
+                    backgroundColor: "#005163",
+                    fontFamily: "Open Sans, sans-serif",
                   }}
                 >
                   Start Camera
                 </button>
-                {error && (
-                  <p className="text-red-400 mt-3 text-sm">{error}</p>
-                )}
+                {error && <p className="text-red-400 mt-3 text-sm">{error}</p>}
               </div>
             )}
           </div>
         )}
 
         {/* Step: Adjust corners */}
-        {step === 'adjust' && (
+        {step === "adjust" && (
           <div className="flex-1 flex flex-col">
             <div className="flex-1 flex items-center justify-center p-4 bg-gray-950">
               <canvas
@@ -409,7 +408,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
             <div className="p-4 flex justify-between items-center bg-gray-800">
               <p
                 className="text-gray-400 text-sm"
-                style={{ fontFamily: 'Open Sans, sans-serif' }}
+                style={{ fontFamily: "Open Sans, sans-serif" }}
               >
                 Drag corners to adjust document edges
               </p>
@@ -418,8 +417,8 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                 disabled={isProcessing}
                 className="px-5 py-2 rounded-lg text-white font-medium flex items-center gap-2 disabled:opacity-50"
                 style={{
-                  backgroundColor: '#005163',
-                  fontFamily: 'Open Sans, sans-serif',
+                  backgroundColor: "#005163",
+                  fontFamily: "Open Sans, sans-serif",
                 }}
               >
                 {isProcessing ? (
@@ -434,7 +433,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
         )}
 
         {/* Step: Enhance */}
-        {(step === 'enhance' || step === 'preview') && processedImage && (
+        {(step === "enhance" || step === "preview") && processedImage && (
           <div className="flex-1 flex flex-col">
             <div className="flex-1 flex items-center justify-center p-4 bg-gray-950">
               <img
@@ -450,7 +449,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                 <ZoomIn className="w-4 h-4 text-gray-400 flex-shrink-0" />
                 <span
                   className="text-gray-400 text-xs w-16 flex-shrink-0"
-                  style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  style={{ fontFamily: "Open Sans, sans-serif" }}
                 >
                   Brightness
                 </span>
@@ -472,7 +471,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                 <Contrast className="w-4 h-4 text-gray-400 flex-shrink-0" />
                 <span
                   className="text-gray-400 text-xs w-16 flex-shrink-0"
-                  style={{ fontFamily: 'Open Sans, sans-serif' }}
+                  style={{ fontFamily: "Open Sans, sans-serif" }}
                 >
                   Contrast
                 </span>
@@ -505,7 +504,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                   />
                   <span
                     className="text-gray-400 text-xs"
-                    style={{ fontFamily: 'Open Sans, sans-serif' }}
+                    style={{ fontFamily: "Open Sans, sans-serif" }}
                   >
                     Black & White
                   </span>
@@ -516,11 +515,11 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                   disabled={isProcessing}
                   className="text-xs px-3 py-1 rounded-lg text-white disabled:opacity-50"
                   style={{
-                    backgroundColor: '#3b4876',
-                    fontFamily: 'Open Sans, sans-serif',
+                    backgroundColor: "#3b4876",
+                    fontFamily: "Open Sans, sans-serif",
                   }}
                 >
-                  {isProcessing ? 'Processing...' : 'Apply'}
+                  {isProcessing ? "Processing..." : "Apply"}
                 </button>
               </div>
 
@@ -529,8 +528,8 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                   onClick={handleDownload}
                   className="flex-1 px-4 py-2 rounded-lg text-white font-medium flex items-center justify-center gap-2"
                   style={{
-                    backgroundColor: '#3b4876',
-                    fontFamily: 'Open Sans, sans-serif',
+                    backgroundColor: "#3b4876",
+                    fontFamily: "Open Sans, sans-serif",
                   }}
                 >
                   <Download className="w-4 h-4" />
@@ -540,8 +539,8 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                   onClick={handleSave}
                   className="flex-1 px-4 py-2 rounded-lg text-white font-medium flex items-center justify-center gap-2"
                   style={{
-                    backgroundColor: '#005163',
-                    fontFamily: 'Open Sans, sans-serif',
+                    backgroundColor: "#005163",
+                    fontFamily: "Open Sans, sans-serif",
                   }}
                 >
                   <Check className="w-4 h-4" />

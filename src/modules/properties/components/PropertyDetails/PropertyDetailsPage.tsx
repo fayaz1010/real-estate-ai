@@ -86,7 +86,8 @@ export const PropertyDetailsPage: React.FC = () => {
             Property Not Found
           </h2>
           <p className="text-gray-600 mb-6">
-            The property you&apos;re looking for doesn&apos;t exist or has been removed.
+            The property you&apos;re looking for doesn&apos;t exist or has been
+            removed.
           </p>
           <button
             onClick={() => navigate("/properties")}

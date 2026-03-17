@@ -1,4 +1,3 @@
-import { useState, useRef } from 'react';
 import {
   Wrench,
   Upload,
@@ -6,15 +5,17 @@ import {
   AlertTriangle,
   X,
   Image as ImageIcon,
-} from 'lucide-react';
-import { tenantPortalModuleService } from '../api/tenantPortalService';
+} from "lucide-react";
+import { useState, useRef } from "react";
 
-type Urgency = 'Low' | 'Medium' | 'High';
+import { tenantPortalModuleService } from "../api/tenantPortalService";
+
+type Urgency = "Low" | "Medium" | "High";
 
 export const MaintenanceRequestForm: React.FC = () => {
-  const [subject, setSubject] = useState('');
-  const [description, setDescription] = useState('');
-  const [urgency, setUrgency] = useState<Urgency>('Low');
+  const [subject, setSubject] = useState("");
+  const [description, setDescription] = useState("");
+  const [urgency, setUrgency] = useState<Urgency>("Low");
   const [photos, setPhotos] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [submitting, setSubmitting] = useState(false);
@@ -39,9 +40,9 @@ export const MaintenanceRequestForm: React.FC = () => {
   };
 
   const resetForm = () => {
-    setSubject('');
-    setDescription('');
-    setUrgency('Low');
+    setSubject("");
+    setDescription("");
+    setUrgency("Low");
     previews.forEach((url) => URL.revokeObjectURL(url));
     setPhotos([]);
     setPreviews([]);
@@ -58,19 +59,17 @@ export const MaintenanceRequestForm: React.FC = () => {
 
     try {
       const formData = new FormData();
-      formData.append('title', subject.trim());
-      formData.append('description', description.trim());
-      formData.append('urgency', urgency);
+      formData.append("title", subject.trim());
+      formData.append("description", description.trim());
+      formData.append("urgency", urgency);
       photos.forEach((photo) => {
-        formData.append('photos', photo);
+        formData.append("photos", photo);
       });
 
       await tenantPortalModuleService.submitMaintenanceRequest(formData);
       setSuccess(true);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Failed to submit request',
-      );
+      setError(err instanceof Error ? err.message : "Failed to submit request");
     } finally {
       setSubmitting(false);
     }
@@ -140,7 +139,10 @@ export const MaintenanceRequestForm: React.FC = () => {
           className="bg-white rounded-2xl shadow-sm p-6 transition-shadow hover:shadow-md"
         >
           <div className="flex items-center gap-2 mb-6">
-            <Wrench className="w-5 h-5 text-tenant-primary" aria-hidden="true" />
+            <Wrench
+              className="w-5 h-5 text-tenant-primary"
+              aria-hidden="true"
+            />
             <h2 className="font-montserrat text-lg font-semibold text-tenant-primary">
               Describe the Issue
             </h2>
@@ -278,7 +280,7 @@ export const MaintenanceRequestForm: React.FC = () => {
                 Submitting...
               </span>
             ) : (
-              'Submit Request'
+              "Submit Request"
             )}
           </button>
         </form>

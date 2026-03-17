@@ -4,7 +4,13 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { notificationService } from "@/modules/inspections/services/notificationService";
 
-type PushState = "loading" | "unsupported" | "denied" | "subscribed" | "unsubscribed" | "error";
+type PushState =
+  | "loading"
+  | "unsupported"
+  | "denied"
+  | "subscribed"
+  | "unsubscribed"
+  | "error";
 
 function urlBase64ToUint8Array(base64String: string): Uint8Array {
   const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -111,7 +117,9 @@ export const PushNotificationSubscription: React.FC = () => {
     return (
       <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-4">
         <Loader className="h-5 w-5 animate-spin text-gray-400" />
-        <span className="text-sm text-gray-500 font-['Open_Sans']">Checking notification status...</span>
+        <span className="text-sm text-gray-500 font-['Open_Sans']">
+          Checking notification status...
+        </span>
       </div>
     );
   }
@@ -121,7 +129,9 @@ export const PushNotificationSubscription: React.FC = () => {
       <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4">
         <BellOff className="h-5 w-5 text-gray-400" />
         <div>
-          <p className="text-sm font-medium text-[#091a2b] font-['Montserrat']">Push Notifications</p>
+          <p className="text-sm font-medium text-[#091a2b] font-['Montserrat']">
+            Push Notifications
+          </p>
           <p className="text-xs text-gray-500 font-['Open_Sans']">
             Your browser does not support push notifications.
           </p>
@@ -135,9 +145,12 @@ export const PushNotificationSubscription: React.FC = () => {
       <div className="flex items-center gap-3 rounded-lg border border-orange-200 bg-orange-50 p-4">
         <BellOff className="h-5 w-5 text-orange-500" />
         <div>
-          <p className="text-sm font-medium text-[#091a2b] font-['Montserrat']">Push Notifications Blocked</p>
+          <p className="text-sm font-medium text-[#091a2b] font-['Montserrat']">
+            Push Notifications Blocked
+          </p>
           <p className="text-xs text-gray-600 font-['Open_Sans']">
-            Notifications are blocked. Please enable them in your browser settings.
+            Notifications are blocked. Please enable them in your browser
+            settings.
           </p>
         </div>
       </div>
@@ -150,7 +163,9 @@ export const PushNotificationSubscription: React.FC = () => {
         <div className="flex items-center gap-3">
           <Bell className="h-5 w-5 text-green-600" />
           <div>
-            <p className="text-sm font-medium text-[#091a2b] font-['Montserrat']">Push Notifications Active</p>
+            <p className="text-sm font-medium text-[#091a2b] font-['Montserrat']">
+              Push Notifications Active
+            </p>
             <p className="text-xs text-gray-600 font-['Open_Sans']">
               You will receive push notifications for important updates.
             </p>
@@ -173,7 +188,9 @@ export const PushNotificationSubscription: React.FC = () => {
       <div className="flex items-center gap-3">
         <Bell className="h-5 w-5 text-[#005163]" />
         <div>
-          <p className="text-sm font-medium text-[#091a2b] font-['Montserrat']">Push Notifications</p>
+          <p className="text-sm font-medium text-[#091a2b] font-['Montserrat']">
+            Push Notifications
+          </p>
           <p className="text-xs text-gray-500 font-['Open_Sans']">
             {state === "error"
               ? "Something went wrong. Try again."

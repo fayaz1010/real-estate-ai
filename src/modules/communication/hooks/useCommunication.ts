@@ -48,9 +48,10 @@ export const useCommunication = () => {
     dispatch(clearError());
   }, [dispatch]);
 
-  const activeConversation = communication.conversations.find(
-    (c) => c.id === communication.activeConversationId,
-  ) || null;
+  const activeConversation =
+    communication.conversations.find(
+      (c) => c.id === communication.activeConversationId,
+    ) || null;
 
   return {
     conversations: communication.conversations,

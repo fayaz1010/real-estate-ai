@@ -67,7 +67,9 @@ export interface PortfolioMetricsData {
 }
 
 export async function fetchPortfolioMetrics(): Promise<PortfolioMetricsData> {
-  const data = await apiFetch<{ metrics: PortfolioMetricsData }>("/ai/portfolio");
+  const data = await apiFetch<{ metrics: PortfolioMetricsData }>(
+    "/ai/portfolio",
+  );
   return data.metrics;
 }
 
@@ -80,7 +82,9 @@ export interface OccupancyDataPoint {
 }
 
 export async function fetchOccupancyData(): Promise<OccupancyDataPoint[]> {
-  const data = await apiFetch<{ occupancy: OccupancyDataPoint[] }>("/ai/occupancy");
+  const data = await apiFetch<{ occupancy: OccupancyDataPoint[] }>(
+    "/ai/occupancy",
+  );
   return data.occupancy;
 }
 
@@ -121,7 +125,9 @@ export interface SmartScore {
   generatedAt: string;
 }
 
-export async function fetchSmartScore(applicationId: string): Promise<SmartScore> {
+export async function fetchSmartScore(
+  applicationId: string,
+): Promise<SmartScore> {
   return apiFetch<SmartScore>(`/ai/scoring/${applicationId}`);
 }
 
@@ -150,7 +156,9 @@ export interface MarketAnalysis {
   generatedAt: string;
 }
 
-export async function fetchMarketAnalysis(propertyId: string): Promise<MarketAnalysis> {
+export async function fetchMarketAnalysis(
+  propertyId: string,
+): Promise<MarketAnalysis> {
   return apiFetch<MarketAnalysis>(`/ai/market-analysis/${propertyId}`);
 }
 

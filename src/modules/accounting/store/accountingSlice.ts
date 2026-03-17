@@ -104,9 +104,7 @@ export const fetchCashFlow = createAsyncThunk(
       return await accountingService.getCashFlowStatement(filters);
     } catch (error) {
       return rejectWithValue(
-        error instanceof Error
-          ? error.message
-          : "Failed to fetch cash flow",
+        error instanceof Error ? error.message : "Failed to fetch cash flow",
       );
     }
   },
@@ -149,9 +147,7 @@ export const fetchAccountingProperties = createAsyncThunk(
       return await accountingService.getProperties();
     } catch (error) {
       return rejectWithValue(
-        error instanceof Error
-          ? error.message
-          : "Failed to fetch properties",
+        error instanceof Error ? error.message : "Failed to fetch properties",
       );
     }
   },

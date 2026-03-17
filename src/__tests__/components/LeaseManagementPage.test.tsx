@@ -3,8 +3,9 @@ import React from "react";
 
 import { render } from "../test-utils";
 
-// ─── Mock API client (before any module that imports it) ────────────────────
+import type { Lease } from "@/modules/leases/api/leaseService";
 
+// ─── Mock API client (before any module that imports it) ────────────────────
 jest.mock("@/api/client", () => ({
   __esModule: true,
   default: {
@@ -15,9 +16,6 @@ jest.mock("@/api/client", () => ({
     interceptors: { request: { use: jest.fn() }, response: { use: jest.fn() } },
   },
 }));
-
-// ─── Type import ────────────────────────────────────────────────────────────
-import type { Lease } from "@/modules/leases/api/leaseService";
 
 // ─── Mock lease slice actions ───────────────────────────────────────────────
 
@@ -36,21 +34,36 @@ jest.mock("@/modules/leases/store/leaseSlice", () => ({
   }),
   createLease: Object.assign(mockCreateLease, {
     pending: { type: "leases/createLease/pending" },
-    fulfilled: { type: "leases/createLease/fulfilled", match: (a: any) => a?.meta?.requestStatus === "fulfilled" },
+    fulfilled: {
+      type: "leases/createLease/fulfilled",
+      match: (a: unknown) =>
+        (a as { meta?: { requestStatus?: string } })?.meta?.requestStatus ===
+        "fulfilled",
+    },
     rejected: { type: "leases/createLease/rejected" },
   }),
   updateLeaseStatus: Object.assign(mockUpdateLeaseStatus, {
     pending: { type: "leases/updateLeaseStatus/pending" },
-    fulfilled: { type: "leases/updateLeaseStatus/fulfilled", match: (a: any) => a?.meta?.requestStatus === "fulfilled" },
+    fulfilled: {
+      type: "leases/updateLeaseStatus/fulfilled",
+      match: (a: unknown) =>
+        (a as { meta?: { requestStatus?: string } })?.meta?.requestStatus ===
+        "fulfilled",
+    },
     rejected: { type: "leases/updateLeaseStatus/rejected" },
   }),
   terminateLease: Object.assign(mockTerminateLease, {
     pending: { type: "leases/terminateLease/pending" },
-    fulfilled: { type: "leases/terminateLease/fulfilled", match: (a: any) => a?.meta?.requestStatus === "fulfilled" },
+    fulfilled: {
+      type: "leases/terminateLease/fulfilled",
+      match: (a: unknown) =>
+        (a as { meta?: { requestStatus?: string } })?.meta?.requestStatus ===
+        "fulfilled",
+    },
     rejected: { type: "leases/terminateLease/rejected" },
   }),
   clearError: mockClearError,
-  default: (state: any = {}) => state,
+  default: (state: Record<string, unknown> = {}) => state,
 }));
 
 import { LeaseManagementPage } from "@/pages/LeaseManagementPage";
@@ -60,12 +73,27 @@ import { LeaseManagementPage } from "@/pages/LeaseManagementPage";
 jest.mock("lucide-react", () => {
   const actual: Record<string, unknown> = {};
   const icons = [
-    "FileText", "Plus", "Search", "Filter", "Calendar", "CheckCircle",
-    "Clock", "AlertTriangle", "Eye", "X", "ChevronRight", "Users",
-    "Building", "DollarSign", "Loader2", "AlertCircle", "Trash2", "Edit3",
+    "FileText",
+    "Plus",
+    "Search",
+    "Filter",
+    "Calendar",
+    "CheckCircle",
+    "Clock",
+    "AlertTriangle",
+    "Eye",
+    "X",
+    "ChevronRight",
+    "Users",
+    "Building",
+    "DollarSign",
+    "Loader2",
+    "AlertCircle",
+    "Trash2",
+    "Edit3",
   ];
   icons.forEach((name) => {
-    actual[name] = (props: any) =>
+    actual[name] = (props: Record<string, unknown>) =>
       React.createElement("svg", { "data-testid": `icon-${name}`, ...props });
   });
   return actual;
@@ -75,7 +103,7 @@ jest.mock("lucide-react", () => {
 
 const mockDispatch = jest.fn(() => ({
   unwrap: () => Promise.resolve(),
-  then: (fn: any) => Promise.resolve().then(fn),
+  then: (fn: (value: unknown) => unknown) => Promise.resolve().then(fn),
   type: "",
   payload: undefined,
   meta: { requestStatus: "fulfilled" },
@@ -110,9 +138,23 @@ const mockLeases: Lease[] = [
     terminationReason: null,
     createdAt: "2025-01-01",
     updatedAt: "2025-01-01",
-    property: { id: "prop-1", title: "Downtown Apartment", address: "123 Main St" },
-    tenant: { id: "tenant-1", firstName: "Jane", lastName: "Smith", email: "jane@test.com" },
-    landlord: { id: "landlord-1", firstName: "John", lastName: "Doe", email: "john@test.com" },
+    property: {
+      id: "prop-1",
+      title: "Downtown Apartment",
+      address: "123 Main St",
+    },
+    tenant: {
+      id: "tenant-1",
+      firstName: "Jane",
+      lastName: "Smith",
+      email: "jane@test.com",
+    },
+    landlord: {
+      id: "landlord-1",
+      firstName: "John",
+      lastName: "Doe",
+      email: "john@test.com",
+    },
   },
   {
     id: "lease-2",
@@ -136,8 +178,18 @@ const mockLeases: Lease[] = [
     createdAt: "2025-05-01",
     updatedAt: "2025-05-01",
     property: { id: "prop-2", title: "Suburban House", address: "456 Oak Ave" },
-    tenant: { id: "tenant-2", firstName: "Bob", lastName: "Jones", email: "bob@test.com" },
-    landlord: { id: "landlord-1", firstName: "John", lastName: "Doe", email: "john@test.com" },
+    tenant: {
+      id: "tenant-2",
+      firstName: "Bob",
+      lastName: "Jones",
+      email: "bob@test.com",
+    },
+    landlord: {
+      id: "landlord-1",
+      firstName: "John",
+      lastName: "Doe",
+      email: "john@test.com",
+    },
   },
   {
     id: "lease-3",
@@ -161,26 +213,51 @@ const mockLeases: Lease[] = [
     createdAt: "2024-01-01",
     updatedAt: "2024-06-15",
     property: { id: "prop-3", title: "City Condo", address: "789 Elm St" },
-    tenant: { id: "tenant-3", firstName: "Alice", lastName: "Brown", email: "alice@test.com" },
-    landlord: { id: "landlord-1", firstName: "John", lastName: "Doe", email: "john@test.com" },
+    tenant: {
+      id: "tenant-3",
+      firstName: "Alice",
+      lastName: "Brown",
+      email: "alice@test.com",
+    },
+    landlord: {
+      id: "landlord-1",
+      firstName: "John",
+      lastName: "Doe",
+      email: "john@test.com",
+    },
   },
 ];
 
 // ─── Helper ──────────────────────────────────────────────────────────────
 
-function setupMockSelector(overrides: Partial<{
-  leases: Lease[];
-  loading: { list: boolean; create: boolean; update: boolean; delete: boolean };
-  error: string | null;
-}> = {}) {
+function setupMockSelector(
+  overrides: Partial<{
+    leases: Lease[];
+    loading: {
+      list: boolean;
+      create: boolean;
+      update: boolean;
+      delete: boolean;
+    };
+    error: string | null;
+  }> = {},
+) {
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   const { useAppSelector } = require("@/store");
   const state = {
     leases: overrides.leases ?? mockLeases,
-    loading: overrides.loading ?? { list: false, create: false, update: false, delete: false },
+    loading: overrides.loading ?? {
+      list: false,
+      create: false,
+      update: false,
+      delete: false,
+    },
     error: overrides.error ?? null,
   };
-  useAppSelector.mockImplementation((selector: any) => selector({ leases: state }));
+  useAppSelector.mockImplementation(
+    (selector: (s: { leases: typeof state }) => unknown) =>
+      selector({ leases: state }),
+  );
 }
 
 // ─── Tests ──────────────────────────────────────────────────────────────────
@@ -211,8 +288,12 @@ describe("LeaseManagementPage", () => {
 
     it("should render tab navigation", () => {
       render(<LeaseManagementPage />);
-      expect(screen.getByRole("tablist", { name: /lease status tabs/i })).toBeInTheDocument();
-      expect(screen.getByRole("tab", { name: /all leases/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole("tablist", { name: /lease status tabs/i }),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("tab", { name: /all leases/i }),
+      ).toBeInTheDocument();
       expect(screen.getByRole("tab", { name: /active/i })).toBeInTheDocument();
       expect(screen.getByRole("tab", { name: /pending/i })).toBeInTheDocument();
     });
@@ -309,7 +390,9 @@ describe("LeaseManagementPage", () => {
       setupMockSelector({ leases: [] });
       render(<LeaseManagementPage />);
       expect(
-        screen.getByText("No leases yet. Create your first lease to get started."),
+        screen.getByText(
+          "No leases yet. Create your first lease to get started.",
+        ),
       ).toBeInTheDocument();
     });
 
@@ -354,7 +437,9 @@ describe("LeaseManagementPage", () => {
 
       const list = screen.getByRole("list", { name: /lease list/i });
       expect(within(list).getByText("Downtown Apartment")).toBeInTheDocument();
-      expect(within(list).queryByText("Suburban House")).not.toBeInTheDocument();
+      expect(
+        within(list).queryByText("Suburban House"),
+      ).not.toBeInTheDocument();
     });
 
     it("should show all leases on All Leases tab", () => {
@@ -384,7 +469,9 @@ describe("LeaseManagementPage", () => {
 
       const list = screen.getByRole("list", { name: /lease list/i });
       expect(within(list).getByText("Downtown Apartment")).toBeInTheDocument();
-      expect(within(list).queryByText("Suburban House")).not.toBeInTheDocument();
+      expect(
+        within(list).queryByText("Suburban House"),
+      ).not.toBeInTheDocument();
     });
 
     it("should filter by tenant name", () => {
@@ -456,13 +543,19 @@ describe("LeaseManagementPage", () => {
     it("should have proper ARIA labels on action buttons", () => {
       render(<LeaseManagementPage />);
       expect(screen.getByLabelText(/View lease lease-1/)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Edit status for lease lease-1/)).toBeInTheDocument();
-      expect(screen.getByLabelText(/Terminate lease lease-1/)).toBeInTheDocument();
+      expect(
+        screen.getByLabelText(/Edit status for lease lease-1/),
+      ).toBeInTheDocument();
+      expect(
+        screen.getByLabelText(/Terminate lease lease-1/),
+      ).toBeInTheDocument();
     });
 
     it("should have proper roles on list elements", () => {
       render(<LeaseManagementPage />);
-      expect(screen.getByRole("list", { name: /lease list/i })).toBeInTheDocument();
+      expect(
+        screen.getByRole("list", { name: /lease list/i }),
+      ).toBeInTheDocument();
       const items = screen.getAllByRole("listitem");
       expect(items.length).toBeGreaterThan(0);
     });

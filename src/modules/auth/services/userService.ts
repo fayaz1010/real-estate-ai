@@ -1,9 +1,10 @@
 // FILE PATH: src/modules/auth/services/userService.ts
 // Module 1.1: User Authentication & Management - User Profile Service
 
-import apiClient from "@/api/client";
 import { User } from "../types/auth.types";
 import { tokenManager } from "../utils/tokenManager";
+
+import apiClient from "@/api/client";
 
 class UserService {
   /**
@@ -105,10 +106,16 @@ class UserService {
   /**
    * Get user activity log
    */
-  async getActivityLog(page: number = 1, limit: number = 20): Promise<any[]> {
-    const response = await apiClient.get<any[]>("/users/activity-log", {
-      params: { page, limit },
-    });
+  async getActivityLog(
+    page: number = 1,
+    limit: number = 20,
+  ): Promise<Record<string, unknown>[]> {
+    const response = await apiClient.get<Record<string, unknown>[]>(
+      "/users/activity-log",
+      {
+        params: { page, limit },
+      },
+    );
     return response.data;
   }
 }

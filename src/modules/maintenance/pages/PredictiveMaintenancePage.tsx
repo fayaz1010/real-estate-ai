@@ -1,5 +1,5 @@
-import React, { useEffect, useMemo, useState } from "react";
 import { ArrowDown, Building2, Filter } from "lucide-react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import {
   maintenanceService,
@@ -34,9 +34,7 @@ export const PredictiveMaintenancePage: React.FC = () => {
       } catch (err) {
         if (!cancelled) {
           setError(
-            err instanceof Error
-              ? err.message
-              : "Failed to load predictions",
+            err instanceof Error ? err.message : "Failed to load predictions",
           );
         }
       } finally {
@@ -145,7 +143,8 @@ export const PredictiveMaintenancePage: React.FC = () => {
                 }`}
               >
                 {label}
-                {sortField === field && (sortDirection === "asc" ? " \u2191" : " \u2193")}
+                {sortField === field &&
+                  (sortDirection === "asc" ? " \u2191" : " \u2193")}
               </button>
             ))}
           </div>

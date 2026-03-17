@@ -1,5 +1,3 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
   CreditCard,
   Settings,
@@ -9,8 +7,13 @@ import {
   FileText,
   ArrowUpRight,
   ExternalLink,
-} from 'lucide-react';
-import type { Subscription, UsageSummary } from '@/types/billing';
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+
+import InvoiceHistory from "./InvoiceHistory";
+import PlanSelector from "./PlanSelector";
+
 import {
   getCurrentSubscription,
   getUsageSummary,
@@ -19,12 +22,19 @@ import {
   getPlanById,
   formatPrice,
   PLANS,
-} from '@/services/billingService';
-import InvoiceHistory from './InvoiceHistory';
-import PlanSelector from './PlanSelector';
-import type { BillingInterval } from '@/types/billing';
+} from "@/services/billingService";
+import type { Subscription, UsageSummary } from "@/types/billing";
+import type { BillingInterval } from "@/types/billing";
 
-function UsageBar({ label, used, limit }: { label: string; used: number; limit: number }) {
+function UsageBar({
+  label,
+  used,
+  limit,
+}: {
+  label: string;
+  used: number;
+  limit: number;
+}) {
   const pct = limit > 0 ? Math.min((used / limit) * 100, 100) : 0;
   const isNearLimit = pct >= 80;
 
@@ -32,14 +42,16 @@ function UsageBar({ label, used, limit }: { label: string; used: number; limit: 
     <div>
       <div className="flex justify-between mb-1.5">
         <span className="font-body text-sm text-gray-700">{label}</span>
-        <span className={`font-body text-sm font-medium ${isNearLimit ? 'text-red-600' : 'text-gray-600'}`}>
+        <span
+          className={`font-body text-sm font-medium ${isNearLimit ? "text-red-600" : "text-gray-600"}`}
+        >
           {used} / {limit}
         </span>
       </div>
       <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
         <div
           className={`h-full rounded-full transition-all duration-500 ${
-            isNearLimit ? 'bg-red-400' : 'bg-realestate-accent'
+            isNearLimit ? "bg-red-400" : "bg-realestate-accent"
           }`}
           style={{ width: `${pct}%` }}
         />
@@ -63,7 +75,7 @@ export default function BillingDashboard() {
   const [showPlanSelector, setShowPlanSelector] = useState(false);
   const [cancelling, setCancelling] = useState(false);
 
-  const showSuccess = searchParams.get('success') === 'true';
+  const showSuccess = searchParams.get("success") === "true";
 
   useEffect(() => {
     Promise.all([getCurrentSubscription(), getUsageSummary()])
@@ -71,7 +83,7 @@ export default function BillingDashboard() {
         setSubscription(sub);
         setUsage(usg);
       })
-      .catch(() => setError('Failed to load billing data.'))
+      .catch(() => setError("Failed to load billing data."))
       .finally(() => setLoading(false));
   }, []);
 
@@ -82,12 +94,16 @@ export default function BillingDashboard() {
       const { url } = await createBillingPortalSession();
       window.location.href = url;
     } catch {
-      setError('Failed to open billing portal. Please try again.');
+      setError("Failed to open billing portal. Please try again.");
     }
   };
 
   const handleCancelSubscription = async () => {
-    if (!window.confirm('Are you sure you want to cancel? Your access will continue until the end of the current billing period.')) {
+    if (
+      !window.confirm(
+        "Are you sure you want to cancel? Your access will continue until the end of the current billing period.",
+      )
+    ) {
       return;
     }
     setCancelling(true);
@@ -96,7 +112,9 @@ export default function BillingDashboard() {
       const sub = await getCurrentSubscription();
       setSubscription(sub);
     } catch {
-      setError('Failed to cancel subscription. Please try again or contact support.');
+      setError(
+        "Failed to cancel subscription. Please try again or contact support.",
+      );
     } finally {
       setCancelling(false);
     }
@@ -123,22 +141,32 @@ export default function BillingDashboard() {
   return (
     <div className="pt-24 pb-20 bg-white">
       <div className="section-container max-w-4xl">
-        <h1 className="text-display text-3xl text-realestate-primary mb-2">Billing & Subscription</h1>
+        <h1 className="text-display text-3xl text-realestate-primary mb-2">
+          Billing & Subscription
+        </h1>
         <p className="font-body text-sm text-gray-500 mb-8">
           Manage your plan, payment method, and view invoices.
         </p>
 
         {/* Success message */}
         {showSuccess && (
-          <div className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-lg p-4 mb-6" role="status">
+          <div
+            className="flex items-center gap-3 bg-green-50 border border-green-200 rounded-lg p-4 mb-6"
+            role="status"
+          >
             <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0" />
-            <p className="font-body text-sm text-green-700">Your subscription has been updated successfully.</p>
+            <p className="font-body text-sm text-green-700">
+              Your subscription has been updated successfully.
+            </p>
           </div>
         )}
 
         {/* Error message */}
         {error && (
-          <div className="flex items-center gap-3 bg-red-50 border border-red-200 rounded-lg p-4 mb-6" role="alert">
+          <div
+            className="flex items-center gap-3 bg-red-50 border border-red-200 rounded-lg p-4 mb-6"
+            role="alert"
+          >
             <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" />
             <p className="font-body text-sm text-red-700">{error}</p>
           </div>
@@ -154,16 +182,18 @@ export default function BillingDashboard() {
             {subscription && (
               <span
                 className={`inline-flex items-center rounded-full px-3 py-0.5 text-xs font-semibold ${
-                  subscription.status === 'active'
-                    ? 'bg-green-100 text-green-700'
-                    : subscription.status === 'trialing'
-                    ? 'bg-blue-100 text-blue-700'
-                    : subscription.status === 'past_due'
-                    ? 'bg-red-100 text-red-700'
-                    : 'bg-gray-100 text-gray-600'
+                  subscription.status === "active"
+                    ? "bg-green-100 text-green-700"
+                    : subscription.status === "trialing"
+                      ? "bg-blue-100 text-blue-700"
+                      : subscription.status === "past_due"
+                        ? "bg-red-100 text-red-700"
+                        : "bg-gray-100 text-gray-600"
                 }`}
               >
-                {subscription.status === 'trialing' ? 'Trial' : subscription.status.replace('_', ' ')}
+                {subscription.status === "trialing"
+                  ? "Trial"
+                  : subscription.status.replace("_", " ")}
               </span>
             )}
           </div>
@@ -171,14 +201,19 @@ export default function BillingDashboard() {
           {currentPlan ? (
             <div>
               <div className="flex items-baseline gap-3 mb-3">
-                <span className="text-display text-2xl text-realestate-primary">{currentPlan.name}</span>
+                <span className="text-display text-2xl text-realestate-primary">
+                  {currentPlan.name}
+                </span>
                 <span className="font-body text-sm text-gray-500">
                   {formatPrice(currentPlan.monthlyPrice)}/mo
                 </span>
               </div>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
                 {currentPlan.features.map((f) => (
-                  <li key={f} className="flex items-center gap-2 font-body text-sm text-gray-600">
+                  <li
+                    key={f}
+                    className="flex items-center gap-2 font-body text-sm text-gray-600"
+                  >
                     <CheckCircle className="w-4 h-4 text-green-500 flex-shrink-0" />
                     {f}
                   </li>
@@ -186,8 +221,13 @@ export default function BillingDashboard() {
               </ul>
               {subscription?.cancelAtPeriodEnd && (
                 <p className="font-body text-sm text-red-600 bg-red-50 rounded-lg px-4 py-2 mb-4">
-                  Your subscription will be canceled at the end of the current billing period (
-                  {new Date(subscription.currentPeriodEnd).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}).
+                  Your subscription will be canceled at the end of the current
+                  billing period (
+                  {new Date(subscription.currentPeriodEnd).toLocaleDateString(
+                    "en-US",
+                    { month: "long", day: "numeric", year: "numeric" },
+                  )}
+                  ).
                 </p>
               )}
               <div className="flex flex-wrap gap-3">
@@ -211,16 +251,18 @@ export default function BillingDashboard() {
                     disabled={cancelling}
                     className="inline-flex items-center gap-2 font-body text-sm font-medium text-red-600 border border-red-200 rounded-lg px-4 py-2 hover:bg-red-50 transition-all disabled:opacity-50"
                   >
-                    {cancelling ? 'Cancelling...' : 'Cancel Subscription'}
+                    {cancelling ? "Cancelling..." : "Cancel Subscription"}
                   </button>
                 )}
               </div>
             </div>
           ) : (
             <div className="text-center py-6">
-              <p className="font-body text-gray-500 mb-4">You don&apos;t have an active subscription.</p>
+              <p className="font-body text-gray-500 mb-4">
+                You don&apos;t have an active subscription.
+              </p>
               <button
-                onClick={() => navigate('/billing')}
+                onClick={() => navigate("/billing")}
                 className="bg-realestate-accent text-realestate-primary font-body font-semibold px-6 py-2.5 rounded-lg hover:bg-realestate-accent/90 transition-all"
               >
                 View Plans
@@ -232,8 +274,13 @@ export default function BillingDashboard() {
         {/* Plan Selector (toggle) */}
         {showPlanSelector && (
           <section className="bg-white border border-gray-200 rounded-xl p-6 mb-6 shadow-realestate-sm">
-            <h2 className="text-heading text-lg text-realestate-primary mb-4">Select a New Plan</h2>
-            <PlanSelector currentPlanId={subscription?.planId} onSelect={handlePlanChange} />
+            <h2 className="text-heading text-lg text-realestate-primary mb-4">
+              Select a New Plan
+            </h2>
+            <PlanSelector
+              currentPlanId={subscription?.planId}
+              onSelect={handlePlanChange}
+            />
           </section>
         )}
 
@@ -245,9 +292,21 @@ export default function BillingDashboard() {
               Usage
             </h2>
             <div className="space-y-5">
-              <UsageBar label="Properties" used={usage.properties.used} limit={usage.properties.limit} />
-              <UsageBar label="Units" used={usage.units.used} limit={usage.units.limit} />
-              <UsageBar label="Team Members" used={usage.users.used} limit={usage.users.limit} />
+              <UsageBar
+                label="Properties"
+                used={usage.properties.used}
+                limit={usage.properties.limit}
+              />
+              <UsageBar
+                label="Units"
+                used={usage.units.used}
+                limit={usage.units.limit}
+              />
+              <UsageBar
+                label="Team Members"
+                used={usage.users.used}
+                limit={usage.users.limit}
+              />
             </div>
           </section>
         )}
@@ -263,9 +322,12 @@ export default function BillingDashboard() {
 
         {/* Support */}
         <section className="bg-gray-50 border border-gray-200 rounded-xl p-6">
-          <h2 className="text-heading text-base text-realestate-primary mb-2">Need help with billing?</h2>
+          <h2 className="text-heading text-base text-realestate-primary mb-2">
+            Need help with billing?
+          </h2>
           <p className="font-body text-sm text-gray-600 mb-3">
-            Contact our support team for any billing inquiries, payment issues, or plan recommendations.
+            Contact our support team for any billing inquiries, payment issues,
+            or plan recommendations.
           </p>
           <a
             href="/contact"

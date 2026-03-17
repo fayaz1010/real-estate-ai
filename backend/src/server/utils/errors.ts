@@ -9,7 +9,12 @@ export class ApiError extends Error {
   public readonly code: string;
   public readonly details?: unknown;
 
-  constructor(message: string, statusCode: number, code: string, details?: unknown) {
+  constructor(
+    message: string,
+    statusCode: number,
+    code: string,
+    details?: unknown,
+  ) {
     super(message);
     this.name = this.constructor.name;
     this.statusCode = statusCode;
@@ -102,7 +107,10 @@ export const v1ErrorHandler = (
   if (error.name === "TokenExpiredError") {
     res.status(401).json({
       success: false,
-      error: { code: "TOKEN_EXPIRED", message: "Authentication token has expired" },
+      error: {
+        code: "TOKEN_EXPIRED",
+        message: "Authentication token has expired",
+      },
     });
     return;
   }

@@ -3,52 +3,152 @@ import { Provider } from "react-redux";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 import { Layout } from "./components/layout";
-import { useAuth } from "./modules/auth/hooks/useAuth";
 import { ProfileSetup } from "./modules/auth/components/ProfileSetup";
+import { useAuth } from "./modules/auth/hooks/useAuth";
 import { store } from "./store";
 
 // Lazy-loaded page components (individual file imports for true code splitting)
-const HomePage = React.lazy(() => import("./pages/HomePage").then(m => ({ default: m.HomePage })));
+const HomePage = React.lazy(() =>
+  import("./pages/HomePage").then((m) => ({ default: m.HomePage })),
+);
 const PricingPage = React.lazy(() => import("./pages/PricingPage"));
-const AboutPage = React.lazy(() => import("./pages/AboutPage").then(m => ({ default: m.AboutPage })));
-const ContactPage = React.lazy(() => import("./pages/ContactPage").then(m => ({ default: m.ContactPage })));
+const AboutPage = React.lazy(() =>
+  import("./pages/AboutPage").then((m) => ({ default: m.AboutPage })),
+);
+const ContactPage = React.lazy(() =>
+  import("./pages/ContactPage").then((m) => ({ default: m.ContactPage })),
+);
 const AuthPage = React.lazy(() => import("./pages/AuthPage"));
 const DashboardPage = React.lazy(() => import("./pages/DashboardPage"));
 const InspectionsPage = React.lazy(() => import("./pages/InspectionsPage"));
 const ApplicationsPage = React.lazy(() => import("./pages/ApplicationsPage"));
 const AdminPage = React.lazy(() => import("./pages/AdminPage"));
 const AdminUsersPage = React.lazy(() => import("./pages/Admin/UsersPage"));
-const AdminPropertiesPage = React.lazy(() => import("./pages/Admin/PropertiesPage"));
-const AdminSettingsPage = React.lazy(() => import("./pages/Admin/SettingsPage"));
-const PropertiesPage = React.lazy(() => import("./pages/PropertiesPage").then(m => ({ default: m.PropertiesPage })));
-const TenantPortalPage = React.lazy(() => import("./pages/TenantPortalPage").then(m => ({ default: m.TenantPortalPage })));
-const LandlordPortalPage = React.lazy(() => import("./pages/LandlordPortalPage").then(m => ({ default: m.LandlordPortalPage })));
-const DeveloperPortalPage = React.lazy(() => import("./pages/DeveloperPortalPage").then(m => ({ default: m.DeveloperPortalPage })));
-const MaintenanceRequestPage = React.lazy(() => import("./pages/MaintenanceRequestPage").then(m => ({ default: m.MaintenanceRequestPage })));
-const LeaseManagementPage = React.lazy(() => import("./pages/LeaseManagementPage").then(m => ({ default: m.LeaseManagementPage })));
-const PaymentCollectionPage = React.lazy(() => import("./pages/PaymentCollectionPage").then(m => ({ default: m.PaymentCollectionPage })));
-const PredictiveMaintenancePage = React.lazy(() => import("./pages/maintenance/predictive"));
-const ReportingDashboardPage = React.lazy(() => import("./pages/ReportingDashboardPage").then(m => ({ default: m.ReportingDashboardPage })));
-const OnboardingPage = React.lazy(() => import("./modules/onboarding/pages/OnboardingPage"));
-const CommunicationPage = React.lazy(() => import("./modules/communication/pages/CommunicationPage").then(m => ({ default: m.CommunicationPage })));
-const AccountingDashboardPage = React.lazy(() => import("./modules/accounting/pages/AccountingDashboard").then(m => ({ default: m.AccountingDashboard })));
+const AdminPropertiesPage = React.lazy(
+  () => import("./pages/Admin/PropertiesPage"),
+);
+const AdminSettingsPage = React.lazy(
+  () => import("./pages/Admin/SettingsPage"),
+);
+const PropertiesPage = React.lazy(() =>
+  import("./pages/PropertiesPage").then((m) => ({ default: m.PropertiesPage })),
+);
+const TenantPortalPage = React.lazy(() =>
+  import("./pages/TenantPortalPage").then((m) => ({
+    default: m.TenantPortalPage,
+  })),
+);
+const LandlordPortalPage = React.lazy(() =>
+  import("./pages/LandlordPortalPage").then((m) => ({
+    default: m.LandlordPortalPage,
+  })),
+);
+const DeveloperPortalPage = React.lazy(() =>
+  import("./pages/DeveloperPortalPage").then((m) => ({
+    default: m.DeveloperPortalPage,
+  })),
+);
+const MaintenanceRequestPage = React.lazy(() =>
+  import("./pages/MaintenanceRequestPage").then((m) => ({
+    default: m.MaintenanceRequestPage,
+  })),
+);
+const LeaseManagementPage = React.lazy(() =>
+  import("./pages/LeaseManagementPage").then((m) => ({
+    default: m.LeaseManagementPage,
+  })),
+);
+const PaymentCollectionPage = React.lazy(() =>
+  import("./pages/PaymentCollectionPage").then((m) => ({
+    default: m.PaymentCollectionPage,
+  })),
+);
+const PredictiveMaintenancePage = React.lazy(
+  () => import("./pages/maintenance/predictive"),
+);
+const ReportingDashboardPage = React.lazy(() =>
+  import("./pages/ReportingDashboardPage").then((m) => ({
+    default: m.ReportingDashboardPage,
+  })),
+);
+const OnboardingPage = React.lazy(
+  () => import("./modules/onboarding/pages/OnboardingPage"),
+);
+const CommunicationPage = React.lazy(() =>
+  import("./modules/communication/pages/CommunicationPage").then((m) => ({
+    default: m.CommunicationPage,
+  })),
+);
+const AccountingDashboardPage = React.lazy(() =>
+  import("./modules/accounting/pages/AccountingDashboard").then((m) => ({
+    default: m.AccountingDashboard,
+  })),
+);
 
 // Lazy-loaded landing pages
-const SmallLandlordsPage = React.lazy(() => import("./pages/landing/SmallLandlordsPage").then(m => ({ default: m.SmallLandlordsPage })));
-const AppFolioAlternativePage = React.lazy(() => import("./pages/landing/AppFolioAlternativePage").then(m => ({ default: m.AppFolioAlternativePage })));
-const AIPropertyManagementPage = React.lazy(() => import("./pages/landing/AIPropertyManagementPage").then(m => ({ default: m.AIPropertyManagementPage })));
-const RentCollectionPage = React.lazy(() => import("./pages/landing/RentCollectionPage").then(m => ({ default: m.RentCollectionPage })));
-const TenantScreeningPage = React.lazy(() => import("./pages/landing/TenantScreeningPage").then(m => ({ default: m.TenantScreeningPage })));
-const PricingComparisonPage = React.lazy(() => import("./pages/landing/PricingComparisonPage").then(m => ({ default: m.PricingComparisonPage })));
-const AutomateManagementPage = React.lazy(() => import("./pages/landing/AutomateManagementPage").then(m => ({ default: m.AutomateManagementPage })));
-const PropertyManagementPage = React.lazy(() => import("./pages/landing/PropertyManagementPage").then(m => ({ default: m.PropertyManagementPage })));
+const SmallLandlordsPage = React.lazy(() =>
+  import("./pages/landing/SmallLandlordsPage").then((m) => ({
+    default: m.SmallLandlordsPage,
+  })),
+);
+const AppFolioAlternativePage = React.lazy(() =>
+  import("./pages/landing/AppFolioAlternativePage").then((m) => ({
+    default: m.AppFolioAlternativePage,
+  })),
+);
+const AIPropertyManagementPage = React.lazy(() =>
+  import("./pages/landing/AIPropertyManagementPage").then((m) => ({
+    default: m.AIPropertyManagementPage,
+  })),
+);
+const RentCollectionPage = React.lazy(() =>
+  import("./pages/landing/RentCollectionPage").then((m) => ({
+    default: m.RentCollectionPage,
+  })),
+);
+const TenantScreeningPage = React.lazy(() =>
+  import("./pages/landing/TenantScreeningPage").then((m) => ({
+    default: m.TenantScreeningPage,
+  })),
+);
+const PricingComparisonPage = React.lazy(() =>
+  import("./pages/landing/PricingComparisonPage").then((m) => ({
+    default: m.PricingComparisonPage,
+  })),
+);
+const AutomateManagementPage = React.lazy(() =>
+  import("./pages/landing/AutomateManagementPage").then((m) => ({
+    default: m.AutomateManagementPage,
+  })),
+);
+const PropertyManagementPage = React.lazy(() =>
+  import("./pages/landing/PropertyManagementPage").then((m) => ({
+    default: m.PropertyManagementPage,
+  })),
+);
 
 // Lazy-loaded module pages
-const PropertyDetailsPage = React.lazy(() => import("./modules/properties/components/PropertyDetails/PropertyDetailsPage").then(m => ({ default: m.PropertyDetailsPage })));
-const TrialSignupPage = React.lazy(() => import("./modules/trial/pages/TrialSignupPage").then(m => ({ default: m.TrialSignupPage })));
-const SchedulingPage = React.lazy(() => import("./modules/scheduling/pages/SchedulingPage"));
-const WorkflowsPage = React.lazy(() => import("./modules/workflows/pages/WorkflowsPage").then(m => ({ default: m.WorkflowsPage })));
-const GoogleCallbackPage = React.lazy(() => import("./pages/GoogleCallbackPage"));
+const PropertyDetailsPage = React.lazy(() =>
+  import("./modules/properties/components/PropertyDetails/PropertyDetailsPage").then(
+    (m) => ({ default: m.PropertyDetailsPage }),
+  ),
+);
+const TrialSignupPage = React.lazy(() =>
+  import("./modules/trial/pages/TrialSignupPage").then((m) => ({
+    default: m.TrialSignupPage,
+  })),
+);
+const SchedulingPage = React.lazy(
+  () => import("./modules/scheduling/pages/SchedulingPage"),
+);
+const WorkflowsPage = React.lazy(() =>
+  import("./modules/workflows/pages/WorkflowsPage").then((m) => ({
+    default: m.WorkflowsPage,
+  })),
+);
+const GoogleCallbackPage = React.lazy(
+  () => import("./pages/GoogleCallbackPage"),
+);
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -152,7 +252,11 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <LoadingSpinner />;
   }
 
-  return isAuthenticated ? <>{children}</> : <Navigate to="/auth/login" replace />;
+  return isAuthenticated ? (
+    <>{children}</>
+  ) : (
+    <Navigate to="/auth/login" replace />
+  );
 };
 
 const AppContent: React.FC = () => {
@@ -171,7 +275,9 @@ const AppContent: React.FC = () => {
             path="/"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><HomePage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <HomePage />
+                </Suspense>
               </Layout>
             }
           />
@@ -179,7 +285,9 @@ const AppContent: React.FC = () => {
             path="/properties"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><PropertiesPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <PropertiesPage />
+                </Suspense>
               </Layout>
             }
           />
@@ -187,7 +295,9 @@ const AppContent: React.FC = () => {
             path="/properties/:id"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><PropertyDetailsPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <PropertyDetailsPage />
+                </Suspense>
               </Layout>
             }
           />
@@ -195,7 +305,9 @@ const AppContent: React.FC = () => {
             path="/pricing"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><PricingPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <PricingPage />
+                </Suspense>
               </Layout>
             }
           />
@@ -203,7 +315,9 @@ const AppContent: React.FC = () => {
             path="/about"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><AboutPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <AboutPage />
+                </Suspense>
               </Layout>
             }
           />
@@ -211,29 +325,77 @@ const AppContent: React.FC = () => {
             path="/contact"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><ContactPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <ContactPage />
+                </Suspense>
               </Layout>
             }
           />
 
           {/* Auth Routes (no Layout - custom design) */}
-          <Route path="/auth/login" element={<Suspense fallback={<div>Loading...</div>}><AuthPage /></Suspense>} />
-          <Route path="/auth/register" element={<Suspense fallback={<div>Loading...</div>}><AuthPage /></Suspense>} />
-          <Route path="/auth/forgot-password" element={<Suspense fallback={<div>Loading...</div>}><AuthPage /></Suspense>} />
-          <Route path="/auth/google/callback" element={<Suspense fallback={<div>Loading...</div>}><GoogleCallbackPage /></Suspense>} />
-          <Route path="/trial/signup" element={<Suspense fallback={<div>Loading...</div>}><TrialSignupPage /></Suspense>} />
+          <Route
+            path="/auth/login"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <AuthPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/auth/register"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <AuthPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/auth/forgot-password"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <AuthPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/auth/google/callback"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <GoogleCallbackPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/trial/signup"
+            element={
+              <Suspense fallback={<div>Loading...</div>}>
+                <TrialSignupPage />
+              </Suspense>
+            }
+          />
 
           {/* Legacy auth routes - redirect */}
-          <Route path="/login" element={<Navigate to="/auth/login" replace />} />
-          <Route path="/register" element={<Navigate to="/auth/register" replace />} />
-          <Route path="/forgot-password" element={<Navigate to="/auth/forgot-password" replace />} />
+          <Route
+            path="/login"
+            element={<Navigate to="/auth/login" replace />}
+          />
+          <Route
+            path="/register"
+            element={<Navigate to="/auth/register" replace />}
+          />
+          <Route
+            path="/forgot-password"
+            element={<Navigate to="/auth/forgot-password" replace />}
+          />
 
           {/* SEO Landing Pages with Layout */}
           <Route
             path="/landing/small-landlords"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><SmallLandlordsPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <SmallLandlordsPage />
+                </Suspense>
               </Layout>
             }
           />
@@ -241,7 +403,9 @@ const AppContent: React.FC = () => {
             path="/landing/appfolio-alternative"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><AppFolioAlternativePage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <AppFolioAlternativePage />
+                </Suspense>
               </Layout>
             }
           />
@@ -249,7 +413,9 @@ const AppContent: React.FC = () => {
             path="/landing/ai-property-management"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><AIPropertyManagementPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <AIPropertyManagementPage />
+                </Suspense>
               </Layout>
             }
           />
@@ -257,7 +423,9 @@ const AppContent: React.FC = () => {
             path="/landing/rent-collection"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><RentCollectionPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <RentCollectionPage />
+                </Suspense>
               </Layout>
             }
           />
@@ -265,7 +433,9 @@ const AppContent: React.FC = () => {
             path="/landing/tenant-screening"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><TenantScreeningPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <TenantScreeningPage />
+                </Suspense>
               </Layout>
             }
           />
@@ -273,7 +443,9 @@ const AppContent: React.FC = () => {
             path="/landing/pricing-comparison"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><PricingComparisonPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <PricingComparisonPage />
+                </Suspense>
               </Layout>
             }
           />
@@ -281,7 +453,9 @@ const AppContent: React.FC = () => {
             path="/landing/automate-management"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><AutomateManagementPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <AutomateManagementPage />
+                </Suspense>
               </Layout>
             }
           />
@@ -289,7 +463,9 @@ const AppContent: React.FC = () => {
             path="/landing/property-management"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}><PropertyManagementPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <PropertyManagementPage />
+                </Suspense>
               </Layout>
             }
           />
@@ -299,7 +475,9 @@ const AppContent: React.FC = () => {
             path="/onboarding"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><OnboardingPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <OnboardingPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -309,7 +487,9 @@ const AppContent: React.FC = () => {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><DashboardPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <DashboardPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -317,7 +497,9 @@ const AppContent: React.FC = () => {
             path="/inspections"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><InspectionsPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <InspectionsPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -325,7 +507,9 @@ const AppContent: React.FC = () => {
             path="/applications"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><ApplicationsPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <ApplicationsPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -333,7 +517,9 @@ const AppContent: React.FC = () => {
             path="/applications/:id"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><ApplicationsPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <ApplicationsPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -341,7 +527,9 @@ const AppContent: React.FC = () => {
             path="/admin"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><AdminPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <AdminPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -349,7 +537,9 @@ const AppContent: React.FC = () => {
             path="/admin/users"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><AdminUsersPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <AdminUsersPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -357,7 +547,9 @@ const AppContent: React.FC = () => {
             path="/admin/properties"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><AdminPropertiesPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <AdminPropertiesPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -365,7 +557,9 @@ const AppContent: React.FC = () => {
             path="/admin/settings"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><AdminSettingsPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <AdminSettingsPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -387,7 +581,9 @@ const AppContent: React.FC = () => {
             path="/tenant-portal"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><TenantPortalPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <TenantPortalPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -395,7 +591,9 @@ const AppContent: React.FC = () => {
             path="/landlord-portal"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><LandlordPortalPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <LandlordPortalPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -403,7 +601,9 @@ const AppContent: React.FC = () => {
             path="/developer-portal"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><DeveloperPortalPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <DeveloperPortalPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -411,7 +611,9 @@ const AppContent: React.FC = () => {
             path="/maintenance"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><MaintenanceRequestPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <MaintenanceRequestPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -419,7 +621,9 @@ const AppContent: React.FC = () => {
             path="/leases"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><LeaseManagementPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <LeaseManagementPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -427,7 +631,9 @@ const AppContent: React.FC = () => {
             path="/payments"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><PaymentCollectionPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <PaymentCollectionPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -435,7 +641,9 @@ const AppContent: React.FC = () => {
             path="/communication"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><CommunicationPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <CommunicationPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -443,7 +651,9 @@ const AppContent: React.FC = () => {
             path="/reporting"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><ReportingDashboardPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <ReportingDashboardPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -452,7 +662,9 @@ const AppContent: React.FC = () => {
             path="/accounting"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><AccountingDashboardPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <AccountingDashboardPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -460,7 +672,9 @@ const AppContent: React.FC = () => {
             path="/scheduling"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><SchedulingPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <SchedulingPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />
@@ -468,7 +682,9 @@ const AppContent: React.FC = () => {
             path="/workflows"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}><WorkflowsPage /></Suspense>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <WorkflowsPage />
+                </Suspense>
               </ProtectedRoute>
             }
           />

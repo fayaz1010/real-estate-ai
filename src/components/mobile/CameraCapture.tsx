@@ -1,6 +1,7 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { useCamera } from '../../hooks/useCamera';
-import { Camera, RotateCcw } from 'lucide-react';
+import { Camera, RotateCcw } from "lucide-react";
+import React, { useRef, useEffect, useState } from "react";
+
+import { useCamera } from "../../hooks/useCamera";
 
 interface CameraCaptureProps {
   onCapture?: (imageData: string) => void;
@@ -30,11 +31,11 @@ export function CameraCapture({ onCapture }: CameraCaptureProps) {
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     ctx.drawImage(video, 0, 0);
-    const imageData = canvas.toDataURL('image/jpeg', 0.8);
+    const imageData = canvas.toDataURL("image/jpeg", 0.8);
     setCapturedImage(imageData);
     onCapture?.(imageData);
   };
@@ -55,7 +56,7 @@ export function CameraCapture({ onCapture }: CameraCaptureProps) {
         <button
           onClick={startCamera}
           className="flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition-colors"
-          style={{ backgroundColor: '#091a2b' }}
+          style={{ backgroundColor: "#091a2b" }}
         >
           <Camera size={20} />
           Open Camera
@@ -76,7 +77,7 @@ export function CameraCapture({ onCapture }: CameraCaptureProps) {
           <button
             onClick={takePhoto}
             className="flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition-colors"
-            style={{ backgroundColor: '#3b4876' }}
+            style={{ backgroundColor: "#3b4876" }}
           >
             <Camera size={20} />
             Take Photo
@@ -92,7 +93,7 @@ export function CameraCapture({ onCapture }: CameraCaptureProps) {
           <button
             onClick={retry}
             className="flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition-colors"
-            style={{ backgroundColor: '#3b4876' }}
+            style={{ backgroundColor: "#3b4876" }}
           >
             <RotateCcw size={20} />
             Retry

@@ -1,5 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import {
   CheckCircle,
   XCircle,
@@ -12,6 +10,8 @@ import {
   Shield,
   Award,
 } from "lucide-react";
+import React from "react";
+import { Link } from "react-router-dom";
 
 interface PricingPlatform {
   name: string;
@@ -188,9 +188,9 @@ export const PricingComparisonPage: React.FC = () => {
             <span className="text-realestate-accent"> Pricing Comparison</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-300 font-inter max-w-3xl mx-auto leading-relaxed mb-10">
-            See how RealEstate AI&apos;s flat-rate pricing stacks up against AppFolio,
-            Buildium, Rent Manager, TenantCloud, and Yardi Breeze. Transparent
-            pricing with no hidden fees.
+            See how RealEstate AI&apos;s flat-rate pricing stacks up against
+            AppFolio, Buildium, Rent Manager, TenantCloud, and Yardi Breeze.
+            Transparent pricing with no hidden fees.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -230,7 +230,10 @@ export const PricingComparisonPage: React.FC = () => {
               return (
                 <article key={point.title} className="card-elevated p-8">
                   <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center mb-4">
-                    <IconComponent className="w-6 h-6 text-red-500" aria-hidden="true" />
+                    <IconComponent
+                      className="w-6 h-6 text-red-500"
+                      aria-hidden="true"
+                    />
                   </div>
                   <h3 className="text-xl font-semibold text-realestate-primary font-space-grotesk mb-3">
                     {point.title}
@@ -259,8 +262,9 @@ export const PricingComparisonPage: React.FC = () => {
               How Every Platform Compares on Price
             </h2>
             <p className="text-gray-600 font-inter max-w-2xl mx-auto">
-              All prices reflect publicly available information as of early 2026.
-              Actual costs may vary based on add-ons and negotiated discounts.
+              All prices reflect publicly available information as of early
+              2026. Actual costs may vary based on add-ons and negotiated
+              discounts.
             </p>
           </div>
           <div className="card-elevated overflow-hidden rounded-2xl">
@@ -268,14 +272,30 @@ export const PricingComparisonPage: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="bg-realestate-primary text-white">
-                    <th className="text-left py-4 px-4 font-space-grotesk font-semibold text-sm">Platform</th>
-                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">Starting Price</th>
-                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">Per Unit</th>
-                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">Setup Fee</th>
-                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">Min. Units</th>
-                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">AI Features</th>
-                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">Free Plan</th>
-                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">No Contract</th>
+                    <th className="text-left py-4 px-4 font-space-grotesk font-semibold text-sm">
+                      Platform
+                    </th>
+                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">
+                      Starting Price
+                    </th>
+                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">
+                      Per Unit
+                    </th>
+                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">
+                      Setup Fee
+                    </th>
+                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">
+                      Min. Units
+                    </th>
+                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">
+                      AI Features
+                    </th>
+                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">
+                      Free Plan
+                    </th>
+                    <th className="text-center py-4 px-4 font-space-grotesk font-semibold text-sm">
+                      No Contract
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -286,8 +306,8 @@ export const PricingComparisonPage: React.FC = () => {
                         platform.highlight
                           ? "bg-realestate-accent/5 font-medium"
                           : index % 2 === 0
-                          ? "bg-white"
-                          : "bg-gray-50"
+                            ? "bg-white"
+                            : "bg-gray-50"
                       }`}
                     >
                       <td className="py-3.5 px-4 font-inter text-sm text-realestate-primary font-semibold">
@@ -296,13 +316,27 @@ export const PricingComparisonPage: React.FC = () => {
                         )}
                         {platform.name}
                       </td>
-                      <td className="py-3.5 px-4 text-center text-sm font-inter">{platform.startingPrice}</td>
-                      <td className="py-3.5 px-4 text-center text-sm font-inter">{platform.perUnit}</td>
-                      <td className="py-3.5 px-4 text-center text-sm font-inter">{platform.setupFee}</td>
-                      <td className="py-3.5 px-4 text-center text-sm font-inter">{platform.minimumUnits}</td>
-                      <td className="py-3.5 px-4 text-center">{renderBoolCell(platform.aiFeatures)}</td>
-                      <td className="py-3.5 px-4 text-center">{renderBoolCell(platform.freeplan)}</td>
-                      <td className="py-3.5 px-4 text-center">{renderBoolCell(platform.noContract)}</td>
+                      <td className="py-3.5 px-4 text-center text-sm font-inter">
+                        {platform.startingPrice}
+                      </td>
+                      <td className="py-3.5 px-4 text-center text-sm font-inter">
+                        {platform.perUnit}
+                      </td>
+                      <td className="py-3.5 px-4 text-center text-sm font-inter">
+                        {platform.setupFee}
+                      </td>
+                      <td className="py-3.5 px-4 text-center text-sm font-inter">
+                        {platform.minimumUnits}
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        {renderBoolCell(platform.aiFeatures)}
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        {renderBoolCell(platform.freeplan)}
+                      </td>
+                      <td className="py-3.5 px-4 text-center">
+                        {renderBoolCell(platform.noContract)}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -326,8 +360,9 @@ export const PricingComparisonPage: React.FC = () => {
               What You&apos;d Actually Pay by Portfolio Size
             </h2>
             <p className="text-gray-600 font-inter max-w-2xl mx-auto">
-              Here is what property management software typically costs at different
-              portfolio sizes, compared with RealEstate AI&apos;s flat-rate pricing.
+              Here is what property management software typically costs at
+              different portfolio sizes, compared with RealEstate AI&apos;s
+              flat-rate pricing.
             </p>
           </div>
           <div className="max-w-3xl mx-auto">
@@ -336,9 +371,15 @@ export const PricingComparisonPage: React.FC = () => {
                 <table className="w-full">
                   <thead>
                     <tr className="bg-realestate-primary text-white">
-                      <th className="text-left py-4 px-6 font-space-grotesk font-semibold">Portfolio Size</th>
-                      <th className="text-center py-4 px-6 font-space-grotesk font-semibold">Industry Range</th>
-                      <th className="text-center py-4 px-6 font-space-grotesk font-semibold text-realestate-accent">RealEstate AI</th>
+                      <th className="text-left py-4 px-6 font-space-grotesk font-semibold">
+                        Portfolio Size
+                      </th>
+                      <th className="text-center py-4 px-6 font-space-grotesk font-semibold">
+                        Industry Range
+                      </th>
+                      <th className="text-center py-4 px-6 font-space-grotesk font-semibold text-realestate-accent">
+                        RealEstate AI
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -367,7 +408,10 @@ export const PricingComparisonPage: React.FC = () => {
       </section>
 
       {/* Why We're Different */}
-      <section className="py-20 bg-realestate-primary" aria-labelledby="different-heading">
+      <section
+        className="py-20 bg-realestate-primary"
+        aria-labelledby="different-heading"
+      >
         <div className="section-container">
           <div className="text-center mb-14">
             <h2
@@ -386,7 +430,10 @@ export const PricingComparisonPage: React.FC = () => {
                   className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 md:p-8 hover:bg-white/10 transition-colors duration-300"
                 >
                   <div className="w-12 h-12 bg-realestate-accent/20 rounded-xl flex items-center justify-center mb-4">
-                    <IconComponent className="w-6 h-6 text-realestate-accent" aria-hidden="true" />
+                    <IconComponent
+                      className="w-6 h-6 text-realestate-accent"
+                      aria-hidden="true"
+                    />
                   </div>
                   <h3 className="text-lg font-semibold text-white font-space-grotesk mb-3">
                     {item.title}
@@ -402,7 +449,10 @@ export const PricingComparisonPage: React.FC = () => {
       </section>
 
       {/* Testimonials */}
-      <section className="py-20 bg-gray-50" aria-labelledby="testimonials-heading">
+      <section
+        className="py-20 bg-gray-50"
+        aria-labelledby="testimonials-heading"
+      >
         <div className="section-container">
           <div className="text-center mb-14">
             <h2

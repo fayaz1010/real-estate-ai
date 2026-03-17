@@ -1,5 +1,5 @@
-import React from "react";
 import { AlertTriangle, DollarSign, Wrench } from "lucide-react";
+import React from "react";
 
 import { formatCurrency } from "../../../lib/utils";
 import type { MaintenancePrediction as MaintenancePredictionType } from "../api/maintenanceService";

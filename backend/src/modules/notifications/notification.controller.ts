@@ -202,15 +202,27 @@ export class NotificationController {
     const userId = req.user!.userId;
     const { subscription, userAgent } = req.body;
 
-    if (!subscription?.endpoint || !subscription?.keys?.p256dh || !subscription?.keys?.auth) {
+    if (
+      !subscription?.endpoint ||
+      !subscription?.keys?.p256dh ||
+      !subscription?.keys?.auth
+    ) {
       return res.status(400).json({
         success: false,
-        error: { code: "INVALID_SUBSCRIPTION", message: "Invalid push subscription object" },
+        error: {
+          code: "INVALID_SUBSCRIPTION",
+          message: "Invalid push subscription object",
+        },
       });
     }
 
     const result = await pushService.subscribe(userId, subscription, userAgent);
-    return successResponse(res, { id: result.id }, "Push subscription saved", 201);
+    return successResponse(
+      res,
+      { id: result.id },
+      "Push subscription saved",
+      201,
+    );
   });
 
   unsubscribePush = asyncHandler(async (req: Request, res: Response) => {
@@ -239,7 +251,10 @@ export class NotificationController {
     if (!userId || !title || !body) {
       return res.status(400).json({
         success: false,
-        error: { code: "MISSING_FIELDS", message: "userId, title, and body are required" },
+        error: {
+          code: "MISSING_FIELDS",
+          message: "userId, title, and body are required",
+        },
       });
     }
 

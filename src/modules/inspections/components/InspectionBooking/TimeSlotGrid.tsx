@@ -41,7 +41,7 @@ export const TimeSlotGrid: React.FC<TimeSlotGridProps> = ({
   // Group slots by time of day
   const groupedSlots = slots.reduce(
     (acc: Record<string, typeof slots>, slot: (typeof slots)[number]) => {
-      const timeOfDay = getTimeOfDay(slot.start);
+      const timeOfDay = getTimeOfDay(slot.startTime);
       if (!acc[timeOfDay]) {
         acc[timeOfDay] = [];
       }
@@ -103,14 +103,14 @@ export const TimeSlotGrid: React.FC<TimeSlotGridProps> = ({
             </h5>
             <div className="grid grid-cols-2 gap-2">
               {groupedSlots[timeOfDay].map((slot) => {
-                const isSelected = selectedTime === slot.start;
-                const isAvailable = slot.available;
-                const isFull = slot.bookingsCount >= slot.maxBookings;
+                const isSelected = selectedTime === slot.startTime;
+                const isAvailable = slot.isAvailable;
+                const isFull = slot.currentBookings >= slot.maxBookings;
 
                 return (
                   <button
-                    key={slot.start}
-                    onClick={() => isAvailable && onTimeSelect(slot.start)}
+                    key={slot.startTime}
+                    onClick={() => isAvailable && onTimeSelect(slot.startTime)}
                     disabled={!isAvailable || isFull}
                     className={`
                       relative px-4 py-3 rounded-lg text-sm font-medium transition-all
@@ -124,7 +124,7 @@ export const TimeSlotGrid: React.FC<TimeSlotGridProps> = ({
                     `}
                   >
                     <div className="flex items-center justify-between">
-                      <span>{formatTime(slot.start)}</span>
+                      <span>{formatTime(slot.startTime)}</span>
                       {isSelected && <Check className="w-4 h-4" />}
                       {!isAvailable && !isSelected && (
                         <span className="text-xs">(Booked)</span>
@@ -132,7 +132,7 @@ export const TimeSlotGrid: React.FC<TimeSlotGridProps> = ({
                     </div>
                     {slot.maxBookings > 1 && (
                       <div className="text-xs mt-1 opacity-75">
-                        {slot.maxBookings - slot.bookingsCount} spots left
+                        {slot.maxBookings - slot.currentBookings} spots left
                       </div>
                     )}
                   </button>

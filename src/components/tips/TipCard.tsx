@@ -1,7 +1,8 @@
-import React from 'react';
-import { X } from 'lucide-react';
-import { Tip } from '@/types/tips';
-import { cn } from '@/lib/utils';
+import { X } from "lucide-react";
+import React from "react";
+
+import { cn } from "@/lib/utils";
+import { Tip } from "@/types/tips";
 
 interface TipCardProps {
   tip: Tip;
@@ -17,8 +18,8 @@ export const TipCard: React.FC<TipCardProps> = ({
   return (
     <div
       className={cn(
-        'rounded-xl border border-primary/10 bg-white p-4 shadow-sm transition-shadow hover:shadow-md',
-        className
+        "rounded-xl border border-primary/10 bg-white p-4 shadow-sm transition-shadow hover:shadow-md",
+        className,
       )}
     >
       <div className="mb-1 flex items-start justify-between gap-2">
@@ -26,7 +27,7 @@ export const TipCard: React.FC<TipCardProps> = ({
           {tip.title}
         </h4>
         <button
-          onClick={() => onDismiss(tip.id, 'Not relevant')}
+          onClick={() => onDismiss(tip.id, "Not relevant")}
           className="shrink-0 rounded-md p-1 text-primary/40 transition-colors hover:bg-primary/5 hover:text-primary/70"
           aria-label="Dismiss tip"
         >

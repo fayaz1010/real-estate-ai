@@ -1,9 +1,9 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
+import React from "react";
 import "@testing-library/jest-dom";
 
-import { MessageList } from "../MessageList";
 import type { Message } from "../../../../types/communication";
+import { MessageList } from "../MessageList";
 
 const mockMessages: Message[] = [
   {

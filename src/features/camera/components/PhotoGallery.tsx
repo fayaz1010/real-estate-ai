@@ -1,4 +1,3 @@
-import React, { useCallback, useMemo, useState } from 'react';
 import {
   Trash2,
   Share2,
@@ -8,8 +7,10 @@ import {
   MapPin,
   Clock,
   Edit3,
-} from 'lucide-react';
-import type { CapturedPhoto } from '../types';
+} from "lucide-react";
+import React, { useCallback, useMemo, useState } from "react";
+
+import type { CapturedPhoto } from "../types";
 
 interface PhotoGalleryProps {
   photos: CapturedPhoto[];
@@ -18,7 +19,7 @@ interface PhotoGalleryProps {
   onAnnotate?: (photo: CapturedPhoto) => void;
 }
 
-type SortOrder = 'newest' | 'oldest';
+type SortOrder = "newest" | "oldest";
 
 export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   photos,
@@ -27,15 +28,15 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   onAnnotate,
 }) => {
   const [selectedPhoto, setSelectedPhoto] = useState<CapturedPhoto | null>(
-    null
+    null,
   );
-  const [sortOrder, setSortOrder] = useState<SortOrder>('newest');
+  const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
 
   const sortedPhotos = useMemo(() => {
     return [...photos].sort((a, b) =>
-      sortOrder === 'newest'
+      sortOrder === "newest"
         ? b.timestamp - a.timestamp
-        : a.timestamp - b.timestamp
+        : a.timestamp - b.timestamp,
     );
   }, [photos, sortOrder]);
 
@@ -46,11 +47,11 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         const response = await fetch(photo.dataUrl);
         const blob = await response.blob();
         const file = new File([blob], `property-photo-${photo.id}.jpg`, {
-          type: 'image/jpeg',
+          type: "image/jpeg",
         });
 
         await navigator.share({
-          title: photo.roomLabel || 'Property Photo',
+          title: photo.roomLabel || "Property Photo",
           files: [file],
         });
       } catch {
@@ -58,7 +59,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
       }
     } else {
       // Fallback: download
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       link.href = photo.dataUrl;
       link.download = `property-photo-${photo.id}.jpg`;
       link.click();
@@ -72,16 +73,16 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
         setSelectedPhoto(null);
       }
     },
-    [onDelete, selectedPhoto]
+    [onDelete, selectedPhoto],
   );
 
   const formatTimestamp = (ts: number) => {
     const date = new Date(ts);
-    return date.toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -89,14 +90,14 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
     return (
       <div
         className="flex flex-col items-center justify-center py-16 text-center"
-        style={{ fontFamily: 'Open Sans, sans-serif' }}
+        style={{ fontFamily: "Open Sans, sans-serif" }}
       >
         <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
           <Maximize2 className="w-8 h-8 text-gray-400" />
         </div>
         <h3
           className="text-lg font-semibold mb-1"
-          style={{ color: '#091a2b', fontFamily: 'Montserrat, sans-serif' }}
+          style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
         >
           No Photos Yet
         </h3>
@@ -108,23 +109,23 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   }
 
   return (
-    <div style={{ fontFamily: 'Open Sans, sans-serif' }}>
+    <div style={{ fontFamily: "Open Sans, sans-serif" }}>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h3
           className="text-lg font-semibold"
-          style={{ color: '#091a2b', fontFamily: 'Montserrat, sans-serif' }}
+          style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
         >
           Photos ({photos.length})
         </h3>
         <button
           onClick={() =>
-            setSortOrder((o) => (o === 'newest' ? 'oldest' : 'newest'))
+            setSortOrder((o) => (o === "newest" ? "oldest" : "newest"))
           }
           className="flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-700 transition-colors px-2 py-1 rounded-lg hover:bg-gray-100"
         >
           <Filter className="w-4 h-4" />
-          {sortOrder === 'newest' ? 'Newest first' : 'Oldest first'}
+          {sortOrder === "newest" ? "Newest first" : "Oldest first"}
         </button>
       </div>
 
@@ -141,7 +142,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
           >
             <img
               src={photo.thumbnail}
-              alt={photo.roomLabel || 'Property photo'}
+              alt={photo.roomLabel || "Property photo"}
               className="w-full h-full object-cover"
               loading="lazy"
             />
@@ -166,7 +167,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
             {photo.annotations.length > 0 && (
               <div
                 className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
-                style={{ backgroundColor: '#3b4876' }}
+                style={{ backgroundColor: "#3b4876" }}
               >
                 {photo.annotations.length}
               </div>
@@ -243,7 +244,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
           >
             <img
               src={selectedPhoto.dataUrl}
-              alt={selectedPhoto.roomLabel || 'Property photo'}
+              alt={selectedPhoto.roomLabel || "Property photo"}
               className="max-w-full max-h-full object-contain rounded-lg"
             />
           </div>

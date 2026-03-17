@@ -1,4 +1,4 @@
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { CardElement, useStripe, useElements } from "@stripe/react-stripe-js";
 import {
   CreditCard,
   Building2,
@@ -9,30 +9,30 @@ import {
   AlertCircle,
   Loader,
   X,
-} from 'lucide-react';
-import React, { useState, useEffect } from 'react';
-
-import { COLORS, TYPOGRAPHY } from '@/types';
+} from "lucide-react";
+import React, { useState, useEffect } from "react";
 
 import {
   getPaymentMethods,
   addPaymentMethod,
   setDefaultPaymentMethod,
   removePaymentMethod,
-} from '../api/paymentService';
-import type { PaymentMethod } from '../api/paymentService';
+} from "../api/paymentService";
+import type { PaymentMethod } from "../api/paymentService";
+
+import { COLORS, TYPOGRAPHY } from "@/types";
 
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 
-type AddMethodMode = null | 'card' | 'bank';
+type AddMethodMode = null | "card" | "bank";
 
 interface BankFormData {
   accountHolderName: string;
   routingNumber: string;
   accountNumber: string;
-  accountType: 'checking' | 'savings';
+  accountType: "checking" | "savings";
 }
 
 interface PaymentMethodSelectorProps {
@@ -48,29 +48,29 @@ const CARD_ELEMENT_OPTIONS = {
   style: {
     base: {
       fontFamily: TYPOGRAPHY.bodyFont,
-      fontSize: '16px',
+      fontSize: "16px",
       color: COLORS.textPrimary,
-      '::placeholder': { color: '#94a3b8' },
+      "::placeholder": { color: "#94a3b8" },
     },
-    invalid: { color: '#ef4444' },
+    invalid: { color: "#ef4444" },
   },
 };
 
 const CARD_BRAND_NAMES: Record<string, string> = {
-  visa: 'Visa',
-  mastercard: 'Mastercard',
-  amex: 'American Express',
-  discover: 'Discover',
-  diners: 'Diners Club',
-  jcb: 'JCB',
-  unionpay: 'UnionPay',
+  visa: "Visa",
+  mastercard: "Mastercard",
+  amex: "American Express",
+  discover: "Discover",
+  diners: "Diners Club",
+  jcb: "JCB",
+  unionpay: "UnionPay",
 };
 
 const INITIAL_BANK_FORM: BankFormData = {
-  accountHolderName: '',
-  routingNumber: '',
-  accountNumber: '',
-  accountType: 'checking',
+  accountHolderName: "",
+  routingNumber: "",
+  accountNumber: "",
+  accountType: "checking",
 };
 
 // ---------------------------------------------------------------------------
@@ -80,13 +80,13 @@ const INITIAL_BANK_FORM: BankFormData = {
 function validateBankForm(data: BankFormData): Record<string, string> {
   const errors: Record<string, string> = {};
   if (!data.accountHolderName.trim()) {
-    errors.accountHolderName = 'Account holder name is required';
+    errors.accountHolderName = "Account holder name is required";
   }
   if (!/^\d{9}$/.test(data.routingNumber)) {
-    errors.routingNumber = 'Routing number must be 9 digits';
+    errors.routingNumber = "Routing number must be 9 digits";
   }
   if (!/^\d{4,17}$/.test(data.accountNumber)) {
-    errors.accountNumber = 'Account number must be 4-17 digits';
+    errors.accountNumber = "Account number must be 4-17 digits";
   }
   return errors;
 }
@@ -125,7 +125,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
           }
         }
       } catch {
-        if (!cancelled) setError('Failed to load payment methods.');
+        if (!cancelled) setError("Failed to load payment methods.");
       } finally {
         if (!cancelled) setLoading(false);
       }
@@ -143,16 +143,16 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
 
     const cardElement = elements.getElement(CardElement);
     if (!cardElement) {
-      setError('Card element not found.');
+      setError("Card element not found.");
       setAddLoading(false);
       return;
     }
 
     const { error: stripeErr, paymentMethod } =
-      await stripe.createPaymentMethod({ type: 'card', card: cardElement });
+      await stripe.createPaymentMethod({ type: "card", card: cardElement });
 
     if (stripeErr) {
-      setError(stripeErr.message ?? 'Failed to add card.');
+      setError(stripeErr.message ?? "Failed to add card.");
       setAddLoading(false);
       return;
     }
@@ -163,7 +163,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
       onSelect(saved.id);
       setAddMode(null);
     } catch {
-      setError('Failed to save payment method.');
+      setError("Failed to save payment method.");
     } finally {
       setAddLoading(false);
     }
@@ -182,16 +182,18 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
 
     try {
       // Bank accounts are added via backend/Plaid - send form data to API
-      const { data } = await (await import('axios')).default.post<{
+      const { data } = await (
+        await import("axios")
+      ).default.post<{
         data: PaymentMethod;
-      }>('/api/payments/payment-methods/bank', bankForm);
+      }>("/api/payments/payment-methods/bank", bankForm);
       const saved = data.data;
       setMethods((prev) => [...prev, saved]);
       onSelect(saved.id);
       setAddMode(null);
       setBankForm(INITIAL_BANK_FORM);
     } catch {
-      setError('Failed to add bank account. Please verify your details.');
+      setError("Failed to add bank account. Please verify your details.");
     } finally {
       setAddLoading(false);
     }
@@ -201,11 +203,9 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
   const handleSetDefault = async (id: string) => {
     try {
       await setDefaultPaymentMethod(id);
-      setMethods((prev) =>
-        prev.map((m) => ({ ...m, isDefault: m.id === id })),
-      );
+      setMethods((prev) => prev.map((m) => ({ ...m, isDefault: m.id === id })));
     } catch {
-      setError('Failed to set default payment method.');
+      setError("Failed to set default payment method.");
     }
   };
 
@@ -214,9 +214,9 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
     try {
       await removePaymentMethod(id);
       setMethods((prev) => prev.filter((m) => m.id !== id));
-      if (selectedMethodId === id) onSelect('');
+      if (selectedMethodId === id) onSelect("");
     } catch {
-      setError('Failed to remove payment method.');
+      setError("Failed to remove payment method.");
     }
   };
 
@@ -227,13 +227,19 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
     const brand = CARD_BRAND_NAMES[card.brand] ?? card.brand;
     return (
       <div className="flex items-center gap-3">
-        <CreditCard className="h-5 w-5 flex-shrink-0" style={{ color: COLORS.secondary }} />
+        <CreditCard
+          className="h-5 w-5 flex-shrink-0"
+          style={{ color: COLORS.secondary }}
+        />
         <div>
-          <span className="text-sm font-medium" style={{ color: COLORS.primary }}>
+          <span
+            className="text-sm font-medium"
+            style={{ color: COLORS.primary }}
+          >
             {brand} ending in {card.last4}
           </span>
           <span className="ml-2 text-xs text-gray-500">
-            Exp {String(card.expMonth).padStart(2, '0')}/{card.expYear}
+            Exp {String(card.expMonth).padStart(2, "0")}/{card.expYear}
           </span>
         </div>
       </div>
@@ -245,9 +251,15 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
     if (!bankAccount) return null;
     return (
       <div className="flex items-center gap-3">
-        <Building2 className="h-5 w-5 flex-shrink-0" style={{ color: COLORS.secondary }} />
+        <Building2
+          className="h-5 w-5 flex-shrink-0"
+          style={{ color: COLORS.secondary }}
+        />
         <div>
-          <span className="text-sm font-medium" style={{ color: COLORS.primary }}>
+          <span
+            className="text-sm font-medium"
+            style={{ color: COLORS.primary }}
+          >
             {bankAccount.bankName} &middot; {bankAccount.accountType}
           </span>
           <span className="ml-2 text-xs text-gray-500">
@@ -266,7 +278,9 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
         style={{ fontFamily: TYPOGRAPHY.bodyFont }}
       >
         <Loader className="h-6 w-6 animate-spin text-gray-400" />
-        <span className="ml-2 text-sm text-gray-500">Loading payment methods...</span>
+        <span className="ml-2 text-sm text-gray-500">
+          Loading payment methods...
+        </span>
       </div>
     );
   }
@@ -298,16 +312,16 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
               tabIndex={0}
               onClick={() => onSelect(method.id)}
               onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') onSelect(method.id);
+                if (e.key === "Enter" || e.key === " ") onSelect(method.id);
               }}
               className={`flex cursor-pointer items-center justify-between rounded-lg border p-4 transition-colors ${
                 selectedMethodId === method.id
-                  ? 'border-2'
-                  : 'border-gray-200 hover:border-gray-300'
+                  ? "border-2"
+                  : "border-gray-200 hover:border-gray-300"
               }`}
               style={
                 selectedMethodId === method.id
-                  ? { borderColor: COLORS.primary, backgroundColor: '#f0f4f8' }
+                  ? { borderColor: COLORS.primary, backgroundColor: "#f0f4f8" }
                   : undefined
               }
             >
@@ -318,7 +332,9 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
                     style={{ color: COLORS.primary }}
                   />
                 )}
-                {method.type === 'card' ? renderCard(method) : renderBank(method)}
+                {method.type === "card"
+                  ? renderCard(method)
+                  : renderBank(method)}
                 {method.isDefault && (
                   <span className="ml-2 flex items-center gap-1 rounded-full bg-yellow-100 px-2 py-0.5 text-xs font-medium text-yellow-700">
                     <Star className="h-3 w-3" /> Default
@@ -367,7 +383,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
         <div className="flex gap-3">
           <button
             type="button"
-            onClick={() => setAddMode('card')}
+            onClick={() => setAddMode("card")}
             className="flex items-center gap-2 rounded-lg border border-dashed border-gray-300 px-4 py-3 text-sm font-medium transition-colors hover:border-gray-400"
             style={{ color: COLORS.secondary }}
           >
@@ -376,7 +392,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
           </button>
           <button
             type="button"
-            onClick={() => setAddMode('bank')}
+            onClick={() => setAddMode("bank")}
             className="flex items-center gap-2 rounded-lg border border-dashed border-gray-300 px-4 py-3 text-sm font-medium transition-colors hover:border-gray-400"
             style={{ color: COLORS.secondary }}
           >
@@ -387,7 +403,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
       )}
 
       {/* Add card form */}
-      {addMode === 'card' && (
+      {addMode === "card" && (
         <div className="rounded-lg border border-gray-200 bg-white p-5 space-y-4">
           <div className="flex items-center justify-between">
             <span
@@ -423,13 +439,13 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
             ) : (
               <CreditCard className="h-4 w-4" />
             )}
-            {addLoading ? 'Adding...' : 'Add Card'}
+            {addLoading ? "Adding..." : "Add Card"}
           </button>
         </div>
       )}
 
       {/* Add bank form */}
-      {addMode === 'bank' && (
+      {addMode === "bank" && (
         <div className="rounded-lg border border-gray-200 bg-white p-5 space-y-4">
           <div className="flex items-center justify-between">
             <span
@@ -489,7 +505,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
                 onChange={(e) =>
                   setBankForm((f) => ({
                     ...f,
-                    accountType: e.target.value as 'checking' | 'savings',
+                    accountType: e.target.value as "checking" | "savings",
                   }))
                 }
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-400 focus:outline-none"
@@ -512,7 +528,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
                 onChange={(e) =>
                   setBankForm((f) => ({
                     ...f,
-                    routingNumber: e.target.value.replace(/\D/g, ''),
+                    routingNumber: e.target.value.replace(/\D/g, ""),
                   }))
                 }
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-400 focus:outline-none"
@@ -538,7 +554,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
                 onChange={(e) =>
                   setBankForm((f) => ({
                     ...f,
-                    accountNumber: e.target.value.replace(/\D/g, ''),
+                    accountNumber: e.target.value.replace(/\D/g, ""),
                   }))
                 }
                 className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-blue-400 focus:outline-none"
@@ -564,7 +580,7 @@ export const PaymentMethodSelector: React.FC<PaymentMethodSelectorProps> = ({
             ) : (
               <Building2 className="h-4 w-4" />
             )}
-            {addLoading ? 'Adding...' : 'Add Bank Account'}
+            {addLoading ? "Adding..." : "Add Bank Account"}
           </button>
         </div>
       )}

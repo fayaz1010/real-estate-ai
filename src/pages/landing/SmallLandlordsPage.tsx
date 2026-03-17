@@ -1,5 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import {
   DollarSign,
   Clock,
@@ -14,6 +12,8 @@ import {
   CreditCard,
   TrendingUp,
 } from "lucide-react";
+import React from "react";
+import { Link } from "react-router-dom";
 
 const painPoints = [
   {
@@ -128,12 +128,17 @@ export const SmallLandlordsPage: React.FC = () => {
           >
             Best Property Management Software
             <br className="hidden md:block" />
-            <span className="text-realestate-accent"> for Small Landlords</span> in 2026
+            <span className="text-realestate-accent">
+              {" "}
+              for Small Landlords
+            </span>{" "}
+            in 2026
           </h1>
           <p className="text-lg md:text-xl text-gray-300 font-inter max-w-3xl mx-auto leading-relaxed mb-10">
-            Manage your rental properties like a pro without the enterprise price tag.
-            RealEstate AI gives independent landlords powerful automation, AI-driven
-            insights, and effortless rent collection — starting free.
+            Manage your rental properties like a pro without the enterprise
+            price tag. RealEstate AI gives independent landlords powerful
+            automation, AI-driven insights, and effortless rent collection —
+            starting free.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -171,8 +176,8 @@ export const SmallLandlordsPage: React.FC = () => {
             </h2>
             <p className="text-gray-600 font-inter max-w-2xl mx-auto">
               Most property management software is designed for large firms with
-              hundreds of units. Small landlords are left with tools that are either
-              too expensive, too complex, or too limited.
+              hundreds of units. Small landlords are left with tools that are
+              either too expensive, too complex, or too limited.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
@@ -200,10 +205,7 @@ export const SmallLandlordsPage: React.FC = () => {
       </section>
 
       {/* Solution Section */}
-      <section
-        className="py-20 bg-white"
-        aria-labelledby="solution-heading"
-      >
+      <section className="py-20 bg-white" aria-labelledby="solution-heading">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center mb-14">
             <span className="inline-block px-4 py-1.5 bg-realestate-accent/10 text-realestate-accent font-semibold text-sm rounded-full mb-4 font-inter">
@@ -290,10 +292,7 @@ export const SmallLandlordsPage: React.FC = () => {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {testimonials.map((testimonial) => (
-              <article
-                key={testimonial.name}
-                className="card-elevated p-8"
-              >
+              <article key={testimonial.name} className="card-elevated p-8">
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
                     <Star
@@ -364,8 +363,9 @@ export const SmallLandlordsPage: React.FC = () => {
               Start Managing Smarter Today
             </h2>
             <p className="text-gray-300 font-inter max-w-2xl mx-auto mb-8 text-lg">
-              Join thousands of small landlords who have reclaimed their weekends
-              with RealEstate AI. Free to start, no credit card required.
+              Join thousands of small landlords who have reclaimed their
+              weekends with RealEstate AI. Free to start, no credit card
+              required.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link

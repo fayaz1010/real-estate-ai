@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import {
   Mail,
   ClipboardList,
@@ -12,6 +11,8 @@ import {
   ChevronUp,
   AlertCircle,
 } from "lucide-react";
+import React, { useState } from "react";
+
 import type {
   WorkflowStep as WorkflowStepType,
   WorkflowStepType as StepType,
@@ -59,9 +60,12 @@ const STEP_ICON_COLORS: Record<StepType, string> = {
   optimize_listing_seo: "text-teal-600 bg-teal-100",
 };
 
-function getConfigFields(
-  stepType: StepType,
-): { key: string; label: string; type: "text" | "textarea" | "select"; options?: string[] }[] {
+function getConfigFields(stepType: StepType): {
+  key: string;
+  label: string;
+  type: "text" | "textarea" | "select";
+  options?: string[];
+}[] {
   switch (stepType) {
     case "send_email":
       return [
@@ -139,7 +143,10 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
         .filter(Boolean);
     }
 
-    const newConfig = { ...config, [key]: processedValue } as unknown as StepConfiguration;
+    const newConfig = {
+      ...config,
+      [key]: processedValue,
+    } as unknown as StepConfiguration;
     onUpdate(step.id, { configuration: newConfig });
   };
 
@@ -217,14 +224,15 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
               <input
                 type="text"
                 value={condition || ""}
-                onChange={(e) =>
-                  onConditionChange?.(step.id, e.target.value)
-                }
-                placeholder='e.g., {{tenant.creditScore}} >= 600'
+                onChange={(e) => onConditionChange?.(step.id, e.target.value)}
+                placeholder="e.g., {{tenant.creditScore}} >= 600"
                 className="w-full px-3 py-2 text-sm border border-amber-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent"
                 style={{ fontFamily: "Open Sans, sans-serif" }}
               />
-              <p className="text-xs text-amber-600 mt-1" style={{ fontFamily: "Open Sans, sans-serif" }}>
+              <p
+                className="text-xs text-amber-600 mt-1"
+                style={{ fontFamily: "Open Sans, sans-serif" }}
+              >
                 Use template variables like {"{{tenant.creditScore}}"} with
                 comparison operators
               </p>
@@ -281,7 +289,10 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
             </div>
           ))}
 
-          <p className="text-xs text-gray-400 italic" style={{ fontFamily: "Open Sans, sans-serif" }}>
+          <p
+            className="text-xs text-gray-400 italic"
+            style={{ fontFamily: "Open Sans, sans-serif" }}
+          >
             Use {"{{variable.path}}"} for dynamic values (e.g.,{" "}
             {"{{tenant.email}}"}, {"{{property.address}}"})
           </p>

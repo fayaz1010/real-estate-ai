@@ -1,5 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import {
   CreditCard,
   Clock,
@@ -15,6 +13,9 @@ import {
   Check,
   X,
 } from "lucide-react";
+import React from "react";
+import { Link } from "react-router-dom";
+
 import { PageMeta } from "../../components/seo/PageMeta";
 
 const features = [
@@ -185,7 +186,11 @@ const jsonLd = {
 
 export const RentCollectionPage: React.FC = () => {
   return (
-    <main className="min-h-screen" role="main" style={{ backgroundColor: "#F4F7FB" }}>
+    <main
+      className="min-h-screen"
+      role="main"
+      style={{ backgroundColor: "#F4F7FB" }}
+    >
       <PageMeta
         title="Online Rent Collection"
         description="Collect rent online with RealEstate AI. Automate payments, send reminders, and track your income."
@@ -216,7 +221,10 @@ export const RentCollectionPage: React.FC = () => {
         <div className="section-container relative z-10 text-center">
           <span
             className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-6 font-inter"
-            style={{ backgroundColor: "rgba(74, 144, 217, 0.2)", color: "#4A90D9" }}
+            style={{
+              backgroundColor: "rgba(74, 144, 217, 0.2)",
+              color: "#4A90D9",
+            }}
           >
             Starting at $29/month
           </span>
@@ -228,9 +236,9 @@ export const RentCollectionPage: React.FC = () => {
             <span style={{ color: "#4A90D9" }}>Rent Collection</span>
           </h1>
           <p className="text-lg md:text-xl text-gray-300 font-inter max-w-3xl mx-auto leading-relaxed mb-10">
-            Collect rent online with zero hassle. Automated payments, smart reminders,
-            real-time tracking, and bank-grade security — everything you need to get paid
-            on time, every time.
+            Collect rent online with zero hassle. Automated payments, smart
+            reminders, real-time tracking, and bank-grade security — everything
+            you need to get paid on time, every time.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -258,7 +266,11 @@ export const RentCollectionPage: React.FC = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16" style={{ backgroundColor: "#F4F7FB" }} aria-labelledby="stats-heading">
+      <section
+        className="py-16"
+        style={{ backgroundColor: "#F4F7FB" }}
+        aria-labelledby="stats-heading"
+      >
         <div className="section-container">
           <h2 id="stats-heading" className="sr-only">
             Rent Collection Statistics
@@ -290,7 +302,10 @@ export const RentCollectionPage: React.FC = () => {
           <div className="text-center mb-14">
             <span
               className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-4 font-inter"
-              style={{ backgroundColor: "rgba(74, 144, 217, 0.1)", color: "#1B3A6B" }}
+              style={{
+                backgroundColor: "rgba(74, 144, 217, 0.1)",
+                color: "#1B3A6B",
+              }}
             >
               Key Features
             </span>
@@ -301,9 +316,13 @@ export const RentCollectionPage: React.FC = () => {
             >
               Everything You Need to Collect Rent Online
             </h2>
-            <p className="font-inter max-w-2xl mx-auto" style={{ color: "#2C5AA0" }}>
+            <p
+              className="font-inter max-w-2xl mx-auto"
+              style={{ color: "#2C5AA0" }}
+            >
               From automated payments to real-time tracking, RealEstate AI makes
-              rent collection effortless for landlords and convenient for tenants.
+              rent collection effortless for landlords and convenient for
+              tenants.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
@@ -331,7 +350,10 @@ export const RentCollectionPage: React.FC = () => {
                   >
                     {feature.title}
                   </h3>
-                  <p className="font-inter leading-relaxed" style={{ color: "#2C5AA0" }}>
+                  <p
+                    className="font-inter leading-relaxed"
+                    style={{ color: "#2C5AA0" }}
+                  >
                     {feature.description}
                   </p>
                 </article>
@@ -389,7 +411,10 @@ export const RentCollectionPage: React.FC = () => {
           <div className="text-center mb-14">
             <span
               className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-4 font-inter"
-              style={{ backgroundColor: "rgba(74, 144, 217, 0.1)", color: "#1B3A6B" }}
+              style={{
+                backgroundColor: "rgba(74, 144, 217, 0.1)",
+                color: "#1B3A6B",
+              }}
             >
               Pricing Comparison
             </span>
@@ -400,7 +425,10 @@ export const RentCollectionPage: React.FC = () => {
             >
               See How We Compare
             </h2>
-            <p className="font-inter max-w-2xl mx-auto" style={{ color: "#2C5AA0" }}>
+            <p
+              className="font-inter max-w-2xl mx-auto"
+              style={{ color: "#2C5AA0" }}
+            >
               RealEstate AI offers more features at a fraction of the cost.
             </p>
           </div>
@@ -411,7 +439,10 @@ export const RentCollectionPage: React.FC = () => {
               <table className="w-full" role="table">
                 <thead>
                   <tr style={{ backgroundColor: "#F4F7FB" }}>
-                    <th className="text-left p-4 font-inter font-semibold text-sm" style={{ color: "#0F1C33" }}>
+                    <th
+                      className="text-left p-4 font-inter font-semibold text-sm"
+                      style={{ color: "#0F1C33" }}
+                    >
                       Feature
                     </th>
                     {pricingComparison.map((plan) => (
@@ -420,13 +451,17 @@ export const RentCollectionPage: React.FC = () => {
                         className="text-center p-4 font-space-grotesk font-semibold"
                         style={{
                           color: plan.highlight ? "#1B3A6B" : "#0F1C33",
-                          backgroundColor: plan.highlight ? "rgba(74, 144, 217, 0.08)" : undefined,
+                          backgroundColor: plan.highlight
+                            ? "rgba(74, 144, 217, 0.08)"
+                            : undefined,
                         }}
                       >
                         <div className="text-base">{plan.name}</div>
                         <div
                           className="text-lg font-bold mt-1"
-                          style={{ color: plan.highlight ? "#1B3A6B" : "#2C5AA0" }}
+                          style={{
+                            color: plan.highlight ? "#1B3A6B" : "#2C5AA0",
+                          }}
                         >
                           {plan.price}
                         </div>
@@ -439,9 +474,16 @@ export const RentCollectionPage: React.FC = () => {
                     <tr
                       key={featureKey}
                       className={index % 2 === 0 ? "bg-white" : ""}
-                      style={index % 2 !== 0 ? { backgroundColor: "#F4F7FB" } : undefined}
+                      style={
+                        index % 2 !== 0
+                          ? { backgroundColor: "#F4F7FB" }
+                          : undefined
+                      }
                     >
-                      <td className="p-4 font-inter text-sm" style={{ color: "#0F1C33" }}>
+                      <td
+                        className="p-4 font-inter text-sm"
+                        style={{ color: "#0F1C33" }}
+                      >
                         {featureLabels[featureKey]}
                       </td>
                       {pricingComparison.map((plan) => (
@@ -454,7 +496,9 @@ export const RentCollectionPage: React.FC = () => {
                               : undefined
                           }
                         >
-                          {plan.features[featureKey as keyof typeof plan.features] ? (
+                          {plan.features[
+                            featureKey as keyof typeof plan.features
+                          ] ? (
                             <Check
                               className="w-5 h-5 mx-auto"
                               style={{ color: "#5B7F63" }}
@@ -483,7 +527,9 @@ export const RentCollectionPage: React.FC = () => {
                 className="rounded-2xl p-6 border"
                 style={{
                   borderColor: plan.highlight ? "#1B3A6B" : "#e5e7eb",
-                  backgroundColor: plan.highlight ? "rgba(74, 144, 217, 0.04)" : "white",
+                  backgroundColor: plan.highlight
+                    ? "rgba(74, 144, 217, 0.04)"
+                    : "white",
                 }}
               >
                 <div className="text-center mb-4">
@@ -504,9 +550,16 @@ export const RentCollectionPage: React.FC = () => {
                   {Object.entries(plan.features).map(([key, value]) => (
                     <li key={key} className="flex items-center gap-3">
                       {value ? (
-                        <Check className="w-4 h-4 flex-shrink-0" style={{ color: "#5B7F63" }} aria-hidden="true" />
+                        <Check
+                          className="w-4 h-4 flex-shrink-0"
+                          style={{ color: "#5B7F63" }}
+                          aria-hidden="true"
+                        />
                       ) : (
-                        <X className="w-4 h-4 flex-shrink-0 text-gray-300" aria-hidden="true" />
+                        <X
+                          className="w-4 h-4 flex-shrink-0 text-gray-300"
+                          aria-hidden="true"
+                        />
                       )}
                       <span
                         className="text-sm font-inter"
@@ -524,12 +577,19 @@ export const RentCollectionPage: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20" style={{ backgroundColor: "#F4F7FB" }} aria-labelledby="testimonials-heading">
+      <section
+        className="py-20"
+        style={{ backgroundColor: "#F4F7FB" }}
+        aria-labelledby="testimonials-heading"
+      >
         <div className="section-container">
           <div className="text-center mb-14">
             <span
               className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-4 font-inter"
-              style={{ backgroundColor: "rgba(74, 144, 217, 0.1)", color: "#1B3A6B" }}
+              style={{
+                backgroundColor: "rgba(74, 144, 217, 0.1)",
+                color: "#1B3A6B",
+              }}
             >
               Landlord Reviews
             </span>
@@ -564,10 +624,16 @@ export const RentCollectionPage: React.FC = () => {
                   &ldquo;{testimonial.quote}&rdquo;
                 </blockquote>
                 <div>
-                  <p className="font-semibold font-space-grotesk" style={{ color: "#1B3A6B" }}>
+                  <p
+                    className="font-semibold font-space-grotesk"
+                    style={{ color: "#1B3A6B" }}
+                  >
                     {testimonial.name}
                   </p>
-                  <p className="text-sm font-inter" style={{ color: "#2C5AA0" }}>
+                  <p
+                    className="text-sm font-inter"
+                    style={{ color: "#2C5AA0" }}
+                  >
                     {testimonial.role}
                   </p>
                 </div>
@@ -607,7 +673,10 @@ export const RentCollectionPage: React.FC = () => {
                     style={{ color: "#1B3A6B" }}
                     aria-hidden="true"
                   />
-                  <p className="font-inter text-sm" style={{ color: "#0F1C33" }}>
+                  <p
+                    className="font-inter text-sm"
+                    style={{ color: "#0F1C33" }}
+                  >
                     {item}
                   </p>
                 </div>
@@ -618,7 +687,11 @@ export const RentCollectionPage: React.FC = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20" style={{ backgroundColor: "#F4F7FB" }} aria-labelledby="cta-heading">
+      <section
+        className="py-20"
+        style={{ backgroundColor: "#F4F7FB" }}
+        aria-labelledby="cta-heading"
+      >
         <div className="section-container">
           <div
             className="p-10 md:p-16 text-center rounded-3xl shadow-lg"
@@ -633,8 +706,8 @@ export const RentCollectionPage: React.FC = () => {
               Start Collecting Rent Online Today
             </h2>
             <p className="text-gray-300 font-inter max-w-2xl mx-auto mb-8 text-lg">
-              14-day free trial. No credit card required. Set up in under five minutes
-              and start getting paid on time.
+              14-day free trial. No credit card required. Set up in under five
+              minutes and start getting paid on time.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link

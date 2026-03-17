@@ -1,7 +1,6 @@
 // FILE PATH: src/services/schedulingService.ts
 // Smart Scheduling & Booking System - API Service Layer
 
-import apiClient from "@/api/client";
 import type {
   Booking,
   BookingFilters,
@@ -12,15 +11,16 @@ import type {
   SmartSuggestion,
 } from "../types/scheduling";
 
+import apiClient from "@/api/client";
+
 class SchedulingService {
   /**
    * Fetch bookings for a given user and date range
    */
   async getBookings(filters?: BookingFilters): Promise<BookingsResponse> {
-    const response = await apiClient.get<BookingsResponse>(
-      "/bookings",
-      { params: filters },
-    );
+    const response = await apiClient.get<BookingsResponse>("/bookings", {
+      params: filters,
+    });
     return response.data;
   }
 
@@ -44,10 +44,7 @@ class SchedulingService {
    * Update an existing booking
    */
   async updateBooking(id: string, data: UpdateBookingDto): Promise<Booking> {
-    const response = await apiClient.patch<Booking>(
-      `/bookings/${id}`,
-      data,
-    );
+    const response = await apiClient.patch<Booking>(`/bookings/${id}`, data);
     return response.data;
   }
 
@@ -55,10 +52,9 @@ class SchedulingService {
    * Cancel a booking
    */
   async cancelBooking(id: string, reason?: string): Promise<Booking> {
-    const response = await apiClient.post<Booking>(
-      `/bookings/${id}/cancel`,
-      { reason },
-    );
+    const response = await apiClient.post<Booking>(`/bookings/${id}/cancel`, {
+      reason,
+    });
     return response.data;
   }
 

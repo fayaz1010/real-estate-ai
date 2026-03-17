@@ -279,7 +279,8 @@ export const CheckInOut: React.FC<CheckInOutProps> = ({ inspection }) => {
             <p className="font-medium mb-1">Ready to check in?</p>
             <p>
               When you arrive at the property, tap the button below to check in.
-              We&apos;ll verify your location to confirm you&apos;re at the right place.
+              We&apos;ll verify your location to confirm you&apos;re at the
+              right place.
             </p>
           </div>
         </div>

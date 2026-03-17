@@ -1,8 +1,8 @@
-import { OnboardingStep } from '../types/onboarding';
-import { UserRole } from '../types/user';
-import { onboardingStepsByRole } from '../data/onboardingSteps';
+import { onboardingStepsByRole } from "../data/onboardingSteps";
+import { OnboardingStep } from "../types/onboarding";
+import { UserRole } from "../types/user";
 
-const STORAGE_KEY = 'onboarding_progress';
+const STORAGE_KEY = "onboarding_progress";
 
 function getCompletedStepIds(): string[] {
   try {

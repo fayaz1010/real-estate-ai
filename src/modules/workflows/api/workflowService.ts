@@ -1,9 +1,10 @@
-import apiClient from "@/api/client";
 import type {
   Workflow,
   WorkflowExecution,
   WorkflowFormData,
 } from "../../../features/workflows/types";
+
+import apiClient from "@/api/client";
 
 export const workflowService = {
   getAll: async (): Promise<Workflow[]> => {
@@ -21,7 +22,10 @@ export const workflowService = {
     return response.data.data;
   },
 
-  update: async (id: string, data: Partial<WorkflowFormData>): Promise<Workflow> => {
+  update: async (
+    id: string,
+    data: Partial<WorkflowFormData>,
+  ): Promise<Workflow> => {
     const response = await apiClient.patch(`/workflows/${id}`, data);
     return response.data.data;
   },

@@ -1,4 +1,3 @@
-import React, { useState, useCallback } from "react";
 import {
   Plus,
   Save,
@@ -13,6 +12,8 @@ import {
   ToggleLeft,
   ToggleRight,
 } from "lucide-react";
+import React, { useState, useCallback } from "react";
+
 import type {
   WorkflowStep as WorkflowStepType,
   WorkflowStepType as StepType,
@@ -24,6 +25,7 @@ import {
   TRIGGER_TYPE_LABELS,
   STEP_TYPE_LABELS,
 } from "../../../features/workflows/types";
+
 import { WorkflowStep } from "./WorkflowStep";
 
 interface WorkflowBuilderProps {
@@ -145,12 +147,9 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
     [],
   );
 
-  const handleDragStart = useCallback(
-    (_e: React.DragEvent, index: number) => {
-      setDraggedIndex(index);
-    },
-    [],
-  );
+  const handleDragStart = useCallback((_e: React.DragEvent, index: number) => {
+    setDraggedIndex(index);
+  }, []);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -177,8 +176,7 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
     if (!name.trim()) newErrors.name = "Workflow name is required";
     if (name.trim().length < 3)
       newErrors.name = "Name must be at least 3 characters";
-    if (steps.length === 0)
-      newErrors.steps = "At least one step is required";
+    if (steps.length === 0) newErrors.steps = "At least one step is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -293,7 +291,8 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
                     value={name}
                     onChange={(e) => {
                       setName(e.target.value);
-                      if (errors.name) setErrors((prev) => ({ ...prev, name: "" }));
+                      if (errors.name)
+                        setErrors((prev) => ({ ...prev, name: "" }));
                     }}
                     placeholder="e.g., Tenant Onboarding"
                     className={`w-full px-4 py-2.5 border rounded-lg bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent ${

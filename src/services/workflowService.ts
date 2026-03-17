@@ -1,12 +1,16 @@
-import apiClient from '@/api/client';
-import type { Workflow, WorkflowStep } from '../types/workflow';
+import type { Workflow, WorkflowStep } from "../types/workflow";
+
+import apiClient from "@/api/client";
 
 export const workflowService = {
   async createWorkflow(
     userId: string,
-    data: Omit<Workflow, 'id' | 'createdAt' | 'lastRunAt' | 'runCount'>,
+    data: Omit<Workflow, "id" | "createdAt" | "lastRunAt" | "runCount">,
   ): Promise<Workflow> {
-    const { data: result } = await apiClient.post<Workflow>('/workflows', { ...data, userId });
+    const { data: result } = await apiClient.post<Workflow>("/workflows", {
+      ...data,
+      userId,
+    });
     return result;
   },
 
@@ -26,8 +30,14 @@ export const workflowService = {
     return data;
   },
 
-  async updateWorkflow(id: string, updates: Partial<Workflow>): Promise<Workflow> {
-    const { data } = await apiClient.patch<Workflow>(`/workflows/${id}`, updates);
+  async updateWorkflow(
+    id: string,
+    updates: Partial<Workflow>,
+  ): Promise<Workflow> {
+    const { data } = await apiClient.patch<Workflow>(
+      `/workflows/${id}`,
+      updates,
+    );
     return data;
   },
 
@@ -41,11 +51,14 @@ export const workflowService = {
 };
 
 // Local-only helpers for step management (used by the builder UI)
-export function createEmptyStep(workflowId: string, order: number): WorkflowStep {
+export function createEmptyStep(
+  workflowId: string,
+  order: number,
+): WorkflowStep {
   return {
     id: `step-${Date.now()}-${order}`,
     workflowId,
-    type: 'send_email',
+    type: "send_email",
     order,
     configuration: {},
   };

@@ -1,7 +1,6 @@
 // FILE PATH: src/modules/auth/services/authService.ts
 // Module 1.1: User Authentication & Management - Authentication Service
 
-import apiClient from "@/api/client";
 import {
   User,
   AuthTokens,
@@ -9,6 +8,8 @@ import {
   RegisterData,
 } from "../types/auth.types";
 import { tokenManager } from "../utils/tokenManager";
+
+import apiClient from "@/api/client";
 
 class AuthService {
   /**
@@ -89,7 +90,10 @@ class AuthService {
    * Reset password with token
    */
   async resetPassword(token: string, newPassword: string): Promise<void> {
-    await apiClient.post("/auth/password-reset-confirm", { token, newPassword });
+    await apiClient.post("/auth/password-reset-confirm", {
+      token,
+      newPassword,
+    });
   }
 
   /**

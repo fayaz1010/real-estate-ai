@@ -1,5 +1,6 @@
-import { useState } from "react";
 import { Upload, X, Loader2 } from "lucide-react";
+import { useState } from "react";
+
 import apiClient from "@/api/client";
 import {
   MAINTENANCE_SYSTEM_TYPES,
@@ -35,8 +36,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
     const errors: Record<string, string> = {};
     if (!propertyId) errors.propertyId = "Please select a property";
     if (!systemType) errors.systemType = "Please select a category";
-    if (!description.trim())
-      errors.description = "Description is required";
+    if (!description.trim()) errors.description = "Description is required";
     else if (description.length > 2000)
       errors.description = "Description must be under 2000 characters";
     setValidationErrors(errors);
@@ -71,9 +71,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
         onSuccess();
       }, 1500);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Failed to submit request"
-      );
+      setError(err instanceof Error ? err.message : "Failed to submit request");
     } finally {
       setSubmitting(false);
     }
@@ -285,10 +283,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
                 {validationErrors.description}
               </p>
             )}
-            <p
-              className="text-xs mt-1"
-              style={{ color: "#A0926B" }}
-            >
+            <p className="text-xs mt-1" style={{ color: "#A0926B" }}>
               {description.length}/2000
             </p>
           </div>
@@ -322,7 +317,10 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
                 className="border-2 border-dashed rounded-lg p-6 text-center cursor-pointer hover:opacity-80 transition-opacity block"
                 style={{ borderColor: "#C4A882" }}
               >
-                <Upload className="w-6 h-6 mx-auto mb-2" style={{ color: "#A0926B" }} />
+                <Upload
+                  className="w-6 h-6 mx-auto mb-2"
+                  style={{ color: "#A0926B" }}
+                />
                 <p className="text-xs" style={{ color: "#A0926B" }}>
                   Click to upload a photo
                 </p>

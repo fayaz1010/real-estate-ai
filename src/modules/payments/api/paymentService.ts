@@ -6,7 +6,7 @@ import apiClient from "@/api/client";
 
 export interface PaymentMethod {
   id: string;
-  type: 'card' | 'bank_account';
+  type: "card" | "bank_account";
   isDefault: boolean;
   card?: {
     brand: string;
@@ -41,7 +41,7 @@ export interface SubscriptionDetails {
   planId: string;
   planName: string;
   amount: number;
-  interval: 'monthly' | 'yearly';
+  interval: "monthly" | "yearly";
   status: string;
   currentPeriodEnd: string;
 }
@@ -50,7 +50,9 @@ export interface SubscriptionDetails {
 // Payment Intent
 // ---------------------------------------------------------------------------
 
-export async function createPaymentIntent(paymentId: string): Promise<PaymentIntentResponse> {
+export async function createPaymentIntent(
+  paymentId: string,
+): Promise<PaymentIntentResponse> {
   const { data } = await apiClient.post<{ data: PaymentIntentResponse }>(
     `/payments/${paymentId}/pay`,
   );
@@ -72,7 +74,9 @@ export async function getPaymentMethods(): Promise<PaymentMethod[]> {
   return data.data;
 }
 
-export async function addPaymentMethod(paymentMethodId: string): Promise<PaymentMethod> {
+export async function addPaymentMethod(
+  paymentMethodId: string,
+): Promise<PaymentMethod> {
   const { data } = await apiClient.post<{ data: PaymentMethod }>(
     "/payments/payment-methods",
     { paymentMethodId },
@@ -80,11 +84,15 @@ export async function addPaymentMethod(paymentMethodId: string): Promise<Payment
   return data.data;
 }
 
-export async function setDefaultPaymentMethod(paymentMethodId: string): Promise<void> {
+export async function setDefaultPaymentMethod(
+  paymentMethodId: string,
+): Promise<void> {
   await apiClient.put(`/payments/payment-methods/${paymentMethodId}/default`);
 }
 
-export async function removePaymentMethod(paymentMethodId: string): Promise<void> {
+export async function removePaymentMethod(
+  paymentMethodId: string,
+): Promise<void> {
   await apiClient.delete(`/payments/payment-methods/${paymentMethodId}`);
 }
 

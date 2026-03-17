@@ -334,10 +334,10 @@ const RentalHistoryStep: React.FC = () => {
 
       <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
         <p className="text-sm text-yellow-800">
-          <strong>First-time renter?</strong> If you don&apos;t have rental history,
-          that&apos;s okay! You may need to provide additional verification or a
-          co-signer. Focus on building a strong application with your employment
-          and income information.
+          <strong>First-time renter?</strong> If you don&apos;t have rental
+          history, that&apos;s okay! You may need to provide additional
+          verification or a co-signer. Focus on building a strong application
+          with your employment and income information.
         </p>
       </div>
     </div>

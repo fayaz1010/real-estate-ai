@@ -1,9 +1,10 @@
 // Trial API Service - Handles free trial API calls
 
-import apiClient from "@/api/client";
 import { store } from "../../../store";
 import { setTrialExpirationDate } from "../../auth/store/authSlice";
 import { tokenManager } from "../../auth/utils/tokenManager";
+
+import apiClient from "@/api/client";
 
 interface StartTrialData {
   firstName: string;

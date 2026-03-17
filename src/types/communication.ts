@@ -1,4 +1,4 @@
-export type SenderRole = 'manager' | 'tenant' | 'agent';
+export type SenderRole = "manager" | "tenant" | "agent";
 
 export interface Attachment {
   id: string;

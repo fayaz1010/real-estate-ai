@@ -1,6 +1,4 @@
 // Scheduling API Service - Calendar Event Management
-import apiClient from "@/api/client";
-
 import type {
   Booking,
   BookingFilters,
@@ -8,6 +6,8 @@ import type {
   CreateBookingDto,
   UpdateBookingDto,
 } from "../../../types/scheduling";
+
+import apiClient from "@/api/client";
 
 interface ApiBooking {
   id: string;
@@ -150,7 +150,8 @@ class SchedulingService {
     if (data.type) payload.type = data.type.toUpperCase();
     if (data.title) payload.title = data.title;
     if (data.description !== undefined) payload.description = data.description;
-    if (data.startTime) payload.startTime = new Date(data.startTime).toISOString();
+    if (data.startTime)
+      payload.startTime = new Date(data.startTime).toISOString();
     if (data.endTime) payload.endTime = new Date(data.endTime).toISOString();
     if (data.status) payload.status = data.status.toUpperCase();
     if (data.notes !== undefined) payload.notes = data.notes;

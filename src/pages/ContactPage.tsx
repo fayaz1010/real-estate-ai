@@ -1,9 +1,3 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { z } from "zod/v4";
-
-import apiClient from "../api/client";
-import { PageMeta } from "../components/seo";
 import {
   Mail,
   Phone,
@@ -15,6 +9,12 @@ import {
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { z } from "zod/v4";
+
+import apiClient from "../api/client";
+import { PageMeta } from "../components/seo";
 
 type SubjectOption =
   | ""
@@ -75,7 +75,8 @@ const contactInfo = [
   {
     icon: Clock,
     label: "Business Hours",
-    value: "Monday - Friday: 9:00 AM - 6:00 PM PST\nSaturday: 10:00 AM - 2:00 PM PST\nSunday: Closed",
+    value:
+      "Monday - Friday: 9:00 AM - 6:00 PM PST\nSaturday: 10:00 AM - 2:00 PM PST\nSunday: Closed",
     href: null,
   },
 ];
@@ -136,7 +137,7 @@ export const ContactPage: React.FC = () => {
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    >,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -198,13 +199,17 @@ export const ContactPage: React.FC = () => {
           </h1>
           <p className="text-lg md:text-xl text-gray-300 font-inter max-w-2xl mx-auto">
             Have a question, want a demo, or ready to get started? We are here
-            to help. Reach out and our team will respond within one business day.
+            to help. Reach out and our team will respond within one business
+            day.
           </p>
         </div>
       </section>
 
       {/* Contact Form + Sidebar */}
-      <section className="py-20 bg-gray-50" aria-labelledby="contact-form-heading">
+      <section
+        className="py-20 bg-gray-50"
+        aria-labelledby="contact-form-heading"
+      >
         <div className="section-container">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-14">
             {/* Form */}
@@ -419,8 +424,13 @@ export const ContactPage: React.FC = () => {
                       className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl"
                       role="alert"
                     >
-                      <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" aria-hidden="true" />
-                      <p className="text-sm text-red-700 font-inter">{submitError}</p>
+                      <AlertCircle
+                        className="w-5 h-5 text-red-500 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                      <p className="text-sm text-red-700 font-inter">
+                        {submitError}
+                      </p>
                     </div>
                   )}
 
@@ -538,10 +548,7 @@ export const ContactPage: React.FC = () => {
       </section>
 
       {/* FAQ Section */}
-      <section
-        className="py-20 bg-white"
-        aria-labelledby="faq-heading"
-      >
+      <section className="py-20 bg-white" aria-labelledby="faq-heading">
         <div className="section-container max-w-3xl">
           <div className="text-center mb-12">
             <span className="inline-block px-4 py-1.5 bg-realestate-accent/10 text-realestate-accent font-semibold text-sm rounded-full mb-4 font-inter">

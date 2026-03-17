@@ -2,10 +2,16 @@ export interface MaintenanceRequest {
   id: string;
   propertyId: string;
   unitId?: string;
-  category: 'plumbing' | 'electrical' | 'hvac' | 'structural' | 'appliance' | 'other';
+  category:
+    | "plumbing"
+    | "electrical"
+    | "hvac"
+    | "structural"
+    | "appliance"
+    | "other";
   description: string;
-  priority: 'low' | 'medium' | 'high' | 'emergency';
-  status: 'open' | 'in progress' | 'on hold' | 'completed' | 'cancelled';
+  priority: "low" | "medium" | "high" | "emergency";
+  status: "open" | "in progress" | "on hold" | "completed" | "cancelled";
   createdAt: Date;
   updatedAt: Date;
   scheduledDate?: Date;

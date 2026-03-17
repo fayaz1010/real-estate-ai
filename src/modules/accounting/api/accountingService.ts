@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import apiClient from "@/api/client";
 
 // ==========================================
@@ -126,7 +127,9 @@ export interface ReportFilters {
 // Service
 // ==========================================
 
-function buildParams(filters?: ReportFilters): Record<string, string> | undefined {
+function buildParams(
+  filters?: ReportFilters,
+): Record<string, string> | undefined {
   if (!filters) return undefined;
   const params: Record<string, string> = {};
   if (filters.startDate) params.startDate = filters.startDate;
@@ -135,7 +138,11 @@ function buildParams(filters?: ReportFilters): Record<string, string> | undefine
   return Object.keys(params).length > 0 ? params : undefined;
 }
 
-async function apiGet<T>(path: string, schema: z.ZodType<T>, filters?: ReportFilters): Promise<T> {
+async function apiGet<T>(
+  path: string,
+  schema: z.ZodType<T>,
+  filters?: ReportFilters,
+): Promise<T> {
   const response = await apiClient.get(path, { params: buildParams(filters) });
   const data = response.data?.data ?? response.data;
   return schema.parse(data);
@@ -147,7 +154,11 @@ class AccountingService {
   }
 
   async getIncomeStatement(filters?: ReportFilters): Promise<IncomeStatement> {
-    return apiGet("/accounting/income-statement", IncomeStatementSchema, filters);
+    return apiGet(
+      "/accounting/income-statement",
+      IncomeStatementSchema,
+      filters,
+    );
   }
 
   async getBalanceSheet(filters?: ReportFilters): Promise<BalanceSheet> {
@@ -163,7 +174,11 @@ class AccountingService {
   async getRentCollectionReport(
     filters?: ReportFilters,
   ): Promise<RentCollectionReport> {
-    return apiGet("/accounting/rent-collection", RentCollectionReportSchema, filters);
+    return apiGet(
+      "/accounting/rent-collection",
+      RentCollectionReportSchema,
+      filters,
+    );
   }
 
   async getExpenseReport(filters?: ReportFilters): Promise<ExpenseReport> {

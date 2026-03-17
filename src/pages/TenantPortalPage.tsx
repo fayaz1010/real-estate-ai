@@ -1,1 +1,1 @@
-export { TenantPortalPage } from '../modules/tenant-portal/pages/TenantPortalPage';
+export { TenantPortalPage } from "../modules/tenant-portal/pages/TenantPortalPage";

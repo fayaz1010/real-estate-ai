@@ -260,43 +260,60 @@ export const formatPhoneNumber = (phone: string): string => {
 };
 
 // Application Completeness Check
-export const calculateCompleteness = (application: any): number => {
+export const calculateCompleteness = (
+  application: Record<string, unknown>,
+): number => {
   let totalFields = 0;
   let completedFields = 0;
 
   // Personal Info (8 required fields)
   totalFields += 8;
   if (application.personalInfo) {
-    const pi = application.personalInfo;
+    const pi = application.personalInfo as Record<string, unknown>;
     if (pi.firstName) completedFields++;
     if (pi.lastName) completedFields++;
     if (pi.email) completedFields++;
     if (pi.phone) completedFields++;
     if (pi.dateOfBirth) completedFields++;
     if (pi.ssn) completedFields++;
-    if (pi.currentAddress?.street) completedFields++;
+    if ((pi.currentAddress as Record<string, unknown>)?.street)
+      completedFields++;
     if (pi.idNumber) completedFields++;
   }
 
   // Employment (at least 1)
   totalFields += 1;
-  if (application.employment?.length > 0) completedFields++;
+  if (
+    Array.isArray(application.employment) &&
+    application.employment.length > 0
+  )
+    completedFields++;
 
   // Income (at least 1)
   totalFields += 1;
-  if (application.income?.length > 0) completedFields++;
+  if (Array.isArray(application.income) && application.income.length > 0)
+    completedFields++;
 
   // Rental History (at least 1)
   totalFields += 1;
-  if (application.rentalHistory?.length > 0) completedFields++;
+  if (
+    Array.isArray(application.rentalHistory) &&
+    application.rentalHistory.length > 0
+  )
+    completedFields++;
 
   // References (at least 2)
   totalFields += 1;
-  if (application.references?.length >= 2) completedFields++;
+  if (
+    Array.isArray(application.references) &&
+    application.references.length >= 2
+  )
+    completedFields++;
 
   // Emergency Contact
   totalFields += 1;
-  if (application.emergencyContact?.name) completedFields++;
+  if ((application.emergencyContact as Record<string, unknown>)?.name)
+    completedFields++;
 
   // Move-in preferences
   totalFields += 2;

@@ -1,6 +1,6 @@
 // Billing & Subscription Types for Stripe Integration
 
-export type PlanId = 'starter' | 'professional' | 'business' | 'enterprise';
+export type PlanId = "starter" | "professional" | "business" | "enterprise";
 
 export interface PlanLimits {
   maxProperties: number;
@@ -23,11 +23,15 @@ export interface Invoice {
   id: string;
   date: Date;
   amount: number;
-  status: 'paid' | 'unpaid' | 'past_due';
+  status: "paid" | "unpaid" | "past_due";
   planName: string;
 }
 
-export type SubscriptionStatus = 'active' | 'canceled' | 'past_due' | 'trialing';
+export type SubscriptionStatus =
+  | "active"
+  | "canceled"
+  | "past_due"
+  | "trialing";
 
 export interface Subscription {
   id: string;
@@ -40,7 +44,7 @@ export interface Subscription {
   cancelAtPeriodEnd: boolean;
 }
 
-export type BillingInterval = 'monthly' | 'yearly';
+export type BillingInterval = "monthly" | "yearly";
 
 export interface CheckoutSessionRequest {
   planId: PlanId;

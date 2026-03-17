@@ -204,8 +204,8 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                   Auto-Confirm After 24 Hours
                 </span>
                 <p className="text-sm text-gray-600 mt-1">
-                  Automatically confirm pending inspection requests if you don&apos;t
-                  respond within 24 hours.
+                  Automatically confirm pending inspection requests if you
+                  don&apos;t respond within 24 hours.
                 </p>
               </div>
             </label>

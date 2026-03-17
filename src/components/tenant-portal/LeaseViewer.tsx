@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   FileText,
   Calendar,
@@ -7,16 +6,18 @@ import {
   AlertTriangle,
   Heart,
   Shield,
-} from 'lucide-react';
-import { formatCurrency } from '../../lib/utils';
-import { tenantPortalService } from '../../services/tenantPortalService';
-import type { LeaseDetails } from '../../types/tenantPortal';
+} from "lucide-react";
+import { useState, useEffect } from "react";
+
+import { formatCurrency } from "../../lib/utils";
+import { tenantPortalService } from "../../services/tenantPortalService";
+import type { LeaseDetails } from "../../types/tenantPortal";
 
 const formatDate = (date: Date) =>
-  new Date(date).toLocaleDateString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    year: 'numeric',
+  new Date(date).toLocaleDateString("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
   });
 
 export const LeaseViewer: React.FC = () => {
@@ -39,8 +40,14 @@ export const LeaseViewer: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center" role="status">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#091a2b]" aria-hidden="true" />
+      <div
+        className="min-h-screen bg-[#f8f9fa] flex items-center justify-center"
+        role="status"
+      >
+        <div
+          className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#091a2b]"
+          aria-hidden="true"
+        />
         <span className="sr-only">Loading lease details...</span>
       </div>
     );
@@ -48,11 +55,21 @@ export const LeaseViewer: React.FC = () => {
 
   if (error || !lease) {
     return (
-      <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center p-4" role="alert">
+      <div
+        className="min-h-screen bg-[#f8f9fa] flex items-center justify-center p-4"
+        role="alert"
+      >
         <div className="bg-white rounded-2xl shadow-md p-8 max-w-md text-center">
-          <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" aria-hidden="true" />
-          <h2 className="font-montserrat text-xl font-bold text-[#091a2b] mb-2">Unable to load lease</h2>
-          <p className="text-gray-500 text-sm">{error || 'An unexpected error occurred.'}</p>
+          <AlertTriangle
+            className="w-12 h-12 text-amber-500 mx-auto mb-4"
+            aria-hidden="true"
+          />
+          <h2 className="font-montserrat text-xl font-bold text-[#091a2b] mb-2">
+            Unable to load lease
+          </h2>
+          <p className="text-gray-500 text-sm">
+            {error || "An unexpected error occurred."}
+          </p>
         </div>
       </div>
     );
@@ -82,8 +99,13 @@ export const LeaseViewer: React.FC = () => {
             {/* Lease Period */}
             <div className="bg-[#f8f9fa] rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
-                <Calendar className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
-                <h3 className="text-sm font-medium text-gray-700">Lease Period</h3>
+                <Calendar
+                  className="w-4 h-4 text-[#091a2b]"
+                  aria-hidden="true"
+                />
+                <h3 className="text-sm font-medium text-gray-700">
+                  Lease Period
+                </h3>
               </div>
               <p className="text-sm text-gray-800">
                 {formatDate(lease.startDate)} — {formatDate(lease.endDate)}
@@ -93,8 +115,13 @@ export const LeaseViewer: React.FC = () => {
             {/* Monthly Rent */}
             <div className="bg-[#f8f9fa] rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
-                <DollarSign className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
-                <h3 className="text-sm font-medium text-gray-700">Monthly Rent</h3>
+                <DollarSign
+                  className="w-4 h-4 text-[#091a2b]"
+                  aria-hidden="true"
+                />
+                <h3 className="text-sm font-medium text-gray-700">
+                  Monthly Rent
+                </h3>
               </div>
               <p className="text-sm font-semibold text-gray-800">
                 {formatCurrency(lease.rentAmount)}
@@ -105,7 +132,9 @@ export const LeaseViewer: React.FC = () => {
             <div className="bg-[#f8f9fa] rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Shield className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
-                <h3 className="text-sm font-medium text-gray-700">Security Deposit</h3>
+                <h3 className="text-sm font-medium text-gray-700">
+                  Security Deposit
+                </h3>
               </div>
               <p className="text-sm text-gray-800">
                 {formatCurrency(lease.securityDeposit)}
@@ -116,7 +145,9 @@ export const LeaseViewer: React.FC = () => {
             <div className="bg-[#f8f9fa] rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Heart className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
-                <h3 className="text-sm font-medium text-gray-700">Pet Policy</h3>
+                <h3 className="text-sm font-medium text-gray-700">
+                  Pet Policy
+                </h3>
               </div>
               <p className="text-sm text-gray-800">{lease.petPolicy}</p>
             </div>
@@ -125,9 +156,13 @@ export const LeaseViewer: React.FC = () => {
           {/* Other Terms */}
           {lease.otherTerms && (
             <div className="mt-6">
-              <h3 className="text-sm font-medium text-gray-700 mb-2">Other Terms</h3>
+              <h3 className="text-sm font-medium text-gray-700 mb-2">
+                Other Terms
+              </h3>
               <div className="bg-[#f8f9fa] rounded-xl p-4">
-                <p className="text-sm text-gray-600 whitespace-pre-line">{lease.otherTerms}</p>
+                <p className="text-sm text-gray-600 whitespace-pre-line">
+                  {lease.otherTerms}
+                </p>
               </div>
             </div>
           )}
@@ -146,7 +181,9 @@ export const LeaseViewer: React.FC = () => {
         </div>
 
         <footer className="mt-12 text-center">
-          <p className="text-xs text-gray-400">Your AI Property Manager — Never Miss a Beat</p>
+          <p className="text-xs text-gray-400">
+            Your AI Property Manager — Never Miss a Beat
+          </p>
         </footer>
       </div>
     </div>

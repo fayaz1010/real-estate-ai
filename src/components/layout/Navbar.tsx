@@ -1,9 +1,4 @@
-import {
-  Menu,
-  X,
-  Building,
-  ChevronDown,
-} from "lucide-react";
+import { Menu, X, Building, ChevronDown } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 

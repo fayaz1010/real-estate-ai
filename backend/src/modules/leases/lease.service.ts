@@ -94,7 +94,11 @@ export class LeaseService {
 
     return prisma.lease.update({
       where: { id: leaseId },
-      data: { status: status as Parameters<typeof prisma.lease.update>[0]["data"]["status"] },
+      data: {
+        status: status as Parameters<
+          typeof prisma.lease.update
+        >[0]["data"]["status"],
+      },
     });
   }
 

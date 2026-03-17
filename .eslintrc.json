@@ -35,6 +35,14 @@
         "newlines-between": "always",
         "alphabetize": { "order": "asc", "caseInsensitive": true }
       }
+    ],
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      {
+        "ts-nocheck": "allow-with-description",
+        "ts-ignore": "allow-with-description",
+        "minimumDescriptionLength": 3
+      }
     ]
   },
   "settings": {
@@ -44,9 +52,6 @@
     "import/resolver": {
       "node": {
         "extensions": [".js", ".jsx", ".ts", ".tsx"]
-      },
-      "typescript": {
-        "alwaysTryTypes": true
       }
     }
   },

@@ -1,16 +1,13 @@
 // FILE PATH: src/components/scheduling/AvailabilityManager.tsx
 // Smart Scheduling & Booking System - Availability Management Component
 
+import { Clock, Plus, Trash2, Calendar, RotateCcw, Check } from "lucide-react";
 import React, { useState } from "react";
-import {
-  Clock,
-  Plus,
-  Trash2,
-  Calendar,
-  RotateCcw,
-  Check,
-} from "lucide-react";
-import type { RecurringAvailability, BlackoutDate } from "../../types/scheduling";
+
+import type {
+  RecurringAvailability,
+  BlackoutDate,
+} from "../../types/scheduling";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
@@ -35,7 +32,9 @@ interface AvailabilityManagerProps {
 
 // ─── Component ───────────────────────────────────────────────────────────────
 
-const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({ onSave }) => {
+const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
+  onSave,
+}) => {
   const [recurring, setRecurring] = useState<RecurringAvailability[]>([
     { id: "rec-1", dayOfWeek: 1, startTime: "09:00", endTime: "17:00" },
     { id: "rec-2", dayOfWeek: 2, startTime: "09:00", endTime: "17:00" },
@@ -52,7 +51,10 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({ onSave }) => 
 
   const addRecurring = () => {
     const id = `rec-${Date.now()}`;
-    setRecurring([...recurring, { id, dayOfWeek: 1, startTime: "09:00", endTime: "17:00" }]);
+    setRecurring([
+      ...recurring,
+      { id, dayOfWeek: 1, startTime: "09:00", endTime: "17:00" },
+    ]);
   };
 
   const removeRecurring = (id: string) =>
@@ -127,7 +129,9 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({ onSave }) => 
                   : "bg-gray-50 border border-gray-200"
               }`}
             >
-              <span className={`font-semibold ${hasAvailability ? "text-[#091a2b]" : "text-gray-400"}`}>
+              <span
+                className={`font-semibold ${hasAvailability ? "text-[#091a2b]" : "text-gray-400"}`}
+              >
                 {day.label.slice(0, 3)}
               </span>
               {slots.map((s) => (
@@ -136,7 +140,9 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({ onSave }) => 
                 </div>
               ))}
               {!hasAvailability && (
-                <div className="text-[10px] text-gray-400 mt-1">Unavailable</div>
+                <div className="text-[10px] text-gray-400 mt-1">
+                  Unavailable
+                </div>
               )}
             </div>
           );
@@ -172,20 +178,29 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({ onSave }) => 
             <div key={r.id} className="flex items-center gap-2 flex-wrap">
               <select
                 value={r.dayOfWeek}
-                onChange={(e) => updateRecurring(r.id, "dayOfWeek", Number(e.target.value))}
+                onChange={(e) =>
+                  updateRecurring(r.id, "dayOfWeek", Number(e.target.value))
+                }
                 className={fieldClasses + " w-36"}
                 aria-label="Day of week"
               >
                 {DAYS_OF_WEEK.map((d) => (
-                  <option key={d.value} value={d.value}>{d.label}</option>
+                  <option key={d.value} value={d.value}>
+                    {d.label}
+                  </option>
                 ))}
               </select>
               <div className="flex items-center gap-1">
-                <Clock className="w-3.5 h-3.5 text-gray-400" aria-hidden="true" />
+                <Clock
+                  className="w-3.5 h-3.5 text-gray-400"
+                  aria-hidden="true"
+                />
                 <input
                   type="time"
                   value={r.startTime}
-                  onChange={(e) => updateRecurring(r.id, "startTime", e.target.value)}
+                  onChange={(e) =>
+                    updateRecurring(r.id, "startTime", e.target.value)
+                  }
                   className={fieldClasses + " w-28"}
                   aria-label="Start time"
                 />
@@ -193,7 +208,9 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({ onSave }) => 
                 <input
                   type="time"
                   value={r.endTime}
-                  onChange={(e) => updateRecurring(r.id, "endTime", e.target.value)}
+                  onChange={(e) =>
+                    updateRecurring(r.id, "endTime", e.target.value)
+                  }
                   className={fieldClasses + " w-28"}
                   aria-label="End time"
                 />
@@ -223,7 +240,9 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({ onSave }) => 
 
         <div className="flex items-end gap-2 mb-3 flex-wrap">
           <div>
-            <label className={labelClasses} htmlFor="blackout-date">Date</label>
+            <label className={labelClasses} htmlFor="blackout-date">
+              Date
+            </label>
             <input
               id="blackout-date"
               type="date"
@@ -233,7 +252,9 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({ onSave }) => 
             />
           </div>
           <div>
-            <label className={labelClasses} htmlFor="blackout-reason">Reason (optional)</label>
+            <label className={labelClasses} htmlFor="blackout-reason">
+              Reason (optional)
+            </label>
             <input
               id="blackout-reason"
               type="text"
@@ -256,20 +277,31 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({ onSave }) => 
         {blackouts.length > 0 && (
           <div className="space-y-1.5">
             {blackouts
-              .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+              .sort(
+                (a, b) =>
+                  new Date(a.date).getTime() - new Date(b.date).getTime(),
+              )
               .map((b) => (
                 <div
                   key={b.id}
                   className="flex items-center justify-between px-3 py-2 bg-red-50 rounded-lg border border-red-200"
                 >
                   <div className="flex items-center gap-2 text-sm font-['Open_Sans']">
-                    <Calendar className="w-3.5 h-3.5 text-red-500" aria-hidden="true" />
+                    <Calendar
+                      className="w-3.5 h-3.5 text-red-500"
+                      aria-hidden="true"
+                    />
                     <span className="font-medium text-red-800">
                       {new Date(b.date).toLocaleDateString("en-US", {
-                        weekday: "short", month: "short", day: "numeric", year: "numeric",
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
+                        year: "numeric",
                       })}
                     </span>
-                    {b.reason && <span className="text-red-600 text-xs">— {b.reason}</span>}
+                    {b.reason && (
+                      <span className="text-red-600 text-xs">— {b.reason}</span>
+                    )}
                   </div>
                   <button
                     type="button"
@@ -284,7 +316,9 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({ onSave }) => 
           </div>
         )}
         {blackouts.length === 0 && (
-          <p className="text-xs text-gray-400 font-['Open_Sans'] italic">No blackout dates set.</p>
+          <p className="text-xs text-gray-400 font-['Open_Sans'] italic">
+            No blackout dates set.
+          </p>
         )}
       </div>
 

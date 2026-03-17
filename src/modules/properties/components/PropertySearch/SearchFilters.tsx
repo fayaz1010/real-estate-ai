@@ -14,7 +14,10 @@ import {
 import React, { useState } from "react";
 
 import { usePropertySearch } from "../../hooks/usePropertySearch";
-import { SearchFilters as SearchFiltersType, PropertyType } from "../../types/property.types";
+import {
+  SearchFilters as SearchFiltersType,
+  PropertyType,
+} from "../../types/property.types";
 import { searchFilterUtils } from "../../utils/searchFilters";
 
 interface SearchFiltersProps {
@@ -192,7 +195,9 @@ export const SearchFilters: React.FC<SearchFiltersProps> = ({
                 key={type.value}
                 onClick={() => togglePropertyType(type.value)}
                 className={`px-3 py-2 border-2 rounded-lg font-medium transition text-left ${
-                  localFilters.propertyType?.includes(type.value as PropertyType)
+                  localFilters.propertyType?.includes(
+                    type.value as PropertyType,
+                  )
                     ? "border-blue-600 bg-blue-50 text-blue-700"
                     : "border-gray-200 hover:border-gray-300"
                 }`}

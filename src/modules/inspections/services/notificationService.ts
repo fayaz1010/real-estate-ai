@@ -3,7 +3,7 @@ import apiClient from "@/api/client";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
-interface ApiResponse<T = any> {
+interface ApiResponse<T = unknown> {
   success: boolean;
   message?: string;
   data?: T;
@@ -27,7 +27,7 @@ export interface Notification {
   status: string;
   title: string;
   message: string;
-  data?: Record<string, any>;
+  data?: Record<string, unknown>;
   readAt: string | null;
   sentAt: string | null;
   inspectionId?: string;
@@ -201,10 +201,9 @@ class NotificationService {
     userId: string,
     preferences: Partial<NotificationPreferences>,
   ): Promise<NotificationPreferences> {
-    const response = await apiClient.patch<ApiResponse<NotificationPreferences>>(
-      `/notifications/preferences/${userId}`,
-      preferences,
-    );
+    const response = await apiClient.patch<
+      ApiResponse<NotificationPreferences>
+    >(`/notifications/preferences/${userId}`, preferences);
     return unwrap(response);
   }
 

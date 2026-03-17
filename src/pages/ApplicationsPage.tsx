@@ -22,10 +22,15 @@ import {
   Home,
   Star,
 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import React, { useState, useMemo, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Loader2 } from "lucide-react";
-import { fetchApplications, fetchSmartScore, type ApplicationData } from "../services/dashboardService";
+
+import {
+  fetchApplications,
+  fetchSmartScore,
+  type ApplicationData,
+} from "../services/dashboardService";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -64,8 +69,14 @@ interface MockApplication {
 
 // ─── Avatar colors for consistent display ────────────────────────────────────
 const AVATAR_COLORS = [
-  "bg-blue-600", "bg-emerald-600", "bg-purple-600", "bg-amber-600",
-  "bg-rose-600", "bg-teal-600", "bg-indigo-600", "bg-cyan-600",
+  "bg-blue-600",
+  "bg-emerald-600",
+  "bg-purple-600",
+  "bg-amber-600",
+  "bg-rose-600",
+  "bg-teal-600",
+  "bg-indigo-600",
+  "bg-cyan-600",
 ];
 
 function mapApplicationStatus(status: string): ApplicationStatus {
@@ -78,11 +89,19 @@ function mapApplicationStatus(status: string): ApplicationStatus {
   return "Submitted";
 }
 
-function apiDataToMockApplication(data: ApplicationData, index: number): MockApplication {
+function apiDataToMockApplication(
+  data: ApplicationData,
+  index: number,
+): MockApplication {
   const name = data.primaryApplicant
     ? `${data.primaryApplicant.firstName} ${data.primaryApplicant.lastName}`
     : `Applicant ${index + 1}`;
-  const initials = name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+  const initials = name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
 
   return {
     id: data.id,
@@ -90,7 +109,8 @@ function apiDataToMockApplication(data: ApplicationData, index: number): MockApp
     initials,
     avatarColor: AVATAR_COLORS[index % AVATAR_COLORS.length],
     property: data.property?.title ?? "Property",
-    appliedDate: data.createdAt?.split("T")[0] ?? new Date().toISOString().split("T")[0],
+    appliedDate:
+      data.createdAt?.split("T")[0] ?? new Date().toISOString().split("T")[0],
     aiScore: 0, // Will be filled by AI scoring
     status: mapApplicationStatus(data.status),
     scoring: [
@@ -100,7 +120,12 @@ function apiDataToMockApplication(data: ApplicationData, index: number): MockApp
       { label: "Background Check", score: 0, maxScore: 100 },
     ],
     timeline: [
-      { date: data.createdAt?.split("T")[0] ?? "", title: "Application Submitted", description: "Applicant submitted all required documents.", completed: true },
+      {
+        date: data.createdAt?.split("T")[0] ?? "",
+        title: "Application Submitted",
+        description: "Applicant submitted all required documents.",
+        completed: true,
+      },
     ],
   };
 }
@@ -127,18 +152,42 @@ function getScoreBadgeBg(score: number): string {
   return "bg-red-50 border-red-200";
 }
 
-function getStatusBadge(status: ApplicationStatus): { bg: string; text: string; icon: React.ReactNode } {
+function getStatusBadge(status: ApplicationStatus): {
+  bg: string;
+  text: string;
+  icon: React.ReactNode;
+} {
   switch (status) {
     case "Submitted":
-      return { bg: "bg-blue-100", text: "text-blue-800", icon: <FileText className="w-3 h-3" /> };
+      return {
+        bg: "bg-blue-100",
+        text: "text-blue-800",
+        icon: <FileText className="w-3 h-3" />,
+      };
     case "Under Review":
-      return { bg: "bg-yellow-100", text: "text-yellow-800", icon: <Clock className="w-3 h-3" /> };
+      return {
+        bg: "bg-yellow-100",
+        text: "text-yellow-800",
+        icon: <Clock className="w-3 h-3" />,
+      };
     case "Approved":
-      return { bg: "bg-green-100", text: "text-green-800", icon: <CheckCircle className="w-3 h-3" /> };
+      return {
+        bg: "bg-green-100",
+        text: "text-green-800",
+        icon: <CheckCircle className="w-3 h-3" />,
+      };
     case "Rejected":
-      return { bg: "bg-red-100", text: "text-red-800", icon: <XCircle className="w-3 h-3" /> };
+      return {
+        bg: "bg-red-100",
+        text: "text-red-800",
+        icon: <XCircle className="w-3 h-3" />,
+      };
     case "Conditionally Approved":
-      return { bg: "bg-emerald-100", text: "text-emerald-800", icon: <AlertTriangle className="w-3 h-3" /> };
+      return {
+        bg: "bg-emerald-100",
+        text: "text-emerald-800",
+        icon: <AlertTriangle className="w-3 h-3" />,
+      };
     default:
       return { bg: "bg-gray-100", text: "text-gray-800", icon: null };
   }
@@ -169,12 +218,43 @@ function formatDate(dateStr: string): string {
 
 // ─── Sub-Components ──────────────────────────────────────────────────────────
 
-const StatsBar: React.FC<{ stats: { total: number; underReview: number; approved: number; rejected: number } }> = ({ stats: s }) => {
+const StatsBar: React.FC<{
+  stats: {
+    total: number;
+    underReview: number;
+    approved: number;
+    rejected: number;
+  };
+}> = ({ stats: s }) => {
   const items = [
-    { label: "Total Applications", value: s.total, icon: <FileText className="w-5 h-5" />, color: "text-realestate-accent", bg: "bg-realestate-accent/10" },
-    { label: "Under Review", value: s.underReview, icon: <Clock className="w-5 h-5" />, color: "text-yellow-600", bg: "bg-yellow-50" },
-    { label: "Approved", value: s.approved, icon: <CheckCircle className="w-5 h-5" />, color: "text-green-600", bg: "bg-green-50" },
-    { label: "Rejected", value: s.rejected, icon: <XCircle className="w-5 h-5" />, color: "text-red-600", bg: "bg-red-50" },
+    {
+      label: "Total Applications",
+      value: s.total,
+      icon: <FileText className="w-5 h-5" />,
+      color: "text-realestate-accent",
+      bg: "bg-realestate-accent/10",
+    },
+    {
+      label: "Under Review",
+      value: s.underReview,
+      icon: <Clock className="w-5 h-5" />,
+      color: "text-yellow-600",
+      bg: "bg-yellow-50",
+    },
+    {
+      label: "Approved",
+      value: s.approved,
+      icon: <CheckCircle className="w-5 h-5" />,
+      color: "text-green-600",
+      bg: "bg-green-50",
+    },
+    {
+      label: "Rejected",
+      value: s.rejected,
+      icon: <XCircle className="w-5 h-5" />,
+      color: "text-red-600",
+      bg: "bg-red-50",
+    },
   ];
 
   return (
@@ -218,7 +298,8 @@ const ApplicationCardItem: React.FC<ApplicationCardItemProps> = ({
 }) => {
   const badge = getStatusBadge(application.status);
   const overallScore = Math.round(
-    application.scoring.reduce((sum, s) => sum + s.score, 0) / application.scoring.length
+    application.scoring.reduce((sum, s) => sum + s.score, 0) /
+      application.scoring.length,
   );
 
   return (
@@ -286,10 +367,14 @@ const ApplicationCardItem: React.FC<ApplicationCardItemProps> = ({
             <div
               className={`px-3 py-1.5 rounded-lg border ${getScoreBadgeBg(application.aiScore)}`}
             >
-              <span className={`font-space-grotesk font-bold text-lg ${getScoreColor(application.aiScore)}`}>
+              <span
+                className={`font-space-grotesk font-bold text-lg ${getScoreColor(application.aiScore)}`}
+              >
                 {application.aiScore}
               </span>
-              <span className="text-xs text-gray-500 ml-1 font-inter">/100</span>
+              <span className="text-xs text-gray-500 ml-1 font-inter">
+                /100
+              </span>
             </div>
             <span
               className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium font-inter ${badge.bg} ${badge.text}`}
@@ -312,24 +397,25 @@ const ApplicationCardItem: React.FC<ApplicationCardItemProps> = ({
             <Eye className="w-4 h-4" />
             <span className="hidden sm:inline">View Details</span>
           </button>
-          {application.status !== "Approved" && application.status !== "Rejected" && (
-            <>
-              <button
-                onClick={(e) => e.stopPropagation()}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-inter font-medium text-green-700 hover:bg-green-50 transition-colors rounded-md"
-              >
-                <ThumbsUp className="w-4 h-4" />
-                <span className="hidden sm:inline">Approve</span>
-              </button>
-              <button
-                onClick={(e) => e.stopPropagation()}
-                className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-inter font-medium text-red-700 hover:bg-red-50 transition-colors rounded-md"
-              >
-                <ThumbsDown className="w-4 h-4" />
-                <span className="hidden sm:inline">Reject</span>
-              </button>
-            </>
-          )}
+          {application.status !== "Approved" &&
+            application.status !== "Rejected" && (
+              <>
+                <button
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-inter font-medium text-green-700 hover:bg-green-50 transition-colors rounded-md"
+                >
+                  <ThumbsUp className="w-4 h-4" />
+                  <span className="hidden sm:inline">Approve</span>
+                </button>
+                <button
+                  onClick={(e) => e.stopPropagation()}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm font-inter font-medium text-red-700 hover:bg-red-50 transition-colors rounded-md"
+                >
+                  <ThumbsDown className="w-4 h-4" />
+                  <span className="hidden sm:inline">Reject</span>
+                </button>
+              </>
+            )}
         </div>
       </div>
     </div>
@@ -342,9 +428,12 @@ interface DetailPanelProps {
 }
 
 const DetailPanel: React.FC<DetailPanelProps> = ({ application, onClose }) => {
-  const [confirmAction, setConfirmAction] = useState<"approve" | "reject" | null>(null);
+  const [confirmAction, setConfirmAction] = useState<
+    "approve" | "reject" | null
+  >(null);
   const overallScore = Math.round(
-    application.scoring.reduce((sum, s) => sum + s.score, 0) / application.scoring.length
+    application.scoring.reduce((sum, s) => sum + s.score, 0) /
+      application.scoring.length,
   );
 
   return (
@@ -382,10 +471,16 @@ const DetailPanel: React.FC<DetailPanelProps> = ({ application, onClose }) => {
         </h4>
 
         {/* Overall Score */}
-        <div className={`mb-5 p-4 rounded-lg border ${getScoreBadgeBg(overallScore)}`}>
+        <div
+          className={`mb-5 p-4 rounded-lg border ${getScoreBadgeBg(overallScore)}`}
+        >
           <div className="flex items-center justify-between mb-2">
-            <span className="font-inter font-medium text-gray-700">Overall AI Score</span>
-            <span className={`font-space-grotesk font-bold text-2xl ${getScoreColor(overallScore)}`}>
+            <span className="font-inter font-medium text-gray-700">
+              Overall AI Score
+            </span>
+            <span
+              className={`font-space-grotesk font-bold text-2xl ${getScoreColor(overallScore)}`}
+            >
               {overallScore}
             </span>
           </div>
@@ -410,14 +505,18 @@ const DetailPanel: React.FC<DetailPanelProps> = ({ application, onClose }) => {
                     {category.label}
                   </span>
                 </div>
-                <span className={`font-space-grotesk font-bold text-sm ${getScoreColor(category.score)}`}>
+                <span
+                  className={`font-space-grotesk font-bold text-sm ${getScoreColor(category.score)}`}
+                >
                   {category.score}/{category.maxScore}
                 </span>
               </div>
               <div className="w-full bg-gray-200 rounded-full h-2">
                 <div
                   className={`h-2 rounded-full transition-all duration-500 ${getScoreBgColor(category.score)}`}
-                  style={{ width: `${(category.score / category.maxScore) * 100}%` }}
+                  style={{
+                    width: `${(category.score / category.maxScore) * 100}%`,
+                  }}
                 />
               </div>
             </div>
@@ -443,7 +542,9 @@ const DetailPanel: React.FC<DetailPanelProps> = ({ application, onClose }) => {
                 {index < application.timeline.length - 1 && (
                   <div
                     className={`w-0.5 flex-1 mt-1 ${
-                      event.completed ? "bg-realestate-accent/30" : "bg-gray-200"
+                      event.completed
+                        ? "bg-realestate-accent/30"
+                        : "bg-gray-200"
                     }`}
                   />
                 )}
@@ -576,7 +677,9 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ applications }) => {
                         {app.initials}
                       </span>
                     </div>
-                    <span className="truncate max-w-[120px]">{app.applicantName}</span>
+                    <span className="truncate max-w-[120px]">
+                      {app.applicantName}
+                    </span>
                   </div>
                 </th>
               ))}
@@ -613,7 +716,9 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ applications }) => {
                   return (
                     <td key={app.id} className="p-3 sm:p-4 text-center">
                       <div className="flex flex-col items-center gap-1">
-                        <span className={`font-space-grotesk font-bold ${getScoreColor(score)}`}>
+                        <span
+                          className={`font-space-grotesk font-bold ${getScoreColor(score)}`}
+                        >
                           {score}
                         </span>
                         <div className="w-16 bg-gray-200 rounded-full h-1.5 mx-auto">
@@ -630,7 +735,9 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ applications }) => {
             ))}
             {/* Status */}
             <tr className="border-b border-gray-50">
-              <td className="p-3 sm:p-4 font-inter text-sm text-gray-600">Status</td>
+              <td className="p-3 sm:p-4 font-inter text-sm text-gray-600">
+                Status
+              </td>
               {applications.map((app) => {
                 const badge = getStatusBadge(app.status);
                 return (
@@ -647,7 +754,9 @@ const ComparisonTable: React.FC<ComparisonTableProps> = ({ applications }) => {
             </tr>
             {/* Property */}
             <tr>
-              <td className="p-3 sm:p-4 font-inter text-sm text-gray-600">Property</td>
+              <td className="p-3 sm:p-4 font-inter text-sm text-gray-600">
+                Property
+              </td>
               {applications.map((app) => (
                 <td
                   key={app.id}
@@ -674,7 +783,12 @@ const ApplicationsPage: React.FC = () => {
   const [compareIds, setCompareIds] = useState<string[]>([]);
   const [applications, setApplications] = useState<MockApplication[]>([]);
   const [loading, setLoading] = useState(true);
-  const [appStats, setAppStats] = useState({ total: 0, underReview: 0, approved: 0, rejected: 0 });
+  const [appStats, setAppStats] = useState({
+    total: 0,
+    underReview: 0,
+    approved: 0,
+    rejected: 0,
+  });
 
   // Fetch applications from backend and AI scoring
   useEffect(() => {
@@ -685,7 +799,9 @@ const ApplicationsPage: React.FC = () => {
         const data = await fetchApplications();
         if (cancelled) return;
 
-        const mapped = (Array.isArray(data) ? data : []).map(apiDataToMockApplication);
+        const mapped = (Array.isArray(data) ? data : []).map(
+          apiDataToMockApplication,
+        );
 
         // Fetch AI scores for each application
         const scored = await Promise.all(
@@ -711,8 +827,14 @@ const ApplicationsPage: React.FC = () => {
           setApplications(scored);
           setAppStats({
             total: scored.length,
-            underReview: scored.filter((a) => a.status === "Under Review" || a.status === "Submitted").length,
-            approved: scored.filter((a) => a.status === "Approved" || a.status === "Conditionally Approved").length,
+            underReview: scored.filter(
+              (a) => a.status === "Under Review" || a.status === "Submitted",
+            ).length,
+            approved: scored.filter(
+              (a) =>
+                a.status === "Approved" ||
+                a.status === "Conditionally Approved",
+            ).length,
             rejected: scored.filter((a) => a.status === "Rejected").length,
           });
         }
@@ -723,14 +845,19 @@ const ApplicationsPage: React.FC = () => {
       }
     }
     load();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const filteredApplications = useMemo(() => {
     if (filter === "All") return applications;
     if (filter === "Pending") {
       return applications.filter(
-        (app) => app.status === "Submitted" || app.status === "Under Review" || app.status === "Conditionally Approved"
+        (app) =>
+          app.status === "Submitted" ||
+          app.status === "Under Review" ||
+          app.status === "Conditionally Approved",
       );
     }
     return applications.filter((app) => app.status === filter);
@@ -738,12 +865,12 @@ const ApplicationsPage: React.FC = () => {
 
   const selectedApplication = useMemo(
     () => applications.find((app) => app.id === selectedId) ?? null,
-    [selectedId, applications]
+    [selectedId, applications],
   );
 
   const compareApplications = useMemo(
     () => applications.filter((app) => compareIds.includes(app.id)),
-    [compareIds, applications]
+    [compareIds, applications],
   );
 
   const handleSelect = (id: string) => {
@@ -752,7 +879,7 @@ const ApplicationsPage: React.FC = () => {
 
   const handleCompareToggle = (id: string) => {
     setCompareIds((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
     );
   };
 
@@ -793,7 +920,9 @@ const ApplicationsPage: React.FC = () => {
                 aria-label="Filter applications"
               >
                 {filter}
-                <ChevronDown className={`w-4 h-4 transition-transform ${filterOpen ? "rotate-180" : ""}`} />
+                <ChevronDown
+                  className={`w-4 h-4 transition-transform ${filterOpen ? "rotate-180" : ""}`}
+                />
               </button>
               {filterOpen && (
                 <div
@@ -801,26 +930,26 @@ const ApplicationsPage: React.FC = () => {
                   role="listbox"
                   aria-label="Filter options"
                 >
-                  {(["All", "Pending", "Approved", "Rejected"] as FilterOption[]).map(
-                    (option) => (
-                      <button
-                        key={option}
-                        onClick={() => {
-                          setFilter(option);
-                          setFilterOpen(false);
-                        }}
-                        className={`w-full text-left px-4 py-2.5 text-sm font-inter transition-colors ${
-                          filter === option
-                            ? "bg-realestate-accent/10 text-realestate-primary font-semibold"
-                            : "text-gray-700 hover:bg-gray-50"
-                        }`}
-                        role="option"
-                        aria-selected={filter === option}
-                      >
-                        {option}
-                      </button>
-                    )
-                  )}
+                  {(
+                    ["All", "Pending", "Approved", "Rejected"] as FilterOption[]
+                  ).map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => {
+                        setFilter(option);
+                        setFilterOpen(false);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 text-sm font-inter transition-colors ${
+                        filter === option
+                          ? "bg-realestate-accent/10 text-realestate-primary font-semibold"
+                          : "text-gray-700 hover:bg-gray-50"
+                      }`}
+                      role="option"
+                      aria-selected={filter === option}
+                    >
+                      {option}
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
@@ -839,14 +968,17 @@ const ApplicationsPage: React.FC = () => {
         {loading && (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-realestate-accent" />
-            <span className="ml-3 text-sm text-gray-500">Loading applications...</span>
+            <span className="ml-3 text-sm text-gray-500">
+              Loading applications...
+            </span>
           </div>
         )}
 
         {/* Compare Mode Toggle */}
         <div className="flex items-center justify-between mb-4">
           <p className="font-inter text-sm text-gray-500">
-            {filteredApplications.length} application{filteredApplications.length !== 1 ? "s" : ""} found
+            {filteredApplications.length} application
+            {filteredApplications.length !== 1 ? "s" : ""} found
           </p>
           <button
             onClick={toggleCompareMode}
@@ -907,7 +1039,10 @@ const ApplicationsPage: React.FC = () => {
 
           {/* Detail Panel */}
           {selectedApplication && (
-            <aside className="lg:col-span-7 lg:sticky lg:top-24 lg:self-start" aria-label="Application details">
+            <aside
+              className="lg:col-span-7 lg:sticky lg:top-24 lg:self-start"
+              aria-label="Application details"
+            >
               <DetailPanel
                 application={selectedApplication}
                 onClose={() => setSelectedId(null)}

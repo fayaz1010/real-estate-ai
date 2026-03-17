@@ -27,19 +27,22 @@ export class PaymentController {
     return successResponse(res, result);
   });
 
-  createDirectPaymentIntent = asyncHandler(async (req: Request, res: Response) => {
-    const userId = req.user!.userId;
-    const { amount, propertyId, paymentType, leaseId, description } = req.body;
-    const result = await paymentService.createDirectPaymentIntent({
-      amount,
-      userId,
-      propertyId,
-      paymentType,
-      leaseId,
-      description,
-    });
-    return successResponse(res, result, "Payment intent created", 201);
-  });
+  createDirectPaymentIntent = asyncHandler(
+    async (req: Request, res: Response) => {
+      const userId = req.user!.userId;
+      const { amount, propertyId, paymentType, leaseId, description } =
+        req.body;
+      const result = await paymentService.createDirectPaymentIntent({
+        amount,
+        userId,
+        propertyId,
+        paymentType,
+        leaseId,
+        description,
+      });
+      return successResponse(res, result, "Payment intent created", 201);
+    },
+  );
 
   getMyPayments = asyncHandler(async (req: Request, res: Response) => {
     const userId = req.user!.userId;

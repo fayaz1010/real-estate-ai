@@ -1,6 +1,8 @@
 import { PredictiveMaintenanceInsight } from "@/types/maintenance";
 
-export const getPredictiveMaintenanceInsights = async (propertyId: string): Promise<PredictiveMaintenanceInsight[]> => {
+export const getPredictiveMaintenanceInsights = async (
+  propertyId: string,
+): Promise<PredictiveMaintenanceInsight[]> => {
   // TODO: Replace with actual API call to fetch AI insights
   return Promise.resolve([
     {
@@ -24,7 +26,9 @@ export const getPredictiveMaintenanceInsights = async (propertyId: string): Prom
   ]);
 };
 
-export const getPropertyRiskScore = async (propertyId: string): Promise<number> => {
+export const getPropertyRiskScore = async (
+  propertyId: string,
+): Promise<number> => {
   // TODO: Replace with actual API call to fetch AI insights
   void propertyId;
   return Promise.resolve(68);

@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef } from "react";
 
 interface UseCameraResult {
   videoStream: MediaStream | null;
@@ -26,12 +26,12 @@ export function useCamera(): UseCameraResult {
 
     try {
       if (!navigator.mediaDevices?.getUserMedia) {
-        setError('Camera API is not supported in this browser.');
+        setError("Camera API is not supported in this browser.");
         return;
       }
 
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: { facingMode: 'environment' },
+        video: { facingMode: "environment" },
       });
 
       streamRef.current = stream;
@@ -39,20 +39,22 @@ export function useCamera(): UseCameraResult {
     } catch (err) {
       if (err instanceof DOMException) {
         switch (err.name) {
-          case 'NotAllowedError':
-            setError('Camera access was denied. Please grant camera permissions.');
+          case "NotAllowedError":
+            setError(
+              "Camera access was denied. Please grant camera permissions.",
+            );
             break;
-          case 'NotFoundError':
-            setError('No camera device found.');
+          case "NotFoundError":
+            setError("No camera device found.");
             break;
-          case 'NotReadableError':
-            setError('Camera is already in use by another application.');
+          case "NotReadableError":
+            setError("Camera is already in use by another application.");
             break;
           default:
             setError(`Camera error: ${err.message}`);
         }
       } else {
-        setError('An unexpected error occurred while accessing the camera.');
+        setError("An unexpected error occurred while accessing the camera.");
       }
     }
   }, [stopCamera]);

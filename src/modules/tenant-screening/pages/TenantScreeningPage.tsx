@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { TenantScreeningForm } from "../components/TenantScreeningForm";
+
 import {
   tenantScreeningService,
   type TenantScreeningFormData,
 } from "../api/tenantScreeningService";
+import { TenantScreeningForm } from "../components/TenantScreeningForm";
 
 export function TenantScreeningPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,8 +46,8 @@ export function TenantScreeningPage() {
 
         <p className="text-sm text-[#3b4876] font-[Open_Sans] mb-8 max-w-2xl italic">
           AI that actively manages your properties — predicting maintenance
-          issues, optimizing rent prices, screening tenants, and reducing vacancy
-          — so you manage more units with less effort.
+          issues, optimizing rent prices, screening tenants, and reducing
+          vacancy — so you manage more units with less effort.
         </p>
 
         {submitStatus === "success" && (

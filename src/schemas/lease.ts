@@ -3,18 +3,18 @@
  * Aligns with the Prisma Lease model.
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * Valid lease statuses matching the Prisma LeaseStatus enum.
  */
 export const LEASE_STATUSES = [
-  'DRAFT',
-  'PENDING_SIGNATURES',
-  'ACTIVE',
-  'EXPIRED',
-  'TERMINATED',
-  'RENEWED',
+  "DRAFT",
+  "PENDING_SIGNATURES",
+  "ACTIVE",
+  "EXPIRED",
+  "TERMINATED",
+  "RENEWED",
 ] as const;
 
 /**
@@ -29,10 +29,13 @@ export const LeaseSchema = z.object({
   status: z.enum(LEASE_STATUSES),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
-  monthlyRent: z.number().positive('Monthly rent must be positive'),
-  depositAmount: z.number().nonnegative('Deposit must be non-negative'),
+  monthlyRent: z.number().positive("Monthly rent must be positive"),
+  depositAmount: z.number().nonnegative("Deposit must be non-negative"),
   depositPaid: z.boolean(),
-  lateFeeAmount: z.number().nonnegative('Late fee must be non-negative').default(0),
+  lateFeeAmount: z
+    .number()
+    .nonnegative("Late fee must be non-negative")
+    .default(0),
   lateFeeGraceDays: z.number().int().nonnegative().default(5),
   leaseDocumentUrl: z.string().url().nullable(),
   signedByTenant: z.boolean(),
@@ -52,19 +55,19 @@ export type LeaseSchemaType = z.infer<typeof LeaseSchema>;
  */
 export const CreateLeaseSchema = z
   .object({
-    propertyId: z.string().uuid('Valid property ID is required'),
-    tenantId: z.string().uuid('Valid tenant ID is required'),
+    propertyId: z.string().uuid("Valid property ID is required"),
+    tenantId: z.string().uuid("Valid tenant ID is required"),
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
-    monthlyRent: z.number().positive('Monthly rent must be positive'),
-    depositAmount: z.number().nonnegative('Deposit must be non-negative'),
+    monthlyRent: z.number().positive("Monthly rent must be positive"),
+    depositAmount: z.number().nonnegative("Deposit must be non-negative"),
     lateFeeAmount: z.number().nonnegative().default(0),
     lateFeeGraceDays: z.number().int().nonnegative().default(5),
     leaseDocumentUrl: z.string().url().optional(),
   })
   .refine((data) => data.endDate > data.startDate, {
-    message: 'End date must be after start date',
-    path: ['endDate'],
+    message: "End date must be after start date",
+    path: ["endDate"],
   });
 
 export type CreateLeaseInput = z.infer<typeof CreateLeaseSchema>;
@@ -74,7 +77,7 @@ export type CreateLeaseInput = z.infer<typeof CreateLeaseSchema>;
  */
 export const UpdateLeaseSchema = z.object({
   status: z.enum(LEASE_STATUSES).optional(),
-  monthlyRent: z.number().positive('Monthly rent must be positive').optional(),
+  monthlyRent: z.number().positive("Monthly rent must be positive").optional(),
   depositAmount: z.number().nonnegative().optional(),
   depositPaid: z.boolean().optional(),
   lateFeeAmount: z.number().nonnegative().optional(),

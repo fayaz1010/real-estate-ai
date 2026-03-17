@@ -18,8 +18,8 @@ export interface MaintenanceRequest {
   id: string;
   title: string;
   description: string;
-  status: 'open' | 'in progress' | 'completed';
-  urgency: 'Low' | 'Medium' | 'High';
+  status: "open" | "in progress" | "completed";
+  urgency: "Low" | "Medium" | "High";
   photoUrls?: string[];
   createdAt: Date;
 }
@@ -44,7 +44,7 @@ export interface PaymentHistoryItem {
   amount: number;
   description: string;
   paymentMethod: string;
-  status: 'Paid' | 'Pending' | 'Failed';
+  status: "Paid" | "Pending" | "Failed";
   receiptUrl?: string;
 }
 

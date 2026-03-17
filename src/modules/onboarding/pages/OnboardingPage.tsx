@@ -1,11 +1,11 @@
 import { Building2, Shield, Users } from "lucide-react";
 import React from "react";
 
-import { useAppSelector } from "@/store";
-import type { RootState } from "@/store";
-
 import { OnboardingWizard } from "../components/OnboardingWizard";
 import { SetupGuide } from "../components/SetupGuide";
+
+import { useAppSelector } from "@/store";
+import type { RootState } from "@/store";
 
 const OnboardingPage: React.FC = () => {
   const { role, completed } = useAppSelector(

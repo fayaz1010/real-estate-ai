@@ -33,7 +33,11 @@ const TEST_USER = {
 };
 
 jest.mock("../../middleware/auth", () => ({
-  authenticate: (req: any, _res: any, next: any) => {
+  authenticate: (
+    req: Record<string, unknown>,
+    _res: unknown,
+    next: () => void,
+  ) => {
     req.user = {
       userId: "landlord-1",
       email: "landlord@test.com",
@@ -42,7 +46,11 @@ jest.mock("../../middleware/auth", () => ({
     };
     next();
   },
-  optionalAuth: (req: any, _res: any, next: any) => {
+  optionalAuth: (
+    req: Record<string, unknown>,
+    _res: unknown,
+    next: () => void,
+  ) => {
     req.user = {
       userId: "landlord-1",
       email: "landlord@test.com",
@@ -51,44 +59,72 @@ jest.mock("../../middleware/auth", () => ({
     };
     next();
   },
-  authorize: () => (_req: any, _res: any, next: any) => next(),
+  authorize:
+    () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
+      next(),
 }));
 
 jest.mock("../../middleware/rateLimiter", () => ({
-  rateLimiter: (_req: any, _res: any, next: any) => next(),
+  rateLimiter: (
+    _req: Record<string, unknown>,
+    _res: unknown,
+    next: () => void,
+  ) => next(),
 }));
 
 jest.mock("../../middleware/validation", () => ({
-  validate: () => (_req: any, _res: any, next: any) => next(),
-  validateBody: () => (_req: any, _res: any, next: any) => next(),
+  validate:
+    () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
+      next(),
+  validateBody:
+    () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
+      next(),
 }));
 
 const mockConfig = {
-    nodeEnv: "test",
-    port: 3001,
-    corsOrigin: "*",
-    swaggerEnabled: false,
-    stripe: { secretKey: "", webhookSecret: "", publishableKey: "" },
-    vapid: { publicKey: "", privateKey: "", subject: "" },
-    smtp: { host: "", port: 587, secure: false, user: "", pass: "", fromName: "", fromEmail: "" },
-    cloudflare: { accountId: "", accessKeyId: "", accessKeySecret: "", bucketName: "", region: "auto" },
-    rateLimit: { windowMs: 900000, maxRequests: 100 },
-    emailRateLimit: { windowMs: 3600000, max: 10 },
-    google: { clientId: "", clientSecret: "" },
-    features: { emailVerification: false, phoneVerification: false, twoFactor: false },
-    jwtSecret: "test-secret",
-    jwtRefreshSecret: "test-refresh-secret",
-    jwtExpiresIn: "15m",
-    refreshTokenExpiresIn: "7d",
-    frontendUrl: "http://localhost:3000",
-    databaseUrl: "test",
-    maxFileSize: 5242880,
-    uploadPath: "./uploads",
-    logLevel: "error",
-    logToFile: false,
-    logFilePath: "",
-    cacheEnabled: false,
-    cacheTtl: 3600,
+  nodeEnv: "test",
+  port: 3001,
+  corsOrigin: "*",
+  swaggerEnabled: false,
+  stripe: { secretKey: "", webhookSecret: "", publishableKey: "" },
+  vapid: { publicKey: "", privateKey: "", subject: "" },
+  smtp: {
+    host: "",
+    port: 587,
+    secure: false,
+    user: "",
+    pass: "",
+    fromName: "",
+    fromEmail: "",
+  },
+  cloudflare: {
+    accountId: "",
+    accessKeyId: "",
+    accessKeySecret: "",
+    bucketName: "",
+    region: "auto",
+  },
+  rateLimit: { windowMs: 900000, maxRequests: 100 },
+  emailRateLimit: { windowMs: 3600000, max: 10 },
+  google: { clientId: "", clientSecret: "" },
+  features: {
+    emailVerification: false,
+    phoneVerification: false,
+    twoFactor: false,
+  },
+  jwtSecret: "test-secret",
+  jwtRefreshSecret: "test-refresh-secret",
+  jwtExpiresIn: "15m",
+  refreshTokenExpiresIn: "7d",
+  frontendUrl: "http://localhost:3000",
+  databaseUrl: "test",
+  maxFileSize: 5242880,
+  uploadPath: "./uploads",
+  logLevel: "error",
+  logToFile: false,
+  logFilePath: "",
+  cacheEnabled: false,
+  cacheTtl: 3600,
 };
 
 jest.mock("../../config/env", () => ({
@@ -213,9 +249,7 @@ describe("Leases API", () => {
     it("should filter leases by tenant role", async () => {
       mockPrisma.lease.findMany.mockResolvedValue([]);
 
-      await request(app)
-        .get("/api/leases/my-leases")
-        .query({ role: "tenant" });
+      await request(app).get("/api/leases/my-leases").query({ role: "tenant" });
 
       expect(mockPrisma.lease.findMany).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -240,7 +274,10 @@ describe("Leases API", () => {
 
   describe("POST /api/leases", () => {
     it("should return 201 and create a new lease", async () => {
-      mockPrisma.property.findFirst.mockResolvedValue({ id: "prop-1", ownerId: "landlord-1" });
+      mockPrisma.property.findFirst.mockResolvedValue({
+        id: "prop-1",
+        ownerId: "landlord-1",
+      });
       mockPrisma.lease.create.mockResolvedValue(sampleLease);
 
       const res = await request(app)
@@ -254,7 +291,10 @@ describe("Leases API", () => {
     });
 
     it("should create lease with DRAFT status", async () => {
-      mockPrisma.property.findFirst.mockResolvedValue({ id: "prop-1", ownerId: "landlord-1" });
+      mockPrisma.property.findFirst.mockResolvedValue({
+        id: "prop-1",
+        ownerId: "landlord-1",
+      });
       mockPrisma.lease.create.mockResolvedValue(sampleLease);
 
       await request(app).post("/api/leases").send(createLeasePayload);
@@ -265,7 +305,10 @@ describe("Leases API", () => {
     });
 
     it("should persist correct lease data", async () => {
-      mockPrisma.property.findFirst.mockResolvedValue({ id: "prop-1", ownerId: "landlord-1" });
+      mockPrisma.property.findFirst.mockResolvedValue({
+        id: "prop-1",
+        ownerId: "landlord-1",
+      });
       mockPrisma.lease.create.mockResolvedValue(sampleLease);
 
       await request(app).post("/api/leases").send(createLeasePayload);
@@ -360,7 +403,10 @@ describe("Leases API", () => {
 
     it("should persist status change in the database", async () => {
       mockPrisma.lease.findFirst.mockResolvedValue(sampleLease);
-      mockPrisma.lease.update.mockResolvedValue({ ...sampleLease, status: "ACTIVE" });
+      mockPrisma.lease.update.mockResolvedValue({
+        ...sampleLease,
+        status: "ACTIVE",
+      });
 
       await request(app)
         .patch("/api/leases/lease-1/status")

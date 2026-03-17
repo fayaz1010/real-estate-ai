@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   AlertTriangle,
   Clock,
@@ -9,6 +8,8 @@ import {
   Loader2,
   Wrench,
 } from "lucide-react";
+import { useState } from "react";
+
 import apiClient from "@/api/client";
 import type { MaintenanceRequest } from "@/types";
 import {
@@ -100,12 +101,12 @@ export const MaintenanceRequestList: React.FC<MaintenanceRequestListProps> = ({
   const totalPages = Math.max(1, Math.ceil(filtered.length / ITEMS_PER_PAGE));
   const paginated = filtered.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   const handleStatusUpdate = async (
     id: string,
-    newStatus: MaintenanceRequestStatus
+    newStatus: MaintenanceRequestStatus,
   ) => {
     setUpdatingId(id);
     setUpdateError(null);
@@ -114,7 +115,7 @@ export const MaintenanceRequestList: React.FC<MaintenanceRequestListProps> = ({
       onRefresh();
     } catch (err) {
       setUpdateError(
-        err instanceof Error ? err.message : "Failed to update status"
+        err instanceof Error ? err.message : "Failed to update status",
       );
     } finally {
       setUpdatingId(null);

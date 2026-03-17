@@ -1,7 +1,6 @@
 // FILE PATH: src/components/scheduling/SmartSuggestions.tsx
 // Smart Scheduling & Booking System - AI-Powered Scheduling Suggestions
 
-import React, { useState, useEffect } from "react";
 import {
   Sparkles,
   Clock,
@@ -13,6 +12,8 @@ import {
   Zap,
   ThumbsUp,
 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+
 import type { SmartSuggestion, BookingType } from "../../types/scheduling";
 
 // ─── Mock AI Suggestions ─────────────────────────────────────────────────────
@@ -32,7 +33,12 @@ function generateMockSuggestions(): SmartSuggestion[] {
     "Low traffic period — tenants report better experience during this window",
   ];
 
-  const types: BookingType[] = ["viewing", "inspection", "maintenance", "meeting"];
+  const types: BookingType[] = [
+    "viewing",
+    "inspection",
+    "maintenance",
+    "meeting",
+  ];
 
   for (let i = 0; i < 5; i++) {
     const dayOffset = Math.floor(Math.random() * 7) + 1;
@@ -122,7 +128,9 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
           disabled={loading}
           className="inline-flex items-center gap-1 text-xs font-semibold text-[#3b4876] hover:text-[#091a2b] disabled:opacity-40 transition-colors font-['Open_Sans']"
         >
-          <RefreshCw className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`} />
+          <RefreshCw
+            className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`}
+          />
           Refresh
         </button>
       </div>
@@ -161,7 +169,9 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1.5">
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-full border ${getScoreColor(s.score)} font-['Open_Sans']`}>
+                      <span
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-full border ${getScoreColor(s.score)} font-['Open_Sans']`}
+                      >
                         <TrendingUp className="w-3 h-3" />
                         {s.score}% match
                       </span>
@@ -171,17 +181,28 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
                     </div>
 
                     <div className="flex items-center gap-1.5 text-sm text-[#091a2b] font-semibold font-['Open_Sans'] mb-1">
-                      <Calendar className="w-3.5 h-3.5 text-[#3b4876]" aria-hidden="true" />
+                      <Calendar
+                        className="w-3.5 h-3.5 text-[#3b4876]"
+                        aria-hidden="true"
+                      />
                       {start.toLocaleDateString("en-US", {
-                        weekday: "short", month: "short", day: "numeric",
+                        weekday: "short",
+                        month: "short",
+                        day: "numeric",
                       })}
                     </div>
 
                     <div className="flex items-center gap-1.5 text-xs text-gray-500 font-['Open_Sans'] mb-2">
                       <Clock className="w-3 h-3" aria-hidden="true" />
-                      {start.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}
+                      {start.toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "2-digit",
+                      })}
                       {" – "}
-                      {end.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" })}
+                      {end.toLocaleTimeString("en-US", {
+                        hour: "numeric",
+                        minute: "2-digit",
+                      })}
                     </div>
 
                     <p className="text-xs text-gray-600 font-['Open_Sans'] leading-relaxed">

@@ -1,4 +1,4 @@
-import { Subscription, TRIAL_DURATION_DAYS } from '../types';
+import { Subscription, TRIAL_DURATION_DAYS } from "../types";
 
 export function calculateTrialEndDate(startDate: Date): Date {
   const endDate = new Date(startDate);
@@ -7,7 +7,7 @@ export function calculateTrialEndDate(startDate: Date): Date {
 }
 
 export function isTrialActive(subscription: Subscription): boolean {
-  if (subscription.status !== 'TRIALING') return false;
+  if (subscription.status !== "TRIALING") return false;
   if (!subscription.trialEndDate) return false;
   return new Date(subscription.trialEndDate) > new Date();
 }

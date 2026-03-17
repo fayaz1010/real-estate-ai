@@ -11,13 +11,15 @@ function randomInRange(min: number, max: number): number {
 }
 
 function simulateDelay(): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, 300 + Math.random() * 200));
+  return new Promise((resolve) =>
+    setTimeout(resolve, 300 + Math.random() * 200),
+  );
 }
 
 export async function getTotalRevenue(
   _startDate: Date,
   _endDate: Date,
-  _propertyId?: string
+  _propertyId?: string,
 ): Promise<MetricResult> {
   await simulateDelay();
   const value = randomInRange(120000, 280000);
@@ -27,7 +29,7 @@ export async function getTotalRevenue(
 export async function getOccupancyRate(
   _startDate: Date,
   _endDate: Date,
-  _propertyId?: string
+  _propertyId?: string,
 ): Promise<MetricResult> {
   await simulateDelay();
   const value = randomInRange(0.78, 0.98);
@@ -37,7 +39,7 @@ export async function getOccupancyRate(
 export async function getAverageRent(
   _startDate: Date,
   _endDate: Date,
-  _propertyId?: string
+  _propertyId?: string,
 ): Promise<MetricResult> {
   await simulateDelay();
   const value = randomInRange(1800, 3200);
@@ -47,7 +49,7 @@ export async function getAverageRent(
 export async function getMaintenanceCosts(
   _startDate: Date,
   _endDate: Date,
-  _propertyId?: string
+  _propertyId?: string,
 ): Promise<MetricResult> {
   await simulateDelay();
   const value = randomInRange(8000, 25000);
@@ -57,7 +59,7 @@ export async function getMaintenanceCosts(
 export async function getVacancyRate(
   _startDate: Date,
   _endDate: Date,
-  _propertyId?: string
+  _propertyId?: string,
 ): Promise<MetricResult> {
   await simulateDelay();
   const value = randomInRange(0.02, 0.22);
@@ -67,7 +69,7 @@ export async function getVacancyRate(
 export async function getAverageDaysToRent(
   _startDate: Date,
   _endDate: Date,
-  _propertyId?: string
+  _propertyId?: string,
 ): Promise<MetricResult> {
   await simulateDelay();
   const value = randomInRange(12, 45);

@@ -90,7 +90,7 @@ export const PropertyLocation: React.FC<PropertyLocationProps> = ({
         const request: google.maps.places.PlaceSearchRequest = {
           location,
           radius: 2000, // 2km radius
-          type: type as google.maps.places.PlaceType1,
+          type: type as string,
         };
 
         try {
@@ -166,7 +166,7 @@ export const PropertyLocation: React.FC<PropertyLocationProps> = ({
   }, [selectedTypes, nearbyPlaces]);
 
   const getIconForType = (type: string) => {
-    const iconMap: Record<string, React.ComponentType<{ className?: string; size?: number }>> = {
+    const iconMap: Record<string, typeof MapPin> = {
       Restaurant: Coffee,
       Cafe: Coffee,
       Grocery: ShoppingCart,
@@ -385,7 +385,9 @@ export const PropertyLocation: React.FC<PropertyLocationProps> = ({
           {/* Nearby Places */}
           <div>
             <div className="flex items-center justify-between mb-3">
-              <h3 className="font-semibold text-gray-900">What&apos;s Nearby</h3>
+              <h3 className="font-semibold text-gray-900">
+                What&apos;s Nearby
+              </h3>
             </div>
             {/* Type Filters */}
             <div className="flex flex-wrap gap-2 mb-4">

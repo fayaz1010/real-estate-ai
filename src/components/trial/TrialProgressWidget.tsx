@@ -1,12 +1,15 @@
-import React from "react";
 import { TrendingUp } from "lucide-react";
+import React from "react";
+
 import type { TrialStatus } from "../../types/trial";
 
 interface TrialProgressWidgetProps {
   trialStatus: TrialStatus;
 }
 
-export const TrialProgressWidget: React.FC<TrialProgressWidgetProps> = ({ trialStatus }) => {
+export const TrialProgressWidget: React.FC<TrialProgressWidgetProps> = ({
+  trialStatus,
+}) => {
   const totalDays = 14;
   const elapsed = totalDays - trialStatus.daysRemaining;
   const percentage = Math.min(100, Math.round((elapsed / totalDays) * 100));
@@ -32,7 +35,9 @@ export const TrialProgressWidget: React.FC<TrialProgressWidgetProps> = ({ trialS
       {/* Progress bar */}
       <div className="mb-2">
         <div className="flex items-center justify-between text-sm text-gray-500 mb-1.5">
-          <span>Day {elapsed} of {totalDays}</span>
+          <span>
+            Day {elapsed} of {totalDays}
+          </span>
           <span>{trialStatus.daysRemaining} days left</span>
         </div>
         <div className="h-2.5 w-full rounded-full bg-gray-100 overflow-hidden">
@@ -50,7 +55,7 @@ export const TrialProgressWidget: React.FC<TrialProgressWidgetProps> = ({ trialS
       {trialStatus.usageHighlights.length > 0 && (
         <div className="mt-5 space-y-3">
           <p className="text-xs font-semibold uppercase tracking-wide text-gray-400">
-            What you've accomplished
+            What you&apos;ve accomplished
           </p>
           {trialStatus.usageHighlights.map((highlight) => (
             <div

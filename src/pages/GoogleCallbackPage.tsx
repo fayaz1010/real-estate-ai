@@ -1,14 +1,17 @@
 // Google OAuth Callback Handler
 // Receives the authorization code from Google and sends it to the backend
 
+import { Loader2, CheckCircle, XCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Loader2, CheckCircle, XCircle } from "lucide-react";
+
 import apiClient from "@/api/client";
 
 const GoogleCallbackPage: React.FC = () => {
   const navigate = useNavigate();
-  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
+  const [status, setStatus] = useState<"loading" | "success" | "error">(
+    "loading",
+  );
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
@@ -58,7 +61,9 @@ const GoogleCallbackPage: React.FC = () => {
         console.error("Google OAuth exchange failed:", err);
         setStatus("error");
         setErrorMessage(
-          err instanceof Error ? err.message : "Failed to complete Google authentication.",
+          err instanceof Error
+            ? err.message
+            : "Failed to complete Google authentication.",
         );
       }
     }

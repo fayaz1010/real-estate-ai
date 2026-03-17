@@ -233,7 +233,10 @@ const CoApplicantForm: React.FC<CoApplicantFormProps> = ({
                       const updated = [...income];
                       updated[index] = {
                         ...updated[index],
-                        source: e.target.value as "employment" | "self_employment" | "investment",
+                        source: e.target.value as
+                          | "employment"
+                          | "self_employment"
+                          | "investment",
                       };
                       setIncome(updated);
                     }}
@@ -272,7 +275,12 @@ const CoApplicantForm: React.FC<CoApplicantFormProps> = ({
                       const updated = [...income];
                       updated[index] = {
                         ...updated[index],
-                        frequency: e.target.value as "hourly" | "weekly" | "biweekly" | "monthly" | "annually",
+                        frequency: e.target.value as
+                          | "hourly"
+                          | "weekly"
+                          | "biweekly"
+                          | "monthly"
+                          | "annually",
                       };
                       setIncome(updated);
                     }}

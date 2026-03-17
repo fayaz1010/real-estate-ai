@@ -16,9 +16,7 @@ interface PropertyJsonLdProps {
 
 export const PropertyJsonLd: React.FC<PropertyJsonLdProps> = ({ property }) => {
   const schemaType =
-    property.listingType === "sale"
-      ? "SingleFamilyResidence"
-      : "Apartment";
+    property.listingType === "sale" ? "SingleFamilyResidence" : "Apartment";
 
   const jsonLd = {
     "@context": "https://schema.org",

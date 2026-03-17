@@ -1,7 +1,3 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-
-import { PageMeta } from "../components/seo";
 import {
   Check,
   X,
@@ -17,9 +13,13 @@ import {
   Clock,
   AlertTriangle,
 } from "lucide-react";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
+import { PageMeta } from "../components/seo";
 import { getTrialStatus, convertToPaidPlan } from "../services/trialService";
-import type { TrialStatus } from "../types/trial";
 import type { PlanId, BillingInterval } from "../types/billing";
+import type { TrialStatus } from "../types/trial";
 
 /* ------------------------------------------------------------------ */
 /*  Design tokens – "Nature-Inspired Warmth" palette                   */
@@ -77,7 +77,8 @@ const tiers: PricingTier[] = [
     id: "starter",
     name: "Starter",
     icon: <Building className="w-6 h-6" />,
-    description: "Perfect for small landlords getting started with AI management.",
+    description:
+      "Perfect for small landlords getting started with AI management.",
     monthlyPrice: "$29",
     monthlyUnit: "/mo",
     monthlyMin: "Up to 10 properties",
@@ -174,22 +175,118 @@ const tiers: PricingTier[] = [
 ];
 
 const featureRows: FeatureRow[] = [
-  { name: "Properties included", free: "Up to 10", starter: "Up to 50", growth: "Up to 200", enterprise: "Unlimited" },
-  { name: "AI insights", free: "Basic", starter: "Advanced", growth: "Full suite", enterprise: "Custom AI" },
-  { name: "Tenant management", free: "Basic", starter: true, growth: true, enterprise: true },
-  { name: "Online rent collection", free: true, starter: true, growth: true, enterprise: true },
-  { name: "Maintenance requests", free: true, starter: "Predictive", growth: "Predictive", enterprise: "Predictive" },
-  { name: "Smart rent pricing", free: false, starter: true, growth: true, enterprise: true },
-  { name: "Automated workflows", free: false, starter: true, growth: true, enterprise: true },
-  { name: "Custom reporting", free: false, starter: false, growth: true, enterprise: true },
-  { name: "API access", free: false, starter: false, growth: true, enterprise: true },
-  { name: "eSignatures", free: false, starter: true, growth: true, enterprise: true },
-  { name: "Team management", free: false, starter: false, growth: true, enterprise: true },
-  { name: "White-label option", free: false, starter: false, growth: false, enterprise: true },
-  { name: "Dedicated account manager", free: false, starter: false, growth: false, enterprise: true },
-  { name: "Custom integrations", free: false, starter: false, growth: true, enterprise: true },
-  { name: "SLA guarantee", free: false, starter: false, growth: false, enterprise: true },
-  { name: "Support", free: "Email", starter: "Priority", growth: "Dedicated", enterprise: "24/7 Dedicated" },
+  {
+    name: "Properties included",
+    free: "Up to 10",
+    starter: "Up to 50",
+    growth: "Up to 200",
+    enterprise: "Unlimited",
+  },
+  {
+    name: "AI insights",
+    free: "Basic",
+    starter: "Advanced",
+    growth: "Full suite",
+    enterprise: "Custom AI",
+  },
+  {
+    name: "Tenant management",
+    free: "Basic",
+    starter: true,
+    growth: true,
+    enterprise: true,
+  },
+  {
+    name: "Online rent collection",
+    free: true,
+    starter: true,
+    growth: true,
+    enterprise: true,
+  },
+  {
+    name: "Maintenance requests",
+    free: true,
+    starter: "Predictive",
+    growth: "Predictive",
+    enterprise: "Predictive",
+  },
+  {
+    name: "Smart rent pricing",
+    free: false,
+    starter: true,
+    growth: true,
+    enterprise: true,
+  },
+  {
+    name: "Automated workflows",
+    free: false,
+    starter: true,
+    growth: true,
+    enterprise: true,
+  },
+  {
+    name: "Custom reporting",
+    free: false,
+    starter: false,
+    growth: true,
+    enterprise: true,
+  },
+  {
+    name: "API access",
+    free: false,
+    starter: false,
+    growth: true,
+    enterprise: true,
+  },
+  {
+    name: "eSignatures",
+    free: false,
+    starter: true,
+    growth: true,
+    enterprise: true,
+  },
+  {
+    name: "Team management",
+    free: false,
+    starter: false,
+    growth: true,
+    enterprise: true,
+  },
+  {
+    name: "White-label option",
+    free: false,
+    starter: false,
+    growth: false,
+    enterprise: true,
+  },
+  {
+    name: "Dedicated account manager",
+    free: false,
+    starter: false,
+    growth: false,
+    enterprise: true,
+  },
+  {
+    name: "Custom integrations",
+    free: false,
+    starter: false,
+    growth: true,
+    enterprise: true,
+  },
+  {
+    name: "SLA guarantee",
+    free: false,
+    starter: false,
+    growth: false,
+    enterprise: true,
+  },
+  {
+    name: "Support",
+    free: "Email",
+    starter: "Priority",
+    growth: "Dedicated",
+    enterprise: "24/7 Dedicated",
+  },
 ];
 
 const faqs: FAQ[] = [
@@ -257,16 +354,23 @@ function TrialBanner({ trialStatus }: { trialStatus: TrialStatus }) {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
           {isExpiringSoon ? (
-            <AlertTriangle className="w-6 h-6 flex-shrink-0" style={{ color: "#D97706" }} />
+            <AlertTriangle
+              className="w-6 h-6 flex-shrink-0"
+              style={{ color: "#D97706" }}
+            />
           ) : (
-            <Clock className="w-6 h-6 flex-shrink-0" style={{ color: palette.accent }} />
+            <Clock
+              className="w-6 h-6 flex-shrink-0"
+              style={{ color: palette.accent }}
+            />
           )}
           <div>
             <p
               className="font-semibold text-base"
               style={{ fontFamily: "Inter, sans-serif", color: palette.text }}
             >
-              {daysRemaining} {daysRemaining === 1 ? "day" : "days"} remaining in your free trial
+              {daysRemaining} {daysRemaining === 1 ? "day" : "days"} remaining
+              in your free trial
             </p>
             {isExpiringSoon && (
               <p
@@ -315,7 +419,10 @@ function TrialExpiredBanner() {
             >
               Your free trial has expired
             </p>
-            <p className="text-sm mt-0.5 text-red-700" style={{ fontFamily: "Inter, sans-serif" }}>
+            <p
+              className="text-sm mt-0.5 text-red-700"
+              style={{ fontFamily: "Inter, sans-serif" }}
+            >
               Upgrade to a paid plan to regain access to all features
             </p>
           </div>
@@ -410,7 +517,8 @@ function PricingCard({
   const min = isAnnual ? tier.annualMin : tier.monthlyMin;
 
   const isTrialing = trialStatus?.isTrialing ?? false;
-  const isExpired = trialStatus != null && !trialStatus.isTrialing && !trialStatus.hasConverted;
+  const isExpired =
+    trialStatus != null && !trialStatus.isTrialing && !trialStatus.hasConverted;
   const isExpiringSoon = isTrialing && (trialStatus?.daysRemaining ?? 0) <= 3;
 
   // Determine CTA text based on trial state
@@ -433,12 +541,12 @@ function PricingCard({
   return (
     <div
       className={`relative flex flex-col rounded-xl p-6 sm:p-8 transition-all duration-300 ${
-        tier.highlighted
-          ? "scale-[1.02] z-10"
-          : ""
+        tier.highlighted ? "scale-[1.02] z-10" : ""
       }`}
       style={{
-        border: tier.highlighted ? `2px solid ${palette.accent}` : "1px solid #E5E7EB",
+        border: tier.highlighted
+          ? `2px solid ${palette.accent}`
+          : "1px solid #E5E7EB",
         backgroundColor: "#FFFFFF",
         boxShadow: tier.highlighted
           ? "0 10px 30px -5px rgba(139, 115, 85, 0.15)"
@@ -463,7 +571,9 @@ function PricingCard({
         <div
           className="flex items-center justify-center w-10 h-10 rounded-lg"
           style={{
-            backgroundColor: tier.highlighted ? `${palette.accent}1A` : `${palette.primary}0D`,
+            backgroundColor: tier.highlighted
+              ? `${palette.accent}1A`
+              : `${palette.primary}0D`,
             color: tier.highlighted ? palette.accent : palette.primary,
           }}
         >
@@ -471,14 +581,20 @@ function PricingCard({
         </div>
         <h3
           className="text-xl font-semibold"
-          style={{ fontFamily: "'DM Serif Display', serif", color: palette.text }}
+          style={{
+            fontFamily: "'DM Serif Display', serif",
+            color: palette.text,
+          }}
         >
           {tier.name}
         </h3>
       </div>
 
       {/* Description */}
-      <p className="text-sm mb-6" style={{ fontFamily: "Inter, sans-serif", color: "#6B7280" }}>
+      <p
+        className="text-sm mb-6"
+        style={{ fontFamily: "Inter, sans-serif", color: "#6B7280" }}
+      >
         {tier.description}
       </p>
 
@@ -486,16 +602,25 @@ function PricingCard({
       <div className="mb-1">
         <span
           className="text-4xl font-bold"
-          style={{ fontFamily: "'DM Serif Display', serif", color: palette.text }}
+          style={{
+            fontFamily: "'DM Serif Display', serif",
+            color: palette.text,
+          }}
         >
           {price}
         </span>
-        <span className="text-sm ml-1" style={{ fontFamily: "Inter, sans-serif", color: "#6B7280" }}>
+        <span
+          className="text-sm ml-1"
+          style={{ fontFamily: "Inter, sans-serif", color: "#6B7280" }}
+        >
           {unit}
         </span>
       </div>
       {min && (
-        <p className="text-xs mb-6" style={{ fontFamily: "Inter, sans-serif", color: "#9CA3AF" }}>
+        <p
+          className="text-xs mb-6"
+          style={{ fontFamily: "Inter, sans-serif", color: "#9CA3AF" }}
+        >
           {min}
         </p>
       )}
@@ -511,14 +636,15 @@ function PricingCard({
           backgroundColor: tier.highlighted
             ? palette.accent
             : tier.id === "enterprise"
-            ? "transparent"
-            : palette.primary,
+              ? "transparent"
+              : palette.primary,
           color: tier.highlighted
             ? palette.text
             : tier.id === "enterprise"
-            ? palette.primary
-            : "#FFFFFF",
-          border: tier.id === "enterprise" ? `1px solid ${palette.primary}` : "none",
+              ? palette.primary
+              : "#FFFFFF",
+          border:
+            tier.id === "enterprise" ? `1px solid ${palette.primary}` : "none",
         }}
       >
         {ctaText}
@@ -534,7 +660,10 @@ function PricingCard({
               style={{ color: tier.highlighted ? palette.accent : "#22C55E" }}
               aria-hidden="true"
             />
-            <span className="text-sm" style={{ fontFamily: "Inter, sans-serif", color: "#4B5563" }}>
+            <span
+              className="text-sm"
+              style={{ fontFamily: "Inter, sans-serif", color: "#4B5563" }}
+            >
               {feature}
             </span>
           </li>
@@ -547,7 +676,10 @@ function PricingCard({
 function FeatureCell({ value }: { value: boolean | string }) {
   if (typeof value === "string") {
     return (
-      <span className="text-sm font-medium" style={{ fontFamily: "Inter, sans-serif", color: "#374151" }}>
+      <span
+        className="text-sm font-medium"
+        style={{ fontFamily: "Inter, sans-serif", color: "#374151" }}
+      >
         {value}
       </span>
     );
@@ -573,14 +705,23 @@ function FAQItem({ faq }: { faq: FAQ }) {
       >
         <span
           className="text-base font-semibold pr-4"
-          style={{ fontFamily: "'DM Serif Display', serif", color: palette.primary }}
+          style={{
+            fontFamily: "'DM Serif Display', serif",
+            color: palette.primary,
+          }}
         >
           {faq.question}
         </span>
         {open ? (
-          <ChevronUp className="w-5 h-5 flex-shrink-0" style={{ color: palette.secondary }} />
+          <ChevronUp
+            className="w-5 h-5 flex-shrink-0"
+            style={{ color: palette.secondary }}
+          />
         ) : (
-          <ChevronDown className="w-5 h-5 flex-shrink-0" style={{ color: palette.secondary }} />
+          <ChevronDown
+            className="w-5 h-5 flex-shrink-0"
+            style={{ color: palette.secondary }}
+          />
         )}
       </button>
 
@@ -589,7 +730,10 @@ function FAQItem({ faq }: { faq: FAQ }) {
           open ? "max-h-96 pb-5" : "max-h-0"
         }`}
       >
-        <p className="text-sm leading-relaxed px-2" style={{ fontFamily: "Inter, sans-serif", color: "#4B5563" }}>
+        <p
+          className="text-sm leading-relaxed px-2"
+          style={{ fontFamily: "Inter, sans-serif", color: "#4B5563" }}
+        >
           {faq.answer}
         </p>
       </div>
@@ -624,7 +768,8 @@ export default function PricingPage() {
   };
 
   const isTrialing = trialStatus?.isTrialing ?? false;
-  const isExpired = trialStatus != null && !trialStatus.isTrialing && !trialStatus.hasConverted;
+  const isExpired =
+    trialStatus != null && !trialStatus.isTrialing && !trialStatus.hasConverted;
 
   return (
     <div className="pt-24 pb-20" style={{ backgroundColor: "#FFFFFF" }}>
@@ -639,7 +784,10 @@ export default function PricingPage() {
       <section className="section-container text-center mb-12 animate-fade-in">
         <h1
           className="text-4xl sm:text-5xl mb-4 font-bold"
-          style={{ fontFamily: "'DM Serif Display', serif", color: palette.primary }}
+          style={{
+            fontFamily: "'DM Serif Display', serif",
+            color: palette.primary,
+          }}
         >
           Simple, Transparent Pricing
         </h1>
@@ -654,7 +802,9 @@ export default function PricingPage() {
       {/* ---- Trial Status Banner ---- */}
       {!loadingTrial && (
         <section className="section-container">
-          {isTrialing && trialStatus && <TrialBanner trialStatus={trialStatus} />}
+          {isTrialing && trialStatus && (
+            <TrialBanner trialStatus={trialStatus} />
+          )}
           {isExpired && <TrialExpiredBanner />}
         </section>
       )}
@@ -673,7 +823,10 @@ export default function PricingPage() {
 
       {/* ---- Billing Toggle ---- */}
       <section className="section-container mb-14">
-        <BillingToggle isAnnual={isAnnual} onToggle={() => setIsAnnual(!isAnnual)} />
+        <BillingToggle
+          isAnnual={isAnnual}
+          onToggle={() => setIsAnnual(!isAnnual)}
+        />
       </section>
 
       {/* ---- Pricing Cards ---- */}
@@ -695,7 +848,10 @@ export default function PricingPage() {
       <section className="section-container mb-24 animate-fade-in">
         <h2
           className="text-3xl text-center mb-10 font-bold"
-          style={{ fontFamily: "'DM Serif Display', serif", color: palette.primary }}
+          style={{
+            fontFamily: "'DM Serif Display', serif",
+            color: palette.primary,
+          }}
         >
           Compare Plans
         </h2>
@@ -707,31 +863,46 @@ export default function PricingPage() {
               <tr className="border-b-2 border-gray-200">
                 <th
                   className="text-left py-4 pr-4 text-sm font-semibold w-1/5"
-                  style={{ fontFamily: "'DM Serif Display', serif", color: palette.primary }}
+                  style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    color: palette.primary,
+                  }}
                 >
                   Feature
                 </th>
                 <th
                   className="text-center py-4 px-4 text-sm font-semibold w-1/5"
-                  style={{ fontFamily: "'DM Serif Display', serif", color: palette.primary }}
+                  style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    color: palette.primary,
+                  }}
                 >
                   Starter
                 </th>
                 <th
                   className="text-center py-4 px-4 text-sm font-semibold w-1/5"
-                  style={{ fontFamily: "'DM Serif Display', serif", color: palette.secondary }}
+                  style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    color: palette.secondary,
+                  }}
                 >
                   Professional
                 </th>
                 <th
                   className="text-center py-4 px-4 text-sm font-semibold w-1/5"
-                  style={{ fontFamily: "'DM Serif Display', serif", color: palette.primary }}
+                  style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    color: palette.primary,
+                  }}
                 >
                   Business
                 </th>
                 <th
                   className="text-center py-4 px-4 text-sm font-semibold w-1/5"
-                  style={{ fontFamily: "'DM Serif Display', serif", color: palette.primary }}
+                  style={{
+                    fontFamily: "'DM Serif Display', serif",
+                    color: palette.primary,
+                  }}
                 >
                   Enterprise
                 </th>
@@ -743,13 +914,22 @@ export default function PricingPage() {
                   key={row.name}
                   className="border-b border-gray-100 hover:bg-gray-50/50 transition-colors"
                 >
-                  <td className="py-3.5 pr-4 text-sm" style={{ fontFamily: "Inter, sans-serif", color: "#374151" }}>
+                  <td
+                    className="py-3.5 pr-4 text-sm"
+                    style={{
+                      fontFamily: "Inter, sans-serif",
+                      color: "#374151",
+                    }}
+                  >
                     {row.name}
                   </td>
                   <td className="py-3.5 px-4 text-center">
                     <FeatureCell value={row.free} />
                   </td>
-                  <td className="py-3.5 px-4 text-center" style={{ backgroundColor: `${palette.secondary}08` }}>
+                  <td
+                    className="py-3.5 px-4 text-center"
+                    style={{ backgroundColor: `${palette.secondary}08` }}
+                  >
                     <FeatureCell value={row.starter} />
                   </td>
                   <td className="py-3.5 px-4 text-center">
@@ -771,7 +951,9 @@ export default function PricingPage() {
               key={tier.id}
               className="rounded-xl p-5"
               style={{
-                border: tier.highlighted ? `2px solid ${palette.accent}` : "1px solid #E5E7EB",
+                border: tier.highlighted
+                  ? `2px solid ${palette.accent}`
+                  : "1px solid #E5E7EB",
                 backgroundColor: "#FFFFFF",
                 boxShadow: tier.highlighted
                   ? "0 4px 15px rgba(139, 115, 85, 0.12)"
@@ -780,12 +962,18 @@ export default function PricingPage() {
             >
               <h3
                 className="text-lg mb-4 flex items-center gap-2 font-semibold"
-                style={{ fontFamily: "'DM Serif Display', serif", color: palette.primary }}
+                style={{
+                  fontFamily: "'DM Serif Display', serif",
+                  color: palette.primary,
+                }}
               >
                 {tier.icon}
                 {tier.name}
                 {tier.badge && (
-                  <span className="text-xs font-bold" style={{ color: palette.accent }}>
+                  <span
+                    className="text-xs font-bold"
+                    style={{ color: palette.accent }}
+                  >
                     ({tier.badge})
                   </span>
                 )}
@@ -796,14 +984,23 @@ export default function PricingPage() {
                     tier.id === "starter"
                       ? row.free
                       : tier.id === "professional"
-                      ? row.starter
-                      : tier.id === "business"
-                      ? row.growth
-                      : row.enterprise;
+                        ? row.starter
+                        : tier.id === "business"
+                          ? row.growth
+                          : row.enterprise;
 
                   return (
-                    <li key={row.name} className="flex items-center justify-between">
-                      <span className="text-sm" style={{ fontFamily: "Inter, sans-serif", color: "#4B5563" }}>
+                    <li
+                      key={row.name}
+                      className="flex items-center justify-between"
+                    >
+                      <span
+                        className="text-sm"
+                        style={{
+                          fontFamily: "Inter, sans-serif",
+                          color: "#4B5563",
+                        }}
+                      >
                         {row.name}
                       </span>
                       <span className="flex-shrink-0 ml-3">
@@ -832,7 +1029,10 @@ export default function PricingPage() {
           </div>
           <h2
             className="text-3xl font-bold"
-            style={{ fontFamily: "'DM Serif Display', serif", color: palette.primary }}
+            style={{
+              fontFamily: "'DM Serif Display', serif",
+              color: palette.primary,
+            }}
           >
             Frequently Asked Questions
           </h2>
@@ -862,10 +1062,16 @@ export default function PricingPage() {
           />
 
           <div className="relative z-10">
-            <MessageSquare className="w-10 h-10 mx-auto mb-4" style={{ color: palette.accent }} />
+            <MessageSquare
+              className="w-10 h-10 mx-auto mb-4"
+              style={{ color: palette.accent }}
+            />
             <h2
               className="text-3xl sm:text-4xl mb-4 font-bold"
-              style={{ fontFamily: "'DM Serif Display', serif", color: "#FFFFFF" }}
+              style={{
+                fontFamily: "'DM Serif Display', serif",
+                color: "#FFFFFF",
+              }}
             >
               Still Have Questions?
             </h2>
@@ -873,8 +1079,8 @@ export default function PricingPage() {
               className="text-lg max-w-xl mx-auto mb-8"
               style={{ fontFamily: "Inter, sans-serif", color: "#D1D5DB" }}
             >
-              Our team is here to help you find the right plan for your portfolio.
-              Get in touch and we will respond within 24 hours.
+              Our team is here to help you find the right plan for your
+              portfolio. Get in touch and we will respond within 24 hours.
             </p>
             <Link
               to="/contact"

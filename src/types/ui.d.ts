@@ -84,4 +84,3 @@ declare module "@/components/theme-provider" {
 
   export { ThemeProvider, type ThemeProviderProps };
 }
-

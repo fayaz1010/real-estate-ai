@@ -1,5 +1,5 @@
-import React, { useState, useRef, useCallback } from 'react';
-import { Mic, Square, Play, Pause } from 'lucide-react';
+import { Mic, Square, Play, Pause } from "lucide-react";
+import React, { useState, useRef, useCallback } from "react";
 
 interface VoiceNoteProps {
   onRecordingComplete: (blob: Blob, duration: number) => void;
@@ -25,7 +25,7 @@ const VoiceNote: React.FC<VoiceNoteProps> = ({
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
     const s = seconds % 60;
-    return `${m}:${s.toString().padStart(2, '0')}`;
+    return `${m}:${s.toString().padStart(2, "0")}`;
   };
 
   const startRecording = useCallback(async () => {
@@ -40,7 +40,7 @@ const VoiceNote: React.FC<VoiceNoteProps> = ({
       };
 
       mediaRecorder.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: 'audio/webm' });
+        const blob = new Blob(chunksRef.current, { type: "audio/webm" });
         stream.getTracks().forEach((t) => t.stop());
         onRecordingComplete(blob, recordingTime);
       };
@@ -96,8 +96,8 @@ const VoiceNote: React.FC<VoiceNoteProps> = ({
         <button
           onClick={togglePlayback}
           className="flex h-8 w-8 items-center justify-center rounded-full text-white"
-          style={{ backgroundColor: '#3b4876' }}
-          aria-label={isPlaying ? 'Pause voice note' : 'Play voice note'}
+          style={{ backgroundColor: "#3b4876" }}
+          aria-label={isPlaying ? "Pause voice note" : "Play voice note"}
         >
           {isPlaying ? <Pause size={14} /> : <Play size={14} />}
         </button>
@@ -105,11 +105,14 @@ const VoiceNote: React.FC<VoiceNoteProps> = ({
           <div className="h-1 overflow-hidden rounded-full bg-gray-300">
             <div
               className="h-full rounded-full transition-all"
-              style={{ width: `${progress}%`, backgroundColor: '#3b4876' }}
+              style={{ width: `${progress}%`, backgroundColor: "#3b4876" }}
             />
           </div>
         </div>
-        <span className="text-xs text-gray-600" style={{ fontFamily: "'Open Sans', sans-serif" }}>
+        <span
+          className="text-xs text-gray-600"
+          style={{ fontFamily: "'Open Sans', sans-serif" }}
+        >
           {formatTime(isPlaying ? playbackTime : duration)}
         </span>
       </div>
@@ -130,7 +133,10 @@ const VoiceNote: React.FC<VoiceNoteProps> = ({
           </button>
           <div className="flex items-center gap-2">
             <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
-            <span className="text-sm text-gray-700" style={{ fontFamily: "'Open Sans', sans-serif" }}>
+            <span
+              className="text-sm text-gray-700"
+              style={{ fontFamily: "'Open Sans', sans-serif" }}
+            >
               {formatTime(recordingTime)}
             </span>
           </div>
@@ -139,7 +145,7 @@ const VoiceNote: React.FC<VoiceNoteProps> = ({
         <button
           onClick={startRecording}
           className="flex h-10 w-10 items-center justify-center rounded-full text-white transition-opacity hover:opacity-90"
-          style={{ backgroundColor: '#091a2b' }}
+          style={{ backgroundColor: "#091a2b" }}
           aria-label="Start recording"
         >
           <Mic size={18} />

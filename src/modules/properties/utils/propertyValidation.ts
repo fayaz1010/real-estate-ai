@@ -2,6 +2,7 @@
 // Module 1.2: Property Listings Management - Validation Utilities
 
 import {
+  PropertyAddress,
   PropertyFormData,
   PropertyType,
   ListingType,
@@ -57,7 +58,7 @@ export const propertyValidation = {
    * Validate address
    */
   validateAddress: (
-    address: Record<string, unknown>,
+    address: Partial<PropertyAddress>,
   ): { valid: boolean; errors: Record<string, string> } => {
     const errors: Record<string, string> = {};
 
@@ -135,9 +136,13 @@ export const propertyValidation = {
   /**
    * Validate property details
    */
-  validateDetails: (
-    details: Record<string, unknown>,
-  ): { valid: boolean; errors: Record<string, string> } => {
+  validateDetails: (details: {
+    bedrooms?: number;
+    bathrooms?: number;
+    sqft?: number;
+    yearBuilt?: number;
+    lotSize?: number;
+  }): { valid: boolean; errors: Record<string, string> } => {
     const errors: Record<string, string> = {};
 
     // Bedrooms

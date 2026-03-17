@@ -1,5 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import {
   CreditCard,
   Users,
@@ -12,6 +10,9 @@ import {
   Shield,
   Zap,
 } from "lucide-react";
+import React from "react";
+import { Link } from "react-router-dom";
+
 import { PageMeta } from "../../components/seo/PageMeta";
 
 const features = [
@@ -100,7 +101,11 @@ const jsonLd = {
 
 export const PropertyManagementPage: React.FC = () => {
   return (
-    <main className="min-h-screen" role="main" style={{ backgroundColor: "#F7F5F2" }}>
+    <main
+      className="min-h-screen"
+      role="main"
+      style={{ backgroundColor: "#F7F5F2" }}
+    >
       <PageMeta
         title="Property Management Software"
         description="RealEstate AI offers AI-powered property management software for landlords and property managers. Automate rent collection, tenant screening, and maintenance."
@@ -133,7 +138,10 @@ export const PropertyManagementPage: React.FC = () => {
             <div>
               <span
                 className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-6 font-inter"
-                style={{ backgroundColor: "rgba(200, 185, 166, 0.2)", color: "#C8B9A6" }}
+                style={{
+                  backgroundColor: "rgba(200, 185, 166, 0.2)",
+                  color: "#C8B9A6",
+                }}
               >
                 #1 AI-Powered Property Management
               </span>
@@ -148,8 +156,9 @@ export const PropertyManagementPage: React.FC = () => {
                 Manage smarter, grow faster, stress less with RealEstate AI.
               </p>
               <p className="text-base text-gray-400 font-inter max-w-xl leading-relaxed mb-10">
-                The all-in-one platform that automates rent collection, tenant screening,
-                maintenance management, and financial reporting — powered by artificial intelligence.
+                The all-in-one platform that automates rent collection, tenant
+                screening, maintenance management, and financial reporting —
+                powered by artificial intelligence.
               </p>
               <div className="flex flex-col sm:flex-row items-start gap-4">
                 <Link
@@ -190,7 +199,11 @@ export const PropertyManagementPage: React.FC = () => {
       </section>
 
       {/* Value Proposition */}
-      <section className="py-16" style={{ backgroundColor: "#F7F5F2" }} aria-labelledby="value-heading">
+      <section
+        className="py-16"
+        style={{ backgroundColor: "#F7F5F2" }}
+        aria-labelledby="value-heading"
+      >
         <div className="section-container text-center">
           <h2 id="value-heading" className="sr-only">
             Why Choose RealEstate AI
@@ -219,7 +232,10 @@ export const PropertyManagementPage: React.FC = () => {
           <div className="text-center mb-14">
             <span
               className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-4 font-inter"
-              style={{ backgroundColor: "rgba(200, 185, 166, 0.15)", color: "#6B6560" }}
+              style={{
+                backgroundColor: "rgba(200, 185, 166, 0.15)",
+                color: "#6B6560",
+              }}
             >
               Features
             </span>
@@ -230,9 +246,13 @@ export const PropertyManagementPage: React.FC = () => {
             >
               Everything You Need to Manage Properties Efficiently
             </h2>
-            <p className="font-inter max-w-2xl mx-auto" style={{ color: "#9E958C" }}>
-              From rent collection to financial reporting, RealEstate AI gives you the tools
-              to manage your entire portfolio from a single dashboard.
+            <p
+              className="font-inter max-w-2xl mx-auto"
+              style={{ color: "#9E958C" }}
+            >
+              From rent collection to financial reporting, RealEstate AI gives
+              you the tools to manage your entire portfolio from a single
+              dashboard.
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
@@ -260,7 +280,10 @@ export const PropertyManagementPage: React.FC = () => {
                   >
                     {feature.title}
                   </h3>
-                  <p className="font-inter leading-relaxed" style={{ color: "#9E958C" }}>
+                  <p
+                    className="font-inter leading-relaxed"
+                    style={{ color: "#9E958C" }}
+                  >
                     {feature.description}
                   </p>
                 </article>
@@ -281,7 +304,10 @@ export const PropertyManagementPage: React.FC = () => {
             <div className="text-center mb-12">
               <span
                 className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-4 font-inter"
-                style={{ backgroundColor: "rgba(200, 185, 166, 0.15)", color: "#6B6560" }}
+                style={{
+                  backgroundColor: "rgba(200, 185, 166, 0.15)",
+                  color: "#6B6560",
+                }}
               >
                 Why RealEstate AI
               </span>
@@ -321,12 +347,18 @@ export const PropertyManagementPage: React.FC = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-20 bg-white" aria-labelledby="testimonials-heading">
+      <section
+        className="py-20 bg-white"
+        aria-labelledby="testimonials-heading"
+      >
         <div className="section-container">
           <div className="text-center mb-14">
             <span
               className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-4 font-inter"
-              style={{ backgroundColor: "rgba(200, 185, 166, 0.15)", color: "#6B6560" }}
+              style={{
+                backgroundColor: "rgba(200, 185, 166, 0.15)",
+                color: "#6B6560",
+              }}
             >
               Testimonials
             </span>
@@ -362,10 +394,16 @@ export const PropertyManagementPage: React.FC = () => {
                   &ldquo;{testimonial.quote}&rdquo;
                 </blockquote>
                 <div>
-                  <p className="font-semibold font-space-grotesk" style={{ color: "#6B6560" }}>
+                  <p
+                    className="font-semibold font-space-grotesk"
+                    style={{ color: "#6B6560" }}
+                  >
                     {testimonial.name}
                   </p>
-                  <p className="text-sm font-inter" style={{ color: "#9E958C" }}>
+                  <p
+                    className="text-sm font-inter"
+                    style={{ color: "#9E958C" }}
+                  >
                     {testimonial.role}
                   </p>
                 </div>
@@ -396,19 +434,22 @@ export const PropertyManagementPage: React.FC = () => {
                 step: "1",
                 icon: Building,
                 title: "Add Your Properties",
-                description: "Import your portfolio in minutes. Add property details, unit info, and lease terms.",
+                description:
+                  "Import your portfolio in minutes. Add property details, unit info, and lease terms.",
               },
               {
                 step: "2",
                 icon: Users,
                 title: "Invite Your Tenants",
-                description: "Send one-click invitations. Tenants set up payment methods and enable auto-pay.",
+                description:
+                  "Send one-click invitations. Tenants set up payment methods and enable auto-pay.",
               },
               {
                 step: "3",
                 icon: Zap,
                 title: "Let AI Do the Rest",
-                description: "Automation handles rent collection, maintenance routing, and financial reporting.",
+                description:
+                  "Automation handles rent collection, maintenance routing, and financial reporting.",
               },
             ].map((item) => {
               const IconComponent = item.icon;
@@ -442,7 +483,11 @@ export const PropertyManagementPage: React.FC = () => {
               background: "linear-gradient(135deg, #6B6560, #2A2725)",
             }}
           >
-            <Shield className="w-12 h-12 mx-auto mb-6" style={{ color: "#C8B9A6" }} aria-hidden="true" />
+            <Shield
+              className="w-12 h-12 mx-auto mb-6"
+              style={{ color: "#C8B9A6" }}
+              aria-hidden="true"
+            />
             <h2
               id="cta-heading"
               className="text-heading text-white font-space-grotesk mb-4"
@@ -450,8 +495,9 @@ export const PropertyManagementPage: React.FC = () => {
               Ready to Manage Smarter?
             </h2>
             <p className="text-gray-300 font-inter max-w-2xl mx-auto mb-8 text-lg">
-              Join thousands of property managers who have streamlined their operations
-              with RealEstate AI. Free to start, no credit card required.
+              Join thousands of property managers who have streamlined their
+              operations with RealEstate AI. Free to start, no credit card
+              required.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link

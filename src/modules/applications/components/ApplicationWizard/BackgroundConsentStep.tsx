@@ -91,13 +91,14 @@ const BackgroundConsentStep: React.FC = () => {
             In connection with your application for housing,{" "}
             {"{Property Management Company}"} may obtain information about you
             from a consumer reporting agency for employment purposes. Thus, you
-            may be the subject of a &quot;consumer report&quot; and/or an &quot;investigative
-            consumer report&quot; which may include information about your character,
-            general reputation, personal characteristics, and/or mode of living.
-            These reports may contain information regarding your credit history,
-            criminal history, social security verification, motor vehicle
-            records (&quot;driving records&quot;), verification of your education or
-            employment history, or other background checks.
+            may be the subject of a &quot;consumer report&quot; and/or an
+            &quot;investigative consumer report&quot; which may include
+            information about your character, general reputation, personal
+            characteristics, and/or mode of living. These reports may contain
+            information regarding your credit history, criminal history, social
+            security verification, motor vehicle records (&quot;driving
+            records&quot;), verification of your education or employment
+            history, or other background checks.
           </p>
 
           <p>
@@ -117,7 +118,9 @@ const BackgroundConsentStep: React.FC = () => {
             <li>Know what is in your file</li>
             <li>Ask for a credit score</li>
             <li>Dispute incomplete or inaccurate information</li>
-            <li>Limit &quot;prescreened&quot; offers of credit and insurance</li>
+            <li>
+              Limit &quot;prescreened&quot; offers of credit and insurance
+            </li>
             <li>Seek damages from violators</li>
           </ul>
 

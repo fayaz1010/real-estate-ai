@@ -45,10 +45,26 @@ interface Lead {
 // ---------------------------------------------------------------------------
 
 const fallbackProjects: Project[] = [
-  { name: "Project Alpha", description: "Developing a new feature for tenant screening.", status: "In Development" },
-  { name: "Project Beta", description: "Improving the rent collection process.", status: "Completed" },
-  { name: "Project Gamma", description: "Building an AI-powered maintenance prediction engine.", status: "In Development" },
-  { name: "Project Delta", description: "Redesigning the landlord onboarding flow.", status: "On Hold" },
+  {
+    name: "Project Alpha",
+    description: "Developing a new feature for tenant screening.",
+    status: "In Development",
+  },
+  {
+    name: "Project Beta",
+    description: "Improving the rent collection process.",
+    status: "Completed",
+  },
+  {
+    name: "Project Gamma",
+    description: "Building an AI-powered maintenance prediction engine.",
+    status: "In Development",
+  },
+  {
+    name: "Project Delta",
+    description: "Redesigning the landlord onboarding flow.",
+    status: "On Hold",
+  },
 ];
 
 const fallbackPipeline: PipelineEntry[] = [
@@ -59,10 +75,38 @@ const fallbackPipeline: PipelineEntry[] = [
 ];
 
 const fallbackLeads: Lead[] = [
-  { contactInfo: { name: "John Doe", email: "john.doe@example.com", phone: "555-123-4567" }, status: "New" },
-  { contactInfo: { name: "Jane Smith", email: "jane.smith@example.com", phone: "555-987-6543" }, status: "Contacted" },
-  { contactInfo: { name: "Robert Chen", email: "robert.chen@example.com", phone: "555-456-7890" }, status: "Qualified" },
-  { contactInfo: { name: "Maria Garcia", email: "maria.garcia@example.com", phone: "555-321-9876" }, status: "Converted" },
+  {
+    contactInfo: {
+      name: "John Doe",
+      email: "john.doe@example.com",
+      phone: "555-123-4567",
+    },
+    status: "New",
+  },
+  {
+    contactInfo: {
+      name: "Jane Smith",
+      email: "jane.smith@example.com",
+      phone: "555-987-6543",
+    },
+    status: "Contacted",
+  },
+  {
+    contactInfo: {
+      name: "Robert Chen",
+      email: "robert.chen@example.com",
+      phone: "555-456-7890",
+    },
+    status: "Qualified",
+  },
+  {
+    contactInfo: {
+      name: "Maria Garcia",
+      email: "maria.garcia@example.com",
+      phone: "555-321-9876",
+    },
+    status: "Converted",
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -470,8 +514,14 @@ export const DeveloperPortalPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#FAF6F1" }}>
-        <Loader2 className="w-8 h-8 animate-spin" style={{ color: "#8B7355" }} />
+      <div
+        className="min-h-screen flex items-center justify-center"
+        style={{ backgroundColor: "#FAF6F1" }}
+      >
+        <Loader2
+          className="w-8 h-8 animate-spin"
+          style={{ color: "#8B7355" }}
+        />
       </div>
     );
   }

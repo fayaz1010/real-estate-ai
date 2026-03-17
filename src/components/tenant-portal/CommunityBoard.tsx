@@ -1,19 +1,14 @@
-import { useState, useEffect } from 'react';
-import {
-  Users,
-  Plus,
-  Trash2,
-  AlertTriangle,
-  Send,
-} from 'lucide-react';
-import { tenantPortalService } from '../../services/tenantPortalService';
-import type { CommunityPost } from '../../types/tenantPortal';
+import { Users, Plus, Trash2, AlertTriangle, Send } from "lucide-react";
+import { useState, useEffect } from "react";
+
+import { tenantPortalService } from "../../services/tenantPortalService";
+import type { CommunityPost } from "../../types/tenantPortal";
 
 const formatDate = (date: Date) =>
-  new Date(date).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
+  new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
   });
 
 export const CommunityBoard: React.FC = () => {
@@ -21,8 +16,8 @@ export const CommunityBoard: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
-  const [newContent, setNewContent] = useState('');
-  const [newAuthor, setNewAuthor] = useState('');
+  const [newContent, setNewContent] = useState("");
+  const [newAuthor, setNewAuthor] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -49,11 +44,11 @@ export const CommunityBoard: React.FC = () => {
         content: newContent.trim(),
       });
       setPosts((prev) => [created, ...prev]);
-      setNewContent('');
-      setNewAuthor('');
+      setNewContent("");
+      setNewAuthor("");
       setShowForm(false);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create post');
+      setError(err instanceof Error ? err.message : "Failed to create post");
     } finally {
       setSubmitting(false);
     }
@@ -64,14 +59,20 @@ export const CommunityBoard: React.FC = () => {
       await tenantPortalService.deleteCommunityPost(postId);
       setPosts((prev) => prev.filter((p) => p.id !== postId));
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to delete post');
+      setError(err instanceof Error ? err.message : "Failed to delete post");
     }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f8f9fa] flex items-center justify-center" role="status">
-        <div className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#091a2b]" aria-hidden="true" />
+      <div
+        className="min-h-screen bg-[#f8f9fa] flex items-center justify-center"
+        role="status"
+      >
+        <div
+          className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#091a2b]"
+          aria-hidden="true"
+        />
         <span className="sr-only">Loading community board...</span>
       </div>
     );
@@ -90,8 +91,14 @@ export const CommunityBoard: React.FC = () => {
         </header>
 
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-4 mb-6 flex items-center gap-3" role="alert">
-            <AlertTriangle className="w-5 h-5 text-red-600 flex-shrink-0" aria-hidden="true" />
+          <div
+            className="bg-red-50 border border-red-200 rounded-2xl p-4 mb-6 flex items-center gap-3"
+            role="alert"
+          >
+            <AlertTriangle
+              className="w-5 h-5 text-red-600 flex-shrink-0"
+              aria-hidden="true"
+            />
             <p className="text-sm text-red-700">{error}</p>
             <button
               type="button"
@@ -115,11 +122,19 @@ export const CommunityBoard: React.FC = () => {
               New Post
             </button>
           ) : (
-            <form onSubmit={handleCreatePost} className="bg-white rounded-2xl shadow-sm p-6">
-              <h2 className="font-montserrat text-lg font-semibold text-[#091a2b] mb-4">Create a Post</h2>
+            <form
+              onSubmit={handleCreatePost}
+              className="bg-white rounded-2xl shadow-sm p-6"
+            >
+              <h2 className="font-montserrat text-lg font-semibold text-[#091a2b] mb-4">
+                Create a Post
+              </h2>
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="post-author" className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label
+                    htmlFor="post-author"
+                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                  >
                     Your Name
                   </label>
                   <input
@@ -133,7 +148,10 @@ export const CommunityBoard: React.FC = () => {
                   />
                 </div>
                 <div>
-                  <label htmlFor="post-content" className="block text-sm font-medium text-gray-700 mb-1.5">
+                  <label
+                    htmlFor="post-content"
+                    className="block text-sm font-medium text-gray-700 mb-1.5"
+                  >
                     Message
                   </label>
                   <textarea
@@ -150,18 +168,20 @@ export const CommunityBoard: React.FC = () => {
               <div className="flex gap-3 mt-4">
                 <button
                   type="submit"
-                  disabled={submitting || !newContent.trim() || !newAuthor.trim()}
+                  disabled={
+                    submitting || !newContent.trim() || !newAuthor.trim()
+                  }
                   className="flex items-center gap-2 bg-[#091a2b] text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send className="w-4 h-4" aria-hidden="true" />
-                  {submitting ? 'Posting...' : 'Post'}
+                  {submitting ? "Posting..." : "Post"}
                 </button>
                 <button
                   type="button"
                   onClick={() => {
                     setShowForm(false);
-                    setNewContent('');
-                    setNewAuthor('');
+                    setNewContent("");
+                    setNewAuthor("");
                   }}
                   className="px-5 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-600 hover:bg-gray-50 transition-colors"
                 >
@@ -185,15 +205,19 @@ export const CommunityBoard: React.FC = () => {
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 bg-[#091a2b] text-white rounded-full flex items-center justify-center text-xs font-bold">
                       {post.author
-                        .split(' ')
+                        .split(" ")
                         .map((n) => n[0])
-                        .join('')
+                        .join("")
                         .toUpperCase()
                         .slice(0, 2)}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-[#091a2b]">{post.author}</p>
-                      <p className="text-xs text-gray-400">{formatDate(post.date)}</p>
+                      <p className="text-sm font-medium text-[#091a2b]">
+                        {post.author}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {formatDate(post.date)}
+                      </p>
                     </div>
                   </div>
                   <button
@@ -210,14 +234,21 @@ export const CommunityBoard: React.FC = () => {
             ))
           ) : (
             <div className="bg-white rounded-2xl shadow-sm p-8 text-center">
-              <Users className="w-10 h-10 text-gray-300 mx-auto mb-3" aria-hidden="true" />
-              <p className="text-sm text-gray-500">No community posts yet. Be the first to share!</p>
+              <Users
+                className="w-10 h-10 text-gray-300 mx-auto mb-3"
+                aria-hidden="true"
+              />
+              <p className="text-sm text-gray-500">
+                No community posts yet. Be the first to share!
+              </p>
             </div>
           )}
         </div>
 
         <footer className="mt-12 text-center">
-          <p className="text-xs text-gray-400">Your AI Property Manager — Never Miss a Beat</p>
+          <p className="text-xs text-gray-400">
+            Your AI Property Manager — Never Miss a Beat
+          </p>
         </footer>
       </div>
     </div>

@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useMemo } from "react";
 
+import type { Conversation } from "../../../types/communication";
 import { useAuth } from "../../auth/hooks/useAuth";
 import { MessageInput } from "../components/MessageInput";
 import { MessageList } from "../components/MessageList";
 import { useCommunication } from "../hooks/useCommunication";
 import { useRealtimeMessages } from "../hooks/useRealtimeMessages";
-import type { Conversation } from "../../../types/communication";
 
 const ConnectionIndicator: React.FC<{
   connectionState: "disconnected" | "connecting" | "connected";

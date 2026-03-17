@@ -3,7 +3,7 @@
  * Aligns with the Prisma TenantProfile model.
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * Zod schema for a complete tenant profile record.
@@ -15,7 +15,10 @@ export const TenantSchema = z.object({
   employmentStatus: z.string().max(50).nullable(),
   employerName: z.string().max(200).nullable(),
   jobTitle: z.string().max(100).nullable(),
-  annualIncome: z.number().nonnegative('Annual income must be non-negative').nullable(),
+  annualIncome: z
+    .number()
+    .nonnegative("Annual income must be non-negative")
+    .nullable(),
   creditScore: z.number().int().min(300).max(850).nullable(),
   hasPets: z.boolean(),
   petsDescription: z.string().max(500).nullable(),
@@ -44,8 +47,18 @@ export const CreateTenantProfileSchema = z.object({
   employmentStatus: z.string().max(50).nullable().optional(),
   employerName: z.string().max(200).nullable().optional(),
   jobTitle: z.string().max(100).nullable().optional(),
-  annualIncome: z.number().nonnegative('Annual income must be non-negative').nullable().optional(),
-  creditScore: z.number().int().min(300, 'Credit score must be at least 300').max(850, 'Credit score must be at most 850').nullable().optional(),
+  annualIncome: z
+    .number()
+    .nonnegative("Annual income must be non-negative")
+    .nullable()
+    .optional(),
+  creditScore: z
+    .number()
+    .int()
+    .min(300, "Credit score must be at least 300")
+    .max(850, "Credit score must be at most 850")
+    .nullable()
+    .optional(),
   hasPets: z.boolean().default(false),
   petsDescription: z.string().max(500).nullable().optional(),
   hasVehicle: z.boolean().default(false),
@@ -61,7 +74,9 @@ export const CreateTenantProfileSchema = z.object({
   specialRequirements: z.string().max(1000).nullable().optional(),
 });
 
-export type CreateTenantProfileInput = z.infer<typeof CreateTenantProfileSchema>;
+export type CreateTenantProfileInput = z.infer<
+  typeof CreateTenantProfileSchema
+>;
 
 /**
  * Zod schema for updating a tenant profile.
@@ -69,4 +84,6 @@ export type CreateTenantProfileInput = z.infer<typeof CreateTenantProfileSchema>
  */
 export const UpdateTenantProfileSchema = CreateTenantProfileSchema.partial();
 
-export type UpdateTenantProfileInput = z.infer<typeof UpdateTenantProfileSchema>;
+export type UpdateTenantProfileInput = z.infer<
+  typeof UpdateTenantProfileSchema
+>;

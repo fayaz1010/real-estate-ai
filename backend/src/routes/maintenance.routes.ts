@@ -52,7 +52,10 @@ router.get(
         images: [],
         createdAt: new Date(Date.now() - 5 * 86400000).toISOString(),
         updatedAt: new Date(Date.now() - 86400000).toISOString(),
-        property: { title: "Harbour View Apartments", address: "15 Marine Parade, Unit 5B" },
+        property: {
+          title: "Harbour View Apartments",
+          address: "15 Marine Parade, Unit 5B",
+        },
       },
       {
         id: "maint-003",
@@ -60,7 +63,8 @@ router.get(
         tenantId: req.user?.id || "tenant-003",
         category: "HVAC",
         title: "AC not cooling properly",
-        description: "Air conditioning unit is running but not producing cold air.",
+        description:
+          "Air conditioning unit is running but not producing cold air.",
         priority: "HIGH",
         status: "OPEN",
         cost: null,
@@ -162,7 +166,12 @@ router.put(
     const { vendorId } = req.body;
     return successResponse(
       res,
-      { id, assignedTo: vendorId, status: "IN_PROGRESS", updatedAt: new Date().toISOString() },
+      {
+        id,
+        assignedTo: vendorId,
+        status: "IN_PROGRESS",
+        updatedAt: new Date().toISOString(),
+      },
       "Vendor assigned",
     );
   }),
@@ -173,7 +182,11 @@ router.delete(
   "/:id",
   authenticate,
   asyncHandler(async (req: Request, res: Response) => {
-    return successResponse(res, { id: req.params.id }, "Maintenance request deleted");
+    return successResponse(
+      res,
+      { id: req.params.id },
+      "Maintenance request deleted",
+    );
   }),
 );
 

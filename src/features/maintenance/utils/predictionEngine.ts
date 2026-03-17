@@ -2,7 +2,7 @@ import {
   MaintenanceSystemType,
   MaintenanceRecord,
   MaintenancePrediction,
-} from '../types';
+} from "../types";
 
 interface PropertyInput {
   propertyId: string;
@@ -35,7 +35,10 @@ function monthsBetween(dateA: Date, dateB: Date): number {
 }
 
 function generateId(): string {
-  return crypto.randomUUID?.() ?? `pred-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
+  return (
+    crypto.randomUUID?.() ??
+    `pred-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`
+  );
 }
 
 function calculateSystemRisk(
@@ -46,7 +49,10 @@ function calculateSystemRisk(
   const now = new Date();
   const systemRecords = records
     .filter((r) => r.systemType === systemType)
-    .sort((a, b) => new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime());
+    .sort(
+      (a, b) =>
+        new Date(b.completedAt).getTime() - new Date(a.completedAt).getTime(),
+    );
 
   const lastRecord = systemRecords[0];
   const intervalMonths = MAINTENANCE_INTERVAL_MONTHS[systemType];
@@ -93,7 +99,8 @@ function calculateSystemRisk(
       monthsBetween(
         new Date(recentRecords[recentRecords.length - 1].completedAt),
         new Date(recentRecords[0].completedAt),
-      ) / (recentRecords.length - 1);
+      ) /
+      (recentRecords.length - 1);
 
     if (avgMonthsBetween < intervalMonths * 0.5) {
       confidence += 0.1;

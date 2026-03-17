@@ -17,7 +17,10 @@ const footerLinks = {
     { label: "Blog", href: "/about" },
   ],
   resources: [
-    { label: "AI Property Management Guide", href: "/landing/ai-property-management" },
+    {
+      label: "AI Property Management Guide",
+      href: "/landing/ai-property-management",
+    },
     { label: "Small Landlord Software", href: "/landing/small-landlords" },
     { label: "Pricing Comparison", href: "/landing/pricing-comparison" },
     { label: "AppFolio Alternative", href: "/landing/appfolio-alternative" },
@@ -51,8 +54,8 @@ export const Footer: React.FC = () => {
             </Link>
             <p className="text-gray-400 text-sm leading-relaxed max-w-sm mb-6">
               Property Management, Powered by Intelligence. Automate tenant
-              screening, rent collection, maintenance, and more with
-              AI-driven tools built for modern landlords and property managers.
+              screening, rent collection, maintenance, and more with AI-driven
+              tools built for modern landlords and property managers.
             </p>
             <div className="space-y-3">
               <a

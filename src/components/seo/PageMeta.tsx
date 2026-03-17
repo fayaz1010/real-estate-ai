@@ -10,7 +10,7 @@ interface PageMetaProps {
 
 function setMetaTag(name: string, content: string, attribute: string = "name") {
   let element = document.querySelector(
-    `meta[${attribute}="${name}"]`
+    `meta[${attribute}="${name}"]`,
   ) as HTMLMetaElement | null;
 
   if (!element) {
@@ -24,7 +24,7 @@ function setMetaTag(name: string, content: string, attribute: string = "name") {
 
 function setLinkTag(rel: string, href: string) {
   let element = document.querySelector(
-    `link[rel="${rel}"]`
+    `link[rel="${rel}"]`,
   ) as HTMLLinkElement | null;
 
   if (!element) {

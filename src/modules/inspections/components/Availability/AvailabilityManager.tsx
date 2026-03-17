@@ -147,8 +147,8 @@ export const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
           <li className="flex items-start gap-2">
             <span className="text-blue-600 font-bold">•</span>
             <span>
-              <strong>Blackout Dates:</strong> Block specific dates when you&apos;re
-              unavailable (holidays, maintenance, etc.)
+              <strong>Blackout Dates:</strong> Block specific dates when
+              you&apos;re unavailable (holidays, maintenance, etc.)
             </span>
           </li>
           <li className="flex items-start gap-2">

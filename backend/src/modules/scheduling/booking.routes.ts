@@ -5,10 +5,7 @@ import { authenticate } from "../../middleware/auth";
 import { validate } from "../../middleware/validation";
 
 import bookingController from "./booking.controller";
-import {
-  createBookingSchema,
-  updateBookingSchema,
-} from "./booking.validation";
+import { createBookingSchema, updateBookingSchema } from "./booking.validation";
 
 const router = Router();
 

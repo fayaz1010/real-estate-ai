@@ -163,7 +163,9 @@ const ApplicationsList: React.FC<ApplicationsListProps> = ({ propertyId }) => {
           <div className="flex gap-2">
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as "score" | "date" | "name")}
+              onChange={(e) =>
+                setSortBy(e.target.value as "score" | "date" | "name")
+              }
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             >
               <option value="score">Sort by Score</option>

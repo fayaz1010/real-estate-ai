@@ -1,7 +1,6 @@
 // FILE PATH: src/components/scheduling/SchedulingCalendar.tsx
 // Smart Scheduling & Booking System - Calendar View Component
 
-import React, { useState, useMemo } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -13,24 +12,45 @@ import {
   MapPin,
   X,
 } from "lucide-react";
+import React, { useState, useMemo } from "react";
+
 import type { Booking, BookingType } from "../../types/scheduling";
 
 // ─── Constants ───────────────────────────────────────────────────────────────
 
 type CalendarView = "month" | "week" | "day";
 
-const BOOKING_TYPE_COLORS: Record<BookingType, { bg: string; text: string; border: string }> = {
-  viewing:     { bg: "bg-blue-100",   text: "text-blue-800",   border: "border-blue-300" },
-  inspection:  { bg: "bg-orange-100", text: "text-orange-800", border: "border-orange-300" },
-  maintenance: { bg: "bg-green-100",  text: "text-green-800",  border: "border-green-300" },
-  meeting:     { bg: "bg-purple-100", text: "text-purple-800", border: "border-purple-300" },
+const BOOKING_TYPE_COLORS: Record<
+  BookingType,
+  { bg: string; text: string; border: string }
+> = {
+  viewing: {
+    bg: "bg-blue-100",
+    text: "text-blue-800",
+    border: "border-blue-300",
+  },
+  inspection: {
+    bg: "bg-orange-100",
+    text: "text-orange-800",
+    border: "border-orange-300",
+  },
+  maintenance: {
+    bg: "bg-green-100",
+    text: "text-green-800",
+    border: "border-green-300",
+  },
+  meeting: {
+    bg: "bg-purple-100",
+    text: "text-purple-800",
+    border: "border-purple-300",
+  },
 };
 
 const BOOKING_TYPE_ICONS: Record<BookingType, React.ReactNode> = {
-  viewing:     <Eye className="w-3 h-3" aria-hidden="true" />,
-  inspection:  <Search className="w-3 h-3" aria-hidden="true" />,
+  viewing: <Eye className="w-3 h-3" aria-hidden="true" />,
+  inspection: <Search className="w-3 h-3" aria-hidden="true" />,
   maintenance: <Wrench className="w-3 h-3" aria-hidden="true" />,
-  meeting:     <Users className="w-3 h-3" aria-hidden="true" />,
+  meeting: <Users className="w-3 h-3" aria-hidden="true" />,
 };
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -67,7 +87,10 @@ function isSameDay(a: Date, b: Date): boolean {
 }
 
 function formatTime(date: Date): string {
-  return date.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  return date.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+  });
 }
 
 // ─── Props ───────────────────────────────────────────────────────────────────
@@ -123,14 +146,29 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
 
   const title = useMemo(() => {
     if (view === "month")
-      return currentDate.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+      return currentDate.toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric",
+      });
     if (view === "week") {
       const week = getWeekDays(currentDate);
-      const start = week[0].toLocaleDateString("en-US", { month: "short", day: "numeric" });
-      const end = week[6].toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+      const start = week[0].toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+      const end = week[6].toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
       return `${start} – ${end}`;
     }
-    return currentDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric", year: "numeric" });
+    return currentDate.toLocaleDateString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    });
   }, [currentDate, view]);
 
   // ─── Month View ──────────────────────────────────────────────────────────
@@ -146,13 +184,18 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
     return (
       <div className="grid grid-cols-7 gap-px bg-gray-200 rounded-lg overflow-hidden">
         {DAYS_OF_WEEK.map((d) => (
-          <div key={d} className="bg-gray-50 px-2 py-2 text-center text-xs font-semibold text-[#091a2b] font-['Open_Sans']">
+          <div
+            key={d}
+            className="bg-gray-50 px-2 py-2 text-center text-xs font-semibold text-[#091a2b] font-['Open_Sans']"
+          >
             {d}
           </div>
         ))}
         {cells.map((date, i) => {
           if (!date)
-            return <div key={`empty-${i}`} className="bg-white min-h-[100px]" />;
+            return (
+              <div key={`empty-${i}`} className="bg-white min-h-[100px]" />
+            );
           const dayBookings = getBookingsForDate(date);
           const isToday = isSameDay(date, today);
           return (
@@ -165,9 +208,7 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
             >
               <span
                 className={`inline-flex items-center justify-center w-6 h-6 text-xs font-medium rounded-full font-['Open_Sans'] ${
-                  isToday
-                    ? "bg-[#091a2b] text-white"
-                    : "text-[#091a2b]"
+                  isToday ? "bg-[#091a2b] text-white" : "text-[#091a2b]"
                 }`}
               >
                 {date.getDate()}
@@ -238,7 +279,11 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
             <React.Fragment key={hour}>
               <div className="border-r border-b border-gray-200 p-1 text-right">
                 <span className="text-[10px] text-gray-500 font-['Open_Sans']">
-                  {hour > 12 ? `${hour - 12}PM` : hour === 12 ? "12PM" : `${hour}AM`}
+                  {hour > 12
+                    ? `${hour - 12}PM`
+                    : hour === 12
+                      ? "12PM"
+                      : `${hour}AM`}
                 </span>
               </div>
               {weekDays.map((d) => {
@@ -295,10 +340,17 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
             (b) => new Date(b.startTime).getHours() === hour,
           );
           return (
-            <div key={hour} className="flex border-b border-gray-200 last:border-b-0">
+            <div
+              key={hour}
+              className="flex border-b border-gray-200 last:border-b-0"
+            >
               <div className="w-20 flex-shrink-0 p-2 text-right border-r border-gray-200 bg-gray-50">
                 <span className="text-xs text-gray-500 font-['Open_Sans']">
-                  {hour > 12 ? `${hour - 12}:00 PM` : hour === 12 ? "12:00 PM" : `${hour}:00 AM`}
+                  {hour > 12
+                    ? `${hour - 12}:00 PM`
+                    : hour === 12
+                      ? "12:00 PM"
+                      : `${hour}:00 AM`}
                 </span>
               </div>
               <div
@@ -326,7 +378,8 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
                         {b.title || b.type}
                       </div>
                       <div className="text-[10px] mt-0.5 opacity-75">
-                        {formatTime(new Date(b.startTime))} – {formatTime(new Date(b.endTime))}
+                        {formatTime(new Date(b.startTime))} –{" "}
+                        {formatTime(new Date(b.endTime))}
                       </div>
                     </button>
                   );
@@ -357,16 +410,23 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
         >
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-2">
-              <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${colors.bg} ${colors.text} font-['Open_Sans']`}>
+              <span
+                className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${colors.bg} ${colors.text} font-['Open_Sans']`}
+              >
                 {BOOKING_TYPE_ICONS[b.type]}
                 {b.type.charAt(0).toUpperCase() + b.type.slice(1)}
               </span>
-              <span className={`px-2 py-1 rounded-full text-xs font-semibold font-['Open_Sans'] ${
-                b.status === "confirmed" ? "bg-green-100 text-green-700" :
-                b.status === "cancelled" ? "bg-red-100 text-red-700" :
-                b.status === "completed" ? "bg-gray-100 text-gray-700" :
-                "bg-yellow-100 text-yellow-700"
-              }`}>
+              <span
+                className={`px-2 py-1 rounded-full text-xs font-semibold font-['Open_Sans'] ${
+                  b.status === "confirmed"
+                    ? "bg-green-100 text-green-700"
+                    : b.status === "cancelled"
+                      ? "bg-red-100 text-red-700"
+                      : b.status === "completed"
+                        ? "bg-gray-100 text-gray-700"
+                        : "bg-yellow-100 text-yellow-700"
+                }`}
+              >
                 {b.status.charAt(0).toUpperCase() + b.status.slice(1)}
               </span>
             </div>
@@ -380,11 +440,14 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
           </div>
 
           <h3 className="text-lg font-bold text-[#091a2b] font-['Montserrat'] mb-3">
-            {b.title || `${b.type.charAt(0).toUpperCase() + b.type.slice(1)} Booking`}
+            {b.title ||
+              `${b.type.charAt(0).toUpperCase() + b.type.slice(1)} Booking`}
           </h3>
 
           {b.description && (
-            <p className="text-sm text-gray-600 font-['Open_Sans'] mb-4">{b.description}</p>
+            <p className="text-sm text-gray-600 font-['Open_Sans'] mb-4">
+              {b.description}
+            </p>
           )}
 
           <div className="space-y-3 text-sm font-['Open_Sans']">
@@ -392,9 +455,12 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
               <Clock className="w-4 h-4 text-[#005163]" aria-hidden="true" />
               <span>
                 {new Date(b.startTime).toLocaleDateString("en-US", {
-                  weekday: "short", month: "short", day: "numeric",
+                  weekday: "short",
+                  month: "short",
+                  day: "numeric",
                 })}{" "}
-                {formatTime(new Date(b.startTime))} – {formatTime(new Date(b.endTime))}
+                {formatTime(new Date(b.startTime))} –{" "}
+                {formatTime(new Date(b.endTime))}
               </span>
             </div>
 
@@ -405,11 +471,17 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
 
             {b.attendees.length > 0 && (
               <div className="flex items-start gap-2 text-gray-700">
-                <Users className="w-4 h-4 text-[#005163] mt-0.5" aria-hidden="true" />
+                <Users
+                  className="w-4 h-4 text-[#005163] mt-0.5"
+                  aria-hidden="true"
+                />
                 <div>
                   {b.attendees.map((a) => (
                     <div key={a.id} className="text-xs">
-                      {a.name} <span className="text-gray-400">({a.role.replace("_", " ")})</span>
+                      {a.name}{" "}
+                      <span className="text-gray-400">
+                        ({a.role.replace("_", " ")})
+                      </span>
                     </div>
                   ))}
                 </div>
@@ -482,7 +554,10 @@ const SchedulingCalendar: React.FC<SchedulingCalendarProps> = ({
         {(Object.keys(BOOKING_TYPE_COLORS) as BookingType[]).map((type) => {
           const c = BOOKING_TYPE_COLORS[type];
           return (
-            <span key={type} className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${c.bg} ${c.text} font-['Open_Sans']`}>
+            <span
+              key={type}
+              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${c.bg} ${c.text} font-['Open_Sans']`}
+            >
               {BOOKING_TYPE_ICONS[type]}
               {type.charAt(0).toUpperCase() + type.slice(1)}
             </span>

@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { ArrowDown } from 'lucide-react';
-import type { ScreeningRequest } from '@/types/screening';
-import { screeningService } from '@/services/screeningService';
-import { BackgroundCheckStatus } from './BackgroundCheckStatus';
-import { Skeleton } from '@/components/ui/skeleton';
+import { ArrowDown } from "lucide-react";
+import React, { useEffect, useState } from "react";
+
+import { BackgroundCheckStatus } from "./BackgroundCheckStatus";
+
+import { Skeleton } from "@/components/ui/skeleton";
+import { screeningService } from "@/services/screeningService";
+import type { ScreeningRequest } from "@/types/screening";
 
 type SortField = keyof Pick<
   ScreeningRequest,
-  'tenantName' | 'email' | 'phone' | 'propertyId' | 'status' | 'createdAt'
+  "tenantName" | "email" | "phone" | "propertyId" | "status" | "createdAt"
 >;
-type SortDirection = 'asc' | 'desc';
+type SortDirection = "asc" | "desc";
 
 interface ScreeningDashboardProps {
   onViewReport?: (id: string) => void;
@@ -21,9 +23,9 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
   const [requests, setRequests] = useState<ScreeningRequest[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [sortField, setSortField] = useState<SortField>('createdAt');
-  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
-  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [sortField, setSortField] = useState<SortField>("createdAt");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
 
   useEffect(() => {
     const fetchRequests = async () => {
@@ -32,7 +34,7 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
         const data = await screeningService.getAllScreeningRequests();
         setRequests(data);
       } catch {
-        setError('Failed to load screening requests. Please try again.');
+        setError("Failed to load screening requests. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -43,15 +45,15 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
 
   const handleSort = (field: SortField) => {
     if (sortField === field) {
-      setSortDirection((prev) => (prev === 'asc' ? 'desc' : 'asc'));
+      setSortDirection((prev) => (prev === "asc" ? "desc" : "asc"));
     } else {
       setSortField(field);
-      setSortDirection('asc');
+      setSortDirection("asc");
     }
   };
 
   const filteredRequests = requests.filter((req) =>
-    statusFilter === 'all' ? true : req.status === statusFilter,
+    statusFilter === "all" ? true : req.status === statusFilter,
   );
 
   const sortedRequests = [...filteredRequests].sort((a, b) => {
@@ -59,23 +61,23 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
     const bVal = b[sortField];
 
     if (aVal instanceof Date && bVal instanceof Date) {
-      return sortDirection === 'asc'
+      return sortDirection === "asc"
         ? aVal.getTime() - bVal.getTime()
         : bVal.getTime() - aVal.getTime();
     }
 
-    const aStr = String(aVal ?? '');
-    const bStr = String(bVal ?? '');
-    return sortDirection === 'asc'
+    const aStr = String(aVal ?? "");
+    const bStr = String(bVal ?? "");
+    return sortDirection === "asc"
       ? aStr.localeCompare(bStr)
       : bStr.localeCompare(aStr);
   });
 
   const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
     });
   };
 
@@ -113,11 +115,11 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
       <button
         onClick={() => handleSort(field)}
         className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider hover:text-[#091a2b] transition-colors"
-        style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
+        style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
       >
         {label}
         <ArrowDown
-          className={`w-3 h-3 ${sortField === field ? 'opacity-100' : 'opacity-40'}`}
+          className={`w-3 h-3 ${sortField === field ? "opacity-100" : "opacity-40"}`}
           aria-hidden="true"
         />
       </button>
@@ -131,7 +133,7 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
         <label
           htmlFor="status-filter"
           className="text-sm font-semibold mr-3"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
+          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
         >
           Filter by Status:
         </label>
@@ -166,7 +168,7 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
                   className="text-xs font-semibold uppercase tracking-wider"
                   style={{
                     fontFamily: "'Montserrat', sans-serif",
-                    color: '#091a2b',
+                    color: "#091a2b",
                   }}
                 >
                   Actions
@@ -195,7 +197,7 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
                     className="px-4 py-3 text-sm font-medium"
                     style={{
                       fontFamily: "'Open Sans', sans-serif",
-                      color: '#091a2b',
+                      color: "#091a2b",
                     }}
                   >
                     {request.tenantName}
@@ -233,7 +235,7 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
                       className="text-sm font-medium hover:underline transition-colors"
                       style={{
                         fontFamily: "'Open Sans', sans-serif",
-                        color: '#091a2b',
+                        color: "#091a2b",
                       }}
                     >
                       View Report

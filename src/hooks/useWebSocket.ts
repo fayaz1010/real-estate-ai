@@ -54,11 +54,9 @@ export function useWebSocket({
       },
     );
 
-    const unlistenState = webSocketService.onConnectionStateChange(
-      (state) => {
-        setConnectionState(state);
-      },
-    );
+    const unlistenState = webSocketService.onConnectionStateChange((state) => {
+      setConnectionState(state);
+    });
 
     return () => {
       webSocketService.unsubscribe(channel, handleMessage);

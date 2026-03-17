@@ -4,9 +4,7 @@ import { useCallback, useState } from "react";
 import useWebSocket from "@/hooks/useWebSocket";
 import type { WebSocketMessage } from "@/services/webSocketService";
 
-interface TenantUpdate {
-  [key: string]: any;
-}
+type TenantUpdate = Record<string, unknown>;
 
 interface UseRealtimeTenantUpdatesReturn {
   tenantUpdate: TenantUpdate | null;

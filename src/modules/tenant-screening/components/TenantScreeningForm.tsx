@@ -1,13 +1,15 @@
 import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { cn } from "@/lib/utils";
+
 import type {
   TenantScreeningFormData,
   EmploymentEntry,
   RentalHistoryEntry,
   ReferenceEntry,
 } from "../api/tenantScreeningService";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { cn } from "@/lib/utils";
 
 interface TenantScreeningFormProps {
   onSubmit: (data: TenantScreeningFormData) => Promise<void>;
@@ -60,9 +62,9 @@ export function TenantScreeningForm({
   const [ssn, setSsn] = useState("");
   const [currentAddress, setCurrentAddress] = useState("");
   const [previousAddress, setPreviousAddress] = useState("");
-  const [employmentHistory, setEmploymentHistory] = useState<EmploymentEntry[]>([
-    { ...emptyEmployment },
-  ]);
+  const [employmentHistory, setEmploymentHistory] = useState<EmploymentEntry[]>(
+    [{ ...emptyEmployment }],
+  );
   const [rentalHistory, setRentalHistory] = useState<RentalHistoryEntry[]>([
     { ...emptyRental },
   ]);
@@ -90,11 +92,13 @@ export function TenantScreeningForm({
       employmentHistory.forEach((entry, i) => {
         if (!entry.employerName.trim())
           errs[`emp_${i}_employerName`] = "Employer name is required";
-        if (!entry.startDate) errs[`emp_${i}_startDate`] = "Start date is required";
+        if (!entry.startDate)
+          errs[`emp_${i}_startDate`] = "Start date is required";
         if (!entry.endDate) errs[`emp_${i}_endDate`] = "End date is required";
         if (!entry.position.trim())
           errs[`emp_${i}_position`] = "Position is required";
-        if (!entry.salary.trim()) errs[`emp_${i}_salary`] = "Salary is required";
+        if (!entry.salary.trim())
+          errs[`emp_${i}_salary`] = "Salary is required";
       });
     }
 
@@ -111,7 +115,8 @@ export function TenantScreeningForm({
         if (!entry.endDate)
           errs[`rental_${i}_endDate`] = "End date is required";
         if (!entry.reasonForLeaving.trim())
-          errs[`rental_${i}_reasonForLeaving`] = "Reason for leaving is required";
+          errs[`rental_${i}_reasonForLeaving`] =
+            "Reason for leaving is required";
       });
     }
 
@@ -163,7 +168,9 @@ export function TenantScreeningForm({
     value: string,
   ) {
     setEmploymentHistory((prev) =>
-      prev.map((entry, i) => (i === index ? { ...entry, [field]: value } : entry)),
+      prev.map((entry, i) =>
+        i === index ? { ...entry, [field]: value } : entry,
+      ),
     );
   }
 
@@ -173,7 +180,9 @@ export function TenantScreeningForm({
     value: string,
   ) {
     setRentalHistory((prev) =>
-      prev.map((entry, i) => (i === index ? { ...entry, [field]: value } : entry)),
+      prev.map((entry, i) =>
+        i === index ? { ...entry, [field]: value } : entry,
+      ),
     );
   }
 
@@ -183,17 +192,23 @@ export function TenantScreeningForm({
     value: string,
   ) {
     setReferences((prev) =>
-      prev.map((entry, i) => (i === index ? { ...entry, [field]: value } : entry)),
+      prev.map((entry, i) =>
+        i === index ? { ...entry, [field]: value } : entry,
+      ),
     );
   }
 
-  const labelClass = "block text-sm font-semibold text-[#091a2b] font-[Montserrat] mb-1";
+  const labelClass =
+    "block text-sm font-semibold text-[#091a2b] font-[Montserrat] mb-1";
   const inputClass = "font-[Open_Sans]";
   const errorClass = "text-red-600 text-xs mt-1";
   const sectionClass = "space-y-4 rounded-lg border border-[#091a2b]/10 p-5";
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 bg-[#f1f3f4] p-6 rounded-xl">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-8 bg-[#f1f3f4] p-6 rounded-xl"
+    >
       {/* Personal Information */}
       <fieldset className={sectionClass}>
         <legend className="text-lg font-bold text-[#091a2b] font-[Montserrat] px-2">
@@ -228,7 +243,9 @@ export function TenantScreeningForm({
           <div>
             <label className={labelClass}>
               Social Security Number{" "}
-              <span className="font-normal text-xs text-gray-500">(optional)</span>
+              <span className="font-normal text-xs text-gray-500">
+                (optional)
+              </span>
             </label>
             <Input
               className={inputClass}
@@ -255,7 +272,9 @@ export function TenantScreeningForm({
           <div className="md:col-span-2">
             <label className={labelClass}>
               Previous Address{" "}
-              <span className="font-normal text-xs text-gray-500">(optional)</span>
+              <span className="font-normal text-xs text-gray-500">
+                (optional)
+              </span>
             </label>
             <Input
               className={inputClass}
@@ -285,7 +304,9 @@ export function TenantScreeningForm({
               <button
                 type="button"
                 onClick={() =>
-                  setEmploymentHistory((prev) => prev.filter((_, idx) => idx !== i))
+                  setEmploymentHistory((prev) =>
+                    prev.filter((_, idx) => idx !== i),
+                  )
                 }
                 className="absolute top-2 right-2 text-red-500 hover:text-red-700 text-sm"
               >
@@ -297,7 +318,9 @@ export function TenantScreeningForm({
               <Input
                 className={inputClass}
                 value={entry.employerName}
-                onChange={(e) => updateEmployment(i, "employerName", e.target.value)}
+                onChange={(e) =>
+                  updateEmployment(i, "employerName", e.target.value)
+                }
               />
               {errors[`emp_${i}_employerName`] && (
                 <p className={errorClass}>{errors[`emp_${i}_employerName`]}</p>
@@ -308,7 +331,9 @@ export function TenantScreeningForm({
               <Input
                 className={inputClass}
                 value={entry.position}
-                onChange={(e) => updateEmployment(i, "position", e.target.value)}
+                onChange={(e) =>
+                  updateEmployment(i, "position", e.target.value)
+                }
               />
               {errors[`emp_${i}_position`] && (
                 <p className={errorClass}>{errors[`emp_${i}_position`]}</p>
@@ -332,7 +357,9 @@ export function TenantScreeningForm({
                 className={inputClass}
                 type="date"
                 value={entry.startDate}
-                onChange={(e) => updateEmployment(i, "startDate", e.target.value)}
+                onChange={(e) =>
+                  updateEmployment(i, "startDate", e.target.value)
+                }
               />
               {errors[`emp_${i}_startDate`] && (
                 <p className={errorClass}>{errors[`emp_${i}_startDate`]}</p>
@@ -394,10 +421,14 @@ export function TenantScreeningForm({
               <Input
                 className={inputClass}
                 value={entry.landlordName}
-                onChange={(e) => updateRental(i, "landlordName", e.target.value)}
+                onChange={(e) =>
+                  updateRental(i, "landlordName", e.target.value)
+                }
               />
               {errors[`rental_${i}_landlordName`] && (
-                <p className={errorClass}>{errors[`rental_${i}_landlordName`]}</p>
+                <p className={errorClass}>
+                  {errors[`rental_${i}_landlordName`]}
+                </p>
               )}
             </div>
             <div>
@@ -469,9 +500,7 @@ export function TenantScreeningForm({
         <legend className="text-lg font-bold text-[#091a2b] font-[Montserrat] px-2">
           References
         </legend>
-        {errors.references && (
-          <p className={errorClass}>{errors.references}</p>
-        )}
+        {errors.references && <p className={errorClass}>{errors.references}</p>}
 
         {references.map((entry, i) => (
           <div
@@ -567,7 +596,9 @@ export function TenantScreeningForm({
             </span>
             <div>
               <p className="font-semibold text-[#091a2b]">Credit Check</p>
-              <p className="text-gray-500">via TransUnion / Experian / Equifax</p>
+              <p className="text-gray-500">
+                via TransUnion / Experian / Equifax
+              </p>
             </div>
           </div>
           <div className="flex items-start gap-2">
@@ -575,7 +606,9 @@ export function TenantScreeningForm({
               2
             </span>
             <div>
-              <p className="font-semibold text-[#091a2b]">Criminal Background</p>
+              <p className="font-semibold text-[#091a2b]">
+                Criminal Background
+              </p>
               <p className="text-gray-500">National & county records</p>
             </div>
           </div>
@@ -602,8 +635,9 @@ export function TenantScreeningForm({
           />
           <span className="text-sm font-[Open_Sans] text-[#091a2b]">
             I consent to a background check, including credit check, criminal
-            background check, and eviction history verification. I understand that
-            this information will be used solely for tenant screening purposes. *
+            background check, and eviction history verification. I understand
+            that this information will be used solely for tenant screening
+            purposes. *
           </span>
         </label>
         {errors.consentBackgroundCheck && (

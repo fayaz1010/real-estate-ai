@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+
 import { messagingService } from "../api/messagingService";
 
 type VerificationStep = "phone" | "code" | "success";
@@ -11,7 +12,9 @@ const PHONE_REGEX = /^\+?[1-9]\d{6,14}$/;
 const CODE_LENGTH = 6;
 const RESEND_COOLDOWN = 60;
 
-export const SMSVerification: React.FC<SMSVerificationProps> = ({ onVerified }) => {
+export const SMSVerification: React.FC<SMSVerificationProps> = ({
+  onVerified,
+}) => {
   const [step, setStep] = useState<VerificationStep>("phone");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [code, setCode] = useState<string[]>(Array(CODE_LENGTH).fill(""));
@@ -82,7 +85,10 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({ onVerified }) 
 
   const handleCodePaste = (e: React.ClipboardEvent) => {
     e.preventDefault();
-    const pasted = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, CODE_LENGTH);
+    const pasted = e.clipboardData
+      .getData("text")
+      .replace(/\D/g, "")
+      .slice(0, CODE_LENGTH);
     if (!pasted) return;
 
     const newCode = [...code];
@@ -106,7 +112,10 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({ onVerified }) 
 
     setIsLoading(true);
     try {
-      const verified = await messagingService.verifySMSCode(phoneNumber, fullCode);
+      const verified = await messagingService.verifySMSCode(
+        phoneNumber,
+        fullCode,
+      );
       if (verified) {
         setStep("success");
         setTimeout(() => onVerified?.(), 2000);
@@ -153,17 +162,29 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({ onVerified }) 
         {/* Header */}
         <div className="mb-6 text-center">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#005163]/10">
-            <svg className="h-8 w-8 text-[#005163]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            <svg
+              className="h-8 w-8 text-[#005163]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"
+              />
             </svg>
           </div>
           <h2 className="text-xl font-semibold text-[#091a2b]">
             {step === "success" ? "Phone Verified" : "Verify Your Phone"}
           </h2>
           <p className="mt-1 text-sm text-[#091a2b]/60">
-            {step === "phone" && "Enter your phone number to receive a verification code"}
+            {step === "phone" &&
+              "Enter your phone number to receive a verification code"}
             {step === "code" && `We sent a 6-digit code to ${phoneNumber}`}
-            {step === "success" && "Your phone number has been verified successfully"}
+            {step === "success" &&
+              "Your phone number has been verified successfully"}
           </p>
         </div>
 
@@ -229,7 +250,9 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({ onVerified }) 
               {code.map((digit, index) => (
                 <input
                   key={index}
-                  ref={(el) => { codeInputRefs.current[index] = el; }}
+                  ref={(el) => {
+                    codeInputRefs.current[index] = el;
+                  }}
                   type="text"
                   inputMode="numeric"
                   maxLength={1}
@@ -284,8 +307,18 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({ onVerified }) 
         {step === "success" && (
           <div className="text-center">
             <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-              <svg className="h-8 w-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              <svg
+                className="h-8 w-8 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5 13l4 4L19 7"
+                />
               </svg>
             </div>
             <p className="text-sm text-[#091a2b]/60">

@@ -4,7 +4,7 @@ export interface ScreeningRequest {
   email: string;
   phone: string;
   propertyId: string;
-  status: 'pending' | 'in_progress' | 'completed' | 'failed';
+  status: "pending" | "in_progress" | "completed" | "failed";
   creditScore?: number;
   backgroundCheck?: boolean;
   evictionHistory?: boolean;

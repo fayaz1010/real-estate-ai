@@ -1,9 +1,10 @@
-import apiClient from "@/api/client";
 import {
   BackgroundCheckResult,
   CriminalRecord,
   EvictionRecord,
 } from "../types/application.types";
+
+import apiClient from "@/api/client";
 
 export interface BackgroundCheckRequest {
   firstName: string;
@@ -49,7 +50,9 @@ export interface BackgroundCheckOrder {
 
 export const backgroundCheckService = {
   getPackages: async (): Promise<BackgroundCheckPackage[]> => {
-    const { data } = await apiClient.get<BackgroundCheckPackage[]>("/background-checks/packages");
+    const { data } = await apiClient.get<BackgroundCheckPackage[]>(
+      "/background-checks/packages",
+    );
     return data;
   },
 
@@ -65,14 +68,18 @@ export const backgroundCheckService = {
     return result;
   },
 
-  getBackgroundCheckStatus: async (applicationId: string): Promise<BackgroundCheckOrder> => {
+  getBackgroundCheckStatus: async (
+    applicationId: string,
+  ): Promise<BackgroundCheckOrder> => {
     const { data } = await apiClient.get<BackgroundCheckOrder>(
       `/applications/${applicationId}/background-check`,
     );
     return data;
   },
 
-  getBackgroundCheckReport: async (applicationId: string): Promise<BackgroundCheckResult> => {
+  getBackgroundCheckReport: async (
+    applicationId: string,
+  ): Promise<BackgroundCheckResult> => {
     const { data } = await apiClient.get<BackgroundCheckResult>(
       `/applications/${applicationId}/background-check/report`,
     );
@@ -104,20 +111,32 @@ export const backgroundCheckService = {
     return data;
   },
 
-  getCriminalRecordDetails: async (recordId: string): Promise<CriminalRecord> => {
-    const { data } = await apiClient.get<CriminalRecord>(`/background-checks/criminal-records/${recordId}`);
-    return data;
-  },
-
-  getEvictionRecordDetails: async (recordId: string): Promise<EvictionRecord> => {
-    const { data } = await apiClient.get<EvictionRecord>(`/background-checks/eviction-records/${recordId}`);
-    return data;
-  },
-
-  getConsentForm: async (): Promise<{ formHtml: string; disclosures: string[] }> => {
-    const { data } = await apiClient.get<{ formHtml: string; disclosures: string[] }>(
-      "/background-checks/consent-form",
+  getCriminalRecordDetails: async (
+    recordId: string,
+  ): Promise<CriminalRecord> => {
+    const { data } = await apiClient.get<CriminalRecord>(
+      `/background-checks/criminal-records/${recordId}`,
     );
+    return data;
+  },
+
+  getEvictionRecordDetails: async (
+    recordId: string,
+  ): Promise<EvictionRecord> => {
+    const { data } = await apiClient.get<EvictionRecord>(
+      `/background-checks/eviction-records/${recordId}`,
+    );
+    return data;
+  },
+
+  getConsentForm: async (): Promise<{
+    formHtml: string;
+    disclosures: string[];
+  }> => {
+    const { data } = await apiClient.get<{
+      formHtml: string;
+      disclosures: string[];
+    }>("/background-checks/consent-form");
     return data;
   },
 
@@ -134,18 +153,20 @@ export const backgroundCheckService = {
   },
 
   getBackgroundCheckHistory: async (): Promise<BackgroundCheckOrder[]> => {
-    const { data } = await apiClient.get<BackgroundCheckOrder[]>("/background-checks/my-history");
+    const { data } = await apiClient.get<BackgroundCheckOrder[]>(
+      "/background-checks/my-history",
+    );
     return data;
   },
 
   estimateCost: async (
     packageId: string,
     state: string,
-  ): Promise<{ cost: number; breakdown: any }> => {
-    const { data } = await apiClient.post<{ cost: number; breakdown: any }>(
-      "/background-checks/estimate-cost",
-      { packageId, state },
-    );
+  ): Promise<{ cost: number; breakdown: Record<string, unknown> }> => {
+    const { data } = await apiClient.post<{
+      cost: number;
+      breakdown: Record<string, unknown>;
+    }>("/background-checks/estimate-cost", { packageId, state });
     return data;
   },
 };

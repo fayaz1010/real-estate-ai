@@ -32,13 +32,13 @@ module.exports = {
       fontFamily: {
         display: ['var(--font-display)'],
         body: ['var(--font-body)'],
-        montserrat: ["Montserrat", "Instrument Serif", "serif"],
-        "open-sans": ["Open Sans", "DM Sans", "sans-serif"],
-        "roboto-mono": ["Roboto Mono", "monospace"],
-        // Legacy aliases pointing to new fonts
-        "space-grotesk": ["Instrument Serif", "serif"],
-        inter: ["DM Sans", "sans-serif"],
-        mono: ["Roboto Mono", "monospace"],
+        montserrat: ["Montserrat", "DM Serif Display", "serif"],
+        "open-sans": ["Open Sans", "Inter", "sans-serif"],
+        "roboto-mono": ["JetBrains Mono", "monospace"],
+        // Legacy aliases pointing to design system fonts
+        "space-grotesk": ["DM Serif Display", "serif"],
+        inter: ["Inter", "sans-serif"],
+        mono: ["JetBrains Mono", "monospace"],
       },
       borderRadius: {
         "realestate-sm": "0.125rem",

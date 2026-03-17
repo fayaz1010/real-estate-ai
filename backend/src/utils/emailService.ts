@@ -488,7 +488,10 @@ export const sendInspectionNoShowEmail = async (
 // ─── Inspection Email Dispatcher ────────────────────────────────────────────
 // Maps notification types to their email sender functions for use by the notification service
 
-type InspectionEmailSender = (to: string, vars: InspectionEmailVars) => Promise<void>;
+type InspectionEmailSender = (
+  to: string,
+  vars: InspectionEmailVars,
+) => Promise<void>;
 
 export const INSPECTION_EMAIL_SENDERS: Record<string, InspectionEmailSender> = {
   INSPECTION_CONFIRMATION: sendInspectionConfirmationEmail,

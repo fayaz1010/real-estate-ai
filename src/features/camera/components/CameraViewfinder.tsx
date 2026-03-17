@@ -1,14 +1,8 @@
-import React, { useCallback, useState } from 'react';
-import {
-  Camera,
-  CameraOff,
-  Zap,
-  ZapOff,
-  RefreshCw,
-  X,
-} from 'lucide-react';
-import { useCamera } from '../hooks/useCamera';
-import type { CapturedPhoto, CameraConfig } from '../types';
+import { Camera, CameraOff, Zap, ZapOff, RefreshCw, X } from "lucide-react";
+import React, { useCallback, useState } from "react";
+
+import { useCamera } from "../hooks/useCamera";
+import type { CapturedPhoto, CameraConfig } from "../types";
 
 interface CameraViewfinderProps {
   initialConfig?: Partial<CameraConfig>;
@@ -65,21 +59,21 @@ export const CameraViewfinder: React.FC<CameraViewfinderProps> = ({
   }, [stopCamera, onClose]);
 
   const FlashIcon =
-    config.flash === 'on' ? Zap : config.flash === 'auto' ? Zap : ZapOff;
+    config.flash === "on" ? Zap : config.flash === "auto" ? Zap : ZapOff;
 
-  if (!isActive && permissionState === 'denied') {
+  if (!isActive && permissionState === "denied") {
     return (
       <div className="flex flex-col items-center justify-center h-full min-h-[400px] bg-gray-900 rounded-xl p-8 text-center">
         <CameraOff className="w-16 h-16 text-gray-400 mb-4" />
         <h3
           className="text-xl font-semibold text-white mb-2"
-          style={{ fontFamily: 'Montserrat, sans-serif' }}
+          style={{ fontFamily: "Montserrat, sans-serif" }}
         >
           Camera Access Denied
         </h3>
         <p
           className="text-gray-400 mb-6"
-          style={{ fontFamily: 'Open Sans, sans-serif' }}
+          style={{ fontFamily: "Open Sans, sans-serif" }}
         >
           Please enable camera permissions in your browser settings to use this
           feature.
@@ -94,13 +88,13 @@ export const CameraViewfinder: React.FC<CameraViewfinderProps> = ({
         <Camera className="w-16 h-16 text-gray-400 mb-4" />
         <h3
           className="text-xl font-semibold text-white mb-2"
-          style={{ fontFamily: 'Montserrat, sans-serif' }}
+          style={{ fontFamily: "Montserrat, sans-serif" }}
         >
           Property Camera
         </h3>
         <p
           className="text-gray-400 mb-6"
-          style={{ fontFamily: 'Open Sans, sans-serif' }}
+          style={{ fontFamily: "Open Sans, sans-serif" }}
         >
           Capture photos for property documentation
         </p>
@@ -108,21 +102,19 @@ export const CameraViewfinder: React.FC<CameraViewfinderProps> = ({
           onClick={startCamera}
           className="px-6 py-3 rounded-lg text-white font-medium transition-colors"
           style={{
-            backgroundColor: '#005163',
-            fontFamily: 'Open Sans, sans-serif',
+            backgroundColor: "#005163",
+            fontFamily: "Open Sans, sans-serif",
           }}
           onMouseOver={(e) =>
-            (e.currentTarget.style.backgroundColor = '#003d4a')
+            (e.currentTarget.style.backgroundColor = "#003d4a")
           }
           onMouseOut={(e) =>
-            (e.currentTarget.style.backgroundColor = '#005163')
+            (e.currentTarget.style.backgroundColor = "#005163")
           }
         >
           Start Camera
         </button>
-        {error && (
-          <p className="text-red-400 mt-4 text-sm">{error}</p>
-        )}
+        {error && <p className="text-red-400 mt-4 text-sm">{error}</p>}
       </div>
     );
   }
@@ -141,7 +133,9 @@ export const CameraViewfinder: React.FC<CameraViewfinderProps> = ({
         playsInline
         muted
         className="w-full h-full object-cover"
-        style={{ transform: config.facingMode === 'user' ? 'scaleX(-1)' : 'none' }}
+        style={{
+          transform: config.facingMode === "user" ? "scaleX(-1)" : "none",
+        }}
       />
 
       {/* Composition grid overlay */}
@@ -165,8 +159,8 @@ export const CameraViewfinder: React.FC<CameraViewfinderProps> = ({
         <div
           className="absolute top-4 left-1/2 -translate-x-1/2 z-20 px-3 py-1 rounded-full text-sm text-white/90"
           style={{
-            backgroundColor: 'rgba(9, 26, 43, 0.7)',
-            fontFamily: 'Open Sans, sans-serif',
+            backgroundColor: "rgba(9, 26, 43, 0.7)",
+            fontFamily: "Open Sans, sans-serif",
           }}
         >
           {roomLabel}
@@ -190,7 +184,7 @@ export const CameraViewfinder: React.FC<CameraViewfinderProps> = ({
             aria-label={`Flash: ${config.flash}`}
           >
             <FlashIcon className="w-5 h-5" />
-            {config.flash === 'auto' && (
+            {config.flash === "auto" && (
               <span className="absolute -bottom-1 text-[8px] font-bold text-yellow-400">
                 A
               </span>
@@ -217,7 +211,7 @@ export const CameraViewfinder: React.FC<CameraViewfinderProps> = ({
         >
           <div
             className="w-12 h-12 rounded-full transition-colors"
-            style={{ backgroundColor: isCapturing ? '#ff4444' : 'white' }}
+            style={{ backgroundColor: isCapturing ? "#ff4444" : "white" }}
           />
         </button>
       </div>

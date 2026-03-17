@@ -282,10 +282,7 @@ function handleTypingIndicator(
 /**
  * Broadcast presence change to all clients on the presence channel
  */
-function broadcastPresence(
-  userId: string,
-  status: "online" | "offline",
-): void {
+function broadcastPresence(userId: string, status: "online" | "offline"): void {
   const payload = JSON.stringify({
     channel: "presence",
     event: status === "online" ? "user_online" : "user_offline",

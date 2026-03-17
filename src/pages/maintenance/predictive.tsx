@@ -1,9 +1,10 @@
-import React from 'react';
-import PredictiveMaintenanceDashboard from '@/components/maintenance/PredictiveMaintenanceDashboard';
+import React from "react";
+
+import PredictiveMaintenanceDashboard from "@/components/maintenance/PredictiveMaintenanceDashboard";
 
 const PredictiveMaintenancePage: React.FC = () => {
   // Replace with actual property ID from context or route params
-  const propertyId = 'your-property-id';
+  const propertyId = "your-property-id";
 
   return (
     <div>

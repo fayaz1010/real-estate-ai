@@ -1,5 +1,6 @@
-import apiClient from "@/api/client";
 import { CreditCheckResult } from "../types/application.types";
+
+import apiClient from "@/api/client";
 
 export interface CreditCheckRequest {
   firstName: string;
@@ -76,7 +77,9 @@ export interface CreditCheckOrder {
 
 export const creditCheckService = {
   getPackages: async (): Promise<CreditCheckPackage[]> => {
-    const { data } = await apiClient.get<CreditCheckPackage[]>("/credit-checks/packages");
+    const { data } = await apiClient.get<CreditCheckPackage[]>(
+      "/credit-checks/packages",
+    );
     return data;
   },
 
@@ -92,7 +95,9 @@ export const creditCheckService = {
     return data;
   },
 
-  getCreditCheckStatus: async (applicationId: string): Promise<CreditCheckOrder> => {
+  getCreditCheckStatus: async (
+    applicationId: string,
+  ): Promise<CreditCheckOrder> => {
     const { data } = await apiClient.get<CreditCheckOrder>(
       `/applications/${applicationId}/credit-check`,
     );
@@ -114,10 +119,16 @@ export const creditCheckService = {
     return data;
   },
 
-  getConsentForm: async (): Promise<{ formHtml: string; disclosures: string[]; legalNotices: string[] }> => {
-    const { data } = await apiClient.get<{ formHtml: string; disclosures: string[]; legalNotices: string[] }>(
-      "/credit-checks/consent-form",
-    );
+  getConsentForm: async (): Promise<{
+    formHtml: string;
+    disclosures: string[];
+    legalNotices: string[];
+  }> => {
+    const { data } = await apiClient.get<{
+      formHtml: string;
+      disclosures: string[];
+      legalNotices: string[];
+    }>("/credit-checks/consent-form");
     return data;
   },
 
@@ -135,7 +146,12 @@ export const creditCheckService = {
 
   disputeCreditReport: async (
     applicationId: string,
-    items: { type: "account" | "inquiry" | "public_record"; itemId: string; reason: string; explanation: string }[],
+    items: {
+      type: "account" | "inquiry" | "public_record";
+      itemId: string;
+      reason: string;
+      explanation: string;
+    }[],
   ): Promise<{ disputeId: string }> => {
     const { data } = await apiClient.post<{ disputeId: string }>(
       `/applications/${applicationId}/credit-check/dispute`,
@@ -146,15 +162,23 @@ export const creditCheckService = {
 
   getCreditScoreInterpretation: async (
     score: number,
-  ): Promise<{ rating: "excellent" | "good" | "fair" | "poor" | "very_poor"; description: string; recommendations: string[] }> => {
-    const { data } = await apiClient.get<{ rating: "excellent" | "good" | "fair" | "poor" | "very_poor"; description: string; recommendations: string[] }>(
-      `/credit-checks/interpret-score?score=${score}`,
-    );
+  ): Promise<{
+    rating: "excellent" | "good" | "fair" | "poor" | "very_poor";
+    description: string;
+    recommendations: string[];
+  }> => {
+    const { data } = await apiClient.get<{
+      rating: "excellent" | "good" | "fair" | "poor" | "very_poor";
+      description: string;
+      recommendations: string[];
+    }>(`/credit-checks/interpret-score?score=${score}`);
     return data;
   },
 
   getMyCreditCheckHistory: async (): Promise<CreditCheckOrder[]> => {
-    const { data } = await apiClient.get<CreditCheckOrder[]>("/credit-checks/history");
+    const { data } = await apiClient.get<CreditCheckOrder[]>(
+      "/credit-checks/history",
+    );
     return data;
   },
 };

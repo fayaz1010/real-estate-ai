@@ -1,9 +1,6 @@
 // FILE PATH: src/pages/DashboardPage.tsx
 // Dashboard Page - Property Management Dashboard with AI Insights
 
-import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 import {
   Home,
   Building,
@@ -37,6 +34,10 @@ import {
   Shield,
   Loader2,
 } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+
 import { useAuth } from "../modules/auth/hooks/useAuth";
 import { TrialBanner } from "../modules/trial/components/TrialBanner";
 import {
@@ -80,14 +81,49 @@ const QUICK_ACTIONS = [
 
 const NAV_ITEMS = [
   { label: "Dashboard", icon: Home, href: "/dashboard", active: true },
-  { label: "Properties", icon: Building, href: "/dashboard/properties", active: false },
-  { label: "Inspections", icon: ClipboardList, href: "/dashboard/inspections", active: false },
-  { label: "Applications", icon: FileText, href: "/dashboard/applications", active: false },
+  {
+    label: "Properties",
+    icon: Building,
+    href: "/dashboard/properties",
+    active: false,
+  },
+  {
+    label: "Inspections",
+    icon: ClipboardList,
+    href: "/dashboard/inspections",
+    active: false,
+  },
+  {
+    label: "Applications",
+    icon: FileText,
+    href: "/dashboard/applications",
+    active: false,
+  },
   { label: "Leases", icon: FileText, href: "/dashboard/leases", active: false },
-  { label: "Payments", icon: CreditCard, href: "/dashboard/payments", active: false },
-  { label: "Maintenance", icon: Hammer, href: "/dashboard/maintenance", active: false },
-  { label: "Reports", icon: BarChart, href: "/dashboard/reports", active: false },
-  { label: "Settings", icon: Settings, href: "/dashboard/settings", active: false },
+  {
+    label: "Payments",
+    icon: CreditCard,
+    href: "/dashboard/payments",
+    active: false,
+  },
+  {
+    label: "Maintenance",
+    icon: Hammer,
+    href: "/dashboard/maintenance",
+    active: false,
+  },
+  {
+    label: "Reports",
+    icon: BarChart,
+    href: "/dashboard/reports",
+    active: false,
+  },
+  {
+    label: "Settings",
+    icon: Settings,
+    href: "/dashboard/settings",
+    active: false,
+  },
 ];
 
 const INSIGHT_ICONS: Record<string, typeof Hammer> = {
@@ -133,7 +169,9 @@ export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
 
   // API data state
-  const [dashboardData, setDashboardData] = useState<DashboardStats | null>(null);
+  const [dashboardData, setDashboardData] = useState<DashboardStats | null>(
+    null,
+  );
   const [aiInsights, setAiInsights] = useState<AIInsight[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -155,7 +193,9 @@ export default function DashboardPage() {
       }
     }
     loadData();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const displayName = userName ?? user?.firstName ?? "User";
@@ -315,8 +355,12 @@ export default function DashboardPage() {
               {initials}
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">{displayName}</p>
-              <p className="text-xs text-white/50 truncate">{user?.email ?? "user@example.com"}</p>
+              <p className="text-sm font-medium text-white truncate">
+                {displayName}
+              </p>
+              <p className="text-xs text-white/50 truncate">
+                {user?.email ?? "user@example.com"}
+              </p>
             </div>
             <button
               onClick={() => logout()}
@@ -369,7 +413,9 @@ export default function DashboardPage() {
               <div className="flex h-8 w-8 items-center justify-center rounded-full bg-realestate-primary text-white text-xs font-semibold">
                 {initials}
               </div>
-              <span className="text-sm font-medium text-gray-700">{displayName}</span>
+              <span className="text-sm font-medium text-gray-700">
+                {displayName}
+              </span>
             </div>
           </div>
         </header>
@@ -392,7 +438,9 @@ export default function DashboardPage() {
           {loading && (
             <div className="flex items-center justify-center py-12">
               <Loader2 className="h-8 w-8 animate-spin text-realestate-accent" />
-              <span className="ml-3 text-sm text-gray-500">Loading dashboard data...</span>
+              <span className="ml-3 text-sm text-gray-500">
+                Loading dashboard data...
+              </span>
             </div>
           )}
 
@@ -408,13 +456,17 @@ export default function DashboardPage() {
                       className="rounded-xl bg-white p-5 shadow-realestate-sm hover:shadow-realestate-md transition-shadow"
                     >
                       <div className="flex items-center justify-between">
-                        <div className={`flex h-10 w-10 items-center justify-center rounded-lg ${stat.bg}`}>
+                        <div
+                          className={`flex h-10 w-10 items-center justify-center rounded-lg ${stat.bg}`}
+                        >
                           <Icon className={`h-5 w-5 ${stat.color}`} />
                         </div>
                         {stat.change && (
                           <span
                             className={`inline-flex items-center gap-1 text-xs font-semibold ${
-                              stat.trend === "up" ? "text-emerald-600" : "text-red-500"
+                              stat.trend === "up"
+                                ? "text-emerald-600"
+                                : "text-red-500"
                             }`}
                           >
                             {stat.trend === "up" ? (
@@ -429,7 +481,9 @@ export default function DashboardPage() {
                       <p className="mt-4 font-space-grotesk text-2xl font-bold text-realestate-primary">
                         {stat.value}
                       </p>
-                      <p className="mt-0.5 text-sm text-gray-500">{stat.label}</p>
+                      <p className="mt-0.5 text-sm text-gray-500">
+                        {stat.label}
+                      </p>
                     </div>
                   );
                 })}
@@ -451,30 +505,36 @@ export default function DashboardPage() {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {aiInsights.length > 0 ? aiInsights.map((insight) => {
-                    const Icon = INSIGHT_ICONS[insight.type] || Star;
-                    return (
-                      <div
-                        key={insight.id}
-                        className="rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 p-4 hover:bg-white/10 transition-colors"
-                      >
-                        <div className="flex items-center justify-between mb-3">
-                          <Icon className="h-5 w-5 text-realestate-accent" />
-                          <SeverityBadge severity={insight.severity} />
+                  {aiInsights.length > 0 ? (
+                    aiInsights.map((insight) => {
+                      const Icon = INSIGHT_ICONS[insight.type] || Star;
+                      return (
+                        <div
+                          key={insight.id}
+                          className="rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 p-4 hover:bg-white/10 transition-colors"
+                        >
+                          <div className="flex items-center justify-between mb-3">
+                            <Icon className="h-5 w-5 text-realestate-accent" />
+                            <SeverityBadge severity={insight.severity} />
+                          </div>
+                          <h3 className="text-sm font-semibold text-white mb-1.5">
+                            {insight.title}
+                          </h3>
+                          <p className="text-xs text-white/60 leading-relaxed mb-4">
+                            {insight.description}
+                          </p>
+                          <button className="inline-flex items-center gap-1.5 rounded-lg bg-realestate-accent/15 px-3 py-1.5 text-xs font-semibold text-realestate-accent hover:bg-realestate-accent/25 transition-colors">
+                            {insight.action}
+                            <ArrowUpRight className="h-3 w-3" />
+                          </button>
                         </div>
-                        <h3 className="text-sm font-semibold text-white mb-1.5">{insight.title}</h3>
-                        <p className="text-xs text-white/60 leading-relaxed mb-4">
-                          {insight.description}
-                        </p>
-                        <button className="inline-flex items-center gap-1.5 rounded-lg bg-realestate-accent/15 px-3 py-1.5 text-xs font-semibold text-realestate-accent hover:bg-realestate-accent/25 transition-colors">
-                          {insight.action}
-                          <ArrowUpRight className="h-3 w-3" />
-                        </button>
-                      </div>
-                    );
-                  }) : (
+                      );
+                    })
+                  ) : (
                     <div className="col-span-3 text-center py-6">
-                      <p className="text-sm text-white/50">AI insights will appear here once data is available.</p>
+                      <p className="text-sm text-white/50">
+                        AI insights will appear here once data is available.
+                      </p>
                     </div>
                   )}
                 </div>
@@ -498,31 +558,39 @@ export default function DashboardPage() {
                   </div>
 
                   <div className="space-y-1">
-                    {recentActivities.length > 0 ? recentActivities.map((activity) => {
-                      const Icon = activity.icon;
-                      return (
-                        <div
-                          key={activity.id}
-                          className="flex items-start gap-3 rounded-lg p-3 hover:bg-gray-50 transition-colors"
-                        >
+                    {recentActivities.length > 0 ? (
+                      recentActivities.map((activity) => {
+                        const Icon = activity.icon;
+                        return (
                           <div
-                            className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${activity.bgColor}`}
+                            key={activity.id}
+                            className="flex items-start gap-3 rounded-lg p-3 hover:bg-gray-50 transition-colors"
                           >
-                            <Icon className={`h-4 w-4 ${activity.color}`} />
+                            <div
+                              className={`flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg ${activity.bgColor}`}
+                            >
+                              <Icon className={`h-4 w-4 ${activity.color}`} />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-gray-900">
+                                {activity.action}
+                              </p>
+                              <p className="text-xs text-gray-500 truncate">
+                                {activity.detail}
+                              </p>
+                            </div>
+                            <span className="flex-shrink-0 flex items-center gap-1 text-xs text-gray-400">
+                              <Clock className="h-3 w-3" />
+                              {activity.time}
+                            </span>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900">{activity.action}</p>
-                            <p className="text-xs text-gray-500 truncate">{activity.detail}</p>
-                          </div>
-                          <span className="flex-shrink-0 flex items-center gap-1 text-xs text-gray-400">
-                            <Clock className="h-3 w-3" />
-                            {activity.time}
-                          </span>
-                        </div>
-                      );
-                    }) : (
+                        );
+                      })
+                    ) : (
                       <div className="text-center py-8">
-                        <p className="text-sm text-gray-400">No recent activity. Start by adding a property!</p>
+                        <p className="text-sm text-gray-400">
+                          No recent activity. Start by adding a property!
+                        </p>
                       </div>
                     )}
                   </div>

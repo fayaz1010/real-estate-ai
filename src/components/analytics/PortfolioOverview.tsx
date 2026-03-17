@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Building2,
   DoorClosed,
@@ -8,8 +7,10 @@ import {
   TrendingDown,
   PieChart,
   Percent,
-} from 'lucide-react';
-import type { PortfolioMetrics } from '../../types/analytics';
+} from "lucide-react";
+import React from "react";
+
+import type { PortfolioMetrics } from "../../types/analytics";
 
 interface PortfolioOverviewProps {
   metrics: PortfolioMetrics;
@@ -17,64 +18,66 @@ interface PortfolioOverviewProps {
 
 const metricCards = [
   {
-    key: 'totalProperties' as const,
-    label: 'Total Properties',
+    key: "totalProperties" as const,
+    label: "Total Properties",
     icon: Building2,
     format: (v: number) => v.toLocaleString(),
-    color: '#091a2b',
+    color: "#091a2b",
   },
   {
-    key: 'totalUnits' as const,
-    label: 'Total Units',
+    key: "totalUnits" as const,
+    label: "Total Units",
     icon: DoorClosed,
     format: (v: number) => v.toLocaleString(),
-    color: '#005163',
+    color: "#005163",
   },
   {
-    key: 'occupancyRate' as const,
-    label: 'Occupancy Rate',
+    key: "occupancyRate" as const,
+    label: "Occupancy Rate",
     icon: Users,
     format: (v: number) => `${v}%`,
-    color: '#0e7c3a',
+    color: "#0e7c3a",
   },
   {
-    key: 'avgRent' as const,
-    label: 'Average Rent',
+    key: "avgRent" as const,
+    label: "Average Rent",
     icon: DollarSign,
     format: (v: number) => `$${v.toLocaleString()}`,
-    color: '#3b4876',
+    color: "#3b4876",
   },
   {
-    key: 'totalRevenue' as const,
-    label: 'Total Revenue',
+    key: "totalRevenue" as const,
+    label: "Total Revenue",
     icon: TrendingUp,
     format: (v: number) => `$${v.toLocaleString()}`,
-    color: '#0e7c3a',
+    color: "#0e7c3a",
   },
   {
-    key: 'totalExpenses' as const,
-    label: 'Total Expenses',
+    key: "totalExpenses" as const,
+    label: "Total Expenses",
     icon: TrendingDown,
     format: (v: number) => `$${v.toLocaleString()}`,
-    color: '#b91c1c',
+    color: "#b91c1c",
   },
   {
-    key: 'noi' as const,
-    label: 'Net Operating Income',
+    key: "noi" as const,
+    label: "Net Operating Income",
     icon: PieChart,
     format: (v: number) => `$${v.toLocaleString()}`,
-    color: '#005163',
+    color: "#005163",
   },
   {
-    key: 'capRate' as const,
-    label: 'Cap Rate',
+    key: "capRate" as const,
+    label: "Cap Rate",
     icon: Percent,
     format: (v: number) => `${v}%`,
-    color: '#3b4876',
+    color: "#3b4876",
   },
 ];
 
-export const PortfolioOverview: React.FC<PortfolioOverviewProps> = ({ metrics }) => {
+export const PortfolioOverview: React.FC<PortfolioOverviewProps> = ({
+  metrics,
+}) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       {metricCards.map((card) => {
@@ -88,7 +91,10 @@ export const PortfolioOverview: React.FC<PortfolioOverviewProps> = ({ metrics })
             <div className="flex items-center justify-between mb-3">
               <span
                 className="text-xs font-semibold uppercase tracking-wider"
-                style={{ color: '#5a6a7a', fontFamily: 'Open Sans, sans-serif' }}
+                style={{
+                  color: "#5a6a7a",
+                  fontFamily: "Open Sans, sans-serif",
+                }}
               >
                 {card.label}
               </span>
@@ -101,7 +107,7 @@ export const PortfolioOverview: React.FC<PortfolioOverviewProps> = ({ metrics })
             </div>
             <p
               className="text-2xl font-bold"
-              style={{ color: '#091a2b', fontFamily: 'Montserrat, sans-serif' }}
+              style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
             >
               {card.format(value)}
             </p>

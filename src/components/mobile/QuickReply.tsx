@@ -1,5 +1,6 @@
-import React from 'react';
-import type { QuickReplyOption } from '../../types/mobileMessaging';
+import React from "react";
+
+import type { QuickReplyOption } from "../../types/mobileMessaging";
 
 interface QuickReplyProps {
   options: QuickReplyOption[];
@@ -14,7 +15,10 @@ const QuickReply: React.FC<QuickReplyProps> = ({ options, onSelect }) => {
           key={option.id}
           onClick={() => onSelect(option)}
           className="flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-sm text-white transition-opacity hover:opacity-90 active:opacity-75"
-          style={{ backgroundColor: '#3b4876', fontFamily: "'Open Sans', sans-serif" }}
+          style={{
+            backgroundColor: "#3b4876",
+            fontFamily: "'Open Sans', sans-serif",
+          }}
         >
           {option.icon && <span>{option.icon}</span>}
           <span>{option.text}</span>

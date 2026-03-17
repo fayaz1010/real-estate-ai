@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
-import { Tip } from '@/types/tips';
-import { getTips, updateTip } from '@/services/tipsService';
+import { useCallback, useEffect, useState } from "react";
 
-export function useFeatureDiscovery(userId: string = 'current-user') {
+import { getTips, updateTip } from "@/services/tipsService";
+import { Tip } from "@/types/tips";
+
+export function useFeatureDiscovery(userId: string = "current-user") {
   const [tips, setTips] = useState<Tip[]>([]);
 
   useEffect(() => {
@@ -11,13 +12,10 @@ export function useFeatureDiscovery(userId: string = 'current-user') {
 
   const undismissedTips = tips.filter((t) => !t.dismissed);
 
-  const dismissTip = useCallback(
-    async (tipId: string, reason: string) => {
-      const updated = await updateTip(tipId, { dismissed: true, reason });
-      setTips((prev) => prev.map((t) => (t.id === tipId ? updated : t)));
-    },
-    []
-  );
+  const dismissTip = useCallback(async (tipId: string, reason: string) => {
+    const updated = await updateTip(tipId, { dismissed: true, reason });
+    setTips((prev) => prev.map((t) => (t.id === tipId ? updated : t)));
+  }, []);
 
   return { tips, undismissedTips, dismissTip };
 }

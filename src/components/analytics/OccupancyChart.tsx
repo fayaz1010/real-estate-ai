@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   AreaChart,
   Area,
@@ -8,17 +8,18 @@ import {
   Tooltip,
   ResponsiveContainer,
   Legend,
-} from 'recharts';
-import type { OccupancyData } from '../../types/analytics';
+} from "recharts";
+
+import type { OccupancyData } from "../../types/analytics";
 
 interface OccupancyChartProps {
   data: OccupancyData[];
 }
 
 function formatMonth(month: string): string {
-  const [year, m] = month.split('-');
+  const [year, m] = month.split("-");
   const date = new Date(Number(year), Number(m) - 1);
-  return date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+  return date.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
 }
 
 export const OccupancyChart: React.FC<OccupancyChartProps> = ({ data }) => {
@@ -31,16 +32,22 @@ export const OccupancyChart: React.FC<OccupancyChartProps> = ({ data }) => {
     <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
       <h3
         className="text-lg font-bold mb-1"
-        style={{ color: '#091a2b', fontFamily: 'Montserrat, sans-serif' }}
+        style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
       >
         Occupancy Trends
       </h3>
-      <p className="text-sm mb-4" style={{ color: '#5a6a7a', fontFamily: 'Open Sans, sans-serif' }}>
+      <p
+        className="text-sm mb-4"
+        style={{ color: "#5a6a7a", fontFamily: "Open Sans, sans-serif" }}
+      >
         Unit occupancy and vacancy over time
       </p>
       <div className="h-72">
         <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+          <AreaChart
+            data={chartData}
+            margin={{ top: 5, right: 20, left: 0, bottom: 5 }}
+          >
             <defs>
               <linearGradient id="occupiedGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#005163" stopOpacity={0.3} />
@@ -54,22 +61,27 @@ export const OccupancyChart: React.FC<OccupancyChartProps> = ({ data }) => {
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <XAxis
               dataKey="label"
-              tick={{ fontSize: 12, fill: '#5a6a7a' }}
-              axisLine={{ stroke: '#e5e7eb' }}
+              tick={{ fontSize: 12, fill: "#5a6a7a" }}
+              axisLine={{ stroke: "#e5e7eb" }}
             />
             <YAxis
-              tick={{ fontSize: 12, fill: '#5a6a7a' }}
-              axisLine={{ stroke: '#e5e7eb' }}
+              tick={{ fontSize: 12, fill: "#5a6a7a" }}
+              axisLine={{ stroke: "#e5e7eb" }}
             />
             <Tooltip
               contentStyle={{
                 borderRadius: 8,
-                border: '1px solid #e5e7eb',
-                fontFamily: 'Open Sans, sans-serif',
+                border: "1px solid #e5e7eb",
+                fontFamily: "Open Sans, sans-serif",
                 fontSize: 13,
               }}
             />
-            <Legend wrapperStyle={{ fontSize: 13, fontFamily: 'Open Sans, sans-serif' }} />
+            <Legend
+              wrapperStyle={{
+                fontSize: 13,
+                fontFamily: "Open Sans, sans-serif",
+              }}
+            />
             <Area
               type="monotone"
               dataKey="occupied"

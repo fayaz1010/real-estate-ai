@@ -1,13 +1,16 @@
+import { AlertTriangle, ArrowRight, X } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
-import { AlertTriangle, ArrowRight, X } from "lucide-react";
 
 interface TrialExpiredModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-export const TrialExpiredModal: React.FC<TrialExpiredModalProps> = ({ isOpen, onClose }) => {
+export const TrialExpiredModal: React.FC<TrialExpiredModalProps> = ({
+  isOpen,
+  onClose,
+}) => {
   if (!isOpen) return null;
 
   return (

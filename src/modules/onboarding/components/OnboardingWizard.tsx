@@ -18,9 +18,6 @@ import {
 import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-
 import { UserRole } from "../../auth/types/auth.types";
 import {
   nextStep,
@@ -34,6 +31,8 @@ import {
 } from "../store/onboardingSlice";
 import type { OnboardingState } from "../store/onboardingSlice";
 
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { useAppDispatch, useAppSelector } from "@/store";
 import type { RootState } from "@/store";
 
@@ -62,7 +61,10 @@ const ProgressBar: React.FC<{ currentStep: number; totalSteps: number }> = ({
           const isCompleted = index < currentStep;
 
           return (
-            <div key={step.label} className="flex flex-col items-center gap-1.5">
+            <div
+              key={step.label}
+              className="flex flex-col items-center gap-1.5"
+            >
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                   isCompleted
@@ -169,7 +171,9 @@ const RoleStep: React.FC<{
               <div className="flex items-center gap-4">
                 <div
                   className={`p-3 rounded-lg ${
-                    isSelected ? "bg-[#091a2b] text-white" : "bg-gray-100 text-gray-600"
+                    isSelected
+                      ? "bg-[#091a2b] text-white"
+                      : "bg-gray-100 text-gray-600"
                   }`}
                 >
                   <Icon className="w-6 h-6" />
@@ -201,7 +205,10 @@ const ProfileStep: React.FC<{
   profile: OnboardingState["profile"];
   onChange: (profile: OnboardingState["profile"]) => void;
 }> = ({ profile, onChange }) => {
-  const handleChange = (field: keyof OnboardingState["profile"], value: string) => {
+  const handleChange = (
+    field: keyof OnboardingState["profile"],
+    value: string,
+  ) => {
     onChange({ ...profile, [field]: value });
   };
 
@@ -340,7 +347,9 @@ const PropertyStep: React.FC<{
             <div className="bg-gradient-to-r from-[#091a2b] to-[#005163] rounded-xl p-5 text-white">
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles className="w-5 h-5" />
-                <h3 className="font-montserrat font-bold">AI Property Valuation</h3>
+                <h3 className="font-montserrat font-bold">
+                  AI Property Valuation
+                </h3>
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
@@ -406,15 +415,15 @@ const BankStep: React.FC<{
         {/* Placeholder bank connection UI */}
         <div
           className={`border-2 rounded-xl p-6 transition-all ${
-            connected
-              ? "border-green-500 bg-green-50"
-              : "border-gray-200"
+            connected ? "border-green-500 bg-green-50" : "border-gray-200"
           }`}
         >
           <div className="flex items-center gap-4">
             <div
               className={`p-3 rounded-lg ${
-                connected ? "bg-green-500 text-white" : "bg-gray-100 text-gray-600"
+                connected
+                  ? "bg-green-500 text-white"
+                  : "bg-gray-100 text-gray-600"
               }`}
             >
               <CreditCard className="w-6 h-6" />
@@ -429,9 +438,7 @@ const BankStep: React.FC<{
                   : "Securely link your bank for rent collection"}
               </p>
             </div>
-            {connected && (
-              <Check className="w-6 h-6 text-green-500" />
-            )}
+            {connected && <Check className="w-6 h-6 text-green-500" />}
           </div>
         </div>
 
@@ -563,8 +570,15 @@ export const OnboardingWizard: React.FC = () => {
   const navigate = useNavigate();
   const onboarding = useAppSelector((state: RootState) => state.onboarding);
 
-  const { currentStep, totalSteps, role, profile, property, bankConnected, notificationPreferences } =
-    onboarding;
+  const {
+    currentStep,
+    totalSteps,
+    role,
+    profile,
+    property,
+    bankConnected,
+    notificationPreferences,
+  } = onboarding;
 
   const canProceed = useCallback(() => {
     switch (currentStep) {

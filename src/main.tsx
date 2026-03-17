@@ -1,6 +1,6 @@
+import * as Sentry from "@sentry/react";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import * as Sentry from "@sentry/react";
 
 import App from "./App";
 import "./index.css";
@@ -10,7 +10,9 @@ Sentry.init({
   environment: import.meta.env.MODE,
   release: `real-estate-platform@${import.meta.env.VITE_APP_VERSION || "1.0.0"}`,
   tracesSampleRate: 0.1,
-  enabled: !!import.meta.env.VITE_SENTRY_DSN && import.meta.env.VITE_SENTRY_DSN !== "REPLACE_WITH_SENTRY_DSN",
+  enabled:
+    !!import.meta.env.VITE_SENTRY_DSN &&
+    import.meta.env.VITE_SENTRY_DSN !== "REPLACE_WITH_SENTRY_DSN",
 });
 
 function FallbackUI() {

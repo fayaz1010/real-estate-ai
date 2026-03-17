@@ -32,7 +32,10 @@ const upload = multer({
   limits: { fileSize: config.maxFileSize },
 });
 
-function generateFileKey(propertyId: string, file: Express.Multer.File): string {
+function generateFileKey(
+  propertyId: string,
+  file: Express.Multer.File,
+): string {
   const ext = file.originalname.substring(file.originalname.lastIndexOf("."));
   const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
   return `${propertyId}/${uniqueSuffix}${ext}`;
@@ -110,7 +113,11 @@ router.post(
     const uploadResults = await Promise.all(
       files.map(async (file) => {
         const cloudKey = generateFileKey(propertyId, file);
-        return propertyStorage.uploadBuffer(file.buffer, cloudKey, file.mimetype);
+        return propertyStorage.uploadBuffer(
+          file.buffer,
+          cloudKey,
+          file.mimetype,
+        );
       }),
     );
 
@@ -159,7 +166,8 @@ router.delete(
     const urlParts = image.url.split(".com/");
     const keyWithBucket = urlParts.length > 1 ? urlParts[1] : image.url;
     // Remove bucket name prefix if present
-    const bucketName = process.env.CLOUDFLARE_BUCKET_NAME || "real-estate-ai-images";
+    const bucketName =
+      process.env.CLOUDFLARE_BUCKET_NAME || "real-estate-ai-images";
     const cloudKey = keyWithBucket.startsWith(bucketName + "/")
       ? keyWithBucket.substring(bucketName.length + 1)
       : keyWithBucket;

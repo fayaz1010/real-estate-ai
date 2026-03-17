@@ -43,7 +43,8 @@ function saveState(state: Record<string, TipState>) {
 }
 
 export function TipsProvider({ children }: { children: React.ReactNode }) {
-  const [tipStates, setTipStates] = useState<Record<string, TipState>>(loadState);
+  const [tipStates, setTipStates] =
+    useState<Record<string, TipState>>(loadState);
 
   useEffect(() => {
     saveState(tipStates);
@@ -52,7 +53,11 @@ export function TipsProvider({ children }: { children: React.ReactNode }) {
   const markSeen = useCallback((tipId: string) => {
     setTipStates((prev) => ({
       ...prev,
-      [tipId]: { ...prev[tipId], seen: true, dismissed: prev[tipId]?.dismissed ?? false },
+      [tipId]: {
+        ...prev[tipId],
+        seen: true,
+        dismissed: prev[tipId]?.dismissed ?? false,
+      },
     }));
   }, []);
 

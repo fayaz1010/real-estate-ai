@@ -1,4 +1,3 @@
-import React, { useEffect, useMemo, useCallback, useState } from "react";
 import {
   DollarSign,
   TrendingUp,
@@ -13,6 +12,7 @@ import {
   ArrowDownRight,
   Printer,
 } from "lucide-react";
+import React, { useEffect, useMemo, useCallback, useState } from "react";
 
 import { useAppDispatch, useAppSelector } from "../../../store";
 import type { RootState } from "../../../store";
@@ -25,12 +25,7 @@ import {
   fetchExpenseReport,
 } from "../store/accountingSlice";
 
-type ReportTab =
-  | "income"
-  | "balance"
-  | "cashflow"
-  | "rent"
-  | "expenses";
+type ReportTab = "income" | "balance" | "cashflow" | "rent" | "expenses";
 
 interface FinancialReportProps {
   filters: ReportFilters;
@@ -54,11 +49,31 @@ function formatDate(date: Date): string {
 }
 
 const TABS: { key: ReportTab; label: string; icon: React.ReactNode }[] = [
-  { key: "income", label: "Income Statement", icon: <TrendingUp className="w-4 h-4" /> },
-  { key: "balance", label: "Balance Sheet", icon: <BarChart3 className="w-4 h-4" /> },
-  { key: "cashflow", label: "Cash Flow", icon: <DollarSign className="w-4 h-4" /> },
-  { key: "rent", label: "Rent Collection", icon: <FileText className="w-4 h-4" /> },
-  { key: "expenses", label: "Expenses", icon: <PieChart className="w-4 h-4" /> },
+  {
+    key: "income",
+    label: "Income Statement",
+    icon: <TrendingUp className="w-4 h-4" />,
+  },
+  {
+    key: "balance",
+    label: "Balance Sheet",
+    icon: <BarChart3 className="w-4 h-4" />,
+  },
+  {
+    key: "cashflow",
+    label: "Cash Flow",
+    icon: <DollarSign className="w-4 h-4" />,
+  },
+  {
+    key: "rent",
+    label: "Rent Collection",
+    icon: <FileText className="w-4 h-4" />,
+  },
+  {
+    key: "expenses",
+    label: "Expenses",
+    icon: <PieChart className="w-4 h-4" />,
+  },
 ];
 
 function SkeletonRows({ count = 3 }: { count?: number }) {
@@ -82,10 +97,14 @@ function exportCSV(headers: string[], rows: string[][], filename: string) {
   URL.revokeObjectURL(url);
 }
 
-export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => {
+export const FinancialReport: React.FC<FinancialReportProps> = ({
+  filters,
+}) => {
   const dispatch = useAppDispatch();
   const [activeTab, setActiveTab] = useState<ReportTab>("income");
-  const [expandedSections, setExpandedSections] = useState<Record<string, boolean>>({
+  const [expandedSections, setExpandedSections] = useState<
+    Record<string, boolean>
+  >({
     income: true,
     expenses: true,
   });
@@ -123,8 +142,18 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
     if (activeTab === "income" && incomeStatement) {
       const headers = ["Type", "Category", "Amount", "Count"];
       const rows = [
-        ...incomeStatement.income.map((i) => ["Income", i.category, String(i.amount), String(i.count)]),
-        ...incomeStatement.expenses.map((e) => ["Expense", e.category, String(e.amount), String(e.count)]),
+        ...incomeStatement.income.map((i) => [
+          "Income",
+          i.category,
+          String(i.amount),
+          String(i.count),
+        ]),
+        ...incomeStatement.expenses.map((e) => [
+          "Expense",
+          e.category,
+          String(e.amount),
+          String(e.count),
+        ]),
       ];
       exportCSV(headers, rows, "income-statement.csv");
     } else if (activeTab === "rent" && rentCollection) {
@@ -215,7 +244,9 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                   >
                     <div className="flex items-center gap-2">
                       <ArrowUpRight className="w-5 h-5 text-emerald-500" />
-                      <span className="font-semibold text-[#091a2b] font-['Montserrat']">Revenue</span>
+                      <span className="font-semibold text-[#091a2b] font-['Montserrat']">
+                        Revenue
+                      </span>
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="font-semibold text-emerald-600">
@@ -235,24 +266,37 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                           <thead>
                             <tr className="text-left text-gray-500 border-b border-gray-100">
                               <th className="pb-2 font-medium">Category</th>
-                              <th className="pb-2 font-medium text-right">Amount</th>
-                              <th className="pb-2 font-medium text-right">Transactions</th>
+                              <th className="pb-2 font-medium text-right">
+                                Amount
+                              </th>
+                              <th className="pb-2 font-medium text-right">
+                                Transactions
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
                             {incomeStatement.income.map((item, idx) => (
-                              <tr key={idx} className="border-b border-gray-50 last:border-0">
-                                <td className="py-2.5 text-[#091a2b]">{item.category}</td>
+                              <tr
+                                key={idx}
+                                className="border-b border-gray-50 last:border-0"
+                              >
+                                <td className="py-2.5 text-[#091a2b]">
+                                  {item.category}
+                                </td>
                                 <td className="py-2.5 text-right text-emerald-600 font-medium">
                                   {formatCurrency(item.amount)}
                                 </td>
-                                <td className="py-2.5 text-right text-gray-500">{item.count}</td>
+                                <td className="py-2.5 text-right text-gray-500">
+                                  {item.count}
+                                </td>
                               </tr>
                             ))}
                           </tbody>
                         </table>
                       ) : (
-                        <p className="text-gray-400 text-sm py-2">No income recorded for this period.</p>
+                        <p className="text-gray-400 text-sm py-2">
+                          No income recorded for this period.
+                        </p>
                       )}
                     </div>
                   )}
@@ -266,7 +310,9 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                   >
                     <div className="flex items-center gap-2">
                       <ArrowDownRight className="w-5 h-5 text-red-500" />
-                      <span className="font-semibold text-[#091a2b] font-['Montserrat']">Expenses</span>
+                      <span className="font-semibold text-[#091a2b] font-['Montserrat']">
+                        Expenses
+                      </span>
                     </div>
                     <div className="flex items-center gap-3">
                       <span className="font-semibold text-red-600">
@@ -286,24 +332,37 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                           <thead>
                             <tr className="text-left text-gray-500 border-b border-gray-100">
                               <th className="pb-2 font-medium">Category</th>
-                              <th className="pb-2 font-medium text-right">Amount</th>
-                              <th className="pb-2 font-medium text-right">Transactions</th>
+                              <th className="pb-2 font-medium text-right">
+                                Amount
+                              </th>
+                              <th className="pb-2 font-medium text-right">
+                                Transactions
+                              </th>
                             </tr>
                           </thead>
                           <tbody>
                             {incomeStatement.expenses.map((item, idx) => (
-                              <tr key={idx} className="border-b border-gray-50 last:border-0">
-                                <td className="py-2.5 text-[#091a2b]">{item.category}</td>
+                              <tr
+                                key={idx}
+                                className="border-b border-gray-50 last:border-0"
+                              >
+                                <td className="py-2.5 text-[#091a2b]">
+                                  {item.category}
+                                </td>
                                 <td className="py-2.5 text-right text-red-600 font-medium">
                                   {formatCurrency(item.amount)}
                                 </td>
-                                <td className="py-2.5 text-right text-gray-500">{item.count}</td>
+                                <td className="py-2.5 text-right text-gray-500">
+                                  {item.count}
+                                </td>
                               </tr>
                             ))}
                           </tbody>
                         </table>
                       ) : (
-                        <p className="text-gray-400 text-sm py-2">No expenses recorded for this period.</p>
+                        <p className="text-gray-400 text-sm py-2">
+                          No expenses recorded for this period.
+                        </p>
                       )}
                     </div>
                   )}
@@ -312,10 +371,14 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                 {/* Net Income */}
                 <div className="p-4 bg-[#f1f3f4]">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-[#091a2b] font-['Montserrat']">Net Income</span>
+                    <span className="font-bold text-[#091a2b] font-['Montserrat']">
+                      Net Income
+                    </span>
                     <span
                       className={`font-bold text-lg ${
-                        incomeStatement.netIncome >= 0 ? "text-emerald-600" : "text-red-600"
+                        incomeStatement.netIncome >= 0
+                          ? "text-emerald-600"
+                          : "text-red-600"
                       }`}
                     >
                       {formatCurrency(incomeStatement.netIncome)}
@@ -329,14 +392,23 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
             {activeTab === "balance" && balanceSheet && (
               <div className="divide-y divide-gray-100">
                 <div className="p-4">
-                  <h3 className="font-semibold text-[#091a2b] font-['Montserrat'] mb-3">Assets</h3>
+                  <h3 className="font-semibold text-[#091a2b] font-['Montserrat'] mb-3">
+                    Assets
+                  </h3>
                   {balanceSheet.assets.length > 0 ? (
                     <table className="w-full text-sm mb-2">
                       <tbody>
                         {balanceSheet.assets.map((item, idx) => (
-                          <tr key={idx} className="border-b border-gray-50 last:border-0">
-                            <td className="py-2.5 text-[#091a2b]">{item.name}</td>
-                            <td className="py-2.5 text-right font-medium">{formatCurrency(item.amount)}</td>
+                          <tr
+                            key={idx}
+                            className="border-b border-gray-50 last:border-0"
+                          >
+                            <td className="py-2.5 text-[#091a2b]">
+                              {item.name}
+                            </td>
+                            <td className="py-2.5 text-right font-medium">
+                              {formatCurrency(item.amount)}
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -350,20 +422,31 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                   </div>
                 </div>
                 <div className="p-4">
-                  <h3 className="font-semibold text-[#091a2b] font-['Montserrat'] mb-3">Liabilities</h3>
+                  <h3 className="font-semibold text-[#091a2b] font-['Montserrat'] mb-3">
+                    Liabilities
+                  </h3>
                   {balanceSheet.liabilities.length > 0 ? (
                     <table className="w-full text-sm mb-2">
                       <tbody>
                         {balanceSheet.liabilities.map((item, idx) => (
-                          <tr key={idx} className="border-b border-gray-50 last:border-0">
-                            <td className="py-2.5 text-[#091a2b]">{item.name}</td>
-                            <td className="py-2.5 text-right font-medium">{formatCurrency(item.amount)}</td>
+                          <tr
+                            key={idx}
+                            className="border-b border-gray-50 last:border-0"
+                          >
+                            <td className="py-2.5 text-[#091a2b]">
+                              {item.name}
+                            </td>
+                            <td className="py-2.5 text-right font-medium">
+                              {formatCurrency(item.amount)}
+                            </td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
                   ) : (
-                    <p className="text-gray-400 text-sm">No liabilities found.</p>
+                    <p className="text-gray-400 text-sm">
+                      No liabilities found.
+                    </p>
                   )}
                   <div className="flex justify-between pt-2 border-t border-gray-200 font-semibold text-sm">
                     <span>Total Liabilities</span>
@@ -372,10 +455,14 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                 </div>
                 <div className="p-4 bg-[#f1f3f4]">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-[#091a2b] font-['Montserrat']">Owner&apos;s Equity</span>
+                    <span className="font-bold text-[#091a2b] font-['Montserrat']">
+                      Owner&apos;s Equity
+                    </span>
                     <span
                       className={`font-bold text-lg ${
-                        balanceSheet.equity >= 0 ? "text-emerald-600" : "text-red-600"
+                        balanceSheet.equity >= 0
+                          ? "text-emerald-600"
+                          : "text-red-600"
                       }`}
                     >
                       {formatCurrency(balanceSheet.equity)}
@@ -409,7 +496,9 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                       <p className="text-gray-500 text-xs mb-1">Net</p>
                       <p
                         className={`font-semibold ${
-                          cashFlow.operating.net >= 0 ? "text-emerald-600" : "text-red-600"
+                          cashFlow.operating.net >= 0
+                            ? "text-emerald-600"
+                            : "text-red-600"
                         }`}
                       >
                         {formatCurrency(cashFlow.operating.net)}
@@ -437,7 +526,9 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                               <span className="text-gray-600">{m.month}</span>
                               <span
                                 className={`font-medium ${
-                                  m.net >= 0 ? "text-emerald-600" : "text-red-600"
+                                  m.net >= 0
+                                    ? "text-emerald-600"
+                                    : "text-red-600"
                                 }`}
                               >
                                 {formatCurrency(m.net)}
@@ -531,7 +622,9 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                         <tr className="text-left text-gray-500 bg-gray-50">
                           <th className="px-4 py-3 font-medium">Property</th>
                           <th className="px-4 py-3 font-medium">Tenant</th>
-                          <th className="px-4 py-3 font-medium text-right">Amount</th>
+                          <th className="px-4 py-3 font-medium text-right">
+                            Amount
+                          </th>
                           <th className="px-4 py-3 font-medium">Due Date</th>
                           <th className="px-4 py-3 font-medium">Status</th>
                         </tr>
@@ -545,9 +638,15 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                             <td className="px-4 py-3 text-[#091a2b] font-medium max-w-[200px] truncate">
                               {p.propertyTitle}
                             </td>
-                            <td className="px-4 py-3 text-gray-600">{p.tenantName}</td>
-                            <td className="px-4 py-3 text-right font-medium">{formatCurrency(p.amount)}</td>
-                            <td className="px-4 py-3 text-gray-500">{formatDate(p.dueDate)}</td>
+                            <td className="px-4 py-3 text-gray-600">
+                              {p.tenantName}
+                            </td>
+                            <td className="px-4 py-3 text-right font-medium">
+                              {formatCurrency(p.amount)}
+                            </td>
+                            <td className="px-4 py-3 text-gray-500">
+                              {formatDate(p.dueDate)}
+                            </td>
                             <td className="px-4 py-3">
                               <span
                                 className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
@@ -593,7 +692,9 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                         return (
                           <div key={cat.category}>
                             <div className="flex justify-between text-sm mb-1">
-                              <span className="text-gray-600">{cat.category}</span>
+                              <span className="text-gray-600">
+                                {cat.category}
+                              </span>
                               <span className="font-medium text-[#091a2b]">
                                 {formatCurrency(cat.amount)}{" "}
                                 <span className="text-gray-400 text-xs">
@@ -628,7 +729,9 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                           <th className="px-4 py-3 font-medium">Date</th>
                           <th className="px-4 py-3 font-medium">Property</th>
                           <th className="px-4 py-3 font-medium">Category</th>
-                          <th className="px-4 py-3 font-medium text-right">Amount</th>
+                          <th className="px-4 py-3 font-medium text-right">
+                            Amount
+                          </th>
                           <th className="px-4 py-3 font-medium">Description</th>
                         </tr>
                       </thead>
@@ -638,11 +741,15 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({ filters }) => 
                             key={tx.id}
                             className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors"
                           >
-                            <td className="px-4 py-3 text-gray-500">{formatDate(tx.date)}</td>
+                            <td className="px-4 py-3 text-gray-500">
+                              {formatDate(tx.date)}
+                            </td>
                             <td className="px-4 py-3 text-[#091a2b] font-medium max-w-[160px] truncate">
                               {tx.propertyTitle}
                             </td>
-                            <td className="px-4 py-3 text-gray-600">{tx.category}</td>
+                            <td className="px-4 py-3 text-gray-600">
+                              {tx.category}
+                            </td>
                             <td className="px-4 py-3 text-right font-medium text-red-600">
                               {formatCurrency(tx.amount)}
                             </td>

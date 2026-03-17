@@ -1,5 +1,6 @@
-import React from 'react';
-import { MaintenancePrediction } from '../types';
+import React from "react";
+
+import { MaintenancePrediction } from "../types";
 
 interface MaintenanceAlertBannerProps {
   predictions: MaintenancePrediction[];
@@ -7,21 +8,21 @@ interface MaintenanceAlertBannerProps {
 }
 
 function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
+  return new Date(dateStr).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
   });
 }
 
 function getSystemLabel(type: string): string {
   const labels: Record<string, string> = {
-    HVAC: 'HVAC System',
-    PLUMBING: 'Plumbing',
-    ELECTRICAL: 'Electrical',
-    ROOFING: 'Roofing',
-    APPLIANCE: 'Appliance',
-    STRUCTURAL: 'Structural',
+    HVAC: "HVAC System",
+    PLUMBING: "Plumbing",
+    ELECTRICAL: "Electrical",
+    ROOFING: "Roofing",
+    APPLIANCE: "Appliance",
+    STRUCTURAL: "Structural",
   };
   return labels[type] ?? type;
 }
@@ -55,8 +56,8 @@ export const MaintenanceAlertBanner: React.FC<MaintenanceAlertBannerProps> = ({
             Urgent Maintenance Alerts
           </h3>
           <p className="mt-1 font-body text-sm text-red-700">
-            {predictions.length} system{predictions.length !== 1 ? 's' : ''} predicted to need
-            attention within the next 30 days.
+            {predictions.length} system{predictions.length !== 1 ? "s" : ""}{" "}
+            predicted to need attention within the next 30 days.
           </p>
           <ul className="mt-3 space-y-2">
             {predictions.map((prediction) => (

@@ -4,6 +4,7 @@ import { randomUUID } from "crypto";
 import { Router, type Request, type Response } from "express";
 
 import { verifyAccessToken } from "../utils/jwt";
+
 import { registerSseClient, removeSseClient } from "./index";
 
 const router = Router();

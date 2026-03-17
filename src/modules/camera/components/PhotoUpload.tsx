@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { Image, X, Upload } from 'lucide-react';
+import { Image, X, Upload } from "lucide-react";
+import React, { useState, useRef } from "react";
 
 interface PhotoFile {
   id: string;
@@ -13,21 +13,21 @@ interface PhotoUploadProps {
 }
 
 const primaryButton: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
   gap: 8,
-  padding: '12px 20px',
-  color: '#ffffff',
-  backgroundColor: '#091a2b',
-  border: 'none',
+  padding: "12px 20px",
+  color: "#ffffff",
+  backgroundColor: "#091a2b",
+  border: "none",
   borderRadius: 8,
-  cursor: 'pointer',
+  cursor: "pointer",
   fontFamily: "'Open Sans', sans-serif",
   fontSize: 14,
   fontWeight: 600,
-  width: '100%',
-  transition: 'opacity 0.2s ease',
+  width: "100%",
+  transition: "opacity 0.2s ease",
 };
 
 export function PhotoUpload({ onUpload, maxFiles = 10 }: PhotoUploadProps) {
@@ -50,15 +50,15 @@ export function PhotoUpload({ onUpload, maxFiles = 10 }: PhotoUploadProps) {
     }
 
     fileArray.forEach((file) => {
-      if (!file.type.startsWith('image/')) {
-        setError('Only image files are allowed.');
+      if (!file.type.startsWith("image/")) {
+        setError("Only image files are allowed.");
         return;
       }
 
       const reader = new FileReader();
       reader.onload = (event) => {
         const result = event.target?.result;
-        if (typeof result === 'string') {
+        if (typeof result === "string") {
           setPhotos((prev) => [
             ...prev,
             {
@@ -75,7 +75,7 @@ export function PhotoUpload({ onUpload, maxFiles = 10 }: PhotoUploadProps) {
       reader.readAsDataURL(file);
     });
 
-    e.target.value = '';
+    e.target.value = "";
   };
 
   const handleRemove = (id: string) => {
@@ -97,21 +97,28 @@ export function PhotoUpload({ onUpload, maxFiles = 10 }: PhotoUploadProps) {
       }
       onUpload?.(photos);
     } catch {
-      setError('Upload failed. Please try again.');
+      setError("Upload failed. Please try again.");
     } finally {
       setUploading(false);
     }
   };
 
   return (
-    <div style={{ fontFamily: "'Open Sans', sans-serif", display: 'flex', flexDirection: 'column', gap: 16 }}>
+    <div
+      style={{
+        fontFamily: "'Open Sans', sans-serif",
+        display: "flex",
+        flexDirection: "column",
+        gap: 16,
+      }}
+    >
       {error && (
         <div
           style={{
             padding: 12,
             fontSize: 14,
-            color: '#991b1b',
-            backgroundColor: '#fef2f2',
+            color: "#991b1b",
+            backgroundColor: "#fef2f2",
             borderRadius: 8,
           }}
         >
@@ -119,7 +126,11 @@ export function PhotoUpload({ onUpload, maxFiles = 10 }: PhotoUploadProps) {
         </div>
       )}
 
-      <button onClick={() => fileInputRef.current?.click()} style={primaryButton} disabled={uploading}>
+      <button
+        onClick={() => fileInputRef.current?.click()}
+        style={primaryButton}
+        disabled={uploading}
+      >
         <Image size={20} />
         Select Photos
       </button>
@@ -129,42 +140,54 @@ export function PhotoUpload({ onUpload, maxFiles = 10 }: PhotoUploadProps) {
         accept="image/*"
         multiple
         onChange={handleFileSelect}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
       />
 
       {photos.length > 0 && (
         <>
           <div
             style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
               gap: 8,
             }}
           >
             {photos.map((photo) => (
-              <div key={photo.id} style={{ position: 'relative', borderRadius: 8, overflow: 'hidden' }}>
+              <div
+                key={photo.id}
+                style={{
+                  position: "relative",
+                  borderRadius: 8,
+                  overflow: "hidden",
+                }}
+              >
                 <img
                   src={photo.dataUrl}
                   alt={photo.name}
-                  style={{ width: '100%', height: 100, objectFit: 'cover', display: 'block' }}
+                  style={{
+                    width: "100%",
+                    height: 100,
+                    objectFit: "cover",
+                    display: "block",
+                  }}
                 />
                 <button
                   onClick={() => handleRemove(photo.id)}
                   disabled={uploading}
                   style={{
-                    position: 'absolute',
+                    position: "absolute",
                     top: 4,
                     right: 4,
                     width: 24,
                     height: 24,
-                    borderRadius: '50%',
-                    backgroundColor: 'rgba(0,0,0,0.6)',
-                    color: '#fff',
-                    border: 'none',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    borderRadius: "50%",
+                    backgroundColor: "rgba(0,0,0,0.6)",
+                    color: "#fff",
+                    border: "none",
+                    cursor: "pointer",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
                     padding: 0,
                   }}
                   aria-label={`Remove ${photo.name}`}
@@ -176,34 +199,47 @@ export function PhotoUpload({ onUpload, maxFiles = 10 }: PhotoUploadProps) {
           </div>
 
           {uploading && (
-            <div style={{ width: '100%' }}>
+            <div style={{ width: "100%" }}>
               <div
                 style={{
                   height: 8,
-                  backgroundColor: '#e5e7eb',
+                  backgroundColor: "#e5e7eb",
                   borderRadius: 4,
-                  overflow: 'hidden',
+                  overflow: "hidden",
                 }}
               >
                 <div
                   style={{
-                    height: '100%',
+                    height: "100%",
                     width: `${uploadProgress}%`,
-                    backgroundColor: '#091a2b',
+                    backgroundColor: "#091a2b",
                     borderRadius: 4,
-                    transition: 'width 0.3s ease',
+                    transition: "width 0.3s ease",
                   }}
                 />
               </div>
-              <p style={{ fontSize: 12, color: '#6b7280', marginTop: 4, textAlign: 'center' }}>
+              <p
+                style={{
+                  fontSize: 12,
+                  color: "#6b7280",
+                  marginTop: 4,
+                  textAlign: "center",
+                }}
+              >
                 Uploading... {uploadProgress}%
               </p>
             </div>
           )}
 
-          <button onClick={handleUpload} style={primaryButton} disabled={uploading}>
+          <button
+            onClick={handleUpload}
+            style={primaryButton}
+            disabled={uploading}
+          >
             <Upload size={20} />
-            {uploading ? 'Uploading...' : `Upload ${photos.length} Photo${photos.length > 1 ? 's' : ''}`}
+            {uploading
+              ? "Uploading..."
+              : `Upload ${photos.length} Photo${photos.length > 1 ? "s" : ""}`}
           </button>
         </>
       )}

@@ -1,6 +1,6 @@
 export interface PhotoAnnotation {
   id: string;
-  type: 'TEXT' | 'ARROW' | 'CIRCLE' | 'RECTANGLE';
+  type: "TEXT" | "ARROW" | "CIRCLE" | "RECTANGLE";
   position: { x: number; y: number };
   content?: string;
   color: string;
@@ -19,7 +19,7 @@ export interface CapturedPhoto {
 }
 
 export interface CameraConfig {
-  facingMode: 'user' | 'environment';
+  facingMode: "user" | "environment";
   resolution: { width: number; height: number };
-  flash: 'auto' | 'on' | 'off';
+  flash: "auto" | "on" | "off";
 }

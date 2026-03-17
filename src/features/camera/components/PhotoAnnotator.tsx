@@ -1,4 +1,3 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Type,
   ArrowRight,
@@ -10,8 +9,10 @@ import {
   Droplet,
   Minus,
   Plus,
-} from 'lucide-react';
-import type { CapturedPhoto, PhotoAnnotation } from '../types';
+} from "lucide-react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
+import type { CapturedPhoto, PhotoAnnotation } from "../types";
 
 interface PhotoAnnotatorProps {
   photo: CapturedPhoto;
@@ -19,9 +20,17 @@ interface PhotoAnnotatorProps {
   onCancel?: () => void;
 }
 
-type AnnotationTool = 'TEXT' | 'ARROW' | 'CIRCLE' | 'RECTANGLE';
+type AnnotationTool = "TEXT" | "ARROW" | "CIRCLE" | "RECTANGLE";
 
-const COLORS = ['#FF0000', '#00FF00', '#0066FF', '#FFAA00', '#FF00FF', '#FFFFFF', '#000000'];
+const COLORS = [
+  "#FF0000",
+  "#00FF00",
+  "#0066FF",
+  "#FFAA00",
+  "#FF00FF",
+  "#FFFFFF",
+  "#000000",
+];
 
 export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
   photo,
@@ -31,12 +40,12 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [annotations, setAnnotations] = useState<PhotoAnnotation[]>(
-    photo.annotations
+    photo.annotations,
   );
-  const [activeTool, setActiveTool] = useState<AnnotationTool>('TEXT');
-  const [activeColor, setActiveColor] = useState('#FF0000');
+  const [activeTool, setActiveTool] = useState<AnnotationTool>("TEXT");
+  const [activeColor, setActiveColor] = useState("#FF0000");
   const [activeSize, setActiveSize] = useState(24);
-  const [textInput, setTextInput] = useState('');
+  const [textInput, setTextInput] = useState("");
   const [showTextInput, setShowTextInput] = useState(false);
   const [textInputPos, setTextInputPos] = useState({ x: 0, y: 0 });
   const [showColorPicker, setShowColorPicker] = useState(false);
@@ -46,7 +55,7 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
   const [historyIndex, setHistoryIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState<{ x: number; y: number } | null>(
-    null
+    null,
   );
   const imageRef = useRef<HTMLImageElement | null>(null);
 
@@ -75,7 +84,7 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
       setHistoryIndex(newHistory.length - 1);
       setAnnotations(newAnnotations);
     },
-    [history, historyIndex]
+    [history, historyIndex],
   );
 
   const undo = useCallback(() => {
@@ -100,17 +109,15 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
       if (!canvas) return { x: 0, y: 0 };
 
       const rect = canvas.getBoundingClientRect();
-      const clientX =
-        'touches' in e ? e.touches[0].clientX : e.clientX;
-      const clientY =
-        'touches' in e ? e.touches[0].clientY : e.clientY;
+      const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+      const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
 
       return {
         x: (clientX - rect.left) / rect.width,
         y: (clientY - rect.top) / rect.height,
       };
     },
-    []
+    [],
   );
 
   const handleCanvasMouseDown = useCallback(
@@ -118,15 +125,15 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
       e.preventDefault();
       const pos = getNormalizedPos(e);
 
-      if (activeTool === 'TEXT') {
+      if (activeTool === "TEXT") {
         const canvas = canvasRef.current;
         if (!canvas) return;
         const rect = canvas.getBoundingClientRect();
-        const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
-        const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+        const clientX = "touches" in e ? e.touches[0].clientX : e.clientX;
+        const clientY = "touches" in e ? e.touches[0].clientY : e.clientY;
         setTextInputPos({ x: clientX - rect.left, y: clientY - rect.top });
         setShowTextInput(true);
-        setTextInput('');
+        setTextInput("");
         // Store normalized position for the annotation
         setDragStart(pos);
         return;
@@ -135,7 +142,7 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
       setIsDragging(true);
       setDragStart(pos);
     },
-    [activeTool, getNormalizedPos]
+    [activeTool, getNormalizedPos],
   );
 
   const handleCanvasMouseUp = useCallback(
@@ -148,21 +155,21 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
 
       let newAnnotation: PhotoAnnotation | null = null;
 
-      if (activeTool === 'ARROW') {
+      if (activeTool === "ARROW") {
         newAnnotation = {
           id,
-          type: 'ARROW',
+          type: "ARROW",
           position: dragStart,
           color: activeColor,
           points: [dragStart, endPos],
         };
-      } else if (activeTool === 'CIRCLE') {
+      } else if (activeTool === "CIRCLE") {
         const dx = endPos.x - dragStart.x;
         const dy = endPos.y - dragStart.y;
         const radius = Math.sqrt(dx * dx + dy * dy);
         newAnnotation = {
           id,
-          type: 'CIRCLE',
+          type: "CIRCLE",
           position: {
             x: (dragStart.x + endPos.x) / 2,
             y: (dragStart.y + endPos.y) / 2,
@@ -170,15 +177,15 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
           color: activeColor,
           size: radius,
         };
-      } else if (activeTool === 'RECTANGLE') {
+      } else if (activeTool === "RECTANGLE") {
         newAnnotation = {
           id,
-          type: 'RECTANGLE',
+          type: "RECTANGLE",
           position: dragStart,
           color: activeColor,
           size: Math.max(
             Math.abs(endPos.x - dragStart.x),
-            Math.abs(endPos.y - dragStart.y)
+            Math.abs(endPos.y - dragStart.y),
           ),
           points: [dragStart, endPos],
         };
@@ -191,7 +198,15 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
       setIsDragging(false);
       setDragStart(null);
     },
-    [isDragging, dragStart, activeTool, activeColor, annotations, getNormalizedPos, pushHistory]
+    [
+      isDragging,
+      dragStart,
+      activeTool,
+      activeColor,
+      annotations,
+      getNormalizedPos,
+      pushHistory,
+    ],
   );
 
   const handleTextSubmit = useCallback(() => {
@@ -199,7 +214,7 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
 
     const newAnnotation: PhotoAnnotation = {
       id: crypto.randomUUID(),
-      type: 'TEXT',
+      type: "TEXT",
       position: dragStart,
       content: textInput,
       color: activeColor,
@@ -208,7 +223,7 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
 
     pushHistory([...annotations, newAnnotation]);
     setShowTextInput(false);
-    setTextInput('');
+    setTextInput("");
     setDragStart(null);
   }, [textInput, dragStart, activeColor, activeSize, annotations, pushHistory]);
 
@@ -217,7 +232,7 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
     const img = imageRef.current;
     if (!canvas || !img) return;
 
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     canvas.width = img.width;
@@ -234,18 +249,18 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
       const y = ann.position.y * canvas.height;
 
       switch (ann.type) {
-        case 'TEXT': {
+        case "TEXT": {
           const fontSize = (ann.size || 24) * (canvas.width / 800);
           ctx.font = `bold ${fontSize}px "Open Sans", sans-serif`;
           ctx.fillStyle = ann.color;
           // Text shadow for readability
-          ctx.shadowColor = 'rgba(0,0,0,0.7)';
+          ctx.shadowColor = "rgba(0,0,0,0.7)";
           ctx.shadowBlur = 4;
-          ctx.fillText(ann.content || '', x, y);
+          ctx.fillText(ann.content || "", x, y);
           ctx.shadowBlur = 0;
           break;
         }
-        case 'ARROW': {
+        case "ARROW": {
           if (ann.points && ann.points.length === 2) {
             const sx = ann.points[0].x * canvas.width;
             const sy = ann.points[0].y * canvas.height;
@@ -264,32 +279,30 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
             ctx.moveTo(ex, ey);
             ctx.lineTo(
               ex - headLen * Math.cos(angle - Math.PI / 6),
-              ey - headLen * Math.sin(angle - Math.PI / 6)
+              ey - headLen * Math.sin(angle - Math.PI / 6),
             );
             ctx.moveTo(ex, ey);
             ctx.lineTo(
               ex - headLen * Math.cos(angle + Math.PI / 6),
-              ey - headLen * Math.sin(angle + Math.PI / 6)
+              ey - headLen * Math.sin(angle + Math.PI / 6),
             );
             ctx.stroke();
           }
           break;
         }
-        case 'CIRCLE': {
+        case "CIRCLE": {
           const radius = (ann.size || 0.05) * canvas.width;
           ctx.beginPath();
           ctx.arc(x, y, radius, 0, Math.PI * 2);
           ctx.stroke();
           break;
         }
-        case 'RECTANGLE': {
+        case "RECTANGLE": {
           if (ann.points && ann.points.length === 2) {
             const rx = ann.points[0].x * canvas.width;
             const ry = ann.points[0].y * canvas.height;
-            const rw =
-              (ann.points[1].x - ann.points[0].x) * canvas.width;
-            const rh =
-              (ann.points[1].y - ann.points[0].y) * canvas.height;
+            const rw = (ann.points[1].x - ann.points[0].x) * canvas.width;
+            const rh = (ann.points[1].y - ann.points[0].y) * canvas.height;
             ctx.strokeRect(rx, ry, rw, rh);
           }
           break;
@@ -305,11 +318,19 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
     });
   }, [photo, annotations, onSave]);
 
-  const tools: { type: AnnotationTool; icon: React.ReactNode; label: string }[] = [
-    { type: 'TEXT', icon: <Type className="w-5 h-5" />, label: 'Text' },
-    { type: 'ARROW', icon: <ArrowRight className="w-5 h-5" />, label: 'Arrow' },
-    { type: 'CIRCLE', icon: <Circle className="w-5 h-5" />, label: 'Circle' },
-    { type: 'RECTANGLE', icon: <Square className="w-5 h-5" />, label: 'Rectangle' },
+  const tools: {
+    type: AnnotationTool;
+    icon: React.ReactNode;
+    label: string;
+  }[] = [
+    { type: "TEXT", icon: <Type className="w-5 h-5" />, label: "Text" },
+    { type: "ARROW", icon: <ArrowRight className="w-5 h-5" />, label: "Arrow" },
+    { type: "CIRCLE", icon: <Circle className="w-5 h-5" />, label: "Circle" },
+    {
+      type: "RECTANGLE",
+      icon: <Square className="w-5 h-5" />,
+      label: "Rectangle",
+    },
   ];
 
   return (
@@ -317,7 +338,7 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
       {/* Toolbar */}
       <div
         className="flex items-center gap-2 p-3 border-b border-gray-700 overflow-x-auto"
-        style={{ backgroundColor: '#091a2b' }}
+        style={{ backgroundColor: "#091a2b" }}
       >
         {/* Drawing tools */}
         {tools.map((tool) => (
@@ -326,8 +347,8 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
             onClick={() => setActiveTool(tool.type)}
             className={`p-2 rounded-lg transition-colors flex-shrink-0 ${
               activeTool === tool.type
-                ? 'bg-white/20 text-white'
-                : 'text-gray-400 hover:text-white hover:bg-white/10'
+                ? "bg-white/20 text-white"
+                : "text-gray-400 hover:text-white hover:bg-white/10"
             }`}
             aria-label={tool.label}
             title={tool.label}
@@ -383,8 +404,8 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
                   }}
                   className={`w-7 h-7 rounded-full border-2 transition-transform hover:scale-110 ${
                     activeColor === color
-                      ? 'border-white scale-110'
-                      : 'border-gray-600'
+                      ? "border-white scale-110"
+                      : "border-gray-600"
                   }`}
                   style={{ backgroundColor: color }}
                   aria-label={`Color ${color}`}
@@ -421,7 +442,7 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
           <button
             onClick={onCancel}
             className="px-3 py-1.5 rounded-lg text-gray-300 hover:bg-white/10 text-sm flex-shrink-0"
-            style={{ fontFamily: 'Open Sans, sans-serif' }}
+            style={{ fontFamily: "Open Sans, sans-serif" }}
           >
             Cancel
           </button>
@@ -430,8 +451,8 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
           onClick={handleSave}
           className="px-4 py-1.5 rounded-lg text-white text-sm font-medium flex items-center gap-1.5 flex-shrink-0"
           style={{
-            backgroundColor: '#005163',
-            fontFamily: 'Open Sans, sans-serif',
+            backgroundColor: "#005163",
+            fontFamily: "Open Sans, sans-serif",
           }}
         >
           <Check className="w-4 h-4" />
@@ -463,11 +484,11 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
               type="text"
               value={textInput}
               onChange={(e) => setTextInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleTextSubmit()}
+              onKeyDown={(e) => e.key === "Enter" && handleTextSubmit()}
               placeholder="Enter text..."
               autoFocus
               className="bg-gray-700 text-white text-sm px-2 py-1 rounded outline-none w-40"
-              style={{ fontFamily: 'Open Sans, sans-serif' }}
+              style={{ fontFamily: "Open Sans, sans-serif" }}
             />
             <button
               onClick={handleTextSubmit}

@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
   Home,
   DollarSign,
@@ -11,32 +10,35 @@ import {
   Phone,
   Mail,
   User,
-} from 'lucide-react';
-import { cn, formatCurrency } from '@/lib/utils';
-import { tenantPortalModuleService } from '../api/tenantPortalService';
+} from "lucide-react";
+import { useState, useEffect } from "react";
+
+import { tenantPortalModuleService } from "../api/tenantPortalService";
+
+import { cn, formatCurrency } from "@/lib/utils";
 import type {
   LeaseDetails,
   MaintenanceRequest,
   PaymentHistoryItem,
-} from '@/types/tenantPortal';
+} from "@/types/tenantPortal";
 
 const formatDate = (date: Date) =>
-  new Date(date).toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
+  new Date(date).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
   });
 
 const statusBadge = (status: string) => {
   switch (status) {
-    case 'open':
-      return 'bg-red-100 text-red-700';
-    case 'in progress':
-      return 'bg-amber-100 text-amber-700';
-    case 'completed':
-      return 'bg-emerald-100 text-emerald-700';
+    case "open":
+      return "bg-red-100 text-red-700";
+    case "in progress":
+      return "bg-amber-100 text-amber-700";
+    case "completed":
+      return "bg-emerald-100 text-emerald-700";
     default:
-      return 'bg-gray-100 text-gray-700';
+      return "bg-gray-100 text-gray-700";
   }
 };
 
@@ -44,10 +46,16 @@ interface TenantDashboardProps {
   onNavigate?: (tab: string) => void;
 }
 
-export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) => {
+export const TenantDashboard: React.FC<TenantDashboardProps> = ({
+  onNavigate,
+}) => {
   const [lease, setLease] = useState<LeaseDetails | null>(null);
-  const [recentRequests, setRecentRequests] = useState<MaintenanceRequest[]>([]);
-  const [recentPayments, setRecentPayments] = useState<PaymentHistoryItem[]>([]);
+  const [recentRequests, setRecentRequests] = useState<MaintenanceRequest[]>(
+    [],
+  );
+  const [recentPayments, setRecentPayments] = useState<PaymentHistoryItem[]>(
+    [],
+  );
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -77,7 +85,9 @@ export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) 
             className="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-tenant-primary mx-auto mb-3"
             aria-hidden="true"
           />
-          <p className="text-sm text-gray-500 font-open-sans">Loading dashboard...</p>
+          <p className="text-sm text-gray-500 font-open-sans">
+            Loading dashboard...
+          </p>
         </div>
       </div>
     );
@@ -87,12 +97,15 @@ export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) 
     return (
       <div className="flex items-center justify-center py-20" role="alert">
         <div className="bg-white rounded-2xl shadow-sm p-8 max-w-md text-center">
-          <AlertTriangle className="w-12 h-12 text-amber-500 mx-auto mb-4" aria-hidden="true" />
+          <AlertTriangle
+            className="w-12 h-12 text-amber-500 mx-auto mb-4"
+            aria-hidden="true"
+          />
           <h2 className="font-montserrat text-xl font-bold text-tenant-primary mb-2">
             Unable to load dashboard
           </h2>
           <p className="text-gray-500 text-sm font-open-sans">
-            {error || 'An unexpected error occurred.'}
+            {error || "An unexpected error occurred."}
           </p>
         </div>
       </div>
@@ -130,7 +143,10 @@ export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) 
             {/* Address */}
             <div className="bg-tenant-bg rounded-xl p-4">
               <div className="flex items-center gap-2 mb-1.5">
-                <MapPin className="w-4 h-4 text-tenant-secondary" aria-hidden="true" />
+                <MapPin
+                  className="w-4 h-4 text-tenant-secondary"
+                  aria-hidden="true"
+                />
                 <span className="text-xs text-gray-400 uppercase tracking-wider font-open-sans">
                   Address
                 </span>
@@ -143,7 +159,10 @@ export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) 
             {/* Lease Period */}
             <div className="bg-tenant-bg rounded-xl p-4">
               <div className="flex items-center gap-2 mb-1.5">
-                <Calendar className="w-4 h-4 text-tenant-secondary" aria-hidden="true" />
+                <Calendar
+                  className="w-4 h-4 text-tenant-secondary"
+                  aria-hidden="true"
+                />
                 <span className="text-xs text-gray-400 uppercase tracking-wider font-open-sans">
                   Lease Period
                 </span>
@@ -156,7 +175,10 @@ export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) 
             {/* Monthly Rent */}
             <div className="bg-tenant-bg rounded-xl p-4">
               <div className="flex items-center gap-2 mb-1.5">
-                <DollarSign className="w-4 h-4 text-tenant-secondary" aria-hidden="true" />
+                <DollarSign
+                  className="w-4 h-4 text-tenant-secondary"
+                  aria-hidden="true"
+                />
                 <span className="text-xs text-gray-400 uppercase tracking-wider font-open-sans">
                   Monthly Rent
                 </span>
@@ -170,13 +192,18 @@ export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) 
             {lease.landlordName && (
               <div className="bg-tenant-bg rounded-xl p-4 sm:col-span-2 lg:col-span-3">
                 <div className="flex items-center gap-2 mb-1.5">
-                  <User className="w-4 h-4 text-tenant-secondary" aria-hidden="true" />
+                  <User
+                    className="w-4 h-4 text-tenant-secondary"
+                    aria-hidden="true"
+                  />
                   <span className="text-xs text-gray-400 uppercase tracking-wider font-open-sans">
                     Landlord Contact
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-4 text-sm font-open-sans">
-                  <span className="font-medium text-gray-800">{lease.landlordName}</span>
+                  <span className="font-medium text-gray-800">
+                    {lease.landlordName}
+                  </span>
                   {lease.landlordEmail && (
                     <span className="flex items-center gap-1 text-gray-600">
                       <Mail className="w-3.5 h-3.5" aria-hidden="true" />
@@ -202,7 +229,10 @@ export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) 
           <div className="bg-white rounded-2xl shadow-sm p-6 h-full transition-shadow hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <DollarSign className="w-5 h-5 text-tenant-primary" aria-hidden="true" />
+                <DollarSign
+                  className="w-5 h-5 text-tenant-primary"
+                  aria-hidden="true"
+                />
                 <h2
                   id="payment-heading"
                   className="font-montserrat text-lg font-semibold text-tenant-primary"
@@ -213,10 +243,11 @@ export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) 
               {onNavigate && (
                 <button
                   type="button"
-                  onClick={() => onNavigate('payments')}
+                  onClick={() => onNavigate("payments")}
                   className="text-sm text-tenant-secondary hover:underline flex items-center gap-1 font-open-sans"
                 >
-                  View all <ChevronRight className="w-4 h-4" aria-hidden="true" />
+                  View all{" "}
+                  <ChevronRight className="w-4 h-4" aria-hidden="true" />
                 </button>
               )}
             </div>
@@ -235,12 +266,14 @@ export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) 
               </div>
             ) : (
               <div className="bg-tenant-bg rounded-xl p-4 text-center">
-                <p className="text-sm text-gray-500 font-open-sans">No upcoming payments</p>
+                <p className="text-sm text-gray-500 font-open-sans">
+                  No upcoming payments
+                </p>
               </div>
             )}
             <button
               type="button"
-              onClick={() => onNavigate?.('payments')}
+              onClick={() => onNavigate?.("payments")}
               className="mt-4 block w-full text-center bg-tenant-primary text-white py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity font-open-sans"
             >
               Pay Rent Now
@@ -253,7 +286,10 @@ export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) 
           <div className="bg-white rounded-2xl shadow-sm p-6 h-full transition-shadow hover:shadow-md">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <Wrench className="w-5 h-5 text-tenant-primary" aria-hidden="true" />
+                <Wrench
+                  className="w-5 h-5 text-tenant-primary"
+                  aria-hidden="true"
+                />
                 <h2
                   id="maintenance-heading"
                   className="font-montserrat text-lg font-semibold text-tenant-primary"
@@ -264,10 +300,11 @@ export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) 
               {onNavigate && (
                 <button
                   type="button"
-                  onClick={() => onNavigate('maintenance')}
+                  onClick={() => onNavigate("maintenance")}
                   className="text-sm text-tenant-secondary hover:underline flex items-center gap-1 font-open-sans"
                 >
-                  New request <ChevronRight className="w-4 h-4" aria-hidden="true" />
+                  New request{" "}
+                  <ChevronRight className="w-4 h-4" aria-hidden="true" />
                 </button>
               )}
             </div>
@@ -281,7 +318,7 @@ export const TenantDashboard: React.FC<TenantDashboardProps> = ({ onNavigate }) 
                       </h3>
                       <span
                         className={cn(
-                          'text-xs font-medium px-2 py-0.5 rounded-full capitalize',
+                          "text-xs font-medium px-2 py-0.5 rounded-full capitalize",
                           statusBadge(req.status),
                         )}
                       >

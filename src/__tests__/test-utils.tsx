@@ -10,10 +10,8 @@ const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
   return <MemoryRouter>{children}</MemoryRouter>;
 };
 
-const customRender = (
-  ui: ReactElement,
-  options: ExtendedRenderOptions = {},
-) => render(ui, { wrapper: AllTheProviders, ...options });
+const customRender = (ui: ReactElement, options: ExtendedRenderOptions = {}) =>
+  render(ui, { wrapper: AllTheProviders, ...options });
 
 export * from "@testing-library/react";
 export { customRender as render };

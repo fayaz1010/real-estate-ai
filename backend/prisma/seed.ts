@@ -528,7 +528,9 @@ async function main() {
         description: `Well-maintained ${propData.type.toLowerCase()} in ${propData.city}. Perfect for professionals and families.`,
         slug:
           propData.title.toLowerCase().replace(/\s+/g, "-") + "-" + Date.now(),
-        propertyType: propData.type as Parameters<typeof prisma.property.create>[0]["data"]["propertyType"],
+        propertyType: propData.type as Parameters<
+          typeof prisma.property.create
+        >[0]["data"]["propertyType"],
         status: "ACTIVE",
         address: {
           street: `${Math.floor(Math.random() * 9000 + 1000)} ${["Main", "Oak", "Pine", "Elm"][Math.floor(Math.random() * 4)]} St`,

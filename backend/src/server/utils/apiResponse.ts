@@ -49,7 +49,10 @@ export const badRequest = (
   return send(res, 400, {
     success: false,
     message,
-    error: typeof error === "string" ? error : { code: "BAD_REQUEST", message, details: error },
+    error:
+      typeof error === "string"
+        ? error
+        : { code: "BAD_REQUEST", message, details: error },
   });
 };
 
@@ -66,10 +69,7 @@ export const unauthorized = (
 };
 
 // 403 Forbidden
-export const forbidden = (
-  res: Response,
-  message = "Forbidden",
-): Response => {
+export const forbidden = (res: Response, message = "Forbidden"): Response => {
   return send(res, 403, {
     success: false,
     message,
@@ -98,7 +98,10 @@ export const serverError = (
   return send(res, 500, {
     success: false,
     message,
-    error: typeof error === "string" ? error : { code: "INTERNAL_ERROR", message, details: error },
+    error:
+      typeof error === "string"
+        ? error
+        : { code: "INTERNAL_ERROR", message, details: error },
   });
 };
 
@@ -115,6 +118,10 @@ export const apiResponse = <T>(
   };
   if (data !== undefined) body.data = data;
   if (message) body.message = message;
-  if (error) body.error = typeof error === "string" ? error : { code: "ERROR", message: message || "Error", ...error };
+  if (error)
+    body.error =
+      typeof error === "string"
+        ? error
+        : { code: "ERROR", message: message || "Error", ...error };
   return res.status(statusCode).json(body);
 };

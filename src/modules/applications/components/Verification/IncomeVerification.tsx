@@ -36,7 +36,9 @@ const IncomeVerification: React.FC<IncomeVerificationProps> = ({
 
   const income = formData.income || [];
   const employment = formData.employment || [];
-  const monthlyIncome = calculateMonthlyIncome(income as import("../../types/application.types").IncomeInfo[]);
+  const monthlyIncome = calculateMonthlyIncome(
+    income as import("../../types/application.types").IncomeInfo[],
+  );
 
   const handleDocumentUpload = (files: FileList) => {
     const docNames = Array.from(files).map((f) => f.name);

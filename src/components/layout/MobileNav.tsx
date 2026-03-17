@@ -1,6 +1,6 @@
-import React from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { Home, Building, ClipboardCheck, User } from 'lucide-react';
+import { Home, Building, ClipboardCheck, User } from "lucide-react";
+import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface NavItem {
   label: string;
@@ -9,40 +9,40 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: 'Home', path: '/', icon: Home },
-  { label: 'Properties', path: '/properties', icon: Building },
-  { label: 'Inspections', path: '/inspections', icon: ClipboardCheck },
-  { label: 'Profile', path: '/profile', icon: User },
+  { label: "Home", path: "/", icon: Home },
+  { label: "Properties", path: "/properties", icon: Building },
+  { label: "Inspections", path: "/inspections", icon: ClipboardCheck },
+  { label: "Profile", path: "/profile", icon: User },
 ];
 
 const styles: Record<string, React.CSSProperties> = {
   nav: {
-    position: 'fixed',
+    position: "fixed",
     bottom: 0,
     left: 0,
     right: 0,
     zIndex: 50,
-    backgroundColor: '#091a2b',
+    backgroundColor: "#091a2b",
     fontFamily: "'Open Sans', sans-serif",
   },
   container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-around',
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-around",
     height: 64,
   },
   button: {
-    display: 'flex',
-    flexDirection: 'column' as const,
-    alignItems: 'center',
-    justifyContent: 'center',
+    display: "flex",
+    flexDirection: "column" as const,
+    alignItems: "center",
+    justifyContent: "center",
     flex: 1,
-    height: '100%',
+    height: "100%",
     gap: 4,
-    border: 'none',
-    cursor: 'pointer',
-    background: 'transparent',
-    transition: 'color 0.2s ease',
+    border: "none",
+    cursor: "pointer",
+    background: "transparent",
+    transition: "color 0.2s ease",
     fontFamily: "'Open Sans', sans-serif",
   },
   label: {
@@ -61,7 +61,7 @@ export function MobileNav() {
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           const Icon = item.icon;
-          const color = isActive ? '#ffffff' : '#f1f3f4';
+          const color = isActive ? "#ffffff" : "#f1f3f4";
           const opacity = isActive ? 1 : 0.6;
 
           return (
@@ -74,7 +74,7 @@ export function MobileNav() {
                 opacity,
               }}
               aria-label={item.label}
-              aria-current={isActive ? 'page' : undefined}
+              aria-current={isActive ? "page" : undefined}
             >
               <Icon size={22} strokeWidth={isActive ? 2.5 : 2} />
               <span

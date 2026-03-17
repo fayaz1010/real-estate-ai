@@ -53,8 +53,8 @@ const ApplicationDetails: React.FC = () => {
             Application Not Found
           </h2>
           <p className="text-red-700">
-            The application you&apos;re looking for doesn&apos;t exist or has been
-            removed.
+            The application you&apos;re looking for doesn&apos;t exist or has
+            been removed.
           </p>
         </div>
       </div>
@@ -130,7 +130,11 @@ const ApplicationDetails: React.FC = () => {
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as "overview" | "scoring" | "timeline" | "actions")}
+                onClick={() =>
+                  setActiveTab(
+                    tab.id as "overview" | "scoring" | "timeline" | "actions",
+                  )
+                }
                 className={`px-6 py-4 font-medium transition-colors ${
                   activeTab === tab.id
                     ? "text-blue-600 border-b-2 border-blue-600"

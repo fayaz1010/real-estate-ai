@@ -1,7 +1,6 @@
 // Smart Scheduling & Booking System - Main Scheduling Page
 // CRUD operations for calendar events with BookingCalendar integration
 
-import React, { useState, useEffect, useCallback } from "react";
 import {
   Plus,
   Calendar,
@@ -16,6 +15,8 @@ import {
   X,
   ChevronRight,
 } from "lucide-react";
+import React, { useState, useEffect, useCallback } from "react";
+
 import type {
   Booking,
   BookingType,
@@ -124,7 +125,9 @@ const SchedulingPage: React.FC = () => {
       setFormStartTime(local.toISOString().slice(0, 16));
       const endDate = new Date(date);
       endDate.setHours(endDate.getHours() + 1);
-      const localEnd = new Date(endDate.getTime() - endDate.getTimezoneOffset() * 60000);
+      const localEnd = new Date(
+        endDate.getTime() - endDate.getTimezoneOffset() * 60000,
+      );
       setFormEndTime(localEnd.toISOString().slice(0, 16));
     }
     setShowForm(true);
@@ -138,7 +141,9 @@ const SchedulingPage: React.FC = () => {
     setFormDescription(booking.description || "");
     const start = new Date(booking.startTime);
     const end = new Date(booking.endTime);
-    const localStart = new Date(start.getTime() - start.getTimezoneOffset() * 60000);
+    const localStart = new Date(
+      start.getTime() - start.getTimezoneOffset() * 60000,
+    );
     const localEnd = new Date(end.getTime() - end.getTimezoneOffset() * 60000);
     setFormStartTime(localStart.toISOString().slice(0, 16));
     setFormEndTime(localEnd.toISOString().slice(0, 16));
@@ -158,7 +163,11 @@ const SchedulingPage: React.FC = () => {
     if (!formStartTime) errors.startTime = "Start time is required";
     if (!formEndTime) errors.endTime = "End time is required";
     if (!formTitle.trim()) errors.title = "Title is required";
-    if (formStartTime && formEndTime && new Date(formStartTime) >= new Date(formEndTime)) {
+    if (
+      formStartTime &&
+      formEndTime &&
+      new Date(formStartTime) >= new Date(formEndTime)
+    ) {
       errors.endTime = "End time must be after start time";
     }
     setFormErrors(errors);
@@ -313,13 +322,18 @@ const SchedulingPage: React.FC = () => {
                       <div className="flex items-start justify-between">
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${
-                              STATUS_COLORS[booking.status] || STATUS_COLORS.pending
-                            } font-['Open_Sans']`}>
-                              {booking.status.charAt(0).toUpperCase() + booking.status.slice(1)}
+                            <span
+                              className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${
+                                STATUS_COLORS[booking.status] ||
+                                STATUS_COLORS.pending
+                              } font-['Open_Sans']`}
+                            >
+                              {booking.status.charAt(0).toUpperCase() +
+                                booking.status.slice(1)}
                             </span>
                             <span className="text-[10px] text-gray-400 font-['Open_Sans']">
-                              {booking.type.charAt(0).toUpperCase() + booking.type.slice(1)}
+                              {booking.type.charAt(0).toUpperCase() +
+                                booking.type.slice(1)}
                             </span>
                           </div>
                           <p className="text-sm font-semibold text-[#091a2b] truncate font-['Open_Sans']">
@@ -327,12 +341,20 @@ const SchedulingPage: React.FC = () => {
                           </p>
                           <div className="flex items-center gap-1 mt-1 text-xs text-gray-500 font-['Open_Sans']">
                             <Clock className="w-3 h-3" />
-                            {new Date(booking.startTime).toLocaleDateString("en-US", {
-                              month: "short", day: "numeric",
-                            })}{" "}
-                            {new Date(booking.startTime).toLocaleTimeString("en-US", {
-                              hour: "numeric", minute: "2-digit",
-                            })}
+                            {new Date(booking.startTime).toLocaleDateString(
+                              "en-US",
+                              {
+                                month: "short",
+                                day: "numeric",
+                              },
+                            )}{" "}
+                            {new Date(booking.startTime).toLocaleTimeString(
+                              "en-US",
+                              {
+                                hour: "numeric",
+                                minute: "2-digit",
+                              },
+                            )}
                           </div>
                         </div>
                         <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -377,7 +399,10 @@ const SchedulingPage: React.FC = () => {
       {showForm && (
         <div
           className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4"
-          onClick={() => { setShowForm(false); resetForm(); }}
+          onClick={() => {
+            setShowForm(false);
+            resetForm();
+          }}
         >
           <div
             className="bg-white rounded-xl shadow-xl max-w-lg w-full p-6 max-h-[90vh] overflow-y-auto"
@@ -388,7 +413,10 @@ const SchedulingPage: React.FC = () => {
                 {editingBooking ? "Edit Booking" : "New Booking"}
               </h3>
               <button
-                onClick={() => { setShowForm(false); resetForm(); }}
+                onClick={() => {
+                  setShowForm(false);
+                  resetForm();
+                }}
                 className="text-gray-400 hover:text-gray-600 transition-colors"
                 aria-label="Close"
               >
@@ -407,7 +435,10 @@ const SchedulingPage: React.FC = () => {
               {/* Booking Type */}
               <div>
                 <label className={labelClasses} htmlFor="form-type">
-                  <Calendar className="inline w-4 h-4 mr-1 -mt-0.5" aria-hidden="true" />
+                  <Calendar
+                    className="inline w-4 h-4 mr-1 -mt-0.5"
+                    aria-hidden="true"
+                  />
                   Booking Type *
                 </label>
                 <select
@@ -417,7 +448,9 @@ const SchedulingPage: React.FC = () => {
                   className={fieldClasses}
                 >
                   {BOOKING_TYPES.map((t) => (
-                    <option key={t.value} value={t.value}>{t.label}</option>
+                    <option key={t.value} value={t.value}>
+                      {t.label}
+                    </option>
                   ))}
                 </select>
                 {formErrors.type && (
@@ -430,7 +463,10 @@ const SchedulingPage: React.FC = () => {
               {/* Property ID */}
               <div>
                 <label className={labelClasses} htmlFor="form-property">
-                  <MapPin className="inline w-4 h-4 mr-1 -mt-0.5" aria-hidden="true" />
+                  <MapPin
+                    className="inline w-4 h-4 mr-1 -mt-0.5"
+                    aria-hidden="true"
+                  />
                   Property ID *
                 </label>
                 <input
@@ -451,7 +487,9 @@ const SchedulingPage: React.FC = () => {
 
               {/* Title */}
               <div>
-                <label className={labelClasses} htmlFor="form-title">Title *</label>
+                <label className={labelClasses} htmlFor="form-title">
+                  Title *
+                </label>
                 <input
                   id="form-title"
                   type="text"
@@ -470,7 +508,10 @@ const SchedulingPage: React.FC = () => {
               {/* Description */}
               <div>
                 <label className={labelClasses} htmlFor="form-description">
-                  <FileText className="inline w-4 h-4 mr-1 -mt-0.5" aria-hidden="true" />
+                  <FileText
+                    className="inline w-4 h-4 mr-1 -mt-0.5"
+                    aria-hidden="true"
+                  />
                   Description
                 </label>
                 <textarea
@@ -487,7 +528,10 @@ const SchedulingPage: React.FC = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className={labelClasses} htmlFor="form-start">
-                    <Clock className="inline w-4 h-4 mr-1 -mt-0.5" aria-hidden="true" />
+                    <Clock
+                      className="inline w-4 h-4 mr-1 -mt-0.5"
+                      aria-hidden="true"
+                    />
                     Start Time *
                   </label>
                   <input
@@ -504,7 +548,9 @@ const SchedulingPage: React.FC = () => {
                   )}
                 </div>
                 <div>
-                  <label className={labelClasses} htmlFor="form-end">End Time *</label>
+                  <label className={labelClasses} htmlFor="form-end">
+                    End Time *
+                  </label>
                   <input
                     id="form-end"
                     type="datetime-local"
@@ -522,7 +568,9 @@ const SchedulingPage: React.FC = () => {
 
               {/* Notes */}
               <div>
-                <label className={labelClasses} htmlFor="form-notes">Notes</label>
+                <label className={labelClasses} htmlFor="form-notes">
+                  Notes
+                </label>
                 <textarea
                   id="form-notes"
                   value={formNotes}
@@ -555,7 +603,10 @@ const SchedulingPage: React.FC = () => {
                 </button>
                 <button
                   type="button"
-                  onClick={() => { setShowForm(false); resetForm(); }}
+                  onClick={() => {
+                    setShowForm(false);
+                    resetForm();
+                  }}
                   className="px-5 py-2.5 text-sm font-semibold text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-['Open_Sans']"
                 >
                   Cancel
@@ -580,7 +631,8 @@ const SchedulingPage: React.FC = () => {
               Delete Booking
             </h3>
             <p className="text-sm text-gray-600 font-['Open_Sans'] mb-5">
-              Are you sure you want to delete this booking? This action cannot be undone.
+              Are you sure you want to delete this booking? This action cannot
+              be undone.
             </p>
             <div className="flex items-center gap-3">
               <button

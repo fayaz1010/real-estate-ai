@@ -61,7 +61,11 @@ const TEST_USER = {
 };
 
 jest.mock("../../middleware/auth", () => ({
-  authenticate: (req: any, _res: any, next: any) => {
+  authenticate: (
+    req: Record<string, unknown>,
+    _res: unknown,
+    next: () => void,
+  ) => {
     req.user = {
       userId: "user-1",
       email: "tenant@test.com",
@@ -70,7 +74,11 @@ jest.mock("../../middleware/auth", () => ({
     };
     next();
   },
-  optionalAuth: (req: any, _res: any, next: any) => {
+  optionalAuth: (
+    req: Record<string, unknown>,
+    _res: unknown,
+    next: () => void,
+  ) => {
     req.user = {
       userId: "user-1",
       email: "tenant@test.com",
@@ -79,44 +87,72 @@ jest.mock("../../middleware/auth", () => ({
     };
     next();
   },
-  authorize: () => (_req: any, _res: any, next: any) => next(),
+  authorize:
+    () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
+      next(),
 }));
 
 jest.mock("../../middleware/rateLimiter", () => ({
-  rateLimiter: (_req: any, _res: any, next: any) => next(),
+  rateLimiter: (
+    _req: Record<string, unknown>,
+    _res: unknown,
+    next: () => void,
+  ) => next(),
 }));
 
 jest.mock("../../middleware/validation", () => ({
-  validate: () => (_req: any, _res: any, next: any) => next(),
-  validateBody: () => (_req: any, _res: any, next: any) => next(),
+  validate:
+    () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
+      next(),
+  validateBody:
+    () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
+      next(),
 }));
 
 const mockConfig = {
-    nodeEnv: "test",
-    port: 3001,
-    corsOrigin: "*",
-    swaggerEnabled: false,
-    stripe: { secretKey: "", webhookSecret: "", publishableKey: "" },
-    vapid: { publicKey: "", privateKey: "", subject: "" },
-    smtp: { host: "", port: 587, secure: false, user: "", pass: "", fromName: "", fromEmail: "" },
-    cloudflare: { accountId: "", accessKeyId: "", accessKeySecret: "", bucketName: "", region: "auto" },
-    rateLimit: { windowMs: 900000, maxRequests: 100 },
-    emailRateLimit: { windowMs: 3600000, max: 10 },
-    google: { clientId: "", clientSecret: "" },
-    features: { emailVerification: false, phoneVerification: false, twoFactor: false },
-    jwtSecret: "test-secret",
-    jwtRefreshSecret: "test-refresh-secret",
-    jwtExpiresIn: "15m",
-    refreshTokenExpiresIn: "7d",
-    frontendUrl: "http://localhost:3000",
-    databaseUrl: "test",
-    maxFileSize: 5242880,
-    uploadPath: "./uploads",
-    logLevel: "error",
-    logToFile: false,
-    logFilePath: "",
-    cacheEnabled: false,
-    cacheTtl: 3600,
+  nodeEnv: "test",
+  port: 3001,
+  corsOrigin: "*",
+  swaggerEnabled: false,
+  stripe: { secretKey: "", webhookSecret: "", publishableKey: "" },
+  vapid: { publicKey: "", privateKey: "", subject: "" },
+  smtp: {
+    host: "",
+    port: 587,
+    secure: false,
+    user: "",
+    pass: "",
+    fromName: "",
+    fromEmail: "",
+  },
+  cloudflare: {
+    accountId: "",
+    accessKeyId: "",
+    accessKeySecret: "",
+    bucketName: "",
+    region: "auto",
+  },
+  rateLimit: { windowMs: 900000, maxRequests: 100 },
+  emailRateLimit: { windowMs: 3600000, max: 10 },
+  google: { clientId: "", clientSecret: "" },
+  features: {
+    emailVerification: false,
+    phoneVerification: false,
+    twoFactor: false,
+  },
+  jwtSecret: "test-secret",
+  jwtRefreshSecret: "test-refresh-secret",
+  jwtExpiresIn: "15m",
+  refreshTokenExpiresIn: "7d",
+  frontendUrl: "http://localhost:3000",
+  databaseUrl: "test",
+  maxFileSize: 5242880,
+  uploadPath: "./uploads",
+  logLevel: "error",
+  logToFile: false,
+  logFilePath: "",
+  cacheEnabled: false,
+  cacheTtl: 3600,
 };
 
 jest.mock("../../config/env", () => ({

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { screeningService } from '@/services/screeningService';
+import React, { useState } from "react";
+
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { screeningService } from "@/services/screeningService";
 
 interface Property {
   id: string;
@@ -35,10 +36,10 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
   onCancel,
 }) => {
   const [formData, setFormData] = useState<FormData>({
-    tenantName: '',
-    email: '',
-    phone: '',
-    propertyId: '',
+    tenantName: "",
+    email: "",
+    phone: "",
+    propertyId: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
   const [submitting, setSubmitting] = useState(false);
@@ -48,23 +49,23 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
     const newErrors: FormErrors = {};
 
     if (!formData.tenantName.trim()) {
-      newErrors.tenantName = 'Tenant name is required.';
+      newErrors.tenantName = "Tenant name is required.";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required.';
+      newErrors.email = "Email is required.";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = 'Please enter a valid email address.';
+      newErrors.email = "Please enter a valid email address.";
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required.';
+      newErrors.phone = "Phone number is required.";
     } else if (!/^\+?[\d\s()-]{7,}$/.test(formData.phone)) {
-      newErrors.phone = 'Please enter a valid phone number.';
+      newErrors.phone = "Please enter a valid phone number.";
     }
 
     if (!formData.propertyId) {
-      newErrors.propertyId = 'Please select a property.';
+      newErrors.propertyId = "Please select a property.";
     }
 
     setErrors(newErrors);
@@ -92,9 +93,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
       await screeningService.createScreeningRequest(formData);
       onSuccess?.();
     } catch {
-      setSubmitError(
-        'Failed to submit screening request. Please try again.',
-      );
+      setSubmitError("Failed to submit screening request. Please try again.");
     } finally {
       setSubmitting(false);
     }
@@ -121,7 +120,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
         <label
           htmlFor="tenantName"
           className="block text-sm font-semibold mb-1.5"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
+          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
         >
           Tenant Name
         </label>
@@ -132,7 +131,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
           onChange={handleChange}
           placeholder="Enter tenant's full name"
           aria-invalid={!!errors.tenantName}
-          aria-describedby={errors.tenantName ? 'tenantName-error' : undefined}
+          aria-describedby={errors.tenantName ? "tenantName-error" : undefined}
           style={{ fontFamily: "'Open Sans', sans-serif" }}
         />
         {errors.tenantName && (
@@ -151,7 +150,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
         <label
           htmlFor="email"
           className="block text-sm font-semibold mb-1.5"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
+          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
         >
           Email Address
         </label>
@@ -163,7 +162,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
           onChange={handleChange}
           placeholder="tenant@example.com"
           aria-invalid={!!errors.email}
-          aria-describedby={errors.email ? 'email-error' : undefined}
+          aria-describedby={errors.email ? "email-error" : undefined}
           style={{ fontFamily: "'Open Sans', sans-serif" }}
         />
         {errors.email && (
@@ -182,7 +181,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
         <label
           htmlFor="phone"
           className="block text-sm font-semibold mb-1.5"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
+          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
         >
           Phone Number
         </label>
@@ -194,7 +193,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
           onChange={handleChange}
           placeholder="(555) 123-4567"
           aria-invalid={!!errors.phone}
-          aria-describedby={errors.phone ? 'phone-error' : undefined}
+          aria-describedby={errors.phone ? "phone-error" : undefined}
           style={{ fontFamily: "'Open Sans', sans-serif" }}
         />
         {errors.phone && (
@@ -213,7 +212,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
         <label
           htmlFor="propertyId"
           className="block text-sm font-semibold mb-1.5"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
+          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
         >
           Property
         </label>
@@ -224,7 +223,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
           onChange={handleChange}
           className="flex h-10 w-full rounded-md border border-primary/30 bg-background px-3 py-2 text-sm text-text_primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           aria-invalid={!!errors.propertyId}
-          aria-describedby={errors.propertyId ? 'propertyId-error' : undefined}
+          aria-describedby={errors.propertyId ? "propertyId-error" : undefined}
           style={{ fontFamily: "'Open Sans', sans-serif" }}
         >
           <option value="">Select a property</option>
@@ -248,7 +247,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
       {/* Actions */}
       <div className="flex gap-3 pt-2">
         <Button type="submit" disabled={submitting}>
-          {submitting ? 'Submitting...' : 'Submit Screening Request'}
+          {submitting ? "Submitting..." : "Submit Screening Request"}
         </Button>
         {onCancel && (
           <Button type="button" variant="outline" onClick={onCancel}>

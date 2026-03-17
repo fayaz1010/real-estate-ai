@@ -1,5 +1,6 @@
-import type { TrialStatus } from "../types/trial";
 import type { PlanId, BillingInterval } from "../types/billing";
+import type { TrialStatus } from "../types/trial";
+
 import { createCheckoutSession } from "./billingService";
 
 // ---------------------------------------------------------------------------
@@ -29,7 +30,10 @@ function buildTrialStatus(startDate: Date, hasConverted = false): TrialStatus {
   endDate.setDate(endDate.getDate() + TRIAL_DURATION_DAYS);
 
   const msRemaining = endDate.getTime() - now.getTime();
-  const daysRemaining = Math.max(0, Math.ceil(msRemaining / (1000 * 60 * 60 * 24)));
+  const daysRemaining = Math.max(
+    0,
+    Math.ceil(msRemaining / (1000 * 60 * 60 * 24)),
+  );
   const isTrialing = !hasConverted && daysRemaining > 0;
 
   return {
@@ -40,9 +44,21 @@ function buildTrialStatus(startDate: Date, hasConverted = false): TrialStatus {
     hasConverted,
     usageHighlights: [
       { feature: "Properties", usageCount: 0, value: "0 / 10 properties used" },
-      { feature: "Maintenance Requests", usageCount: 0, value: "0 maintenance requests tracked" },
-      { feature: "Rent Collected", usageCount: 0, value: "$0 rent collected online" },
-      { feature: "Tenant Screenings", usageCount: 0, value: "0 tenant screenings completed" },
+      {
+        feature: "Maintenance Requests",
+        usageCount: 0,
+        value: "0 maintenance requests tracked",
+      },
+      {
+        feature: "Rent Collected",
+        usageCount: 0,
+        value: "$0 rent collected online",
+      },
+      {
+        feature: "Tenant Screenings",
+        usageCount: 0,
+        value: "0 tenant screenings completed",
+      },
     ],
   };
 }
@@ -60,16 +76,21 @@ export async function startTrial(userId: string): Promise<TrialStatus> {
 }
 
 /** Retrieve the current trial status for a user, or null if no trial exists. */
-export async function getTrialStatus(userId: string): Promise<TrialStatus | null> {
+export async function getTrialStatus(
+  userId: string,
+): Promise<TrialStatus | null> {
   const stored = localStorage.getItem(`trial_start_${userId}`);
   if (!stored) return null;
 
-  const hasConverted = localStorage.getItem(`trial_converted_${userId}`) === "true";
+  const hasConverted =
+    localStorage.getItem(`trial_converted_${userId}`) === "true";
   return buildTrialStatus(new Date(stored), hasConverted);
 }
 
 /** Return the trial expiry date (ISO string) for a user, or null. */
-export async function getTrialExpiryDate(userId: string): Promise<string | null> {
+export async function getTrialExpiryDate(
+  userId: string,
+): Promise<string | null> {
   const status = await getTrialStatus(userId);
   if (!status) return null;
   return status.trialEndDate.toISOString();
@@ -116,7 +137,8 @@ export async function checkFeatureAccess(
   // Trial expired and not converted — restrict to basic viewing
   return {
     allowed: false,
-    reason: "Your free trial has expired. Upgrade to a paid plan to continue using this feature.",
+    reason:
+      "Your free trial has expired. Upgrade to a paid plan to continue using this feature.",
   };
 }
 
@@ -130,7 +152,10 @@ export async function checkPropertyLimit(
   const status = await getTrialStatus(userId);
   if (!status || status.hasConverted) return { allowed: true };
 
-  if (status.isTrialing && currentPropertyCount >= STARTER_TRIAL_FEATURES.maxProperties) {
+  if (
+    status.isTrialing &&
+    currentPropertyCount >= STARTER_TRIAL_FEATURES.maxProperties
+  ) {
     return {
       allowed: false,
       reason: `Trial accounts are limited to ${STARTER_TRIAL_FEATURES.maxProperties} properties. Upgrade to add more.`,
@@ -140,7 +165,8 @@ export async function checkPropertyLimit(
   if (!status.isTrialing) {
     return {
       allowed: false,
-      reason: "Your free trial has expired. Upgrade to a paid plan to manage properties.",
+      reason:
+        "Your free trial has expired. Upgrade to a paid plan to manage properties.",
     };
   }
 

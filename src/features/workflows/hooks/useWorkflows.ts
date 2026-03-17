@@ -1,7 +1,8 @@
-import { useState, useCallback, useEffect } from 'react';
-import type { Workflow, WorkflowFormData } from '../types';
+import { useState, useCallback, useEffect } from "react";
 
-const STORAGE_KEY = 'realestate_workflows';
+import type { Workflow, WorkflowFormData } from "../types";
+
+const STORAGE_KEY = "realestate_workflows";
 
 function loadWorkflows(): Workflow[] {
   try {
@@ -24,7 +25,7 @@ function saveWorkflows(workflows: Workflow[]): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(workflows));
 }
 
-export function useWorkflows(userId: string = 'current-user') {
+export function useWorkflows(userId: string = "current-user") {
   const [workflows, setWorkflows] = useState<Workflow[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +38,7 @@ export function useWorkflows(userId: string = 'current-user') {
       const userWorkflows = all.filter((w) => w.userId === userId);
       setWorkflows(userWorkflows);
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'Failed to load workflows');
+      setError(e instanceof Error ? e.message : "Failed to load workflows");
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +69,7 @@ export function useWorkflows(userId: string = 'current-user') {
       setWorkflows((prev) => [...prev, newWorkflow]);
       return newWorkflow;
     },
-    [userId]
+    [userId],
   );
 
   const updateWorkflow = useCallback(
@@ -85,11 +86,11 @@ export function useWorkflows(userId: string = 'current-user') {
       all[index] = updated;
       saveWorkflows(all);
       setWorkflows((prev) =>
-        prev.map((w) => (w.id === workflowId ? updated : w))
+        prev.map((w) => (w.id === workflowId ? updated : w)),
       );
       return updated;
     },
-    []
+    [],
   );
 
   const deleteWorkflow = useCallback((workflowId: string): boolean => {
@@ -107,7 +108,7 @@ export function useWorkflows(userId: string = 'current-user') {
       if (!workflow) return null;
       return updateWorkflow(workflowId, { isActive: !workflow.isActive });
     },
-    [workflows, updateWorkflow]
+    [workflows, updateWorkflow],
   );
 
   return {

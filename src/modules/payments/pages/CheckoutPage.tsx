@@ -1,5 +1,5 @@
-import { Elements } from '@stripe/react-stripe-js';
-import { loadStripe } from '@stripe/stripe-js';
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import {
   ArrowLeft,
   Shield,
@@ -7,32 +7,32 @@ import {
   AlertCircle,
   Sparkles,
   Check,
-} from 'lucide-react';
-import React, { useState, useEffect, useMemo } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
-
-import { PLANS, formatPrice } from '@/services/billingService';
-import { COLORS, TYPOGRAPHY } from '@/types';
+} from "lucide-react";
+import React, { useState, useEffect, useMemo } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 import {
   createPaymentIntent,
   getOutstandingBalance,
   getSubscriptionDetails,
-} from '../api/paymentService';
+} from "../api/paymentService";
 import type {
   OutstandingBalance,
   SubscriptionDetails,
-} from '../api/paymentService';
-import { CheckoutForm } from '../components/CheckoutForm';
-import type { PaymentTypeOption } from '../components/CheckoutForm';
-import { PaymentMethodSelector } from '../components/PaymentMethodSelector';
+} from "../api/paymentService";
+import { CheckoutForm } from "../components/CheckoutForm";
+import type { PaymentTypeOption } from "../components/CheckoutForm";
+import { PaymentMethodSelector } from "../components/PaymentMethodSelector";
+
+import { PLANS, formatPrice } from "@/services/billingService";
+import { COLORS, TYPOGRAPHY } from "@/types";
 
 // ---------------------------------------------------------------------------
 // Stripe instance (loaded once)
 // ---------------------------------------------------------------------------
 
 const stripePromise = loadStripe(
-  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? '',
+  import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY ?? "",
 );
 
 // ---------------------------------------------------------------------------
@@ -41,35 +41,35 @@ const stripePromise = loadStripe(
 
 const TIER_FEATURES: Record<string, string[]> = {
   starter: [
-    'Up to 25 units',
-    'Basic property management',
-    'Tenant portal',
-    'Rent collection',
-    'Limited AI insights',
+    "Up to 25 units",
+    "Basic property management",
+    "Tenant portal",
+    "Rent collection",
+    "Limited AI insights",
   ],
   professional: [
-    'Up to 100 units',
-    'Full AI assistant',
-    'Automated tenant screening',
-    'Predictive maintenance alerts',
-    'Financial reporting',
-    'API access',
+    "Up to 100 units",
+    "Full AI assistant",
+    "Automated tenant screening",
+    "Predictive maintenance alerts",
+    "Financial reporting",
+    "API access",
   ],
   business: [
-    'Up to 500 units',
-    'Advanced AI analytics',
-    'Portfolio optimization',
-    'Custom workflows',
-    'Priority support',
-    'White-label options',
+    "Up to 500 units",
+    "Advanced AI analytics",
+    "Portfolio optimization",
+    "Custom workflows",
+    "Priority support",
+    "White-label options",
   ],
   enterprise: [
-    'Unlimited units',
-    'Dedicated AI model training',
-    'Custom integrations',
-    'SLA guarantees',
-    'Dedicated account manager',
-    'On-premise option',
+    "Unlimited units",
+    "Dedicated AI model training",
+    "Custom integrations",
+    "SLA guarantees",
+    "Dedicated account manager",
+    "On-premise option",
   ],
 };
 
@@ -82,12 +82,12 @@ const CheckoutPage: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   // Query params: ?type=rent|deposit|subscription&paymentId=xxx&planId=xxx&interval=monthly|yearly
-  const paymentType = (searchParams.get('type') ?? 'rent') as PaymentTypeOption;
-  const paymentId = searchParams.get('paymentId');
-  const planId = searchParams.get('planId');
-  const billingInterval = (searchParams.get('interval') ?? 'monthly') as
-    | 'monthly'
-    | 'yearly';
+  const paymentType = (searchParams.get("type") ?? "rent") as PaymentTypeOption;
+  const paymentId = searchParams.get("paymentId");
+  const planId = searchParams.get("planId");
+  const billingInterval = (searchParams.get("interval") ?? "monthly") as
+    | "monthly"
+    | "yearly";
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -106,8 +106,8 @@ const CheckoutPage: React.FC = () => {
 
   // Compute amount
   const amount = useMemo(() => {
-    if (paymentType === 'subscription' && selectedPlan) {
-      return billingInterval === 'yearly'
+    if (paymentType === "subscription" && selectedPlan) {
+      return billingInterval === "yearly"
         ? selectedPlan.yearlyPrice
         : selectedPlan.monthlyPrice;
     }
@@ -117,20 +117,20 @@ const CheckoutPage: React.FC = () => {
 
   // Charge breakdown
   const breakdown = useMemo(() => {
-    if (paymentType === 'subscription' && selectedPlan) {
+    if (paymentType === "subscription" && selectedPlan) {
       const items = [
         {
           label: `${selectedPlan.name} Plan (${billingInterval})`,
           amount:
-            billingInterval === 'yearly'
+            billingInterval === "yearly"
               ? selectedPlan.yearlyPrice
               : selectedPlan.monthlyPrice,
         },
       ];
-      if (billingInterval === 'yearly') {
+      if (billingInterval === "yearly") {
         const monthlyCost = selectedPlan.monthlyPrice * 12;
         items.push({
-          label: 'Annual discount (20% — 2 months free)',
+          label: "Annual discount (20% — 2 months free)",
           amount: -(monthlyCost - selectedPlan.yearlyPrice),
         });
       }
@@ -155,21 +155,20 @@ const CheckoutPage: React.FC = () => {
         setError(null);
 
         // Fetch balance for rent/deposit
-        if (paymentType === 'rent' || paymentType === 'deposit') {
+        if (paymentType === "rent" || paymentType === "deposit") {
           const balanceData = await getOutstandingBalance();
           if (!cancelled) setBalance(balanceData);
         }
 
         // Fetch subscription details
-        if (paymentType === 'subscription') {
+        if (paymentType === "subscription") {
           const subData = await getSubscriptionDetails();
           if (!cancelled) setSubscription(subData);
         }
 
         // Create payment intent
         if (paymentId) {
-          const { clientSecret: secret } =
-            await createPaymentIntent(paymentId);
+          const { clientSecret: secret } = await createPaymentIntent(paymentId);
           if (!cancelled) setClientSecret(secret);
         }
       } catch (err) {
@@ -177,7 +176,7 @@ const CheckoutPage: React.FC = () => {
           setError(
             err instanceof Error
               ? err.message
-              : 'Failed to load payment information.',
+              : "Failed to load payment information.",
           );
         }
       } finally {
@@ -191,7 +190,7 @@ const CheckoutPage: React.FC = () => {
   }, [paymentType, paymentId]);
 
   const handleSuccess = () => {
-    navigate('/checkout/success');
+    navigate("/checkout/success");
   };
 
   // ---- Loading state ----
@@ -271,7 +270,7 @@ const CheckoutPage: React.FC = () => {
           )}
 
           {/* Subscription tier display */}
-          {paymentType === 'subscription' && selectedPlan && (
+          {paymentType === "subscription" && selectedPlan && (
             <div
               className="mb-6 rounded-lg border bg-white p-6"
               style={{ fontFamily: TYPOGRAPHY.bodyFont }}
@@ -291,13 +290,13 @@ const CheckoutPage: React.FC = () => {
                     </h2>
                   </div>
                   <p className="mt-1 text-sm text-gray-500">
-                    {billingInterval === 'yearly'
+                    {billingInterval === "yearly"
                       ? `${formatPrice(selectedPlan.yearlyPrice)}/year (save 20%)`
                       : `${formatPrice(selectedPlan.monthlyPrice)}/month`}
                   </p>
                   {subscription && (
                     <p className="mt-1 text-xs text-gray-400">
-                      Current period ends{' '}
+                      Current period ends{" "}
                       {new Date(
                         subscription.currentPeriodEnd,
                       ).toLocaleDateString()}
@@ -312,7 +311,7 @@ const CheckoutPage: React.FC = () => {
                     {formatPrice(amount)}
                   </span>
                   <span className="text-sm text-gray-500">
-                    /{billingInterval === 'yearly' ? 'yr' : 'mo'}
+                    /{billingInterval === "yearly" ? "yr" : "mo"}
                   </span>
                 </div>
               </div>
@@ -335,12 +334,12 @@ const CheckoutPage: React.FC = () => {
                 </ul>
               )}
 
-              {billingInterval === 'yearly' && (
+              {billingInterval === "yearly" && (
                 <div className="mt-4 rounded-md bg-green-50 px-3 py-2 text-xs font-medium text-green-700">
-                  You save{' '}
+                  You save{" "}
                   {formatPrice(
                     selectedPlan.monthlyPrice * 12 - selectedPlan.yearlyPrice,
-                  )}{' '}
+                  )}{" "}
                   per year with annual billing (2 months free)
                 </div>
               )}
@@ -348,7 +347,7 @@ const CheckoutPage: React.FC = () => {
           )}
 
           {/* All tiers overview (when no specific plan selected) */}
-          {paymentType === 'subscription' && !selectedPlan && (
+          {paymentType === "subscription" && !selectedPlan && (
             <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {PLANS.map((plan) => (
                 <button
@@ -356,11 +355,11 @@ const CheckoutPage: React.FC = () => {
                   type="button"
                   onClick={() => {
                     const params = new URLSearchParams(searchParams);
-                    params.set('planId', plan.id);
+                    params.set("planId", plan.id);
                     navigate(`?${params.toString()}`, { replace: true });
                   }}
                   className={`rounded-lg border bg-white p-5 text-left transition-shadow hover:shadow-md ${
-                    plan.highlighted ? 'border-2 ring-1 ring-blue-100' : ''
+                    plan.highlighted ? "border-2 ring-1 ring-blue-100" : ""
                   }`}
                   style={
                     plan.highlighted
@@ -448,7 +447,7 @@ const CheckoutPage: React.FC = () => {
                 </h3>
 
                 {/* Outstanding balance for rent */}
-                {paymentType === 'rent' && balance && (
+                {paymentType === "rent" && balance && (
                   <div className="mb-4 space-y-2">
                     {balance.payments.map((p) => (
                       <div
@@ -488,9 +487,8 @@ const CheckoutPage: React.FC = () => {
                   type="button"
                   onClick={() => {
                     // Trigger the form submit programmatically
-                    const form = document.querySelector<HTMLFormElement>(
-                      'form',
-                    );
+                    const form =
+                      document.querySelector<HTMLFormElement>("form");
                     form?.requestSubmit();
                   }}
                   disabled={!clientSecret}

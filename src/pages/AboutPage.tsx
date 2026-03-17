@@ -1,7 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
-
-import { PageMeta } from "../components/seo";
 import {
   Zap,
   Shield,
@@ -17,6 +13,10 @@ import {
   Code,
   Cpu,
 } from "lucide-react";
+import React from "react";
+import { Link } from "react-router-dom";
+
+import { PageMeta } from "../components/seo";
 
 const stats = [
   { label: "Founded", value: "2024", icon: Building },
@@ -105,19 +105,17 @@ export const AboutPage: React.FC = () => {
             About RealEstate AI
           </h1>
           <p className="text-lg md:text-xl text-gray-300 font-inter max-w-3xl mx-auto leading-relaxed">
-            We are transforming property management with artificial intelligence.
-            Our platform combines decades of real estate expertise with
-            state-of-the-art AI to help landlords and property managers operate
-            smarter, reduce costs, and deliver exceptional tenant experiences.
+            We are transforming property management with artificial
+            intelligence. Our platform combines decades of real estate expertise
+            with state-of-the-art AI to help landlords and property managers
+            operate smarter, reduce costs, and deliver exceptional tenant
+            experiences.
           </p>
         </div>
       </section>
 
       {/* Mission Section */}
-      <section
-        className="py-20 bg-gray-50"
-        aria-labelledby="mission-heading"
-      >
+      <section className="py-20 bg-gray-50" aria-labelledby="mission-heading">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
             <span className="inline-block px-4 py-1.5 bg-realestate-accent/10 text-realestate-accent font-semibold text-sm rounded-full mb-4 font-inter">
@@ -142,10 +140,7 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* Stats Section */}
-      <section
-        className="py-20 bg-white"
-        aria-labelledby="stats-heading"
-      >
+      <section className="py-20 bg-white" aria-labelledby="stats-heading">
         <div className="section-container">
           <h2 id="stats-heading" className="sr-only">
             Key Statistics
@@ -226,10 +221,7 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* Team Section */}
-      <section
-        className="py-20 bg-gray-50"
-        aria-labelledby="team-heading"
-      >
+      <section className="py-20 bg-gray-50" aria-labelledby="team-heading">
         <div className="section-container">
           <div className="text-center mb-14">
             <span className="inline-block px-4 py-1.5 bg-realestate-accent/10 text-realestate-accent font-semibold text-sm rounded-full mb-4 font-inter">
@@ -278,10 +270,7 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* CTA Section */}
-      <section
-        className="py-20 bg-white"
-        aria-labelledby="cta-heading"
-      >
+      <section className="py-20 bg-white" aria-labelledby="cta-heading">
         <div className="section-container">
           <div className="card-elevated bg-gradient-to-br from-realestate-primary to-realestate-secondary p-10 md:p-16 text-center rounded-3xl shadow-realestate-lg">
             <h2

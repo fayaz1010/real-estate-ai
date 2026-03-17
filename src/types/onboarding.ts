@@ -1,4 +1,9 @@
-export type OnboardingCategory = 'account' | 'properties' | 'tenants' | 'billing' | 'integrations';
+export type OnboardingCategory =
+  | "account"
+  | "properties"
+  | "tenants"
+  | "billing"
+  | "integrations";
 
 export interface OnboardingStep {
   id: string;

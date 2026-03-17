@@ -19,7 +19,9 @@ export const login = createAsyncThunk(
     try {
       return await authService.login(credentials);
     } catch (error: unknown) {
-      return rejectWithValue(error instanceof Error ? error.message : String(error));
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -30,7 +32,9 @@ export const register = createAsyncThunk(
     try {
       return await authService.register(registerData);
     } catch (error: unknown) {
-      return rejectWithValue(error instanceof Error ? error.message : String(error));
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -47,7 +51,9 @@ export const refreshAuth = createAsyncThunk(
       const user = await authService.getCurrentUser();
       return { user, tokens };
     } catch (error: unknown) {
-      return rejectWithValue(error instanceof Error ? error.message : String(error));
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -58,7 +64,9 @@ export const loadUser = createAsyncThunk(
     try {
       return await authService.getCurrentUser();
     } catch (error: unknown) {
-      return rejectWithValue(error instanceof Error ? error.message : String(error));
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -70,7 +78,9 @@ export const verifyEmail = createAsyncThunk(
       await authService.verifyEmail(token);
       return true;
     } catch (error: unknown) {
-      return rejectWithValue(error instanceof Error ? error.message : String(error));
+      return rejectWithValue(
+        error instanceof Error ? error.message : String(error),
+      );
     }
   },
 );
@@ -194,5 +204,10 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearError, updateUser, setAuthenticated, setTrialExpirationDate } = authSlice.actions;
+export const {
+  clearError,
+  updateUser,
+  setAuthenticated,
+  setTrialExpirationDate,
+} = authSlice.actions;
 export default authSlice.reducer;

@@ -11,6 +11,7 @@ import {
   INSPECTION_EMAIL_SENDERS,
 } from "../../utils/emailService";
 import type { InspectionEmailVars } from "../../utils/emailService";
+
 import pushService from "./push.service";
 
 export class NotificationService {
@@ -47,14 +48,16 @@ export class NotificationService {
 
     // Send email if enabled
     if (preferences.email && params.emailVars) {
-      await this.sendInspectionEmail(params.userId, params.type, params.emailVars).catch(
-        (err) => {
-          console.error(
-            `Email delivery failed for notification ${notification.id}:`,
-            err.message,
-          );
-        },
-      );
+      await this.sendInspectionEmail(
+        params.userId,
+        params.type,
+        params.emailVars,
+      ).catch((err) => {
+        console.error(
+          `Email delivery failed for notification ${notification.id}:`,
+          err.message,
+        );
+      });
     }
 
     // Send push notification if enabled
@@ -126,7 +129,10 @@ export class NotificationService {
     } catch (error: unknown) {
       await prisma.notification.update({
         where: { id: emailNotification.id },
-        data: { status: "FAILED", failReason: error instanceof Error ? error.message : String(error) },
+        data: {
+          status: "FAILED",
+          failReason: error instanceof Error ? error.message : String(error),
+        },
       });
       throw error;
     }

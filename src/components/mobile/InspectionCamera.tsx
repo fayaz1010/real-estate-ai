@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { Star } from 'lucide-react';
-import { CameraCapture } from './CameraCapture';
+import { Star } from "lucide-react";
+import React, { useState } from "react";
+
+import { CameraCapture } from "./CameraCapture";
 
 interface InspectionPhoto {
   imageData: string;
@@ -14,7 +15,7 @@ interface InspectionCameraProps {
 
 export function InspectionCamera({ onPhotoSaved }: InspectionCameraProps) {
   const [currentImage, setCurrentImage] = useState<string | null>(null);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
   const [important, setImportant] = useState(false);
   const [savedPhotos, setSavedPhotos] = useState<InspectionPhoto[]>([]);
 
@@ -34,13 +35,13 @@ export function InspectionCamera({ onPhotoSaved }: InspectionCameraProps) {
     setSavedPhotos((prev) => [...prev, photo]);
     onPhotoSaved?.(photo);
     setCurrentImage(null);
-    setDescription('');
+    setDescription("");
     setImportant(false);
   };
 
   const handleDiscard = () => {
     setCurrentImage(null);
-    setDescription('');
+    setDescription("");
     setImportant(false);
   };
 
@@ -60,34 +61,34 @@ export function InspectionCamera({ onPhotoSaved }: InspectionCameraProps) {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Add a description for this photo..."
             className="w-full px-3 py-2 border rounded-lg text-sm"
-            style={{ borderColor: '#091a2b', color: '#091a2b' }}
+            style={{ borderColor: "#091a2b", color: "#091a2b" }}
           />
 
           <button
             onClick={() => setImportant(!important)}
             className="flex items-center gap-2 px-3 py-2 border rounded-lg text-sm transition-colors"
             style={{
-              borderColor: important ? '#3b4876' : '#d1d5db',
-              backgroundColor: important ? '#3b4876' : 'transparent',
-              color: important ? '#ffffff' : '#091a2b',
+              borderColor: important ? "#3b4876" : "#d1d5db",
+              backgroundColor: important ? "#3b4876" : "transparent",
+              color: important ? "#ffffff" : "#091a2b",
             }}
           >
             {important ? <Star size={16} /> : <Star size={16} />}
-            {important ? 'Marked as Important' : 'Mark as Important'}
+            {important ? "Marked as Important" : "Mark as Important"}
           </button>
 
           <div className="flex gap-3">
             <button
               onClick={handleDiscard}
               className="flex-1 px-4 py-2 border rounded-lg text-sm transition-colors"
-              style={{ borderColor: '#091a2b', color: '#091a2b' }}
+              style={{ borderColor: "#091a2b", color: "#091a2b" }}
             >
               Discard
             </button>
             <button
               onClick={handleSave}
               className="flex-1 px-4 py-2 text-white rounded-lg text-sm transition-colors"
-              style={{ backgroundColor: '#091a2b' }}
+              style={{ backgroundColor: "#091a2b" }}
             >
               Save Photo
             </button>
@@ -97,7 +98,7 @@ export function InspectionCamera({ onPhotoSaved }: InspectionCameraProps) {
 
       {savedPhotos.length > 0 && (
         <div className="flex flex-col gap-2 mt-4">
-          <h3 className="text-sm font-semibold" style={{ color: '#091a2b' }}>
+          <h3 className="text-sm font-semibold" style={{ color: "#091a2b" }}>
             Saved Photos ({savedPhotos.length})
           </h3>
           <div className="grid grid-cols-3 gap-2">
@@ -111,7 +112,7 @@ export function InspectionCamera({ onPhotoSaved }: InspectionCameraProps) {
                 {photo.important && (
                   <div
                     className="absolute top-1 right-1 p-1 rounded-full"
-                    style={{ backgroundColor: '#3b4876' }}
+                    style={{ backgroundColor: "#3b4876" }}
                   >
                     <Star size={10} className="text-white" />
                   </div>

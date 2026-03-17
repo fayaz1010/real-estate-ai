@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import React, { useEffect, useState } from "react";
+
 import { useTips } from "./TipsProvider";
+
+import { cn } from "@/lib/utils";
 
 interface FeatureHighlightProps {
   id: string;
@@ -19,7 +21,10 @@ export function FeatureHighlight({
   className,
 }: FeatureHighlightProps) {
   const { isDismissed, dismiss, markSeen } = useTips();
-  const [position, setPosition] = useState<{ top: number; left: number } | null>(null);
+  const [position, setPosition] = useState<{
+    top: number;
+    left: number;
+  } | null>(null);
 
   useEffect(() => {
     if (isDismissed(id)) return;

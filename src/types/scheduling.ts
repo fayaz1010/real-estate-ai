@@ -1,9 +1,13 @@
 // FILE PATH: src/types/scheduling.ts
 // Smart Scheduling & Booking System - Type Definitions
 
-export type BookingType = 'viewing' | 'inspection' | 'maintenance' | 'meeting';
-export type BookingStatus = 'scheduled' | 'confirmed' | 'cancelled' | 'completed';
-export type AttendeeRole = 'tenant' | 'landlord' | 'agent' | 'property_manager';
+export type BookingType = "viewing" | "inspection" | "maintenance" | "meeting";
+export type BookingStatus =
+  | "scheduled"
+  | "confirmed"
+  | "cancelled"
+  | "completed";
+export type AttendeeRole = "tenant" | "landlord" | "agent" | "property_manager";
 
 export interface Attendee {
   id: string;
@@ -37,7 +41,7 @@ export interface RecurringAvailability {
   id: string;
   dayOfWeek: number; // 0 = Sunday, 6 = Saturday
   startTime: string; // "HH:mm"
-  endTime: string;   // "HH:mm"
+  endTime: string; // "HH:mm"
 }
 
 export interface BlackoutDate {
@@ -62,7 +66,7 @@ export interface CreateBookingDto {
   unitId?: string;
   title?: string;
   description?: string;
-  attendees: Omit<Attendee, 'id'>[];
+  attendees: Omit<Attendee, "id">[];
   startTime: string;
   endTime: string;
   notes?: string;
@@ -72,7 +76,7 @@ export interface UpdateBookingDto {
   type?: BookingType;
   title?: string;
   description?: string;
-  attendees?: Omit<Attendee, 'id'>[];
+  attendees?: Omit<Attendee, "id">[];
   startTime?: string;
   endTime?: string;
   status?: BookingStatus;

@@ -1,7 +1,6 @@
 // FILE PATH: src/modules/properties/services/propertyService.ts
 // Module 1.2: Property Listings Management - Property Service
 
-import apiClient from "@/api/client";
 import {
   Property,
   PropertyFormData,
@@ -9,6 +8,8 @@ import {
   PropertyResponse,
   SearchFilters,
 } from "../types/property.types";
+
+import apiClient from "@/api/client";
 
 class PropertyService {
   /**
@@ -41,9 +42,7 @@ class PropertyService {
    * Get single property by ID
    */
   async getPropertyById(id: string): Promise<Property> {
-    const response = await apiClient.get<PropertyResponse>(
-      `/properties/${id}`,
-    );
+    const response = await apiClient.get<PropertyResponse>(`/properties/${id}`);
     return response.data.property;
   }
 
@@ -121,7 +120,7 @@ class PropertyService {
   /**
    * Get property analytics
    */
-  async getPropertyAnalytics(id: string): Promise<any> {
+  async getPropertyAnalytics(id: string): Promise<Record<string, unknown>> {
     const response = await apiClient.get(`/properties/${id}/analytics`);
     return response.data;
   }
@@ -192,10 +191,7 @@ class PropertyService {
       message?: string;
     },
   ): Promise<void> {
-    await apiClient.post(
-      `/properties/${propertyId}/schedule-tour`,
-      tourData,
-    );
+    await apiClient.post(`/properties/${propertyId}/schedule-tour`, tourData);
   }
 }
 

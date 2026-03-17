@@ -4,9 +4,7 @@ import { useCallback, useState } from "react";
 import useWebSocket from "@/hooks/useWebSocket";
 import type { WebSocketMessage } from "@/services/webSocketService";
 
-interface InspectionUpdate {
-  [key: string]: any;
-}
+type InspectionUpdate = Record<string, unknown>;
 
 interface UseRealtimeInspectionsReturn {
   inspectionUpdate: InspectionUpdate | null;

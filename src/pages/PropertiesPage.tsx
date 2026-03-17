@@ -1,7 +1,7 @@
 import React from "react";
 
-import { PageMeta } from "../components/seo";
 import { PropertyListings } from "../components/PropertyListings";
+import { PageMeta } from "../components/seo";
 
 export const PropertiesPage: React.FC = () => {
   return (

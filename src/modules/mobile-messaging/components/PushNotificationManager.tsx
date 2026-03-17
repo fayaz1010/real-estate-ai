@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+
 import {
   messagingService,
   NotificationPreferences,
@@ -12,10 +13,14 @@ const defaultPreferences: NotificationPreferences = {
   maintenanceUpdates: true,
 };
 
-const notificationLabels: Record<keyof NotificationPreferences, { title: string; description: string }> = {
+const notificationLabels: Record<
+  keyof NotificationPreferences,
+  { title: string; description: string }
+> = {
   newListings: {
     title: "New Listings",
-    description: "Get notified when new properties matching your criteria are listed",
+    description:
+      "Get notified when new properties matching your criteria are listed",
   },
   inspectionReminders: {
     title: "Inspection Reminders",
@@ -43,8 +48,10 @@ const getPermissionStatus = (): PushPermissionStatus => {
 };
 
 export const PushNotificationManager: React.FC = () => {
-  const [preferences, setPreferences] = useState<NotificationPreferences>(defaultPreferences);
-  const [permissionStatus, setPermissionStatus] = useState<PushPermissionStatus>(getPermissionStatus);
+  const [preferences, setPreferences] =
+    useState<NotificationPreferences>(defaultPreferences);
+  const [permissionStatus, setPermissionStatus] =
+    useState<PushPermissionStatus>(getPermissionStatus);
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -138,8 +145,18 @@ export const PushNotificationManager: React.FC = () => {
           {!supportsNotifications ? (
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gray-100">
-                <svg className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636" />
+                <svg
+                  className="h-5 w-5 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728L5.636 5.636"
+                  />
                 </svg>
               </div>
               <div>
@@ -152,28 +169,54 @@ export const PushNotificationManager: React.FC = () => {
           ) : permissionStatus.granted ? (
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100">
-                <svg className="h-5 w-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                <svg
+                  className="h-5 w-5 text-green-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M5 13l4 4L19 7"
+                  />
                 </svg>
               </div>
               <div>
-                <p className="font-medium text-[#091a2b]">Notifications Enabled</p>
+                <p className="font-medium text-[#091a2b]">
+                  Notifications Enabled
+                </p>
                 <p className="text-sm text-[#091a2b]/60">
-                  You will receive push notifications for your selected preferences.
+                  You will receive push notifications for your selected
+                  preferences.
                 </p>
               </div>
             </div>
           ) : permissionStatus.denied ? (
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-100">
-                <svg className="h-5 w-5 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="h-5 w-5 text-red-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </div>
               <div>
-                <p className="font-medium text-[#091a2b]">Notifications Blocked</p>
+                <p className="font-medium text-[#091a2b]">
+                  Notifications Blocked
+                </p>
                 <p className="text-sm text-[#091a2b]/60">
-                  Push notifications have been blocked. Please enable them in your browser settings.
+                  Push notifications have been blocked. Please enable them in
+                  your browser settings.
                 </p>
               </div>
             </div>
@@ -181,12 +224,24 @@ export const PushNotificationManager: React.FC = () => {
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#005163]/10">
-                  <svg className="h-5 w-5 text-[#005163]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                  <svg
+                    className="h-5 w-5 text-[#005163]"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                    />
                   </svg>
                 </div>
                 <div>
-                  <p className="font-medium text-[#091a2b]">Enable Notifications</p>
+                  <p className="font-medium text-[#091a2b]">
+                    Enable Notifications
+                  </p>
                   <p className="text-sm text-[#091a2b]/60">
                     Allow push notifications to stay updated.
                   </p>
@@ -216,7 +271,11 @@ export const PushNotificationManager: React.FC = () => {
 
         {/* Notification Toggles */}
         <div className="space-y-1">
-          {(Object.keys(notificationLabels) as Array<keyof NotificationPreferences>).map((key) => (
+          {(
+            Object.keys(notificationLabels) as Array<
+              keyof NotificationPreferences
+            >
+          ).map((key) => (
             <div
               key={key}
               className="flex items-center justify-between rounded-lg p-4 transition-colors hover:bg-[#f1f3f4]"

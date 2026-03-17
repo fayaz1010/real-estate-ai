@@ -120,7 +120,13 @@ export class AccountingService {
       : await this.getUserPropertyIds(filter.userId);
 
     if (propertyIds.length === 0) {
-      return { income: [], expenses: [], totalIncome: 0, totalExpenses: 0, netIncome: 0 };
+      return {
+        income: [],
+        expenses: [],
+        totalIncome: 0,
+        totalExpenses: 0,
+        netIncome: 0,
+      };
     }
 
     const [incomeRows, expenseRows] = await Promise.all([
@@ -175,7 +181,13 @@ export class AccountingService {
       : await this.getUserPropertyIds(filter.userId);
 
     if (propertyIds.length === 0) {
-      return { assets: [], liabilities: [], totalAssets: 0, totalLiabilities: 0, equity: 0 };
+      return {
+        assets: [],
+        liabilities: [],
+        totalAssets: 0,
+        totalLiabilities: 0,
+        equity: 0,
+      };
     }
 
     const [allIncome, allExpenses, deposits] = await Promise.all([
@@ -250,10 +262,7 @@ export class AccountingService {
       orderBy: { date: "asc" },
     });
 
-    const monthlyMap = new Map<
-      string,
-      { income: number; expenses: number }
-    >();
+    const monthlyMap = new Map<string, { income: number; expenses: number }>();
 
     let totalInflows = 0;
     let totalOutflows = 0;
@@ -317,7 +326,12 @@ export class AccountingService {
           include: {
             property: { select: { id: true, title: true, address: true } },
             tenant: {
-              select: { id: true, firstName: true, lastName: true, email: true },
+              select: {
+                id: true,
+                firstName: true,
+                lastName: true,
+                email: true,
+              },
             },
           },
         },
@@ -354,7 +368,8 @@ export class AccountingService {
       totalCollected,
       totalPending,
       totalOverdue,
-      collectionRate: totalDue > 0 ? Math.round((totalCollected / totalDue) * 100) : 0,
+      collectionRate:
+        totalDue > 0 ? Math.round((totalCollected / totalDue) * 100) : 0,
       payments: paymentRows,
     };
   }

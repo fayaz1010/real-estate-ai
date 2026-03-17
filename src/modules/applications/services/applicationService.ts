@@ -1,4 +1,3 @@
-import apiClient from "@/api/client";
 import {
   Application,
   ApplicationFormData,
@@ -7,6 +6,8 @@ import {
   CoApplicant,
   ApplicationDocument,
 } from "../types/application.types";
+
+import apiClient from "@/api/client";
 
 export const applicationService = {
   /**
@@ -200,7 +201,7 @@ export const applicationService = {
     applicationId: string,
   ): Promise<{
     score: number;
-    breakdown: any;
+    breakdown: Record<string, unknown>;
     rating: string;
   }> => {
     const response = await apiClient.get(
@@ -313,7 +314,7 @@ export const applicationService = {
     applicationIds: string[],
   ): Promise<{
     applications: Application[];
-    comparison: any;
+    comparison: Record<string, unknown>;
   }> => {
     const response = await apiClient.post("/applications/compare", {
       applicationIds,

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 
-import { communicationService } from "../api/communicationService";
 import type { Message, Conversation } from "../../../types/communication";
+import { communicationService } from "../api/communicationService";
 
 interface CommunicationState {
   conversations: Conversation[];
@@ -41,16 +41,34 @@ export const fetchConversations = createAsyncThunk(
 
 export const fetchMessages = createAsyncThunk(
   "communication/fetchMessages",
-  async ({ conversationId, page }: { conversationId: string; page?: number }) => {
-    const response = await communicationService.getMessages(conversationId, page);
+  async ({
+    conversationId,
+    page,
+  }: {
+    conversationId: string;
+    page?: number;
+  }) => {
+    const response = await communicationService.getMessages(
+      conversationId,
+      page,
+    );
     return response;
   },
 );
 
 export const sendMessage = createAsyncThunk(
   "communication/sendMessage",
-  async ({ conversationId, content }: { conversationId: string; content: string }) => {
-    const message = await communicationService.sendMessage({ conversationId, content });
+  async ({
+    conversationId,
+    content,
+  }: {
+    conversationId: string;
+    content: string;
+  }) => {
+    const message = await communicationService.sendMessage({
+      conversationId,
+      content,
+    });
     return message;
   },
 );
@@ -97,8 +115,7 @@ const communicationSlice = createSlice({
       state,
       action: PayloadAction<{ conversationId: string; userIds: string[] }>,
     ) {
-      state.typingUsers[action.payload.conversationId] =
-        action.payload.userIds;
+      state.typingUsers[action.payload.conversationId] = action.payload.userIds;
     },
     setOnlineUsers(state, action: PayloadAction<string[]>) {
       state.onlineUserIds = action.payload;

@@ -1,5 +1,3 @@
-import React, { useEffect, useState, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   DollarSign,
   TrendingUp,
@@ -13,17 +11,19 @@ import {
   Filter,
   X,
 } from "lucide-react";
+import React, { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "../../auth/hooks/useAuth";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import type { RootState } from "../../../store";
+import { useAuth } from "../../auth/hooks/useAuth";
 import type { ReportFilters } from "../api/accountingService";
+import { FinancialReport } from "../components/FinancialReport";
 import {
   fetchDashboardSummary,
   fetchAccountingProperties,
   setFilters,
 } from "../store/accountingSlice";
-import { FinancialReport } from "../components/FinancialReport";
 
 function formatCurrency(value: number): string {
   return new Intl.NumberFormat("en-US", {

@@ -311,7 +311,9 @@ const EmploymentVerification: React.FC<EmploymentVerificationProps> = ({
       <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
         <h4 className="font-semibold text-gray-900 mb-2">Verification Tips</h4>
         <ul className="text-sm text-gray-700 space-y-1">
-          <li>• Make sure your supervisor&apos;s contact information is accurate</li>
+          <li>
+            • Make sure your supervisor&apos;s contact information is accurate
+          </li>
           <li>• Give your supervisor a heads up about the verification</li>
           <li>• Verification typically takes 1-2 business days</li>
           <li>• You&apos;ll be notified once verification is complete</li>

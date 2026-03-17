@@ -1,5 +1,6 @@
-import apiClient from "@/api/client";
 import type { Message, Conversation } from "../../../types/communication";
+
+import apiClient from "@/api/client";
 
 interface MessagesResponse {
   messages: Message[];
@@ -64,9 +65,7 @@ class CommunicationService {
   }
 
   async markAsRead(conversationId: string): Promise<void> {
-    await apiClient.put(
-      `/communication/conversations/${conversationId}/read`,
-    );
+    await apiClient.put(`/communication/conversations/${conversationId}/read`);
   }
 }
 

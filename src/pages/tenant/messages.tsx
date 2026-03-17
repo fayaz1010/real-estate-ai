@@ -1,5 +1,6 @@
-import React from 'react';
-import MobileMessageCenter from '../../components/mobile/MobileMessageCenter';
+import React from "react";
+
+import MobileMessageCenter from "../../components/mobile/MobileMessageCenter";
 
 const TenantMessagesPage: React.FC = () => {
   return (

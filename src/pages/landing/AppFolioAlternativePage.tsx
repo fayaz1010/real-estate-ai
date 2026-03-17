@@ -1,5 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import {
   CheckCircle,
   XCircle,
@@ -12,6 +10,8 @@ import {
   Activity,
   Shield,
 } from "lucide-react";
+import React from "react";
+import { Link } from "react-router-dom";
 
 interface ComparisonRow {
   feature: string;
@@ -21,8 +21,18 @@ interface ComparisonRow {
 }
 
 const comparisonData: ComparisonRow[] = [
-  { feature: "Starting Price", appfolio: "$1.40/unit/mo (min 50 units)", realestateai: "Free plan available", highlight: true },
-  { feature: "Minimum Portfolio Size", appfolio: "50 units", realestateai: "No minimum", highlight: true },
+  {
+    feature: "Starting Price",
+    appfolio: "$1.40/unit/mo (min 50 units)",
+    realestateai: "Free plan available",
+    highlight: true,
+  },
+  {
+    feature: "Minimum Portfolio Size",
+    appfolio: "50 units",
+    realestateai: "No minimum",
+    highlight: true,
+  },
   { feature: "Setup Fee", appfolio: "$400+", realestateai: "$0" },
   { feature: "AI Tenant Screening", appfolio: false, realestateai: true },
   { feature: "AI Rent Pricing", appfolio: false, realestateai: true },
@@ -33,11 +43,28 @@ const comparisonData: ComparisonRow[] = [
   { feature: "Owner Portal", appfolio: true, realestateai: true },
   { feature: "Maintenance Tracking", appfolio: true, realestateai: true },
   { feature: "Automated Late Fees", appfolio: true, realestateai: true },
-  { feature: "Smart Lease Renewal Alerts", appfolio: false, realestateai: true },
-  { feature: "Predictive Vacancy Forecasting", appfolio: false, realestateai: true },
+  {
+    feature: "Smart Lease Renewal Alerts",
+    appfolio: false,
+    realestateai: true,
+  },
+  {
+    feature: "Predictive Vacancy Forecasting",
+    appfolio: false,
+    realestateai: true,
+  },
   { feature: "Natural Language Search", appfolio: false, realestateai: true },
-  { feature: "No Long-Term Contract", appfolio: false, realestateai: true, highlight: true },
-  { feature: "Free Customer Support", appfolio: "Email only", realestateai: "Chat, email, phone" },
+  {
+    feature: "No Long-Term Contract",
+    appfolio: false,
+    realestateai: true,
+    highlight: true,
+  },
+  {
+    feature: "Free Customer Support",
+    appfolio: "Email only",
+    realestateai: "Chat, email, phone",
+  },
 ];
 
 const advantages = [
@@ -99,9 +126,15 @@ const testimonials = [
 const renderCellValue = (value: string | boolean) => {
   if (typeof value === "boolean") {
     return value ? (
-      <CheckCircle className="w-5 h-5 text-green-500 mx-auto" aria-label="Included" />
+      <CheckCircle
+        className="w-5 h-5 text-green-500 mx-auto"
+        aria-label="Included"
+      />
     ) : (
-      <XCircle className="w-5 h-5 text-red-400 mx-auto" aria-label="Not included" />
+      <XCircle
+        className="w-5 h-5 text-red-400 mx-auto"
+        aria-label="Not included"
+      />
     );
   }
   return <span className="text-sm font-inter">{value}</span>;
@@ -129,12 +162,15 @@ export const AppFolioAlternativePage: React.FC = () => {
           >
             AppFolio vs RealEstate AI:
             <br className="hidden md:block" />
-            <span className="text-realestate-accent"> Feature and Pricing Comparison</span>
+            <span className="text-realestate-accent">
+              {" "}
+              Feature and Pricing Comparison
+            </span>
           </h1>
           <p className="text-lg md:text-xl text-gray-300 font-inter max-w-3xl mx-auto leading-relaxed mb-10">
             Looking for a smarter, more affordable AppFolio alternative? See how
-            RealEstate AI delivers more AI-powered features, flexible pricing, and
-            zero minimum unit requirements.
+            RealEstate AI delivers more AI-powered features, flexible pricing,
+            and zero minimum unit requirements.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -171,8 +207,9 @@ export const AppFolioAlternativePage: React.FC = () => {
               Feature-by-Feature Breakdown
             </h2>
             <p className="text-gray-600 font-inter max-w-2xl mx-auto">
-              We believe in transparency. Here is an honest side-by-side comparison
-              of AppFolio and RealEstate AI across the features that matter most.
+              We believe in transparency. Here is an honest side-by-side
+              comparison of AppFolio and RealEstate AI across the features that
+              matter most.
             </p>
           </div>
           <div className="max-w-4xl mx-auto">
@@ -197,7 +234,11 @@ export const AppFolioAlternativePage: React.FC = () => {
                       <tr
                         key={row.feature}
                         className={`border-b border-gray-100 ${
-                          row.highlight ? "bg-realestate-accent/5" : index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                          row.highlight
+                            ? "bg-realestate-accent/5"
+                            : index % 2 === 0
+                              ? "bg-white"
+                              : "bg-gray-50"
                         }`}
                       >
                         <td className="py-3.5 px-6 font-inter text-sm text-realestate-primary font-medium">
@@ -220,10 +261,7 @@ export const AppFolioAlternativePage: React.FC = () => {
       </section>
 
       {/* Why Switch Section */}
-      <section
-        className="py-20 bg-white"
-        aria-labelledby="advantages-heading"
-      >
+      <section className="py-20 bg-white" aria-labelledby="advantages-heading">
         <div className="section-container">
           <div className="text-center mb-14">
             <span className="inline-block px-4 py-1.5 bg-realestate-accent/10 text-realestate-accent font-semibold text-sm rounded-full mb-4 font-inter">
@@ -293,7 +331,7 @@ export const AppFolioAlternativePage: React.FC = () => {
                   ))}
                 </div>
                 <blockquote className="text-gray-300 font-inter leading-relaxed mb-6">
-                  "{testimonial.quote}"
+                  &ldquo;{testimonial.quote}&rdquo;
                 </blockquote>
                 <div>
                   <p className="font-semibold text-white font-space-grotesk">
@@ -326,9 +364,21 @@ export const AppFolioAlternativePage: React.FC = () => {
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
               {[
-                { step: "1", title: "Sign Up Free", desc: "Create your account in under two minutes" },
-                { step: "2", title: "We Migrate Your Data", desc: "Our team imports everything from AppFolio" },
-                { step: "3", title: "Go Live", desc: "Start managing with AI-powered tools" },
+                {
+                  step: "1",
+                  title: "Sign Up Free",
+                  desc: "Create your account in under two minutes",
+                },
+                {
+                  step: "2",
+                  title: "We Migrate Your Data",
+                  desc: "Our team imports everything from AppFolio",
+                },
+                {
+                  step: "3",
+                  title: "Go Live",
+                  desc: "Start managing with AI-powered tools",
+                },
               ].map((item) => (
                 <div key={item.step} className="card-elevated p-6 text-center">
                   <div className="w-10 h-10 bg-realestate-accent text-realestate-primary rounded-full flex items-center justify-center mx-auto mb-3 font-bold font-space-grotesk">
@@ -337,7 +387,9 @@ export const AppFolioAlternativePage: React.FC = () => {
                   <h3 className="font-semibold text-realestate-primary font-space-grotesk mb-1">
                     {item.title}
                   </h3>
-                  <p className="text-sm text-gray-500 font-inter">{item.desc}</p>
+                  <p className="text-sm text-gray-500 font-inter">
+                    {item.desc}
+                  </p>
                 </div>
               ))}
             </div>

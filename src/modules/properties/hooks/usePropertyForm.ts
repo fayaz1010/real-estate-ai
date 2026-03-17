@@ -3,7 +3,7 @@
 
 import { useState, useCallback } from "react";
 
-import { PropertyFormData } from "../types/property.types";
+import { Property, PropertyFormData } from "../types/property.types";
 import { validateProperty } from "../utils/propertyValidation";
 
 import { useProperties } from "./useProperties";
@@ -76,7 +76,10 @@ export const usePropertyForm = (initialData?: Partial<PropertyFormData>) => {
       try {
         let result;
         if (propertyId) {
-          result = await editProperty(propertyId, formData as Partial<PropertyFormData>);
+          result = await editProperty(
+            propertyId,
+            formData as unknown as Partial<Property>,
+          );
         } else {
           result = await addProperty(formData as PropertyFormData);
         }

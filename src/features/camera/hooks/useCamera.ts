@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import type { CameraConfig, CapturedPhoto } from '../types';
-import { captureVideoFrame, generateThumbnail } from '../utils/imageProcessor';
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import type { CameraConfig, CapturedPhoto } from "../types";
+import { captureVideoFrame, generateThumbnail } from "../utils/imageProcessor";
 
 interface UseCameraReturn {
   videoRef: React.RefObject<HTMLVideoElement>;
@@ -8,12 +9,12 @@ interface UseCameraReturn {
   isActive: boolean;
   error: string | null;
   config: CameraConfig;
-  permissionState: 'prompt' | 'granted' | 'denied' | 'unknown';
+  permissionState: "prompt" | "granted" | "denied" | "unknown";
   startCamera: () => Promise<void>;
   stopCamera: () => void;
   capturePhoto: (
     propertyId?: string,
-    roomLabel?: string
+    roomLabel?: string,
   ) => Promise<CapturedPhoto>;
   toggleFlash: () => void;
   switchCamera: () => void;
@@ -21,21 +22,21 @@ interface UseCameraReturn {
 }
 
 const DEFAULT_CONFIG: CameraConfig = {
-  facingMode: 'environment',
+  facingMode: "environment",
   resolution: { width: 1920, height: 1080 },
-  flash: 'off',
+  flash: "off",
 };
 
 export function useCamera(
-  initialConfig?: Partial<CameraConfig>
+  initialConfig?: Partial<CameraConfig>,
 ): UseCameraReturn {
   const videoRef = useRef<HTMLVideoElement>(null!);
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [isActive, setIsActive] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [permissionState, setPermissionState] = useState<
-    'prompt' | 'granted' | 'denied' | 'unknown'
-  >('unknown');
+    "prompt" | "granted" | "denied" | "unknown"
+  >("unknown");
   const [config, setConfig] = useState<CameraConfig>({
     ...DEFAULT_CONFIG,
     ...initialConfig,
@@ -45,16 +46,14 @@ export function useCamera(
   useEffect(() => {
     if (navigator.permissions) {
       navigator.permissions
-        .query({ name: 'camera' as PermissionName })
+        .query({ name: "camera" as PermissionName })
         .then((status) => {
-          setPermissionState(status.state as 'prompt' | 'granted' | 'denied');
+          setPermissionState(status.state as "prompt" | "granted" | "denied");
           status.onchange = () => {
-            setPermissionState(
-              status.state as 'prompt' | 'granted' | 'denied'
-            );
+            setPermissionState(status.state as "prompt" | "granted" | "denied");
           };
         })
-        .catch(() => setPermissionState('unknown'));
+        .catch(() => setPermissionState("unknown"));
     }
   }, []);
 
@@ -88,7 +87,7 @@ export function useCamera(
         await navigator.mediaDevices.getUserMedia(constraints);
       setStream(mediaStream);
       setIsActive(true);
-      setPermissionState('granted');
+      setPermissionState("granted");
 
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream;
@@ -97,29 +96,31 @@ export function useCamera(
     } catch (err) {
       const message =
         err instanceof DOMException
-          ? err.name === 'NotAllowedError'
-            ? 'Camera access denied. Please grant camera permissions.'
-            : err.name === 'NotFoundError'
-              ? 'No camera found on this device.'
+          ? err.name === "NotAllowedError"
+            ? "Camera access denied. Please grant camera permissions."
+            : err.name === "NotFoundError"
+              ? "No camera found on this device."
               : `Camera error: ${err.message}`
-          : 'Failed to access camera.';
+          : "Failed to access camera.";
 
       setError(message);
       setIsActive(false);
 
-      if (err instanceof DOMException && err.name === 'NotAllowedError') {
-        setPermissionState('denied');
+      if (err instanceof DOMException && err.name === "NotAllowedError") {
+        setPermissionState("denied");
       }
     }
-  }, [config.facingMode, config.resolution.width, config.resolution.height, stream]);
+  }, [
+    config.facingMode,
+    config.resolution.width,
+    config.resolution.height,
+    stream,
+  ]);
 
   const capturePhoto = useCallback(
-    async (
-      propertyId?: string,
-      roomLabel?: string
-    ): Promise<CapturedPhoto> => {
+    async (propertyId?: string, roomLabel?: string): Promise<CapturedPhoto> => {
       if (!videoRef.current || !isActive) {
-        throw new Error('Camera is not active');
+        throw new Error("Camera is not active");
       }
 
       const dataUrl = captureVideoFrame(videoRef.current);
@@ -135,23 +136,27 @@ export function useCamera(
         thumbnail,
       };
     },
-    [isActive]
+    [isActive],
   );
 
   const toggleFlash = useCallback(() => {
     setConfig((prev) => {
       const nextFlash =
-        prev.flash === 'off' ? 'on' : prev.flash === 'on' ? 'auto' : 'off';
+        prev.flash === "off" ? "on" : prev.flash === "on" ? "auto" : "off";
 
       // Apply torch constraint if supported
       if (stream) {
         const track = stream.getVideoTracks()[0];
         if (track) {
-          const capabilities = track.getCapabilities?.() as Record<string, unknown> | undefined;
+          const capabilities = track.getCapabilities?.() as
+            | Record<string, unknown>
+            | undefined;
           if (capabilities?.torch) {
             track
               .applyConstraints({
-                advanced: [{ torch: nextFlash === 'on' } as MediaTrackConstraintSet],
+                advanced: [
+                  { torch: nextFlash === "on" } as MediaTrackConstraintSet,
+                ],
               })
               .catch(() => {
                 /* torch not supported */
@@ -167,7 +172,7 @@ export function useCamera(
   const switchCamera = useCallback(() => {
     setConfig((prev) => ({
       ...prev,
-      facingMode: prev.facingMode === 'user' ? 'environment' : 'user',
+      facingMode: prev.facingMode === "user" ? "environment" : "user",
     }));
   }, []);
 

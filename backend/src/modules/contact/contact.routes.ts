@@ -31,7 +31,11 @@ router.post("/", async (req: Request, res: Response) => {
     }
     res.status(400).json({
       success: false,
-      error: { code: "VALIDATION_ERROR", message: "Validation failed", fields: fieldErrors },
+      error: {
+        code: "VALIDATION_ERROR",
+        message: "Validation failed",
+        fields: fieldErrors,
+      },
     });
     return;
   }
@@ -73,7 +77,8 @@ router.post("/", async (req: Request, res: Response) => {
       success: false,
       error: {
         code: "INTERNAL_ERROR",
-        message: "An error occurred while sending your message. Please try again later.",
+        message:
+          "An error occurred while sending your message. Please try again later.",
       },
     });
   }

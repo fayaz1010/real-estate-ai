@@ -1,14 +1,23 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Plus } from 'lucide-react';
-import { ScreeningDashboard } from '@/components/screening/ScreeningDashboard';
-import { ScreeningRequestForm } from '@/components/screening/ScreeningRequestForm';
-import { Button } from '@/components/ui/button';
+import { Plus } from "lucide-react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { ScreeningDashboard } from "@/components/screening/ScreeningDashboard";
+import { ScreeningRequestForm } from "@/components/screening/ScreeningRequestForm";
+import { Button } from "@/components/ui/button";
 
 const mockProperties = [
-  { id: '1', title: 'Sunset Apartments #201', address: '123 Sunset Blvd, Los Angeles, CA' },
-  { id: '2', title: 'Downtown Loft', address: '456 Main St, New York, NY' },
-  { id: '3', title: 'Parkview Residence', address: '789 Park Ave, Chicago, IL' },
+  {
+    id: "1",
+    title: "Sunset Apartments #201",
+    address: "123 Sunset Blvd, Los Angeles, CA",
+  },
+  { id: "2", title: "Downtown Loft", address: "456 Main St, New York, NY" },
+  {
+    id: "3",
+    title: "Parkview Residence",
+    address: "789 Park Ave, Chicago, IL",
+  },
 ];
 
 export const ScreeningIndexPage: React.FC = () => {
@@ -23,7 +32,10 @@ export const ScreeningIndexPage: React.FC = () => {
           <div>
             <h1
               className="text-3xl font-bold"
-              style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
+              style={{
+                fontFamily: "'Montserrat', sans-serif",
+                color: "#091a2b",
+              }}
             >
               Tenant Screening
             </h1>
@@ -36,7 +48,7 @@ export const ScreeningIndexPage: React.FC = () => {
           </div>
           <Button onClick={() => setShowForm((prev) => !prev)}>
             <Plus className="w-4 h-4 mr-2" aria-hidden="true" />
-            {showForm ? 'View Dashboard' : 'New Screening Request'}
+            {showForm ? "View Dashboard" : "New Screening Request"}
           </Button>
         </div>
 
@@ -45,7 +57,10 @@ export const ScreeningIndexPage: React.FC = () => {
           <div className="bg-white border border-gray-200 rounded-lg p-6 max-w-xl">
             <h2
               className="text-xl font-semibold mb-6"
-              style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
+              style={{
+                fontFamily: "'Montserrat', sans-serif",
+                color: "#091a2b",
+              }}
             >
               New Screening Request
             </h2>

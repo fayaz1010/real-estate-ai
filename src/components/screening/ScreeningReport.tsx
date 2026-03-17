@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from 'react';
 import {
   CreditCard,
   ShieldCheck,
@@ -8,11 +7,14 @@ import {
   Mail,
   Phone,
   Building,
-} from 'lucide-react';
-import type { ScreeningRequest } from '@/types/screening';
-import { screeningService } from '@/services/screeningService';
-import { BackgroundCheckStatus } from './BackgroundCheckStatus';
-import { Skeleton } from '@/components/ui/skeleton';
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+
+import { BackgroundCheckStatus } from "./BackgroundCheckStatus";
+
+import { Skeleton } from "@/components/ui/skeleton";
+import { screeningService } from "@/services/screeningService";
+import type { ScreeningRequest } from "@/types/screening";
 
 interface ScreeningReportProps {
   requestId: string;
@@ -32,7 +34,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
         const data = await screeningService.getScreeningRequestById(requestId);
         setRequest(data);
       } catch {
-        setError('Failed to load screening report. Please try again.');
+        setError("Failed to load screening report. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -61,7 +63,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
           className="text-red-700 font-medium"
           style={{ fontFamily: "'Open Sans', sans-serif" }}
         >
-          {error ?? 'Screening request not found.'}
+          {error ?? "Screening request not found."}
         </p>
       </div>
     );
@@ -80,7 +82,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
         </div>
         <h3
           className="text-sm font-semibold"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
+          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
         >
           {label}
         </h3>
@@ -88,7 +90,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
       {available ? (
         <div
           className="text-sm"
-          style={{ fontFamily: "'Open Sans', sans-serif", color: '#091a2b' }}
+          style={{ fontFamily: "'Open Sans', sans-serif", color: "#091a2b" }}
         >
           {value}
         </div>
@@ -109,7 +111,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h2
           className="text-2xl font-bold"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
+          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
         >
           Screening Report
         </h2>
@@ -120,7 +122,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
       <div className="bg-white border border-gray-200 rounded-lg p-6">
         <h3
           className="text-lg font-semibold mb-4"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
+          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
         >
           Tenant Information
         </h3>
@@ -141,7 +143,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
                 className="text-sm font-medium"
                 style={{
                   fontFamily: "'Open Sans', sans-serif",
-                  color: '#091a2b',
+                  color: "#091a2b",
                 }}
               >
                 {request.tenantName}
@@ -164,7 +166,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
                 className="text-sm font-medium"
                 style={{
                   fontFamily: "'Open Sans', sans-serif",
-                  color: '#091a2b',
+                  color: "#091a2b",
                 }}
               >
                 {request.email}
@@ -187,7 +189,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
                 className="text-sm font-medium"
                 style={{
                   fontFamily: "'Open Sans', sans-serif",
-                  color: '#091a2b',
+                  color: "#091a2b",
                 }}
               >
                 {request.phone}
@@ -210,7 +212,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
                 className="text-sm font-medium"
                 style={{
                   fontFamily: "'Open Sans', sans-serif",
-                  color: '#091a2b',
+                  color: "#091a2b",
                 }}
               >
                 {request.propertyId}
@@ -224,7 +226,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
       <div>
         <h3
           className="text-lg font-semibold mb-4"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: '#091a2b' }}
+          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
         >
           Screening Results
         </h3>
@@ -244,9 +246,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
               request.backgroundCheck ? (
                 <span className="text-green-600 font-medium">Passed</span>
               ) : (
-                <span className="text-red-600 font-medium">
-                  Issues Found
-                </span>
+                <span className="text-red-600 font-medium">Issues Found</span>
               )
             }
             available={request.backgroundCheck != null}
@@ -260,9 +260,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
                   Evictions Found
                 </span>
               ) : (
-                <span className="text-green-600 font-medium">
-                  No Evictions
-                </span>
+                <span className="text-green-600 font-medium">No Evictions</span>
               )
             }
             available={request.evictionHistory != null}
@@ -288,19 +286,19 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
         style={{ fontFamily: "'Open Sans', sans-serif" }}
       >
         <span>
-          Created:{' '}
-          {new Date(request.createdAt).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+          Created:{" "}
+          {new Date(request.createdAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           })}
         </span>
         <span>
-          Updated:{' '}
-          {new Date(request.updatedAt).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
+          Updated:{" "}
+          {new Date(request.updatedAt).toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
           })}
         </span>
       </div>

@@ -1,5 +1,5 @@
 import apiClient from "@/api/client";
-import type { ScreeningRequest } from '@/types/screening';
+import type { ScreeningRequest } from "@/types/screening";
 
 export const screeningService = {
   async getAllScreeningRequests(): Promise<ScreeningRequest[]> {
@@ -15,19 +15,19 @@ export const screeningService = {
   async createScreeningRequest(
     data: Omit<
       ScreeningRequest,
-      | 'id'
-      | 'status'
-      | 'creditScore'
-      | 'backgroundCheck'
-      | 'evictionHistory'
-      | 'employmentVerification'
-      | 'createdAt'
-      | 'updatedAt'
+      | "id"
+      | "status"
+      | "creditScore"
+      | "backgroundCheck"
+      | "evictionHistory"
+      | "employmentVerification"
+      | "createdAt"
+      | "updatedAt"
     >,
   ): Promise<ScreeningRequest> {
     const response = await apiClient.post<ScreeningRequest>("/screening", {
       ...data,
-      status: 'pending',
+      status: "pending",
     });
     return response.data;
   },

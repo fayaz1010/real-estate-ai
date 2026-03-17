@@ -1,5 +1,6 @@
-import apiClient from "@/api/client";
 import { VerificationStatus } from "../types/application.types";
+
+import apiClient from "@/api/client";
 
 export interface IdentityVerificationRequest {
   firstName: string;
@@ -37,7 +38,12 @@ export interface IncomeVerificationResult {
   status: VerificationStatus;
   verified: boolean;
   verifiedIncome: number;
-  method: "paystub" | "bank_statement" | "tax_return" | "employer_letter" | "plaid";
+  method:
+    | "paystub"
+    | "bank_statement"
+    | "tax_return"
+    | "employer_letter"
+    | "plaid";
   confidence: number;
   verifiedAt?: string;
   message?: string;
@@ -128,7 +134,10 @@ export const verificationService = {
     return data;
   },
 
-  exchangePlaidToken: async (applicationId: string, publicToken: string): Promise<PlaidAccountData> => {
+  exchangePlaidToken: async (
+    applicationId: string,
+    publicToken: string,
+  ): Promise<PlaidAccountData> => {
     const { data } = await apiClient.post<PlaidAccountData>(
       `/applications/${applicationId}/plaid/exchange-token`,
       { publicToken },
@@ -145,7 +154,9 @@ export const verificationService = {
     credit: VerificationStatus;
     background: VerificationStatus;
   }> => {
-    const { data } = await apiClient.get(`/applications/${applicationId}/verification-status`);
+    const { data } = await apiClient.get(
+      `/applications/${applicationId}/verification-status`,
+    );
     return data;
   },
 
@@ -154,10 +165,13 @@ export const verificationService = {
     verificationType: "identity" | "income" | "employment",
     notes?: string,
   ): Promise<void> => {
-    await apiClient.post(`/applications/${applicationId}/request-manual-review`, {
-      verificationType,
-      notes,
-    });
+    await apiClient.post(
+      `/applications/${applicationId}/request-manual-review`,
+      {
+        verificationType,
+        notes,
+      },
+    );
   },
 
   resendVerificationRequest: async (
@@ -171,7 +185,10 @@ export const verificationService = {
     });
   },
 
-  uploadSelfie: async (applicationId: string, selfieBlob: Blob): Promise<{ imageUrl: string }> => {
+  uploadSelfie: async (
+    applicationId: string,
+    selfieBlob: Blob,
+  ): Promise<{ imageUrl: string }> => {
     const formData = new FormData();
     formData.append("selfie", selfieBlob, "selfie.jpg");
     const { data } = await apiClient.post<{ imageUrl: string }>(

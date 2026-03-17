@@ -34,7 +34,9 @@ export class PaymentService {
       data: {
         leaseId: data.leaseId,
         payerId: data.payerId,
-        type: data.type as Parameters<typeof prisma.payment.create>[0]["data"]["type"],
+        type: data.type as Parameters<
+          typeof prisma.payment.create
+        >[0]["data"]["type"],
         amount: data.amount,
         dueDate: new Date(data.dueDate),
         description: data.description,

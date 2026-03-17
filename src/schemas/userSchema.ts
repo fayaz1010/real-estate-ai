@@ -2,15 +2,15 @@
  * Zod schemas for User data validation.
  */
 
-import { z } from 'zod';
+import { z } from "zod";
 
 export const USER_ROLES = [
-  'TENANT',
-  'LANDLORD',
-  'AGENT',
-  'PROPERTY_MANAGER',
-  'BUSINESS',
-  'ADMIN',
+  "TENANT",
+  "LANDLORD",
+  "AGENT",
+  "PROPERTY_MANAGER",
+  "BUSINESS",
+  "ADMIN",
 ] as const;
 
 export const tenantProfileSchema = z.object({
@@ -48,7 +48,7 @@ export const businessProfileSchema = z.object({
   businessName: z.string().min(1).max(200),
   businessType: z.string().min(1).max(100),
   taxId: z.string().min(1).max(50),
-  website: z.string().url('Website must be a valid URL'),
+  website: z.string().url("Website must be a valid URL"),
 });
 
 export const adminProfileSchema = z.object({
@@ -67,17 +67,20 @@ export const userProfileSchema = z.object({
 
 export const userSchema = z.object({
   id: z.string().uuid(),
-  firstName: z.string().min(1, 'First name is required').max(100),
-  lastName: z.string().min(1, 'Last name is required').max(100),
-  email: z.string().email('Must be a valid email address'),
+  firstName: z.string().min(1, "First name is required").max(100),
+  lastName: z.string().min(1, "Last name is required").max(100),
+  email: z.string().email("Must be a valid email address"),
   password: z
     .string()
-    .min(8, 'Password must be at least 8 characters')
+    .min(8, "Password must be at least 8 characters")
     .max(128)
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one digit')
-    .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+    .regex(/[0-9]/, "Password must contain at least one digit")
+    .regex(
+      /[^A-Za-z0-9]/,
+      "Password must contain at least one special character",
+    ),
   role: z.enum(USER_ROLES),
   profile: userProfileSchema,
   createdAt: z.coerce.date(),

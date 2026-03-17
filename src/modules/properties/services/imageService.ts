@@ -1,12 +1,17 @@
-import apiClient from "@/api/client";
 import {
   PropertyImage,
   UploadImageResponse,
   BulkUploadImagesResponse,
 } from "../types/property.types";
 
+import apiClient from "@/api/client";
+
 class ImageService {
-  async uploadImage(propertyId: string, file: File, caption?: string): Promise<PropertyImage> {
+  async uploadImage(
+    propertyId: string,
+    file: File,
+    caption?: string,
+  ): Promise<PropertyImage> {
     const formData = new FormData();
     formData.append("image", file);
     if (caption) formData.append("caption", caption);
@@ -19,7 +24,10 @@ class ImageService {
     return data.image;
   }
 
-  async uploadMultipleImages(propertyId: string, files: File[]): Promise<PropertyImage[]> {
+  async uploadMultipleImages(
+    propertyId: string,
+    files: File[],
+  ): Promise<PropertyImage[]> {
     const formData = new FormData();
     files.forEach((file) => formData.append("images", file));
 
@@ -35,7 +43,11 @@ class ImageService {
     await apiClient.delete(`/properties/${propertyId}/images/${imageId}`);
   }
 
-  async updateImageOrder(propertyId: string, imageId: string, order: number): Promise<PropertyImage> {
+  async updateImageOrder(
+    propertyId: string,
+    imageId: string,
+    order: number,
+  ): Promise<PropertyImage> {
     const { data } = await apiClient.patch<{ image: PropertyImage }>(
       `/properties/${propertyId}/images/${imageId}`,
       { order },
@@ -44,10 +56,16 @@ class ImageService {
   }
 
   async setPrimaryImage(propertyId: string, imageId: string): Promise<void> {
-    await apiClient.post(`/properties/${propertyId}/images/${imageId}/set-primary`);
+    await apiClient.post(
+      `/properties/${propertyId}/images/${imageId}/set-primary`,
+    );
   }
 
-  async updateImageCaption(propertyId: string, imageId: string, caption: string): Promise<PropertyImage> {
+  async updateImageCaption(
+    propertyId: string,
+    imageId: string,
+    caption: string,
+  ): Promise<PropertyImage> {
     const { data } = await apiClient.patch<{ image: PropertyImage }>(
       `/properties/${propertyId}/images/${imageId}`,
       { caption },

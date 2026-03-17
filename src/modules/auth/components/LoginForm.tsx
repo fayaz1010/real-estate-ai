@@ -56,7 +56,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     }
   };
 
-  const handleInputChange = (field: string, value: any) => {
+  const handleInputChange = (field: string, value: string | boolean) => {
     setFormData({ ...formData, [field]: value });
     if (validationErrors[field]) {
       setValidationErrors({ ...validationErrors, [field]: "" });

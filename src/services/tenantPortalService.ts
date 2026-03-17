@@ -1,4 +1,3 @@
-import apiClient from '@/api/client';
 import type {
   TenantHome,
   MaintenanceRequest,
@@ -6,38 +5,50 @@ import type {
   LeaseDetails,
   CommunityPost,
   TenantProfileDetails,
-} from '../types/tenantPortal';
+} from "../types/tenantPortal";
+
+import apiClient from "@/api/client";
 
 class TenantPortalService {
   async getTenantHomeData(): Promise<TenantHome> {
-    const { data } = await apiClient.get<TenantHome>('/tenant/home');
+    const { data } = await apiClient.get<TenantHome>("/tenant/home");
     return data;
   }
 
   async submitMaintenanceRequest(
-    request: Omit<MaintenanceRequest, 'id' | 'status' | 'createdAt'>,
+    request: Omit<MaintenanceRequest, "id" | "status" | "createdAt">,
   ): Promise<MaintenanceRequest> {
-    const { data } = await apiClient.post<MaintenanceRequest>('/tenant/maintenance', request);
+    const { data } = await apiClient.post<MaintenanceRequest>(
+      "/tenant/maintenance",
+      request,
+    );
     return data;
   }
 
   async getPaymentHistory(): Promise<PaymentHistoryItem[]> {
-    const { data } = await apiClient.get<PaymentHistoryItem[]>('/tenant/payments/history');
+    const { data } = await apiClient.get<PaymentHistoryItem[]>(
+      "/tenant/payments/history",
+    );
     return data;
   }
 
   async getLeaseDetails(): Promise<LeaseDetails> {
-    const { data } = await apiClient.get<LeaseDetails>('/tenant/lease');
+    const { data } = await apiClient.get<LeaseDetails>("/tenant/lease");
     return data;
   }
 
   async getCommunityPosts(): Promise<CommunityPost[]> {
-    const { data } = await apiClient.get<CommunityPost[]>('/tenant/community');
+    const { data } = await apiClient.get<CommunityPost[]>("/tenant/community");
     return data;
   }
 
-  async createCommunityPost(post: Omit<CommunityPost, 'id' | 'date'>): Promise<CommunityPost> {
-    const { data } = await apiClient.post<CommunityPost>('/tenant/community', post);
+  async createCommunityPost(
+    post: Omit<CommunityPost, "id" | "date">,
+  ): Promise<CommunityPost> {
+    const { data } = await apiClient.post<CommunityPost>(
+      "/tenant/community",
+      post,
+    );
     return data;
   }
 
@@ -45,13 +56,21 @@ class TenantPortalService {
     await apiClient.delete(`/tenant/community/${postId}`);
   }
 
-  async updateTenantProfile(profile: TenantProfileDetails): Promise<TenantProfileDetails> {
-    const { data } = await apiClient.put<TenantProfileDetails>('/tenant/profile', profile);
+  async updateTenantProfile(
+    profile: TenantProfileDetails,
+  ): Promise<TenantProfileDetails> {
+    const { data } = await apiClient.put<TenantProfileDetails>(
+      "/tenant/profile",
+      profile,
+    );
     return data;
   }
 
   async createPaymentIntent(amount: number): Promise<{ clientSecret: string }> {
-    const { data } = await apiClient.post<{ clientSecret: string }>('/tenant/payments/intent', { amount });
+    const { data } = await apiClient.post<{ clientSecret: string }>(
+      "/tenant/payments/intent",
+      { amount },
+    );
     return data;
   }
 }

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { X } from 'lucide-react';
+import { X } from "lucide-react";
+import React, { useState } from "react";
 
 interface PhotoGalleryProps {
   images: string[];
@@ -15,7 +15,7 @@ export function PhotoGallery({ images, onRemove }: PhotoGalleryProps) {
     <>
       <div
         className="grid grid-cols-3 gap-2 p-2 rounded-lg"
-        style={{ backgroundColor: '#f1f3f4' }}
+        style={{ backgroundColor: "#f1f3f4" }}
       >
         {images.map((src, index) => (
           <div key={index} className="relative aspect-square group">

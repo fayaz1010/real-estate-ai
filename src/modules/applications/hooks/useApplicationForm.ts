@@ -64,7 +64,10 @@ export const useApplicationForm = () => {
 
   // Update form field
   const updateField = useCallback(
-    (field: keyof ApplicationFormData, value: ApplicationFormData[keyof ApplicationFormData]) => {
+    (
+      field: keyof ApplicationFormData,
+      value: ApplicationFormData[keyof ApplicationFormData],
+    ) => {
       setLocalFormData((prev) => ({
         ...prev,
         [field]: value,

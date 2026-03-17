@@ -24,7 +24,7 @@ export interface QuickReplyOption {
   id: string;
   text: string;
   icon?: string;
-  category: 'maintenance' | 'payment' | 'general';
+  category: "maintenance" | "payment" | "general";
 }
 
 export interface Conversation {

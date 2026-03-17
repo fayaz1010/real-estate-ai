@@ -23,9 +23,8 @@ export class TrialService {
 
     // Import auth utilities
     const { hashPassword } = await import("../../utils/bcrypt");
-    const { generateAccessToken, generateRefreshToken } = await import(
-      "../../utils/jwt"
-    );
+    const { generateAccessToken, generateRefreshToken } =
+      await import("../../utils/jwt");
 
     const passwordHash = await hashPassword(data.password);
 

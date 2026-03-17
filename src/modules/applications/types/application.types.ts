@@ -226,7 +226,7 @@ export interface ApplicationDocument {
   uploadedBy: string;
   size: number;
   parsed: boolean;
-  extractedData?: Record<string, any>;
+  extractedData?: Record<string, unknown>;
 }
 
 export interface VerificationRecord {

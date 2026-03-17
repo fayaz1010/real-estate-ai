@@ -70,16 +70,10 @@ const onboardingSlice = createSlice({
     setRole(state, action: PayloadAction<UserRole>) {
       state.role = action.payload;
     },
-    setProfile(
-      state,
-      action: PayloadAction<OnboardingState["profile"]>,
-    ) {
+    setProfile(state, action: PayloadAction<OnboardingState["profile"]>) {
       state.profile = action.payload;
     },
-    setProperty(
-      state,
-      action: PayloadAction<OnboardingState["property"]>,
-    ) {
+    setProperty(state, action: PayloadAction<OnboardingState["property"]>) {
       state.property = action.payload;
     },
     setBankConnected(state, action: PayloadAction<boolean>) {

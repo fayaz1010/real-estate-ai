@@ -1,8 +1,8 @@
 // Accounting Module Types
 
-export type TransactionType = 'income' | 'expense';
+export type TransactionType = "income" | "expense";
 
-export type InvoiceStatus = 'draft' | 'sent' | 'paid' | 'overdue';
+export type InvoiceStatus = "draft" | "sent" | "paid" | "overdue";
 
 export interface Transaction {
   id: string;
@@ -59,7 +59,7 @@ export interface MonthlyFinancial {
 
 export interface AiInsight {
   id: string;
-  type: 'valuation' | 'recommendation' | 'prediction' | 'warning';
+  type: "valuation" | "recommendation" | "prediction" | "warning";
   title: string;
   description: string;
   impact?: string;
@@ -69,7 +69,7 @@ export interface AiInsight {
 export interface Report {
   id: string;
   propertyId: string;
-  type: 'profit_loss' | 'cash_flow' | 'balance_sheet';
+  type: "profit_loss" | "cash_flow" | "balance_sheet";
   title: string;
   generatedAt: Date;
   data: ProfitLossData;
@@ -87,26 +87,26 @@ export interface FinancialMetrics {
 }
 
 export const INCOME_CATEGORIES = [
-  'Rent',
-  'Late Fees',
-  'Pet Fees',
-  'Parking',
-  'Laundry',
-  'Application Fees',
-  'Other Income',
+  "Rent",
+  "Late Fees",
+  "Pet Fees",
+  "Parking",
+  "Laundry",
+  "Application Fees",
+  "Other Income",
 ] as const;
 
 export const EXPENSE_CATEGORIES = [
-  'Mortgage',
-  'Insurance',
-  'Property Tax',
-  'Maintenance',
-  'Utilities',
-  'Management Fees',
-  'Legal Fees',
-  'Advertising',
-  'Landscaping',
-  'Cleaning',
-  'Supplies',
-  'Other Expense',
+  "Mortgage",
+  "Insurance",
+  "Property Tax",
+  "Maintenance",
+  "Utilities",
+  "Management Fees",
+  "Legal Fees",
+  "Advertising",
+  "Landscaping",
+  "Cleaning",
+  "Supplies",
+  "Other Expense",
 ] as const;

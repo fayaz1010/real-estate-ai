@@ -1,6 +1,7 @@
-import React from 'react';
-import { Bell } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Bell } from "lucide-react";
+import React from "react";
+
+import { cn } from "@/lib/utils";
 
 interface TipsNotificationBellProps {
   count: number;
@@ -17,10 +18,10 @@ export const TipsNotificationBell: React.FC<TipsNotificationBellProps> = ({
     <button
       onClick={onClick}
       className={cn(
-        'relative rounded-md p-2 text-primary/60 transition-colors hover:bg-primary/5 hover:text-primary',
-        className
+        "relative rounded-md p-2 text-primary/60 transition-colors hover:bg-primary/5 hover:text-primary",
+        className,
       )}
-      aria-label={`Tips${count > 0 ? ` (${count} new)` : ''}`}
+      aria-label={`Tips${count > 0 ? ` (${count} new)` : ""}`}
     >
       <Bell className="h-5 w-5" />
       {count > 0 && (

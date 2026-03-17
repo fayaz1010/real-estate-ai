@@ -1,9 +1,10 @@
 // FILE PATH: src/pages/MaintenanceRequestPage.tsx
 // Maintenance Request Management Page - Submit, track, and manage maintenance requests
 
+import { Wrench, Plus, Loader2 } from "lucide-react";
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { Wrench, Plus, Loader2 } from "lucide-react";
+
 import apiClient from "@/api/client";
 import { MaintenanceRequestForm } from "@/components/MaintenanceRequestForm";
 import { MaintenanceRequestList } from "@/components/MaintenanceRequestList";
@@ -24,11 +25,13 @@ export const MaintenanceRequestPage: React.FC = () => {
       setRequests(
         Array.isArray(res.data)
           ? res.data
-          : (res.data as { data?: MaintenanceRequest[] })?.data ?? []
+          : ((res.data as { data?: MaintenanceRequest[] })?.data ?? []),
       );
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Failed to load maintenance requests"
+        err instanceof Error
+          ? err.message
+          : "Failed to load maintenance requests",
       );
     } finally {
       setLoading(false);
@@ -41,7 +44,7 @@ export const MaintenanceRequestPage: React.FC = () => {
       setProperties(
         Array.isArray(res.data)
           ? res.data
-          : (res.data as { data?: Property[] })?.data ?? []
+          : ((res.data as { data?: Property[] })?.data ?? []),
       );
     } catch {
       // Properties fetch is non-critical; form will show empty list

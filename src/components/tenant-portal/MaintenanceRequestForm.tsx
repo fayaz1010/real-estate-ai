@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { Wrench, Upload, CheckCircle, AlertTriangle } from 'lucide-react';
-import { tenantPortalService } from '../../services/tenantPortalService';
+import { Wrench, Upload, CheckCircle, AlertTriangle } from "lucide-react";
+import { useState } from "react";
+
+import { tenantPortalService } from "../../services/tenantPortalService";
 
 export const MaintenanceRequestForm: React.FC = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [images, setImages] = useState<File[]>([]);
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -27,14 +28,14 @@ export const MaintenanceRequestForm: React.FC = () => {
       await tenantPortalService.submitMaintenanceRequest({
         title: title.trim(),
         description: description.trim(),
-        urgency: 'Medium',
+        urgency: "Medium",
       });
       setSuccess(true);
-      setTitle('');
-      setDescription('');
+      setTitle("");
+      setDescription("");
       setImages([]);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit request');
+      setError(err instanceof Error ? err.message : "Failed to submit request");
     } finally {
       setSubmitting(false);
     }
@@ -54,12 +55,21 @@ export const MaintenanceRequestForm: React.FC = () => {
 
         {/* Success Message */}
         {success && (
-          <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-6 flex items-center gap-4" role="alert">
-            <CheckCircle className="w-8 h-8 text-emerald-600 flex-shrink-0" aria-hidden="true" />
+          <div
+            className="bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-6 flex items-center gap-4"
+            role="alert"
+          >
+            <CheckCircle
+              className="w-8 h-8 text-emerald-600 flex-shrink-0"
+              aria-hidden="true"
+            />
             <div>
-              <h3 className="font-montserrat font-semibold text-emerald-800">Request Submitted</h3>
+              <h3 className="font-montserrat font-semibold text-emerald-800">
+                Request Submitted
+              </h3>
               <p className="text-sm text-emerald-600">
-                Your maintenance request has been submitted successfully. You&apos;ll receive a notification when it&apos;s assigned.
+                Your maintenance request has been submitted successfully.
+                You&apos;ll receive a notification when it&apos;s assigned.
               </p>
             </div>
             <button
@@ -74,15 +84,24 @@ export const MaintenanceRequestForm: React.FC = () => {
 
         {/* Error Message */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-6 flex items-center gap-4" role="alert">
-            <AlertTriangle className="w-6 h-6 text-red-600 flex-shrink-0" aria-hidden="true" />
+          <div
+            className="bg-red-50 border border-red-200 rounded-2xl p-6 mb-6 flex items-center gap-4"
+            role="alert"
+          >
+            <AlertTriangle
+              className="w-6 h-6 text-red-600 flex-shrink-0"
+              aria-hidden="true"
+            />
             <p className="text-sm text-red-700">{error}</p>
           </div>
         )}
 
         {/* Form */}
         {!success && (
-          <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-sm p-6">
+          <form
+            onSubmit={handleSubmit}
+            className="bg-white rounded-2xl shadow-sm p-6"
+          >
             <div className="flex items-center gap-2 mb-6">
               <Wrench className="w-5 h-5 text-[#091a2b]" aria-hidden="true" />
               <h2 className="font-montserrat text-lg font-semibold text-[#091a2b]">
@@ -92,7 +111,10 @@ export const MaintenanceRequestForm: React.FC = () => {
 
             <div className="space-y-5">
               <div>
-                <label htmlFor="request-title" className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label
+                  htmlFor="request-title"
+                  className="block text-sm font-medium text-gray-700 mb-1.5"
+                >
                   Title
                 </label>
                 <input
@@ -107,7 +129,10 @@ export const MaintenanceRequestForm: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="request-description" className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label
+                  htmlFor="request-description"
+                  className="block text-sm font-medium text-gray-700 mb-1.5"
+                >
                   Description
                 </label>
                 <textarea
@@ -122,7 +147,10 @@ export const MaintenanceRequestForm: React.FC = () => {
               </div>
 
               <div>
-                <label htmlFor="request-images" className="block text-sm font-medium text-gray-700 mb-1.5">
+                <label
+                  htmlFor="request-images"
+                  className="block text-sm font-medium text-gray-700 mb-1.5"
+                >
                   Upload Images (optional)
                 </label>
                 <div className="relative">
@@ -140,8 +168,8 @@ export const MaintenanceRequestForm: React.FC = () => {
                   >
                     <Upload className="w-4 h-4" aria-hidden="true" />
                     {images.length > 0
-                      ? `${images.length} file${images.length !== 1 ? 's' : ''} selected`
-                      : 'Click to upload images'}
+                      ? `${images.length} file${images.length !== 1 ? "s" : ""} selected`
+                      : "Click to upload images"}
                   </label>
                 </div>
                 {images.length > 0 && (
@@ -164,13 +192,15 @@ export const MaintenanceRequestForm: React.FC = () => {
               disabled={submitting || !title.trim() || !description.trim()}
               className="mt-6 w-full bg-[#091a2b] text-white py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {submitting ? 'Submitting...' : 'Submit Request'}
+              {submitting ? "Submitting..." : "Submit Request"}
             </button>
           </form>
         )}
 
         <footer className="mt-12 text-center">
-          <p className="text-xs text-gray-400">Your AI Property Manager — Never Miss a Beat</p>
+          <p className="text-xs text-gray-400">
+            Your AI Property Manager — Never Miss a Beat
+          </p>
         </footer>
       </div>
     </div>

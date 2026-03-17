@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
+
 import { useTips } from "./TipsProvider";
+
+import { cn } from "@/lib/utils";
 
 interface TooltipProps {
   id: string;
@@ -10,10 +12,19 @@ interface TooltipProps {
   className?: string;
 }
 
-export function Tooltip({ id, targetElement, title, content, className }: TooltipProps) {
+export function Tooltip({
+  id,
+  targetElement,
+  title,
+  content,
+  className,
+}: TooltipProps) {
   const { markSeen } = useTips();
   const [visible, setVisible] = useState(false);
-  const [position, setPosition] = useState<{ top: number; left: number }>({ top: 0, left: 0 });
+  const [position, setPosition] = useState<{ top: number; left: number }>({
+    top: 0,
+    left: 0,
+  });
   const tooltipRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -1,7 +1,8 @@
-import React from 'react';
-import { Lightbulb, X } from 'lucide-react';
-import { useFeatureDiscovery } from '@/hooks/useFeatureDiscovery';
-import { cn } from '@/lib/utils';
+import { Lightbulb, X } from "lucide-react";
+import React from "react";
+
+import { useFeatureDiscovery } from "@/hooks/useFeatureDiscovery";
+import { cn } from "@/lib/utils";
 
 const RELEVANCE_THRESHOLD = 70;
 
@@ -23,8 +24,8 @@ export const ProactiveTipsBanner: React.FC<ProactiveTipsBannerProps> = ({
   return (
     <div
       className={cn(
-        'flex items-center gap-4 rounded-xl border border-accent/20 bg-accent/5 px-5 py-3',
-        className
+        "flex items-center gap-4 rounded-xl border border-accent/20 bg-accent/5 px-5 py-3",
+        className,
       )}
     >
       <Lightbulb className="h-5 w-5 shrink-0 text-accent" />
@@ -46,7 +47,7 @@ export const ProactiveTipsBanner: React.FC<ProactiveTipsBannerProps> = ({
       </a>
 
       <button
-        onClick={() => dismissTip(topTip.id, 'Dismissed from banner')}
+        onClick={() => dismissTip(topTip.id, "Dismissed from banner")}
         className="shrink-0 rounded-md p-1 text-primary/40 transition-colors hover:bg-primary/5 hover:text-primary/70"
         aria-label="Dismiss tip"
       >

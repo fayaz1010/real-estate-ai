@@ -32,8 +32,8 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
     try {
       await authService.requestPasswordReset(email);
       setSuccess(true);
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setIsLoading(false);
     }
@@ -51,7 +51,8 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
               Check Your Email
             </h2>
             <p className="text-gray-600 mb-6">
-              We&apos;ve sent password reset instructions to <strong>{email}</strong>
+              We&apos;ve sent password reset instructions to{" "}
+              <strong>{email}</strong>
             </p>
             <button
               onClick={onBack}
@@ -80,8 +81,8 @@ export const ForgotPassword: React.FC<ForgotPasswordProps> = ({ onBack }) => {
           Reset Password
         </h2>
         <p className="text-gray-600 mb-6">
-          Enter your email address and we&apos;ll send you instructions to reset your
-          password.
+          Enter your email address and we&apos;ll send you instructions to reset
+          your password.
         </p>
 
         {error && (

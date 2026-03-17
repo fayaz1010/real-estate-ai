@@ -1,5 +1,3 @@
-import React from "react";
-import { Link } from "react-router-dom";
 import {
   Cpu,
   Clock,
@@ -15,6 +13,8 @@ import {
   Shield,
   CheckCircle,
 } from "lucide-react";
+import React from "react";
+import { Link } from "react-router-dom";
 
 const timeSavings = [
   {
@@ -150,12 +150,16 @@ export const AIPropertyManagementPage: React.FC = () => {
           >
             AI-Powered Property Management:
             <br className="hidden md:block" />
-            <span className="text-realestate-accent"> How It Saves 15+ Hours/Week</span>
+            <span className="text-realestate-accent">
+              {" "}
+              How It Saves 15+ Hours/Week
+            </span>
           </h1>
           <p className="text-lg md:text-xl text-gray-300 font-inter max-w-3xl mx-auto leading-relaxed mb-10">
-            Stop spending your time on tasks a machine can do better. RealEstate AI
-            uses advanced machine learning to automate screening, rent collection,
-            maintenance, and reporting — giving you back 15+ hours every single week.
+            Stop spending your time on tasks a machine can do better. RealEstate
+            AI uses advanced machine learning to automate screening, rent
+            collection, maintenance, and reporting — giving you back 15+ hours
+            every single week.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
@@ -176,10 +180,7 @@ export const AIPropertyManagementPage: React.FC = () => {
       </section>
 
       {/* Problem Section */}
-      <section
-        className="py-20 bg-gray-50"
-        aria-labelledby="problem-heading"
-      >
+      <section className="py-20 bg-gray-50" aria-labelledby="problem-heading">
         <div className="section-container">
           <div className="max-w-4xl mx-auto text-center">
             <span className="inline-block px-4 py-1.5 bg-realestate-accent/10 text-realestate-accent font-semibold text-sm rounded-full mb-4 font-inter">
@@ -192,12 +193,13 @@ export const AIPropertyManagementPage: React.FC = () => {
               Property Management Is Stuck in the Past
             </h2>
             <p className="text-gray-600 font-inter text-lg leading-relaxed">
-              The average property manager spends 17+ hours per week on repetitive
-              administrative tasks: chasing rent payments, screening tenants manually,
-              coordinating maintenance calls, and generating reports by hand. These are
-              tasks that artificial intelligence can handle faster, more accurately,
-              and around the clock — freeing you to focus on growing your portfolio
-              and building tenant relationships.
+              The average property manager spends 17+ hours per week on
+              repetitive administrative tasks: chasing rent payments, screening
+              tenants manually, coordinating maintenance calls, and generating
+              reports by hand. These are tasks that artificial intelligence can
+              handle faster, more accurately, and around the clock — freeing you
+              to focus on growing your portfolio and building tenant
+              relationships.
             </p>
           </div>
         </div>
@@ -221,7 +223,8 @@ export const AIPropertyManagementPage: React.FC = () => {
             </h2>
             <p className="text-gray-600 font-inter max-w-2xl mx-auto">
               Here is a detailed breakdown of how AI transforms each property
-              management workflow from hours of manual effort to minutes of oversight.
+              management workflow from hours of manual effort to minutes of
+              oversight.
             </p>
           </div>
           <div className="max-w-4xl mx-auto">
@@ -230,10 +233,18 @@ export const AIPropertyManagementPage: React.FC = () => {
                 <table className="w-full">
                   <thead>
                     <tr className="bg-realestate-primary text-white">
-                      <th className="text-left py-4 px-6 font-space-grotesk font-semibold">Task</th>
-                      <th className="text-center py-4 px-6 font-space-grotesk font-semibold">Manual</th>
-                      <th className="text-center py-4 px-6 font-space-grotesk font-semibold">With AI</th>
-                      <th className="text-center py-4 px-6 font-space-grotesk font-semibold text-realestate-accent">Saved</th>
+                      <th className="text-left py-4 px-6 font-space-grotesk font-semibold">
+                        Task
+                      </th>
+                      <th className="text-center py-4 px-6 font-space-grotesk font-semibold">
+                        Manual
+                      </th>
+                      <th className="text-center py-4 px-6 font-space-grotesk font-semibold">
+                        With AI
+                      </th>
+                      <th className="text-center py-4 px-6 font-space-grotesk font-semibold text-realestate-accent">
+                        Saved
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -242,25 +253,46 @@ export const AIPropertyManagementPage: React.FC = () => {
                       return (
                         <tr
                           key={item.task}
-                          className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                          className={
+                            index % 2 === 0 ? "bg-white" : "bg-gray-50"
+                          }
                         >
                           <td className="py-3.5 px-6">
                             <div className="flex items-center gap-3">
-                              <IconComponent className="w-5 h-5 text-realestate-secondary flex-shrink-0" aria-hidden="true" />
-                              <span className="font-inter text-sm text-realestate-primary font-medium">{item.task}</span>
+                              <IconComponent
+                                className="w-5 h-5 text-realestate-secondary flex-shrink-0"
+                                aria-hidden="true"
+                              />
+                              <span className="font-inter text-sm text-realestate-primary font-medium">
+                                {item.task}
+                              </span>
                             </div>
                           </td>
-                          <td className="py-3.5 px-6 text-center text-red-500 font-inter text-sm font-medium">{item.manualTime}</td>
-                          <td className="py-3.5 px-6 text-center text-green-600 font-inter text-sm font-medium">{item.aiTime}</td>
-                          <td className="py-3.5 px-6 text-center text-realestate-accent font-inter text-sm font-bold">{item.saved}</td>
+                          <td className="py-3.5 px-6 text-center text-red-500 font-inter text-sm font-medium">
+                            {item.manualTime}
+                          </td>
+                          <td className="py-3.5 px-6 text-center text-green-600 font-inter text-sm font-medium">
+                            {item.aiTime}
+                          </td>
+                          <td className="py-3.5 px-6 text-center text-realestate-accent font-inter text-sm font-bold">
+                            {item.saved}
+                          </td>
                         </tr>
                       );
                     })}
                     <tr className="bg-realestate-primary/5 border-t-2 border-realestate-accent">
-                      <td className="py-4 px-6 font-space-grotesk font-bold text-realestate-primary">Weekly Total</td>
-                      <td className="py-4 px-6 text-center font-bold text-red-500 font-space-grotesk">{totalManual}</td>
-                      <td className="py-4 px-6 text-center font-bold text-green-600 font-space-grotesk">{totalAI}</td>
-                      <td className="py-4 px-6 text-center font-bold text-realestate-accent font-space-grotesk">{totalSaved}</td>
+                      <td className="py-4 px-6 font-space-grotesk font-bold text-realestate-primary">
+                        Weekly Total
+                      </td>
+                      <td className="py-4 px-6 text-center font-bold text-red-500 font-space-grotesk">
+                        {totalManual}
+                      </td>
+                      <td className="py-4 px-6 text-center font-bold text-green-600 font-space-grotesk">
+                        {totalAI}
+                      </td>
+                      <td className="py-4 px-6 text-center font-bold text-realestate-accent font-space-grotesk">
+                        {totalSaved}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -336,7 +368,10 @@ export const AIPropertyManagementPage: React.FC = () => {
               { value: "8%", label: "Average Rent Increase" },
               { value: "60%", label: "Faster Maintenance" },
             ].map((stat) => (
-              <div key={stat.label} className="card-elevated text-center p-6 md:p-8">
+              <div
+                key={stat.label}
+                className="card-elevated text-center p-6 md:p-8"
+              >
                 <p className="text-3xl md:text-4xl font-bold text-realestate-accent font-space-grotesk mb-2">
                   {stat.value}
                 </p>
@@ -377,7 +412,7 @@ export const AIPropertyManagementPage: React.FC = () => {
                   ))}
                 </div>
                 <blockquote className="text-gray-600 font-inter leading-relaxed mb-6">
-                  "{testimonial.quote}"
+                  &ldquo;{testimonial.quote}&rdquo;
                 </blockquote>
                 <div>
                   <p className="font-semibold text-realestate-primary font-space-grotesk">
@@ -394,7 +429,10 @@ export const AIPropertyManagementPage: React.FC = () => {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 bg-gray-50" aria-labelledby="how-it-works-heading">
+      <section
+        className="py-20 bg-gray-50"
+        aria-labelledby="how-it-works-heading"
+      >
         <div className="section-container">
           <div className="max-w-3xl mx-auto text-center">
             <h2
@@ -434,8 +472,9 @@ export const AIPropertyManagementPage: React.FC = () => {
               Reclaim 15+ Hours Every Week
             </h2>
             <p className="text-gray-300 font-inter max-w-2xl mx-auto mb-8 text-lg">
-              Let AI handle the repetitive work so you can focus on what matters.
-              Start your free trial today and see the difference in your first week.
+              Let AI handle the repetitive work so you can focus on what
+              matters. Start your free trial today and see the difference in
+              your first week.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link

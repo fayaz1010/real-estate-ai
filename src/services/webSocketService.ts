@@ -4,7 +4,7 @@ import { tokenManager } from "@/modules/auth/utils/tokenManager";
 export interface WebSocketMessage {
   channel: string;
   event: string;
-  data: any;
+  data: unknown;
 }
 
 export type ConnectionState = "disconnected" | "connecting" | "connected";
@@ -233,9 +233,7 @@ class WebSocketService {
   /**
    * Register a listener for typing indicator changes
    */
-  onTypingChange(
-    listener: (indicator: TypingIndicator) => void,
-  ): () => void {
+  onTypingChange(listener: (indicator: TypingIndicator) => void): () => void {
     this.typingListeners.add(listener);
     return () => {
       this.typingListeners.delete(listener);
@@ -429,13 +427,18 @@ class WebSocketService {
   }
 
   private handlePresenceUpdate(message: WebSocketMessage): void {
+    const data = message.data as {
+      userId: string;
+      status?: string;
+      lastSeen?: string;
+    };
     const presence: UserPresence = {
-      userId: message.data.userId,
+      userId: data.userId,
       status:
         message.event === "user_offline"
           ? "offline"
-          : message.data.status || "online",
-      lastSeen: message.data.lastSeen,
+          : (data.status as "online" | "offline") || "online",
+      lastSeen: data.lastSeen,
     };
 
     if (presence.status === "online") {

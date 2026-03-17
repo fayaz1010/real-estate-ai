@@ -4,7 +4,7 @@ import type {
   MaintenanceRequest,
   PaymentHistoryItem,
   UpcomingPayment,
-} from '@/types/tenantPortal';
+} from "@/types/tenantPortal";
 
 class TenantPortalModuleService {
   async getLeaseDetails(): Promise<LeaseDetails> {
@@ -13,23 +13,26 @@ class TenantPortalModuleService {
   }
 
   async getPaymentHistory(): Promise<PaymentHistoryItem[]> {
-    const response = await apiClient.get<PaymentHistoryItem[]>("/tenant/payments");
+    const response =
+      await apiClient.get<PaymentHistoryItem[]>("/tenant/payments");
     return response.data;
   }
 
   async getUpcomingPayments(): Promise<UpcomingPayment[]> {
-    const response = await apiClient.get<UpcomingPayment[]>("/tenant/payments/upcoming");
+    const response = await apiClient.get<UpcomingPayment[]>(
+      "/tenant/payments/upcoming",
+    );
     return response.data;
   }
 
   async getMaintenanceRequests(): Promise<MaintenanceRequest[]> {
-    const response = await apiClient.get<MaintenanceRequest[]>("/tenant/maintenance");
+    const response = await apiClient.get<MaintenanceRequest[]>(
+      "/tenant/maintenance",
+    );
     return response.data;
   }
 
-  async submitMaintenanceRequest(
-    data: FormData,
-  ): Promise<MaintenanceRequest> {
+  async submitMaintenanceRequest(data: FormData): Promise<MaintenanceRequest> {
     const response = await apiClient.post<MaintenanceRequest>(
       "/tenant/maintenance",
       data,

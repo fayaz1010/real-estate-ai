@@ -225,7 +225,9 @@ const mapPreviousApplicationToForm = (
   };
 };
 
-const mapUserProfileToForm = (profile: Record<string, unknown>): Partial<ApplicationFormData> => {
+const mapUserProfileToForm = (
+  profile: Record<string, unknown>,
+): Partial<ApplicationFormData> => {
   const formData: Partial<ApplicationFormData> = {};
 
   if (profile.firstName || profile.lastName) {
@@ -254,7 +256,8 @@ const mergeEmploymentFromPaystub = (
   // Check if employer already exists
   const existingIndex = current.findIndex(
     (e) =>
-      e.employerName?.toLowerCase() === (paystubData.employerName as string)?.toLowerCase(),
+      e.employerName?.toLowerCase() ===
+      (paystubData.employerName as string)?.toLowerCase(),
   );
 
   if (existingIndex >= 0) {
