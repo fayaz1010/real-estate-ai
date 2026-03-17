@@ -6,6 +6,9 @@ import { Layout } from "./components/layout";
 import { useAuth } from "./modules/auth/hooks/useAuth";
 import { ProfileSetup } from "./modules/auth/components/ProfileSetup";
 import { PropertyDetailsPage } from "./modules/properties/components/PropertyDetails/PropertyDetailsPage";
+import { TrialSignupPage } from "./modules/trial/pages/TrialSignupPage";
+import SchedulingPage from "./modules/scheduling/pages/SchedulingPage";
+import { WorkflowsPage } from "./modules/workflows/pages/WorkflowsPage";
 import {
   HomePage,
   PricingPage,
@@ -24,6 +27,10 @@ import {
   LeaseManagementPage,
   PaymentCollectionPage,
   PredictiveMaintenancePage,
+  ReportingDashboardPage,
+  OnboardingPage,
+  CommunicationPage,
+  AccountingDashboardPage,
 } from "./pages";
 import {
   SmallLandlordsPage,
@@ -206,6 +213,7 @@ const AppContent: React.FC = () => {
           <Route path="/auth/login" element={<AuthPage />} />
           <Route path="/auth/register" element={<AuthPage />} />
           <Route path="/auth/forgot-password" element={<AuthPage />} />
+          <Route path="/trial/signup" element={<TrialSignupPage />} />
 
           {/* Legacy auth routes - redirect */}
           <Route path="/login" element={<Navigate to="/auth/login" replace />} />
@@ -267,6 +275,16 @@ const AppContent: React.FC = () => {
               <Layout>
                 <AutomateManagementPage />
               </Layout>
+            }
+          />
+
+          {/* Onboarding Route (protected, no Layout - custom design) */}
+          <Route
+            path="/onboarding"
+            element={
+              <ProtectedRoute>
+                <OnboardingPage />
+              </ProtectedRoute>
             }
           />
 
@@ -370,6 +388,47 @@ const AppContent: React.FC = () => {
             element={
               <ProtectedRoute>
                 <PaymentCollectionPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/communication"
+            element={
+              <ProtectedRoute>
+                <CommunicationPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/reporting"
+            element={
+              <ProtectedRoute>
+                <ReportingDashboardPage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/accounting"
+            element={
+              <ProtectedRoute>
+                <AccountingDashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/scheduling"
+            element={
+              <ProtectedRoute>
+                <SchedulingPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/workflows"
+            element={
+              <ProtectedRoute>
+                <WorkflowsPage />
               </ProtectedRoute>
             }
           />

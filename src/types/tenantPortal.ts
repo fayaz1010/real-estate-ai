@@ -19,6 +19,8 @@ export interface MaintenanceRequest {
   title: string;
   description: string;
   status: 'open' | 'in progress' | 'completed';
+  urgency: 'Low' | 'Medium' | 'High';
+  photoUrls?: string[];
   createdAt: Date;
 }
 
@@ -37,9 +39,18 @@ export interface TenantHome {
 }
 
 export interface PaymentHistoryItem {
+  id?: string;
   date: Date;
   amount: number;
   description: string;
+  paymentMethod: string;
+  status: 'Paid' | 'Pending' | 'Failed';
+  receiptUrl?: string;
+}
+
+export interface UpcomingPayment {
+  dueDate: Date;
+  amount: number;
   paymentMethod: string;
 }
 
@@ -51,6 +62,10 @@ export interface LeaseDetails {
   petPolicy: string;
   otherTerms: string;
   documentUrl: string;
+  address: string;
+  landlordName?: string;
+  landlordEmail?: string;
+  landlordPhone?: string;
 }
 
 export interface TenantProfileDetails {

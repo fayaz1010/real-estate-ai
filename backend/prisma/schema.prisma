@@ -125,6 +125,7 @@ model User {
   tenantLeases            Lease[]    @relation("TenantLeases")
   landlordLeases          Lease[]    @relation("LandlordLeases")
   payments                Payment[]  @relation("PayerPayments")
+  workflows               Workflow[]
 
   @@index([email])
   @@index([role])
@@ -650,4 +651,56 @@ model Payment {
   @@index([payerId])
   @@index([status])
   @@index([dueDate])
+}
+
+// ==========================================
+// WORKFLOW MODELS
+// ==========================================
+
+enum WorkflowTriggerType {
+  MANUAL
+  NEW_TENANT
+  LEASE_EXPIRY
+  MAINTENANCE_REQUEST
+  PAYMENT_RECEIVED
+  SCHEDULED
+}
+
+enum WorkflowExecutionStatus {
+  PENDING
+  RUNNING
+  COMPLETED
+  FAILED
+}
+
+model Workflow {
+  id          String              @id @default(uuid())
+  userId      String
+  user        User                @relation(fields: [userId], references: [id])
+  name        String
+  description String?
+  triggerType WorkflowTriggerType
+  steps       Json
+  isActive    Boolean             @default(true)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  executions  WorkflowExecution[]
+
+  @@index([userId])
+  @@index([triggerType])
+  @@index([isActive])
+}
+
+model WorkflowExecution {
+  id         String                  @id @default(uuid())
+  workflowId String
+  workflow   Workflow                @relation(fields: [workflowId], references: [id], onDelete: Cascade)
+  status     WorkflowExecutionStatus @default(PENDING)
+  log        String?
+  createdAt  DateTime                @default(now())
+  updatedAt  DateTime                @updatedAt
+
+  @@index([workflowId])
+  @@index([status])
 }

@@ -83,6 +83,7 @@ const initialState: AuthState = {
   isAuthenticated: false,
   isLoading: false,
   error: null,
+  trialExpirationDate: null,
 };
 
 // Slice
@@ -101,6 +102,9 @@ const authSlice = createSlice({
     },
     setAuthenticated: (state, action: PayloadAction<boolean>) => {
       state.isAuthenticated = action.payload;
+    },
+    setTrialExpirationDate: (state, action: PayloadAction<string | null>) => {
+      state.trialExpirationDate = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -150,6 +154,7 @@ const authSlice = createSlice({
       state.isAuthenticated = false;
       state.error = null;
       state.isLoading = false;
+      state.trialExpirationDate = null;
     });
 
     // Load User
@@ -189,5 +194,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { clearError, updateUser, setAuthenticated } = authSlice.actions;
+export const { clearError, updateUser, setAuthenticated, setTrialExpirationDate } = authSlice.actions;
 export default authSlice.reducer;

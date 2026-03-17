@@ -11,7 +11,7 @@ import {
   sendPasswordResetEmail,
   sendVerificationEmail,
   send2FAEnabledEmail,
-} from "../../utils/email";
+} from "../../utils/emailService";
 import {
   generateAccessToken,
   generateRefreshToken,

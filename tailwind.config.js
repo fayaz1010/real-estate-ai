@@ -10,6 +10,12 @@ export default {
         accent: "#C9956B",
         background: "#FAF6F1",
         text_primary: "#1A1A2E",
+        // Tenant Portal - Authoritative corporate palette
+        "tenant-primary": "#091a2b",
+        "tenant-secondary": "#005163",
+        "tenant-accent": "#3b4876",
+        "tenant-bg": "#f1f3f4",
+        "tenant-text": "#091a2b",
         // Legacy aliases for existing components
         "realestate-primary": "#2C3E50",
         "realestate-secondary": "#8B7355",
@@ -27,8 +33,8 @@ export default {
       fontFamily: {
         display: ["Instrument Serif", "serif"],
         body: ["DM Sans", "sans-serif"],
-        montserrat: ["Instrument Serif", "serif"],
-        "open-sans": ["DM Sans", "sans-serif"],
+        montserrat: ["Montserrat", "Instrument Serif", "serif"],
+        "open-sans": ["Open Sans", "DM Sans", "sans-serif"],
         "roboto-mono": ["Roboto Mono", "monospace"],
         // Legacy aliases pointing to new fonts
         "space-grotesk": ["Instrument Serif", "serif"],

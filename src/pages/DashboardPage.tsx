@@ -2,6 +2,7 @@
 // Dashboard Page - Property Management Dashboard with AI Insights
 
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   Home,
@@ -36,6 +37,8 @@ import {
   Shield,
 } from "lucide-react";
 import { useAuth } from "../modules/auth/hooks/useAuth";
+import { TrialBanner } from "../modules/trial/components/TrialBanner";
+import type { RootState } from "../store";
 
 // ---------------------------------------------------------------------------
 // Mock Data
@@ -258,6 +261,9 @@ function SeverityBadge({ severity }: { severity: string }) {
 
 export default function DashboardPage() {
   const { user, userName, logout } = useAuth();
+  const trialExpirationDate = useSelector(
+    (state: RootState) => state.auth.trialExpirationDate,
+  );
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -419,6 +425,11 @@ export default function DashboardPage() {
             </div>
           </div>
         </header>
+
+        {/* Trial Banner */}
+        {trialExpirationDate && (
+          <TrialBanner trialExpirationDate={trialExpirationDate} />
+        )}
 
         {/* Scrollable content */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 space-y-6">

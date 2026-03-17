@@ -15,3 +15,7 @@ export { LandlordPortalPage } from "./LandlordPortalPage";
 export { DeveloperPortalPage } from "./DeveloperPortalPage";
 export { MaintenanceRequestPage } from "./MaintenanceRequestPage";
 export { default as PredictiveMaintenancePage } from "./maintenance/predictive";
+export { ReportingDashboardPage } from "./ReportingDashboardPage";
+export { default as OnboardingPage } from "../modules/onboarding/pages/OnboardingPage";
+export { CommunicationPage } from "../modules/communication/pages/CommunicationPage";
+export { AccountingDashboard as AccountingDashboardPage } from "../modules/accounting/pages/AccountingDashboard";

@@ -27,6 +27,7 @@ export const MaintenanceRequestForm: React.FC = () => {
       await tenantPortalService.submitMaintenanceRequest({
         title: title.trim(),
         description: description.trim(),
+        urgency: 'Medium',
       });
       setSuccess(true);
       setTitle('');

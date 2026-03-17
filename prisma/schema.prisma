@@ -886,3 +886,34 @@ model Availability {
   @@index([userId])
   @@index([dayOfWeek])
 }
+
+// ==========================================
+// FEATURE USAGE & TIPS MODELS
+// ==========================================
+
+model UserFeatureUsage {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  feature    String
+  lastUsed   DateTime?
+  usageCount Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@unique([userId, feature])
+  @@index([userId])
+  @@index([feature])
+}
+
+model TipDismissal {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tipId     String
+  reason    String?
+  createdAt DateTime @default(now())
+
+  @@unique([userId, tipId])
+  @@index([userId])
+}

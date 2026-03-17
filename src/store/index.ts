@@ -8,23 +8,29 @@ import {
 } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
 
+import accountingReducer from "../modules/accounting/store/accountingSlice";
 import applicationReducer from "../modules/applications/store/applicationSlice";
 import verificationReducer from "../modules/applications/store/verificationSlice";
 import authReducer from "../modules/auth/store/authSlice";
+import communicationReducer from "../modules/communication/store/communicationSlice";
 import availabilityReducer from "../modules/inspections/store/availabilitySlice";
 import inspectionReducer from "../modules/inspections/store/inspectionSlice";
 import propertyReducer from "../modules/properties/store/propertySlice";
+import onboardingReducer from "../modules/onboarding/store/onboardingSlice";
 import searchReducer from "../modules/properties/store/searchSlice";
 
 export const store = configureStore({
   reducer: {
+    accounting: accountingReducer,
     auth: authReducer,
     properties: propertyReducer,
     search: searchReducer,
     inspections: inspectionReducer,
+    onboarding: onboardingReducer,
     availability: availabilityReducer,
     applications: applicationReducer,
     verification: verificationReducer,
+    communication: communicationReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
