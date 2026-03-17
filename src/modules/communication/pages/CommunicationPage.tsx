@@ -1,54 +1,103 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 
 import { useAuth } from "../../auth/hooks/useAuth";
 import { MessageInput } from "../components/MessageInput";
 import { MessageList } from "../components/MessageList";
 import { useCommunication } from "../hooks/useCommunication";
+import { useRealtimeMessages } from "../hooks/useRealtimeMessages";
 import type { Conversation } from "../../../types/communication";
+
+const ConnectionIndicator: React.FC<{
+  connectionState: "disconnected" | "connecting" | "connected";
+}> = ({ connectionState }) => {
+  const config = {
+    connected: { color: "bg-green-500", label: "Connected" },
+    connecting: { color: "bg-[#C4A882] animate-pulse", label: "Connecting..." },
+    disconnected: { color: "bg-red-400", label: "Disconnected" },
+  };
+
+  const { color, label } = config[connectionState];
+
+  return (
+    <div className="flex items-center gap-1.5 transition-opacity duration-300">
+      <span className={`w-2 h-2 rounded-full ${color}`} />
+      <span
+        className="text-[10px] text-[#2D2A26]/50"
+        style={{ fontFamily: "'Inter', sans-serif" }}
+      >
+        {label}
+      </span>
+    </div>
+  );
+};
+
+const OnlineStatusDot: React.FC<{ isOnline: boolean }> = ({ isOnline }) => (
+  <span
+    className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white transition-colors duration-300 ${
+      isOnline ? "bg-green-500" : "bg-[#2D2A26]/20"
+    }`}
+  />
+);
 
 const ConversationItem: React.FC<{
   conversation: Conversation;
   isActive: boolean;
   onSelect: (id: string) => void;
-}> = ({ conversation, isActive, onSelect }) => {
+  isOnline: (userId: string) => boolean;
+}> = ({ conversation, isActive, onSelect, isOnline }) => {
   const otherParticipant = conversation.participants[0];
+  const participantOnline = otherParticipant
+    ? isOnline(otherParticipant.userId)
+    : false;
 
   return (
     <button
       onClick={() => onSelect(conversation.id)}
-      className={`w-full text-left px-4 py-3 border-b border-gray-100 transition-colors hover:bg-gray-50 ${
-        isActive ? "bg-[#f1f3f4] border-l-2 border-l-[#005163]" : ""
+      className={`w-full text-left px-4 py-3 border-b border-[#C4A882]/10 transition-colors duration-200 hover:bg-[#FAF6F1] ${
+        isActive ? "bg-[#FAF6F1] border-l-2 border-l-[#8B7355]" : ""
       }`}
     >
-      <div className="flex items-center justify-between mb-1">
-        <h3
-          className="text-sm font-semibold text-[#091a2b] truncate"
-          style={{ fontFamily: "'Montserrat', sans-serif" }}
-        >
-          {conversation.subject}
-        </h3>
-        {conversation.unreadCount > 0 && (
-          <span className="ml-2 flex-shrink-0 bg-[#005163] text-white text-[10px] font-bold rounded-full h-5 min-w-[20px] flex items-center justify-center px-1.5">
-            {conversation.unreadCount}
-          </span>
+      <div className="flex items-center gap-3">
+        {otherParticipant && (
+          <div className="relative flex-shrink-0">
+            <div className="w-9 h-9 rounded-full bg-[#C4A882]/30 flex items-center justify-center text-[#8B7355] text-sm font-semibold">
+              {otherParticipant.name.charAt(0).toUpperCase()}
+            </div>
+            <OnlineStatusDot isOnline={participantOnline} />
+          </div>
         )}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between mb-0.5">
+            <h3
+              className="text-sm font-semibold text-[#2D2A26] truncate"
+              style={{ fontFamily: "'DM Serif Display', serif" }}
+            >
+              {conversation.subject}
+            </h3>
+            {conversation.unreadCount > 0 && (
+              <span className="ml-2 flex-shrink-0 bg-[#8B7355] text-white text-[10px] font-bold rounded-full h-5 min-w-[20px] flex items-center justify-center px-1.5">
+                {conversation.unreadCount}
+              </span>
+            )}
+          </div>
+          {otherParticipant && (
+            <p
+              className="text-xs text-[#2D2A26]/50 truncate"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              {otherParticipant.name}
+            </p>
+          )}
+          {conversation.lastMessage && (
+            <p
+              className="text-xs text-[#2D2A26]/40 truncate mt-0.5"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              {conversation.lastMessage.content}
+            </p>
+          )}
+        </div>
       </div>
-      {otherParticipant && (
-        <p
-          className="text-xs text-gray-500 truncate"
-          style={{ fontFamily: "'Open Sans', sans-serif" }}
-        >
-          {otherParticipant.name}
-        </p>
-      )}
-      {conversation.lastMessage && (
-        <p
-          className="text-xs text-gray-400 truncate mt-0.5"
-          style={{ fontFamily: "'Open Sans', sans-serif" }}
-        >
-          {conversation.lastMessage.content}
-        </p>
-      )}
     </button>
   );
 };
@@ -70,9 +119,26 @@ export const CommunicationPage: React.FC = () => {
     resetError,
   } = useCommunication();
 
+  const {
+    newMessage,
+    connectionState,
+    typingUsers,
+    sendTypingIndicator,
+    stopTypingIndicator,
+    isUserOnline,
+  } = useRealtimeMessages();
+
   useEffect(() => {
     loadConversations();
   }, [loadConversations]);
+
+  // Handle real-time messages arriving
+  useEffect(() => {
+    if (newMessage && activeConversationId) {
+      // Messages are handled by the Redux store via addRealtimeMessage
+      // The hook triggers re-renders when newMessage changes
+    }
+  }, [newMessage, activeConversationId]);
 
   const handleSend = async (content: string) => {
     if (!activeConversationId) return;
@@ -83,23 +149,59 @@ export const CommunicationPage: React.FC = () => {
     }
   };
 
+  const handleTyping = useCallback(() => {
+    if (activeConversationId) {
+      sendTypingIndicator(activeConversationId);
+    }
+  }, [activeConversationId, sendTypingIndicator]);
+
+  const handleStopTyping = useCallback(() => {
+    if (activeConversationId) {
+      stopTypingIndicator(activeConversationId);
+    }
+  }, [activeConversationId, stopTypingIndicator]);
+
+  // Get names of users currently typing in active conversation
+  const typingUserNames = useMemo(() => {
+    if (!activeConversationId || !activeConversation) return [];
+
+    const typingSet = typingUsers.get(activeConversationId);
+    if (!typingSet || typingSet.size === 0) return [];
+
+    const currentUserId = user?.id || "";
+    const names: string[] = [];
+
+    typingSet.forEach((userId) => {
+      if (userId === currentUserId) return;
+      const participant = activeConversation.participants.find(
+        (p) => p.userId === userId,
+      );
+      names.push(participant?.name || "Someone");
+    });
+
+    return names;
+  }, [activeConversationId, activeConversation, typingUsers, user]);
+
   const currentUserId = user?.id || "";
 
   return (
-    <div className="min-h-screen bg-[#f1f3f4]">
+    <div className="min-h-screen bg-[#FAF6F1]">
       <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
-        <h1
-          className="text-2xl font-bold text-[#091a2b] mb-6"
-          style={{ fontFamily: "'Montserrat', sans-serif" }}
-        >
-          Messages
-        </h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1
+            className="text-2xl font-bold text-[#2D2A26]"
+            style={{ fontFamily: "'DM Serif Display', serif" }}
+          >
+            Messages
+          </h1>
+          <ConnectionIndicator connectionState={connectionState} />
+        </div>
 
         {error && (
           <div className="mb-4 rounded-lg bg-red-50 border border-red-200 px-4 py-3 flex items-center justify-between">
             <p
               className="text-sm text-red-700"
-              style={{ fontFamily: "'Open Sans', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               {error}
             </p>
@@ -112,13 +214,13 @@ export const CommunicationPage: React.FC = () => {
           </div>
         )}
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden flex h-[calc(100vh-200px)] min-h-[500px]">
+        <div className="bg-white rounded-2xl shadow-sm border border-[#C4A882]/20 overflow-hidden flex h-[calc(100vh-200px)] min-h-[500px]">
           {/* Conversation sidebar */}
-          <div className="w-80 border-r border-gray-200 flex flex-col bg-white">
-            <div className="px-4 py-3 border-b border-gray-200">
+          <div className="w-80 border-r border-[#C4A882]/20 flex flex-col bg-white">
+            <div className="px-4 py-3 border-b border-[#C4A882]/20">
               <h2
-                className="text-sm font-semibold text-[#091a2b]"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
+                className="text-sm font-semibold text-[#2D2A26]"
+                style={{ fontFamily: "'DM Serif Display', serif" }}
               >
                 Conversations
               </h2>
@@ -126,13 +228,13 @@ export const CommunicationPage: React.FC = () => {
             <div className="flex-1 overflow-y-auto">
               {isLoadingConversations ? (
                 <div className="flex items-center justify-center p-8">
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-[#091a2b] border-t-transparent" />
+                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-[#8B7355] border-t-transparent" />
                 </div>
               ) : conversations.length === 0 ? (
                 <div className="p-6 text-center">
                   <p
-                    className="text-sm text-gray-500"
-                    style={{ fontFamily: "'Open Sans', sans-serif" }}
+                    className="text-sm text-[#2D2A26]/50"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     No conversations yet
                   </p>
@@ -144,6 +246,7 @@ export const CommunicationPage: React.FC = () => {
                     conversation={convo}
                     isActive={convo.id === activeConversationId}
                     onSelect={selectConversation}
+                    isOnline={isUserOnline}
                   />
                 ))
               )}
@@ -151,41 +254,75 @@ export const CommunicationPage: React.FC = () => {
           </div>
 
           {/* Message area */}
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col bg-[#FAF6F1]">
             {activeConversation ? (
               <>
                 {/* Header */}
-                <div className="px-6 py-3 border-b border-gray-200 bg-white">
-                  <h2
-                    className="text-sm font-semibold text-[#091a2b]"
-                    style={{ fontFamily: "'Montserrat', sans-serif" }}
-                  >
-                    {activeConversation.subject}
-                  </h2>
-                  <p
-                    className="text-xs text-gray-500"
-                    style={{ fontFamily: "'Open Sans', sans-serif" }}
-                  >
-                    {activeConversation.participants
-                      .map((p) => p.name)
-                      .join(", ")}
-                  </p>
+                <div className="px-6 py-3 border-b border-[#C4A882]/20 bg-white">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <h2
+                        className="text-sm font-semibold text-[#2D2A26]"
+                        style={{ fontFamily: "'DM Serif Display', serif" }}
+                      >
+                        {activeConversation.subject}
+                      </h2>
+                      <p
+                        className="text-xs text-[#2D2A26]/50"
+                        style={{ fontFamily: "'Inter', sans-serif" }}
+                      >
+                        {activeConversation.participants
+                          .map((p) => p.name)
+                          .join(", ")}
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      {activeConversation.participants
+                        .filter((p) => p.userId !== currentUserId)
+                        .map((p) => (
+                          <div
+                            key={p.userId}
+                            className="flex items-center gap-1.5"
+                          >
+                            <span
+                              className={`w-2 h-2 rounded-full transition-colors duration-300 ${
+                                isUserOnline(p.userId)
+                                  ? "bg-green-500"
+                                  : "bg-[#2D2A26]/20"
+                              }`}
+                            />
+                            <span
+                              className="text-[10px] text-[#2D2A26]/40"
+                              style={{ fontFamily: "'Inter', sans-serif" }}
+                            >
+                              {isUserOnline(p.userId) ? "Online" : "Offline"}
+                            </span>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
                 </div>
 
                 <MessageList
                   messages={messages}
                   currentUserId={currentUserId}
                   isLoading={isLoadingMessages}
+                  typingUserNames={typingUserNames}
                 />
 
-                <MessageInput onSend={handleSend} isSending={isSending} />
+                <MessageInput
+                  onSend={handleSend}
+                  onTyping={handleTyping}
+                  onStopTyping={handleStopTyping}
+                  isSending={isSending}
+                />
               </>
             ) : (
               <div className="flex-1 flex items-center justify-center">
                 <div className="text-center">
-                  <div className="w-16 h-16 rounded-full bg-[#f1f3f4] flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 rounded-full bg-[#C4A882]/20 flex items-center justify-center mx-auto mb-4">
                     <svg
-                      className="w-8 h-8 text-[#3b4876]"
+                      className="w-8 h-8 text-[#8B7355]"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -199,8 +336,8 @@ export const CommunicationPage: React.FC = () => {
                     </svg>
                   </div>
                   <p
-                    className="text-gray-500 text-sm"
-                    style={{ fontFamily: "'Open Sans', sans-serif" }}
+                    className="text-[#2D2A26]/50 text-sm"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     Select a conversation to start messaging
                   </p>

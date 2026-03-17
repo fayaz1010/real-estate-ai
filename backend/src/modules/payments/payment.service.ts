@@ -43,7 +43,7 @@ export class PaymentService {
     });
   }
 
-  // Create Stripe payment intent
+  // Create Stripe payment intent with full metadata
   async createPaymentIntent(paymentId: string, userId: string) {
     if (!stripe) {
       throw new AppError(
@@ -65,7 +65,10 @@ export class PaymentService {
       currency: payment.currency.toLowerCase(),
       metadata: {
         paymentId: payment.id,
+        userId,
+        propertyId: payment.lease.property.id,
         leaseId: payment.leaseId,
+        paymentType: payment.type.toLowerCase(),
         propertyTitle: payment.lease.property.title,
       },
     });
@@ -75,7 +78,44 @@ export class PaymentService {
       data: { stripePaymentIntentId: paymentIntent.id },
     });
 
-    return { clientSecret: paymentIntent.client_secret };
+    return {
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id,
+    };
+  }
+
+  // Create a direct payment intent (for checkout flow without existing payment record)
+  async createDirectPaymentIntent(data: {
+    amount: number;
+    userId: string;
+    propertyId: string;
+    paymentType: string;
+    leaseId?: string;
+    description?: string;
+  }) {
+    if (!stripe) {
+      throw new AppError(
+        "Payment processing is not configured. Set STRIPE_SECRET_KEY.",
+        503,
+      );
+    }
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: Math.round(data.amount * 100),
+      currency: "usd",
+      metadata: {
+        userId: data.userId,
+        propertyId: data.propertyId,
+        paymentType: data.paymentType,
+        ...(data.leaseId && { leaseId: data.leaseId }),
+      },
+      description: data.description,
+    });
+
+    return {
+      clientSecret: paymentIntent.client_secret,
+      paymentIntentId: paymentIntent.id,
+    };
   }
 
   // Confirm payment (called after Stripe webhook or manual confirmation)
@@ -124,15 +164,47 @@ export class PaymentService {
     });
   }
 
-  // Handle Stripe webhook
+  // Handle Stripe webhook with comprehensive event processing
   async handleStripeWebhook(event: Stripe.Event) {
-    if (event.type === "payment_intent.succeeded") {
-      const paymentIntent = event.data.object as Stripe.PaymentIntent;
-      const paymentId = paymentIntent.metadata.paymentId;
+    switch (event.type) {
+      case "payment_intent.succeeded": {
+        const paymentIntent = event.data.object as Stripe.PaymentIntent;
+        const paymentId = paymentIntent.metadata.paymentId;
 
-      if (paymentId) {
-        await this.confirmPayment(paymentId);
+        if (paymentId) {
+          try {
+            await this.confirmPayment(paymentId);
+            console.log(
+              `[Stripe Webhook] Payment confirmed: ${paymentId} (intent: ${paymentIntent.id})`,
+            );
+          } catch (err) {
+            console.error(
+              `[Stripe Webhook] Failed to confirm payment ${paymentId}:`,
+              err,
+            );
+            throw err;
+          }
+        } else {
+          console.warn(
+            `[Stripe Webhook] payment_intent.succeeded without paymentId in metadata: ${paymentIntent.id}`,
+          );
+        }
+        break;
       }
+
+      case "payment_intent.payment_failed": {
+        const failedIntent = event.data.object as Stripe.PaymentIntent;
+        const failedPaymentId = failedIntent.metadata.paymentId;
+        if (failedPaymentId) {
+          console.error(
+            `[Stripe Webhook] Payment failed: ${failedPaymentId} (intent: ${failedIntent.id})`,
+          );
+        }
+        break;
+      }
+
+      default:
+        console.log(`[Stripe Webhook] Unhandled event type: ${event.type}`);
     }
   }
 

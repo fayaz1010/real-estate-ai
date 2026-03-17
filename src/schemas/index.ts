@@ -89,11 +89,34 @@ export const PAYMENT_TYPES = [
 ] as const;
 
 export const PAYMENT_STATUSES = [
-  "PENDING",
-  "SUCCEEDED",
-  "FAILED",
+  "PAYMENT_PENDING",
+  "PAID",
+  "OVERDUE",
+  "PARTIAL",
   "REFUNDED",
-  "CANCELLED",
+  "PAYMENT_CANCELLED",
+] as const;
+
+export const MAINTENANCE_SYSTEM_TYPES = [
+  "HVAC",
+  "PLUMBING",
+  "ELECTRICAL",
+  "ROOFING",
+  "APPLIANCE",
+  "STRUCTURAL",
+] as const;
+
+export const MAINTENANCE_REQUEST_STATUSES = [
+  "OPEN",
+  "IN_PROGRESS",
+  "COMPLETED",
+  "CLOSED",
+] as const;
+
+export const MAINTENANCE_PRIORITIES = [
+  "HIGH",
+  "MEDIUM",
+  "LOW",
 ] as const;
 
 export const NOTIFICATION_TYPES = ["EMAIL", "IN_APP", "SMS", "PUSH"] as const;
@@ -420,13 +443,6 @@ export type SubmitApplicationInput = z.infer<typeof SubmitApplicationSchema>;
 // LEASE SCHEMAS
 // ==========================================
 
-export const LateFeeConfigSchema = z.object({
-  amount: z.number().nonnegative("Late fee must be non-negative"),
-  graceDays: z.number().int().nonnegative().default(5),
-});
-
-export type LateFeeConfigInput = z.infer<typeof LateFeeConfigSchema>;
-
 export const LeaseSchema = z.object({
   id: z.string().uuid(),
   propertyId: z.string().uuid(),
@@ -435,15 +451,15 @@ export const LeaseSchema = z.object({
   status: z.enum(LEASE_STATUSES),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
-  rentAmount: z.number().positive("Rent amount must be positive"),
+  monthlyRent: z.number().positive("Monthly rent must be positive"),
   depositAmount: z.number().nonnegative("Deposit must be non-negative"),
   depositPaid: z.boolean(),
-  lateFeeConfig: LateFeeConfigSchema,
+  lateFeeAmount: z.number().nonnegative("Late fee must be non-negative").default(0),
+  lateFeeGraceDays: z.number().int().nonnegative().default(5),
   leaseDocumentUrl: z.string().url().nullable(),
   signedByTenant: z.boolean(),
   signedByLandlord: z.boolean(),
   signedAt: z.coerce.date().nullable(),
-  isActive: z.boolean(),
   terminatedAt: z.coerce.date().nullable(),
   terminationReason: z.string().max(500).nullable(),
   createdAt: z.coerce.date(),
@@ -458,9 +474,10 @@ export const CreateLeaseSchema = z
     tenantId: z.string().uuid("Valid tenant ID is required"),
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
-    rentAmount: z.number().positive("Rent amount must be positive"),
+    monthlyRent: z.number().positive("Monthly rent must be positive"),
     depositAmount: z.number().nonnegative("Deposit must be non-negative"),
-    lateFeeConfig: LateFeeConfigSchema.default({ amount: 0, graceDays: 5 }),
+    lateFeeAmount: z.number().nonnegative().default(0),
+    lateFeeGraceDays: z.number().int().nonnegative().default(5),
     leaseDocumentUrl: z.string().url().optional(),
   })
   .refine((data) => data.endDate > data.startDate, {
@@ -477,13 +494,12 @@ export type CreateLeaseInput = z.infer<typeof CreateLeaseSchema>;
 export const PaymentSchema = z.object({
   id: z.string().uuid(),
   leaseId: z.string().uuid(),
-  tenantId: z.string().uuid(),
+  payerId: z.string().uuid(),
   type: z.enum(PAYMENT_TYPES),
   status: z.enum(PAYMENT_STATUSES),
   amount: z.number().positive("Amount must be positive"),
   currency: z.string().length(3).default("USD"),
   dueDate: z.coerce.date(),
-  paymentDate: z.coerce.date().nullable(),
   paidAt: z.coerce.date().nullable(),
   stripePaymentIntentId: z.string().nullable(),
   stripeInvoiceId: z.string().nullable(),

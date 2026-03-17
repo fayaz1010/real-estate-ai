@@ -37,6 +37,15 @@ export const config = {
     parseInt(process.env.MAX_FILE_UPLOAD_SIZE || "5", 10) * 1024 * 1024, // Convert MB to bytes
   uploadPath: process.env.UPLOAD_PATH || "./uploads",
 
+  // Cloudflare R2 Storage
+  cloudflare: {
+    accountId: process.env.CLOUDFLARE_ACCOUNT_ID || "",
+    accessKeyId: process.env.CLOUDFLARE_ACCESS_KEY_ID || "",
+    accessKeySecret: process.env.CLOUDFLARE_ACCESS_KEY_SECRET || "",
+    bucketName: process.env.CLOUDFLARE_BUCKET_NAME || "real-estate-ai-images",
+    region: process.env.CLOUDFLARE_REGION || "auto",
+  },
+
   // Logging
   logLevel: process.env.LOG_LEVEL || "debug",
   logToFile: process.env.LOG_TO_FILE === "true",

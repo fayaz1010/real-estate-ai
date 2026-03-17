@@ -15,8 +15,9 @@ import authReducer from "../modules/auth/store/authSlice";
 import communicationReducer from "../modules/communication/store/communicationSlice";
 import availabilityReducer from "../modules/inspections/store/availabilitySlice";
 import inspectionReducer from "../modules/inspections/store/inspectionSlice";
-import propertyReducer from "../modules/properties/store/propertySlice";
+import leaseReducer from "../modules/leases/store/leaseSlice";
 import onboardingReducer from "../modules/onboarding/store/onboardingSlice";
+import propertyReducer from "../modules/properties/store/propertySlice";
 import searchReducer from "../modules/properties/store/searchSlice";
 
 export const store = configureStore({
@@ -31,6 +32,7 @@ export const store = configureStore({
     applications: applicationReducer,
     verification: verificationReducer,
     communication: communicationReducer,
+    leases: leaseReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

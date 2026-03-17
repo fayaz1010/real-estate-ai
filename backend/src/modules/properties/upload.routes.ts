@@ -1,7 +1,4 @@
 // Property Image Upload Routes
-import os from "os";
-import path from "path";
-
 import { Router, Request, Response } from "express";
 import multer from "multer";
 
@@ -13,22 +10,8 @@ import { AppError } from "../../middleware/errorHandler";
 import { successResponse } from "../../utils/response";
 import { propertyStorage } from "../storage/cloud-storage.service";
 
-// Multer configuration - use temp directory (files are moved to cloud storage after upload)
-const tempUploadDir = path.join(os.tmpdir(), "realestate-uploads");
-import fs from "fs";
-if (!fs.existsSync(tempUploadDir)) {
-  fs.mkdirSync(tempUploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (_req, _file, cb) => {
-    cb(null, tempUploadDir);
-  },
-  filename: (_req, file, cb) => {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    cb(null, `${uniqueSuffix}${path.extname(file.originalname)}`);
-  },
-});
+// Multer configuration - use memory storage (buffers go directly to R2)
+const storage = multer.memoryStorage();
 
 const fileFilter = (
   _req: Request,
@@ -49,6 +32,12 @@ const upload = multer({
   limits: { fileSize: config.maxFileSize },
 });
 
+function generateFileKey(propertyId: string, file: Express.Multer.File): string {
+  const ext = file.originalname.substring(file.originalname.lastIndexOf("."));
+  const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+  return `${propertyId}/${uniqueSuffix}${ext}`;
+}
+
 const router = Router();
 
 // POST /api/properties/:propertyId/images - Upload single image
@@ -68,18 +57,13 @@ router.post(
 
     if (!req.file) throw new AppError("No image file provided", 400);
 
-    // Upload to cloud storage (placeholder)
-    const cloudKey = `${propertyId}/${req.file.filename}`;
-    const uploadResult = await propertyStorage.upload(
-      req.file.path,
+    // Upload to Cloudflare R2
+    const cloudKey = generateFileKey(propertyId, req.file);
+    const uploadResult = await propertyStorage.uploadBuffer(
+      req.file.buffer,
       cloudKey,
       req.file.mimetype,
     );
-
-    // Clean up temp file
-    if (fs.existsSync(req.file.path)) {
-      fs.unlinkSync(req.file.path);
-    }
 
     const imageCount = await prisma.propertyImage.count({
       where: { propertyId },
@@ -95,7 +79,7 @@ router.post(
       },
     });
 
-    return successResponse(res, { image }, "Image uploaded to cloud storage", 201);
+    return successResponse(res, { image }, "Image uploaded successfully", 201);
   }),
 );
 
@@ -122,16 +106,11 @@ router.post(
       where: { propertyId },
     });
 
-    // Upload all files to cloud storage
+    // Upload all files to Cloudflare R2
     const uploadResults = await Promise.all(
       files.map(async (file) => {
-        const cloudKey = `${propertyId}/${file.filename}`;
-        const result = await propertyStorage.upload(file.path, cloudKey, file.mimetype);
-        // Clean up temp file
-        if (fs.existsSync(file.path)) {
-          fs.unlinkSync(file.path);
-        }
-        return result;
+        const cloudKey = generateFileKey(propertyId, file);
+        return propertyStorage.uploadBuffer(file.buffer, cloudKey, file.mimetype);
       }),
     );
 
@@ -151,7 +130,7 @@ router.post(
     return successResponse(
       res,
       { images },
-      `${images.length} images uploaded to cloud storage`,
+      `${images.length} images uploaded successfully`,
       201,
     );
   }),
@@ -176,10 +155,16 @@ router.delete(
     });
     if (!image) throw new AppError("Image not found", 404);
 
-    // Delete file from cloud storage
-    const cloudKey = image.url.replace(/^\/cloud\/property-images\//, "");
-    await propertyStorage.delete(cloudKey);
+    // Extract the R2 key from the full URL
+    const urlParts = image.url.split(".com/");
+    const keyWithBucket = urlParts.length > 1 ? urlParts[1] : image.url;
+    // Remove bucket name prefix if present
+    const bucketName = process.env.CLOUDFLARE_BUCKET_NAME || "real-estate-ai-images";
+    const cloudKey = keyWithBucket.startsWith(bucketName + "/")
+      ? keyWithBucket.substring(bucketName.length + 1)
+      : keyWithBucket;
 
+    await propertyStorage.delete(cloudKey);
     await prisma.propertyImage.delete({ where: { id: imageId } });
 
     return successResponse(res, null, "Image deleted");

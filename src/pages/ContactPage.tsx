@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { z } from "zod/v4";
 
+import apiClient from "../api/client";
 import { PageMeta } from "../components/seo";
 import {
   Mail,
@@ -21,6 +23,13 @@ type SubjectOption =
   | "Support"
   | "Partnership"
   | "Enterprise";
+
+const contactFormSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters."),
+  email: z.string().email("Please enter a valid email address."),
+  subject: z.string().min(1, "Please select a subject."),
+  message: z.string().min(10, "Message must be at least 10 characters."),
+});
 
 interface FormData {
   name: string;
@@ -104,35 +113,24 @@ export const ContactPage: React.FC = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   const validateForm = (): boolean => {
+    const result = contactFormSchema.safeParse(formData);
+    if (result.success) {
+      setErrors({});
+      return true;
+    }
     const newErrors: FormErrors = {};
-
-    if (!formData.name.trim()) {
-      newErrors.name = "Name is required.";
-    } else if (formData.name.trim().length < 2) {
-      newErrors.name = "Name must be at least 2 characters.";
+    for (const issue of result.error.issues) {
+      const field = issue.path[0] as keyof FormErrors;
+      if (!newErrors[field]) {
+        newErrors[field] = issue.message;
+      }
     }
-
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Please enter a valid email address.";
-    }
-
-    if (!formData.subject) {
-      newErrors.subject = "Please select a subject.";
-    }
-
-    if (!formData.message.trim()) {
-      newErrors.message = "Message is required.";
-    } else if (formData.message.trim().length < 10) {
-      newErrors.message = "Message must be at least 10 characters.";
-    }
-
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return false;
   };
 
   const handleChange = (
@@ -145,6 +143,9 @@ export const ContactPage: React.FC = () => {
     if (errors[name as keyof FormErrors]) {
       setErrors((prev) => ({ ...prev, [name]: undefined }));
     }
+    if (submitError) {
+      setSubmitError(null);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -152,10 +153,19 @@ export const ContactPage: React.FC = () => {
     if (!validateForm()) return;
 
     setIsSubmitting(true);
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+    setSubmitError(null);
+    try {
+      await apiClient.post("/contact", formData);
+      setIsSubmitted(true);
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : "An error occurred while sending your message. Please try again later.";
+      setSubmitError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const toggleFaq = (index: number) => {
@@ -402,6 +412,17 @@ export const ContactPage: React.FC = () => {
                       </p>
                     )}
                   </div>
+
+                  {/* Submit Error */}
+                  {submitError && (
+                    <div
+                      className="flex items-center gap-3 p-4 bg-red-50 border border-red-200 rounded-xl"
+                      role="alert"
+                    >
+                      <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0" aria-hidden="true" />
+                      <p className="text-sm text-red-700 font-inter">{submitError}</p>
+                    </div>
+                  )}
 
                   {/* Submit */}
                   <button

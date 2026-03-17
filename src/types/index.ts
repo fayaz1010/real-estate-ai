@@ -168,11 +168,34 @@ export enum PaymentType {
 }
 
 export enum PaymentStatus {
-  PENDING = "PENDING",
-  SUCCEEDED = "SUCCEEDED",
-  FAILED = "FAILED",
+  PAYMENT_PENDING = "PAYMENT_PENDING",
+  PAID = "PAID",
+  OVERDUE = "OVERDUE",
+  PARTIAL = "PARTIAL",
   REFUNDED = "REFUNDED",
-  CANCELLED = "CANCELLED",
+  PAYMENT_CANCELLED = "PAYMENT_CANCELLED",
+}
+
+export enum MaintenanceSystemType {
+  HVAC = "HVAC",
+  PLUMBING = "PLUMBING",
+  ELECTRICAL = "ELECTRICAL",
+  ROOFING = "ROOFING",
+  APPLIANCE = "APPLIANCE",
+  STRUCTURAL = "STRUCTURAL",
+}
+
+export enum MaintenanceRequestStatus {
+  OPEN = "OPEN",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETED = "COMPLETED",
+  CLOSED = "CLOSED",
+}
+
+export enum MaintenancePriority {
+  HIGH = "HIGH",
+  MEDIUM = "MEDIUM",
+  LOW = "LOW",
 }
 
 export enum NotificationType {
@@ -554,11 +577,6 @@ export interface Application {
 // LEASE TYPES
 // ==========================================
 
-export interface LateFeeConfig {
-  amount: number;
-  graceDays: number;
-}
-
 export interface Lease {
   id: string;
   propertyId: string;
@@ -567,15 +585,15 @@ export interface Lease {
   status: LeaseStatus;
   startDate: Date;
   endDate: Date;
-  rentAmount: number;
+  monthlyRent: number;
   depositAmount: number;
   depositPaid: boolean;
-  lateFeeConfig: LateFeeConfig;
+  lateFeeAmount: number;
+  lateFeeGraceDays: number;
   leaseDocumentUrl: string | null;
   signedByTenant: boolean;
   signedByLandlord: boolean;
   signedAt: Date | null;
-  isActive: boolean;
   terminatedAt: Date | null;
   terminationReason: string | null;
   createdAt: Date;
@@ -589,18 +607,66 @@ export interface Lease {
 export interface Payment {
   id: string;
   leaseId: string;
-  tenantId: string;
+  payerId: string;
   type: PaymentType;
   status: PaymentStatus;
   amount: number;
   currency: string;
   dueDate: Date;
-  paymentDate: Date | null;
   paidAt: Date | null;
   stripePaymentIntentId: string | null;
   stripeInvoiceId: string | null;
   description: string | null;
   receiptUrl: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// ==========================================
+// TENANT TYPES
+// ==========================================
+
+export interface Tenant {
+  id: string;
+  userId: string;
+  employmentStatus: string | null;
+  employerName: string | null;
+  jobTitle: string | null;
+  annualIncome: number | null;
+  creditScore: number | null;
+  hasPets: boolean;
+  petsDescription: string | null;
+  hasVehicle: boolean;
+  vehicleDescription: string | null;
+  smoking: boolean;
+  references: Record<string, unknown> | null;
+  moveInDate: Date | null;
+  leaseTerm: number | null;
+  preferredLocations: string[];
+  budgetMin: number | null;
+  budgetMax: number | null;
+  preferredPropertyTypes: string[];
+  specialRequirements: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+// ==========================================
+// MAINTENANCE REQUEST TYPES
+// ==========================================
+
+export interface MaintenanceRequest {
+  id: string;
+  propertyId: string;
+  tenantId: string;
+  systemType: MaintenanceSystemType;
+  description: string;
+  status: MaintenanceRequestStatus;
+  priority: MaintenancePriority;
+  cost: number | null;
+  assignedVendor: string | null;
+  completedAt: Date | null;
+  nextPredictedDate: Date | null;
   createdAt: Date;
   updatedAt: Date;
 }

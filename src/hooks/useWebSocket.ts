@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import webSocketService, {
   type WebSocketMessage,
+  type ConnectionState,
 } from "@/services/webSocketService";
 
 interface UseWebSocketOptions {
@@ -13,6 +14,7 @@ interface UseWebSocketOptions {
 interface UseWebSocketReturn {
   lastMessage: WebSocketMessage | null;
   isConnected: boolean;
+  connectionState: ConnectionState;
 }
 
 export function useWebSocket({
@@ -22,6 +24,9 @@ export function useWebSocket({
   const [lastMessage, setLastMessage] = useState<WebSocketMessage | null>(null);
   const [isConnected, setIsConnected] = useState<boolean>(
     webSocketService.getIsConnected(),
+  );
+  const [connectionState, setConnectionState] = useState<ConnectionState>(
+    webSocketService.getConnectionState(),
   );
   const onMessageRef = useRef(onMessage);
 
@@ -49,13 +54,20 @@ export function useWebSocket({
       },
     );
 
+    const unlistenState = webSocketService.onConnectionStateChange(
+      (state) => {
+        setConnectionState(state);
+      },
+    );
+
     return () => {
       webSocketService.unsubscribe(channel, handleMessage);
       unlistenConnection();
+      unlistenState();
     };
   }, [channel, handleMessage]);
 
-  return { lastMessage, isConnected };
+  return { lastMessage, isConnected, connectionState };
 }
 
 export default useWebSocket;

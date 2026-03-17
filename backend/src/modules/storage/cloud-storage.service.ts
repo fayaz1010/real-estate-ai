@@ -1,10 +1,13 @@
-// Cloud Storage Service - Placeholder Implementation
-// Simulates cloud file storage (e.g., AWS S3, Google Cloud Storage, Azure Blob)
-// Replace with actual cloud SDK integration when ready
-
-import fs from "fs";
-import os from "os";
-import path from "path";
+// Cloud Storage Service - Cloudflare R2 via S3-compatible API
+import {
+  S3Client,
+  PutObjectCommand,
+  DeleteObjectCommand,
+  HeadObjectCommand,
+  GetObjectCommand,
+} from "@aws-sdk/client-s3";
+import { Upload } from "@aws-sdk/lib-storage";
+import mime from "mime";
 
 export interface CloudFile {
   key: string;
@@ -25,77 +28,53 @@ export interface DeleteResult {
   key: string;
 }
 
-const TEMP_BUCKET_DIR = path.join(os.tmpdir(), "realestate-cloud-storage");
+const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+const bucketName = process.env.CLOUDFLARE_BUCKET_NAME || "real-estate-ai-images";
+const region = process.env.CLOUDFLARE_REGION || "auto";
 
-// Ensure temp directory exists
-if (!fs.existsSync(TEMP_BUCKET_DIR)) {
-  fs.mkdirSync(TEMP_BUCKET_DIR, { recursive: true });
+const s3Client = new S3Client({
+  region,
+  endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
+  credentials: {
+    accessKeyId: process.env.CLOUDFLARE_ACCESS_KEY_ID || "",
+    secretAccessKey: process.env.CLOUDFLARE_ACCESS_KEY_SECRET || "",
+  },
+});
+
+function getPublicUrl(key: string): string {
+  return `https://${accountId}.r2.cloudflarestorage.com/${bucketName}/${key}`;
 }
 
 class CloudStorageService {
   private bucket: string;
 
-  constructor(bucket: string = "realestate-uploads") {
+  constructor(bucket: string = bucketName || "real-estate-ai-images") {
     this.bucket = bucket;
-    const bucketDir = path.join(TEMP_BUCKET_DIR, bucket);
-    if (!fs.existsSync(bucketDir)) {
-      fs.mkdirSync(bucketDir, { recursive: true });
-    }
   }
 
   /**
-   * Upload a file to cloud storage (placeholder: copies to temp dir)
-   */
-  async upload(
-    filePath: string,
-    key: string,
-    contentType: string,
-  ): Promise<UploadResult> {
-    const destDir = path.join(TEMP_BUCKET_DIR, this.bucket);
-    const destPath = path.join(destDir, key);
-
-    // Ensure subdirectories exist
-    const destSubDir = path.dirname(destPath);
-    if (!fs.existsSync(destSubDir)) {
-      fs.mkdirSync(destSubDir, { recursive: true });
-    }
-
-    // Copy file to "cloud" storage (temp directory)
-    fs.copyFileSync(filePath, destPath);
-    const stats = fs.statSync(destPath);
-
-    const cloudFile: CloudFile = {
-      key,
-      url: `/cloud/${this.bucket}/${key}`,
-      size: stats.size,
-      contentType,
-      uploadedAt: new Date().toISOString(),
-      bucket: this.bucket,
-    };
-
-    return { success: true, file: cloudFile };
-  }
-
-  /**
-   * Upload from buffer (e.g., from multer memoryStorage)
+   * Upload a file buffer to Cloudflare R2
    */
   async uploadBuffer(
     buffer: Buffer,
     key: string,
     contentType: string,
   ): Promise<UploadResult> {
-    const destPath = path.join(TEMP_BUCKET_DIR, this.bucket, key);
+    const upload = new Upload({
+      client: s3Client,
+      params: {
+        Bucket: this.bucket,
+        Key: key,
+        Body: buffer,
+        ContentType: contentType,
+      },
+    });
 
-    const destSubDir = path.dirname(destPath);
-    if (!fs.existsSync(destSubDir)) {
-      fs.mkdirSync(destSubDir, { recursive: true });
-    }
-
-    fs.writeFileSync(destPath, buffer);
+    await upload.done();
 
     const cloudFile: CloudFile = {
       key,
-      url: `/cloud/${this.bucket}/${key}`,
+      url: getPublicUrl(key),
       size: buffer.length,
       contentType,
       uploadedAt: new Date().toISOString(),
@@ -106,45 +85,81 @@ class CloudStorageService {
   }
 
   /**
-   * Download a file from cloud storage
+   * Upload using a file path (reads file then uploads buffer)
    */
-  async download(key: string): Promise<Buffer> {
-    const filePath = path.join(TEMP_BUCKET_DIR, this.bucket, key);
-    if (!fs.existsSync(filePath)) {
-      throw new Error(`File not found in cloud storage: ${key}`);
-    }
-    return fs.readFileSync(filePath);
+  async upload(
+    filePath: string,
+    key: string,
+    contentType: string,
+  ): Promise<UploadResult> {
+    const fs = await import("fs");
+    const buffer = fs.readFileSync(filePath);
+    return this.uploadBuffer(buffer, key, contentType);
   }
 
   /**
-   * Delete a file from cloud storage
+   * Download a file from R2
+   */
+  async download(key: string): Promise<Buffer> {
+    const response = await s3Client.send(
+      new GetObjectCommand({
+        Bucket: this.bucket,
+        Key: key,
+      }),
+    );
+
+    if (!response.Body) {
+      throw new Error(`File not found in cloud storage: ${key}`);
+    }
+
+    const chunks: Uint8Array[] = [];
+    const stream = response.Body as AsyncIterable<Uint8Array>;
+    for await (const chunk of stream) {
+      chunks.push(chunk);
+    }
+    return Buffer.concat(chunks);
+  }
+
+  /**
+   * Delete a file from R2
    */
   async delete(key: string): Promise<DeleteResult> {
-    const filePath = path.join(TEMP_BUCKET_DIR, this.bucket, key);
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
-    }
+    await s3Client.send(
+      new DeleteObjectCommand({
+        Bucket: this.bucket,
+        Key: key,
+      }),
+    );
     return { success: true, key };
   }
 
   /**
-   * Check if a file exists in cloud storage
+   * Check if a file exists in R2
    */
   async exists(key: string): Promise<boolean> {
-    const filePath = path.join(TEMP_BUCKET_DIR, this.bucket, key);
-    return fs.existsSync(filePath);
+    try {
+      await s3Client.send(
+        new HeadObjectCommand({
+          Bucket: this.bucket,
+          Key: key,
+        }),
+      );
+      return true;
+    } catch {
+      return false;
+    }
   }
 
   /**
-   * Get a signed URL for temporary access (placeholder: returns local path)
+   * Get a public URL for the file
    */
   async getSignedUrl(key: string, _expiresIn: number = 3600): Promise<string> {
-    return `/cloud/${this.bucket}/${key}?expires=${Date.now() + _expiresIn * 1000}`;
+    return getPublicUrl(key);
   }
 }
 
 // Export singleton for property images
-export const propertyStorage = new CloudStorageService("property-images");
+export const propertyStorage = new CloudStorageService();
 
 // Export class for creating custom instances
 export { CloudStorageService };

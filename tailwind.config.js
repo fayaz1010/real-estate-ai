@@ -4,12 +4,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Warm & Trustworthy palette
-        primary: "#2C3E50",
-        secondary: "#8B7355",
-        accent: "#C9956B",
-        background: "#FAF6F1",
-        text_primary: "#1A1A2E",
+        primary: 'rgb(var(--primary-rgb) / <alpha-value>)',
+        secondary: 'rgb(var(--secondary-rgb) / <alpha-value>)',
+        accent: 'rgb(var(--accent-rgb) / <alpha-value>)',
+        background: 'rgb(var(--background-rgb) / <alpha-value>)',
+        text: 'rgb(var(--text-rgb) / <alpha-value>)',
         // Tenant Portal - Authoritative corporate palette
         "tenant-primary": "#091a2b",
         "tenant-secondary": "#005163",
@@ -31,8 +30,8 @@ module.exports = {
         "realestate-error": "#ef4444",
       },
       fontFamily: {
-        display: ["Instrument Serif", "serif"],
-        body: ["DM Sans", "sans-serif"],
+        display: ['var(--font-display)'],
+        body: ['var(--font-body)'],
         montserrat: ["Montserrat", "Instrument Serif", "serif"],
         "open-sans": ["Open Sans", "DM Sans", "sans-serif"],
         "roboto-mono": ["Roboto Mono", "monospace"],
@@ -66,6 +65,14 @@ module.exports = {
         "6xl": "3.75rem",
       },
       spacing: {
+        xxs: 'var(--space-xxs)',
+        xs: 'var(--space-xs)',
+        sm: 'var(--space-sm)',
+        md: 'var(--space-md)',
+        lg: 'var(--space-lg)',
+        xl: 'var(--space-xl)',
+        xxl: 'var(--space-xxl)',
+        '3xl': 'var(--space-3xl)',
         18: "4.5rem",
         88: "22rem",
         128: "32rem",
@@ -84,8 +91,24 @@ module.exports = {
         ripple: "ripple 0.6s ease-out",
         "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "spin-slow": "spin 2s linear infinite",
+        'button-press': 'button-press 0.3s ease-in-out',
+        'inline-form-validation-error': 'inline-form-validation-error 0.3s ease-in-out',
+        'skeleton-loading': 'skeleton-loading 1s linear infinite alternate',
       },
       keyframes: {
+        'button-press': {
+          '0%, 100%': { transform: 'scale(1)' },
+          '50%': { transform: 'scale(0.95)' },
+        },
+        'inline-form-validation-error': {
+          '0%, 100%': { transform: 'translateX(0)' },
+          '25%, 75%': { transform: 'translateX(-2px)' },
+          '50%': { transform: 'translateX(2px)' },
+        },
+        'skeleton-loading': {
+          '0%': { backgroundColor: 'hsl(200, 20%, 70%)' },
+          '100%': { backgroundColor: 'hsl(200, 20%, 95%)' },
+        },
         blob: {
           "0%": { transform: "translate(0px, 0px) scale(1)" },
           "33%": { transform: "translate(30px, -50px) scale(1.1)" },

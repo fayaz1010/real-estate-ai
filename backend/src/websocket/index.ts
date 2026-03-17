@@ -13,9 +13,10 @@ interface AuthenticatedClient {
 }
 
 interface IncomingMessage {
-  type: "auth" | "subscribe" | "unsubscribe";
+  type: "auth" | "subscribe" | "unsubscribe" | "message" | "typing";
   token?: string;
   channel?: string;
+  data?: any;
 }
 
 const clients: Map<WebSocket, AuthenticatedClient> = new Map();
@@ -76,6 +77,9 @@ export function initWebSocket(server: http.Server): WebSocketServer {
                   data: { userId: user.userId },
                 }),
               );
+
+              // Broadcast user online status
+              broadcastPresence(user.userId, "online");
             } catch {
               ws.close(4003, "Invalid token");
             }
@@ -95,6 +99,25 @@ export function initWebSocket(server: http.Server): WebSocketServer {
             }
             if (message.channel) {
               client.channels.add(message.channel);
+
+              // If subscribing to presence channel, send current online users
+              if (message.channel === "presence") {
+                const onlineUserIds = new Set<string>();
+                clients.forEach((c) => {
+                  if (c.user && c.user.userId) {
+                    onlineUserIds.add(c.user.userId);
+                  }
+                });
+                onlineUserIds.forEach((userId) => {
+                  ws.send(
+                    JSON.stringify({
+                      channel: "presence",
+                      event: "user_online",
+                      data: { userId, status: "online" },
+                    }),
+                  );
+                });
+              }
             }
             break;
           }
@@ -103,6 +126,27 @@ export function initWebSocket(server: http.Server): WebSocketServer {
             if (message.channel) {
               client.channels.delete(message.channel);
             }
+            break;
+          }
+
+          case "message": {
+            if (!authenticated) {
+              ws.send(
+                JSON.stringify({
+                  channel: "system",
+                  event: "error",
+                  data: { message: "Not authenticated" },
+                }),
+              );
+              return;
+            }
+            handleDirectMessage(client, message);
+            break;
+          }
+
+          case "typing": {
+            if (!authenticated) return;
+            handleTypingIndicator(client, message);
             break;
           }
 
@@ -116,11 +160,17 @@ export function initWebSocket(server: http.Server): WebSocketServer {
 
     ws.on("close", () => {
       clearTimeout(authTimeout);
+      if (authenticated && client.user) {
+        broadcastPresence(client.user.userId, "offline");
+      }
       clients.delete(ws);
     });
 
     ws.on("error", () => {
       clearTimeout(authTimeout);
+      if (authenticated && client.user) {
+        broadcastPresence(client.user.userId, "offline");
+      }
       clients.delete(ws);
     });
   });
@@ -129,6 +179,9 @@ export function initWebSocket(server: http.Server): WebSocketServer {
   heartbeatInterval = setInterval(() => {
     clients.forEach((client, ws) => {
       if (!client.isAlive) {
+        if (client.user) {
+          broadcastPresence(client.user.userId, "offline");
+        }
         clients.delete(ws);
         ws.terminate();
         return;
@@ -144,6 +197,120 @@ export function initWebSocket(server: http.Server): WebSocketServer {
 
   console.log("WebSocket server initialized on /ws");
   return wss;
+}
+
+/**
+ * Handle a direct message from a client
+ */
+function handleDirectMessage(
+  sender: AuthenticatedClient,
+  message: IncomingMessage,
+): void {
+  if (!message.data) return;
+
+  const { conversationId, content, messageType, recipientId, attachments } =
+    message.data;
+
+  if (!conversationId || !content) return;
+
+  const outgoingPayload = {
+    channel: "communication:messages",
+    event: "new_message",
+    data: {
+      conversationId,
+      content,
+      messageType: messageType || "text",
+      senderId: sender.user.userId,
+      senderRole: sender.user.role,
+      attachments: attachments || [],
+      createdAt: new Date().toISOString(),
+    },
+  };
+
+  // If a specific recipient, send only to that user
+  if (recipientId) {
+    sendToUser(
+      recipientId,
+      "communication:messages",
+      "new_message",
+      outgoingPayload.data,
+    );
+    // Also echo back to sender
+    sender.ws.send(JSON.stringify(outgoingPayload));
+  } else {
+    // Broadcast to all subscribers on the channel
+    broadcast("communication:messages", "new_message", outgoingPayload.data);
+  }
+}
+
+/**
+ * Handle typing indicator from a client
+ */
+function handleTypingIndicator(
+  sender: AuthenticatedClient,
+  message: IncomingMessage,
+): void {
+  if (!message.data) return;
+
+  const { conversationId, isTyping } = message.data;
+  if (!conversationId) return;
+
+  const payload = {
+    channel: "communication:messages",
+    event: "typing",
+    data: {
+      conversationId,
+      userId: sender.user.userId,
+      isTyping: !!isTyping,
+    },
+  };
+
+  const payloadStr = JSON.stringify(payload);
+
+  // Send to all clients subscribed to the communication channel, except sender
+  clients.forEach((client) => {
+    if (
+      client.ws !== sender.ws &&
+      client.channels.has("communication:messages") &&
+      client.ws.readyState === WebSocket.OPEN
+    ) {
+      client.ws.send(payloadStr);
+    }
+  });
+}
+
+/**
+ * Broadcast presence change to all clients on the presence channel
+ */
+function broadcastPresence(
+  userId: string,
+  status: "online" | "offline",
+): void {
+  const payload = JSON.stringify({
+    channel: "presence",
+    event: status === "online" ? "user_online" : "user_offline",
+    data: {
+      userId,
+      status,
+      lastSeen: status === "offline" ? new Date().toISOString() : undefined,
+    },
+  });
+
+  clients.forEach((client) => {
+    if (
+      client.channels.has("presence") &&
+      client.ws.readyState === WebSocket.OPEN
+    ) {
+      client.ws.send(payload);
+    }
+  });
+
+  // Also broadcast to SSE clients
+  broadcastToSse(
+    "presence",
+    status === "online" ? "user_online" : "user_offline",
+    { userId, status },
+  );
 }
 
 /**

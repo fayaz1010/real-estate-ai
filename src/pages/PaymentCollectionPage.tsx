@@ -1,7 +1,7 @@
 // FILE PATH: src/pages/PaymentCollectionPage.tsx
 // Payment Collection Page - View history, automated payments, manage methods
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import {
   DollarSign,
@@ -18,12 +18,39 @@ import {
   ChevronRight,
   Building,
   Users,
+  Loader2,
+  RefreshCw,
 } from "lucide-react";
+import apiClient from "@/api/client";
+import { getPaymentMethods, type PaymentMethod as StripePaymentMethod } from "@/modules/payments/api/paymentService";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
-type PaymentStatus = "Received" | "Pending" | "Overdue";
+type DisplayStatus = "Received" | "Pending" | "Overdue";
 type TabKey = "all" | "received" | "pending" | "overdue";
+
+interface ApiPayment {
+  id: string;
+  leaseId: string;
+  payerId: string;
+  type: string;
+  status: string;
+  amount: number;
+  currency: string;
+  dueDate: string;
+  paidAt: string | null;
+  stripePaymentIntentId: string | null;
+  description: string | null;
+  receiptUrl: string | null;
+  createdAt: string;
+  updatedAt: string;
+  lease: {
+    property: {
+      title: string;
+      address?: string;
+    };
+  };
+}
 
 interface Payment {
   id: string;
@@ -31,11 +58,11 @@ interface Payment {
   tenant: string;
   property: string;
   amount: number;
-  status: PaymentStatus;
+  status: DisplayStatus;
   method: string;
 }
 
-interface PaymentMethod {
+interface PaymentMethodDisplay {
   id: string;
   label: string;
   type: string;
@@ -43,34 +70,75 @@ interface PaymentMethod {
   isDefault: boolean;
 }
 
-// ─── Mock Data ───────────────────────────────────────────────────────────────
+// ─── API Status Mapping ─────────────────────────────────────────────────────
 
-const PAYMENTS: Payment[] = [
-  { id: "p1", date: "2026-03-15", tenant: "Sarah Mitchell", property: "Harbour View Apt 4B", amount: 2400, status: "Received", method: "Direct Debit" },
-  { id: "p2", date: "2026-03-14", tenant: "James Ko", property: "Sunrise Terrace 12", amount: 1850, status: "Received", method: "Bank Transfer" },
-  { id: "p3", date: "2026-03-12", tenant: "Amira Patel", property: "Coastal Breeze Unit 7", amount: 3100, status: "Pending", method: "Credit Card" },
-  { id: "p4", date: "2026-03-01", tenant: "Tom Bradley", property: "Oceanfront Suite 2A", amount: 4200, status: "Overdue", method: "Direct Debit" },
-  { id: "p5", date: "2026-03-10", tenant: "Lisa Nguyen", property: "Palm Grove Villa 3", amount: 2750, status: "Received", method: "Bank Transfer" },
-  { id: "p6", date: "2026-03-08", tenant: "David Chen", property: "Bay Residences 9C", amount: 1600, status: "Pending", method: "Credit Card" },
-  { id: "p7", date: "2026-02-28", tenant: "Emma Wilson", property: "Shoreline Flat 5", amount: 2200, status: "Overdue", method: "Direct Debit" },
-  { id: "p8", date: "2026-03-16", tenant: "Raj Sharma", property: "Marina Tower 11A", amount: 3500, status: "Received", method: "Bank Transfer" },
-];
+function mapApiStatus(status: string): DisplayStatus {
+  switch (status) {
+    case "PAID":
+      return "Received";
+    case "OVERDUE":
+      return "Overdue";
+    case "PAYMENT_PENDING":
+    case "PARTIAL":
+    default:
+      return "Pending";
+  }
+}
 
-const PAYMENT_METHODS: PaymentMethod[] = [
-  { id: "m1", label: "ANZ Business Account", type: "Bank", last4: "4821", isDefault: true },
-  { id: "m2", label: "Visa ending in 7733", type: "Credit Card", last4: "7733", isDefault: false },
-  { id: "m3", label: "PayPal Business", type: "PayPal", last4: "N/A", isDefault: false },
-];
+function mapPaymentMethod(apiPayment: ApiPayment): string {
+  if (apiPayment.stripePaymentIntentId) return "Stripe";
+  return "Bank Transfer";
+}
+
+function mapApiPayment(p: ApiPayment): Payment {
+  return {
+    id: p.id,
+    date: new Date(p.paidAt || p.dueDate).toISOString().split("T")[0],
+    tenant: p.description || p.type,
+    property: p.lease?.property?.title || "Unknown Property",
+    amount: p.amount,
+    status: mapApiStatus(p.status),
+    method: mapPaymentMethod(p),
+  };
+}
+
+function mapStripePaymentMethod(m: StripePaymentMethod): PaymentMethodDisplay {
+  if (m.type === "card" && m.card) {
+    return {
+      id: m.id,
+      label: `${m.card.brand.charAt(0).toUpperCase() + m.card.brand.slice(1)} ending in ${m.card.last4}`,
+      type: "Credit Card",
+      last4: m.card.last4,
+      isDefault: m.isDefault,
+    };
+  }
+  if (m.type === "bank_account" && m.bankAccount) {
+    return {
+      id: m.id,
+      label: `${m.bankAccount.bankName} ${m.bankAccount.accountType}`,
+      type: "Bank",
+      last4: m.bankAccount.last4,
+      isDefault: m.isDefault,
+    };
+  }
+  return {
+    id: m.id,
+    label: m.type,
+    type: m.type,
+    last4: "N/A",
+    isDefault: m.isDefault,
+  };
+}
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-const STATUS_STYLES: Record<PaymentStatus, string> = {
+const STATUS_STYLES: Record<DisplayStatus, string> = {
   Received: "bg-green-100 text-green-700",
   Pending: "bg-yellow-100 text-yellow-700",
   Overdue: "bg-red-100 text-red-700",
 };
 
-const StatusIcon: React.FC<{ status: PaymentStatus }> = ({ status }) => {
+const StatusIcon: React.FC<{ status: DisplayStatus }> = ({ status }) => {
   if (status === "Received") return <CheckCircle className="w-4 h-4" />;
   if (status === "Pending") return <Clock className="w-4 h-4" />;
   return <AlertTriangle className="w-4 h-4" />;
@@ -88,14 +156,45 @@ const TABS: { key: TabKey; label: string }[] = [
 // ─── Component ───────────────────────────────────────────────────────────────
 
 export const PaymentCollectionPage: React.FC = () => {
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethodDisplay[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<TabKey>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [autoPayEnabled, setAutoPayEnabled] = useState(true);
 
+  const fetchPayments = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const { data } = await apiClient.get<{ data: ApiPayment[] }>("/payments/my-payments");
+      setPayments((data.data || []).map(mapApiPayment));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to load payments");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchPaymentMethods = async () => {
+    try {
+      const methods = await getPaymentMethods();
+      setPaymentMethods(methods.map(mapStripePaymentMethod));
+    } catch {
+      // Payment methods are non-critical; silently fall back to empty
+    }
+  };
+
+  useEffect(() => {
+    fetchPayments();
+    fetchPaymentMethods();
+  }, []);
+
   const filtered = useMemo(() => {
-    let list = PAYMENTS;
+    let list = payments;
     if (activeTab !== "all") {
-      const statusMap: Record<TabKey, PaymentStatus | null> = { all: null, received: "Received", pending: "Pending", overdue: "Overdue" };
+      const statusMap: Record<TabKey, DisplayStatus | null> = { all: null, received: "Received", pending: "Pending", overdue: "Overdue" };
       list = list.filter((p) => p.status === statusMap[activeTab]);
     }
     if (searchQuery.trim()) {
@@ -103,12 +202,13 @@ export const PaymentCollectionPage: React.FC = () => {
       list = list.filter((p) => p.tenant.toLowerCase().includes(q) || p.property.toLowerCase().includes(q));
     }
     return list;
-  }, [activeTab, searchQuery]);
+  }, [activeTab, searchQuery, payments]);
 
-  const totalCollected = PAYMENTS.filter((p) => p.status === "Received").reduce((s, p) => s + p.amount, 0);
-  const totalPending = PAYMENTS.filter((p) => p.status === "Pending").reduce((s, p) => s + p.amount, 0);
-  const totalOverdue = PAYMENTS.filter((p) => p.status === "Overdue").reduce((s, p) => s + p.amount, 0);
-  const collectionRate = Math.round((totalCollected / (totalCollected + totalPending + totalOverdue)) * 100);
+  const totalCollected = payments.filter((p) => p.status === "Received").reduce((s, p) => s + p.amount, 0);
+  const totalPending = payments.filter((p) => p.status === "Pending").reduce((s, p) => s + p.amount, 0);
+  const totalOverdue = payments.filter((p) => p.status === "Overdue").reduce((s, p) => s + p.amount, 0);
+  const total = totalCollected + totalPending + totalOverdue;
+  const collectionRate = total > 0 ? Math.round((totalCollected / total) * 100) : 0;
 
   const stats = [
     { label: "Total Collected", value: fmt(totalCollected), icon: DollarSign, color: "text-green-600 bg-green-50" },
@@ -116,6 +216,31 @@ export const PaymentCollectionPage: React.FC = () => {
     { label: "Overdue", value: fmt(totalOverdue), icon: AlertTriangle, color: "text-red-600 bg-red-50" },
     { label: "Collection Rate", value: `${collectionRate}%`, icon: TrendingUp, color: "text-realestate-primary bg-realestate-accent/20" },
   ];
+
+  if (loading) {
+    return (
+      <div className="section-container py-8 flex flex-col items-center justify-center min-h-[400px] gap-4" style={{ backgroundColor: "#FAF6F1" }}>
+        <Loader2 className="w-8 h-8 animate-spin text-[#8B7355]" />
+        <p className="text-sm" style={{ color: "#2D2A26", fontFamily: "Inter, sans-serif" }}>Loading payments...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="section-container py-8 flex flex-col items-center justify-center min-h-[400px] gap-4" style={{ backgroundColor: "#FAF6F1" }}>
+        <AlertTriangle className="w-8 h-8 text-red-500" />
+        <p className="text-sm text-red-600" style={{ fontFamily: "Inter, sans-serif" }}>{error}</p>
+        <button
+          onClick={fetchPayments}
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-white"
+          style={{ backgroundColor: "#8B7355" }}
+        >
+          <RefreshCw className="w-4 h-4" /> Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="section-container py-8 space-y-8">
@@ -237,20 +362,24 @@ export const PaymentCollectionPage: React.FC = () => {
             </button>
           </div>
           <ul className="space-y-3" aria-label="Saved payment methods">
-            {PAYMENT_METHODS.map((m) => (
-              <li key={m.id} className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:border-realestate-secondary/40 transition-colors">
-                <div className="flex items-center gap-3">
-                  <CreditCard className="w-5 h-5 text-realestate-secondary" />
-                  <div>
-                    <p className="font-medium text-sm">{m.label}</p>
-                    <p className="text-xs text-gray-400">{m.type}{m.last4 !== "N/A" ? ` ending ${m.last4}` : ""}</p>
+            {paymentMethods.length === 0 ? (
+              <li className="text-sm text-gray-400 text-center py-4">No payment methods saved yet.</li>
+            ) : (
+              paymentMethods.map((m) => (
+                <li key={m.id} className="flex items-center justify-between p-3 rounded-lg border border-gray-100 hover:border-realestate-secondary/40 transition-colors">
+                  <div className="flex items-center gap-3">
+                    <CreditCard className="w-5 h-5 text-realestate-secondary" />
+                    <div>
+                      <p className="font-medium text-sm">{m.label}</p>
+                      <p className="text-xs text-gray-400">{m.type}{m.last4 !== "N/A" ? ` ending ${m.last4}` : ""}</p>
+                    </div>
                   </div>
-                </div>
-                {m.isDefault && (
-                  <span className="text-xs bg-realestate-accent/30 text-realestate-primary px-2 py-0.5 rounded-full font-medium">Default</span>
-                )}
-              </li>
-            ))}
+                  {m.isDefault && (
+                    <span className="text-xs bg-realestate-accent/30 text-realestate-primary px-2 py-0.5 rounded-full font-medium">Default</span>
+                  )}
+                </li>
+              ))
+            )}
           </ul>
         </div>
 

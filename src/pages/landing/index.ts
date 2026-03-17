@@ -5,3 +5,4 @@ export { RentCollectionPage } from "./RentCollectionPage";
 export { TenantScreeningPage } from "./TenantScreeningPage";
 export { PricingComparisonPage } from "./PricingComparisonPage";
 export { AutomateManagementPage } from "./AutomateManagementPage";
+export { PropertyManagementPage } from "./PropertyManagementPage";

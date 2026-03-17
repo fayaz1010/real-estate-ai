@@ -3,6 +3,7 @@ import { Router } from "express";
 
 import accountingRoutes from "../modules/accounting/accounting.routes";
 import aiRoutes from "../modules/ai/ai.routes";
+import contactRoutes from "../modules/contact/contact.routes";
 import applicationRoutes from "../modules/applications/application.routes";
 import authRoutes from "../modules/auth/auth.routes";
 import inspectionRoutes from "../modules/inspections/inspection.routes";
@@ -31,6 +32,7 @@ router.use("/accounting", accountingRoutes);
 router.use("/bookings", bookingRoutes);
 router.use("/trial", trialRoutes);
 router.use("/workflows", workflowRoutes);
+router.use("/contact", contactRoutes);
 
 // API info endpoint
 router.get("/", (req, res) => {

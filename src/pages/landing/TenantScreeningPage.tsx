@@ -9,130 +9,76 @@ import {
   FileText,
   UserCheck,
   AlertTriangle,
-  DollarSign,
-  Clock,
   Cpu,
-  Phone,
-  Home,
-  Briefcase,
-  BarChart,
+  Clock,
 } from "lucide-react";
+import { PageMeta } from "../../components/seo/PageMeta";
 
-const checklistItems = [
-  {
-    icon: FileText,
-    title: "Credit Report",
-    description: "Review credit score, outstanding debts, payment history, and any collections or judgments.",
-    priority: "Essential",
-  },
+const features = [
   {
     icon: Search,
-    title: "Criminal Background Check",
-    description: "Search national, state, and county criminal databases for felonies and relevant misdemeanors.",
-    priority: "Essential",
-  },
-  {
-    icon: Home,
-    title: "Eviction History",
-    description: "Check court records for any previous eviction filings across all states the applicant has lived in.",
-    priority: "Essential",
-  },
-  {
-    icon: Briefcase,
-    title: "Employment Verification",
-    description: "Confirm current employer, job title, length of employment, and income level. Aim for 3x rent-to-income ratio.",
-    priority: "Essential",
-  },
-  {
-    icon: Phone,
-    title: "Previous Landlord References",
-    description: "Contact at least two prior landlords to ask about payment history, property condition, and lease violations.",
-    priority: "Recommended",
-  },
-  {
-    icon: UserCheck,
-    title: "Identity Verification",
-    description: "Verify government-issued ID matches the application. Check for identity fraud indicators.",
-    priority: "Essential",
-  },
-  {
-    icon: DollarSign,
-    title: "Income Documentation",
-    description: "Request recent pay stubs, tax returns, or bank statements. Self-employed applicants should provide additional documentation.",
-    priority: "Essential",
-  },
-  {
-    icon: BarChart,
-    title: "Fair Housing Compliance",
-    description: "Ensure your screening criteria comply with federal, state, and local fair housing laws. Apply the same standards to every applicant.",
-    priority: "Essential",
-  },
-];
-
-const painPoints = [
-  {
-    icon: Clock,
-    title: "Screening Takes Too Long",
+    title: "Comprehensive Background Checks",
     description:
-      "Manually ordering reports, calling references, and verifying income can take days. Meanwhile, great tenants accept offers elsewhere.",
+      "Access criminal records, credit reports, and eviction history. Our system searches national, state, and county databases to give you a complete picture of every applicant.",
   },
-  {
-    icon: AlertTriangle,
-    title: "One Bad Tenant Costs Thousands",
-    description:
-      "A single eviction can cost $5,000 to $10,000 in legal fees, lost rent, and property damage. Thorough screening is your best insurance.",
-  },
-  {
-    icon: BarChart,
-    title: "Fair Housing Is Complex",
-    description:
-      "Navigating federal, state, and local fair housing regulations is challenging. Inconsistent screening processes expose you to legal risk.",
-  },
-];
-
-const aiFeatures = [
   {
     icon: Cpu,
-    title: "AI Risk Scoring",
+    title: "Automated Scoring",
     description:
-      "Our machine learning model analyzes hundreds of data points beyond the credit score to predict tenant reliability with 94% accuracy. You get a single, actionable risk score for every applicant.",
+      "Get a tenant score based on key risk factors. Our AI analyzes hundreds of data points beyond credit score to predict tenant reliability with 94% accuracy.",
   },
+  {
+    icon: FileText,
+    title: "Online Application",
+    description:
+      "Streamline the application process with our online form. Share a branded link, tenants fill out the form, authorize screening, and pay the fee — zero manual work.",
+  },
+  {
+    icon: Shield,
+    title: "Fraud Detection",
+    description:
+      "Protect your properties from fraudulent applications. Our AI verifies identity, cross-references data sources, and flags inconsistencies before you approve a tenancy.",
+  },
+];
+
+const additionalFeatures = [
   {
     icon: Clock,
     title: "Results in Minutes",
     description:
-      "No more waiting days for reports. Credit checks, criminal background searches, and eviction history are returned in under 10 minutes through our automated pipeline.",
+      "No more waiting days for reports. Credit checks, criminal background searches, and eviction history are returned in under 10 minutes.",
   },
   {
-    icon: Shield,
-    title: "Built-In Fair Housing Compliance",
+    icon: UserCheck,
+    title: "Fair Housing Compliance",
     description:
-      "Our system applies the same objective criteria to every applicant automatically. You define your standards once and the AI enforces them consistently, reducing legal exposure.",
+      "Our system applies the same objective criteria to every applicant automatically, reducing legal exposure and ensuring consistent evaluations.",
+  },
+  {
+    icon: AlertTriangle,
+    title: "Adverse Action Letters",
+    description:
+      "If you decline an applicant, the platform automatically generates and sends compliant adverse action notices with required disclosures.",
   },
   {
     icon: CheckCircle,
     title: "Comprehensive Reports",
     description:
-      "Every screening includes credit report, criminal background, eviction history, identity verification, and income analysis in a single, easy-to-read dashboard.",
+      "Every screening includes credit report, criminal background, eviction history, identity verification, and income analysis in a single dashboard.",
   },
-  {
-    icon: UserCheck,
-    title: "Tenant-Initiated Applications",
-    description:
-      "Share a branded application link with prospective tenants. They fill out the form, authorize screening, and pay the application fee — zero manual work on your end.",
-  },
-  {
-    icon: FileText,
-    title: "Adverse Action Letters",
-    description:
-      "If you decline an applicant, the platform automatically generates and sends compliant adverse action notices with the required disclosures, protecting you legally.",
-  },
+];
+
+const stats = [
+  { value: "94%", label: "AI Prediction Accuracy" },
+  { value: "<10min", label: "Average Report Time" },
+  { value: "50K+", label: "Screenings Completed" },
+  { value: "0", label: "Fair Housing Violations" },
 ];
 
 const testimonials = [
   {
     quote:
-      "The AI risk score has been incredibly accurate. Every tenant that scored 'low risk' has been excellent. I have not had a single eviction since I started using RealEstate AI for screening.",
+      "The AI risk score has been incredibly accurate. Every tenant that scored low risk has been excellent. I have not had a single eviction since I started using RealEstate AI for screening.",
     name: "Patricia Coleman",
     role: "Landlord, 24 Units",
     rating: 5,
@@ -153,80 +99,181 @@ const testimonials = [
   },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "RealEstate AI Tenant Screening",
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Web",
+  description:
+    "Simplify tenant screening with RealEstate AI. Get background checks, credit reports, and eviction history in minutes.",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+    description: "Free plan available",
+  },
+  aggregateRating: {
+    "@type": "AggregateRating",
+    ratingValue: "4.9",
+    ratingCount: "980",
+    bestRating: "5",
+  },
+  provider: {
+    "@type": "Organization",
+    name: "RealEstate AI",
+  },
+};
+
 export const TenantScreeningPage: React.FC = () => {
   return (
-    <main className="min-h-screen bg-white" role="main">
+    <main className="min-h-screen" role="main" style={{ backgroundColor: "#F5F8F4" }}>
+      <PageMeta
+        title="Tenant Screening Software"
+        description="Simplify tenant screening with RealEstate AI. Get background checks, credit reports, and eviction history in minutes."
+        keywords="tenant screening software, tenant background check, credit report, eviction history, rental application"
+        ogImage="/assets/generated/og-image.png"
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Hero Section */}
       <section
-        className="relative pt-24 pb-20 bg-realestate-primary overflow-hidden"
+        className="relative pt-24 pb-20 overflow-hidden"
+        style={{ backgroundColor: "#5B7F63" }}
         aria-labelledby="hero-heading"
       >
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-realestate-accent rounded-full blur-3xl" />
-          <div className="absolute bottom-10 right-20 w-96 h-96 bg-realestate-secondary rounded-full blur-3xl" />
+          <div
+            className="absolute top-20 left-10 w-72 h-72 rounded-full blur-3xl"
+            style={{ backgroundColor: "#B8D4A3" }}
+          />
+          <div
+            className="absolute bottom-10 right-20 w-96 h-96 rounded-full blur-3xl"
+            style={{ backgroundColor: "#8FAE7E" }}
+          />
         </div>
         <div className="section-container relative z-10 text-center">
-          <span className="inline-block px-4 py-1.5 bg-realestate-accent/20 text-realestate-accent font-semibold text-sm rounded-full mb-6 font-inter">
-            Tenant Screening Guide + Free Tools
+          <span
+            className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-6 font-inter"
+            style={{ backgroundColor: "rgba(184, 212, 163, 0.2)", color: "#B8D4A3" }}
+          >
+            AI-Powered Tenant Screening
           </span>
           <h1
             id="hero-heading"
-            className="text-display text-white font-space-grotesk mb-6"
+            className="text-4xl md:text-5xl lg:text-6xl font-bold text-white font-space-grotesk mb-6 leading-tight"
           >
-            Tenant Screening: Complete Guide
-            <br className="hidden md:block" />
-            <span className="text-realestate-accent"> + Free Checklist</span>
+            AI-Powered Tenant{" "}
+            <span style={{ color: "#B8D4A3" }}>Screening</span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-300 font-inter max-w-3xl mx-auto leading-relaxed mb-10">
-            Learn everything you need to know about screening tenants effectively.
-            Plus, use our AI-powered tenant screening software to automate the
-            entire process and make data-driven decisions in minutes.
+          <p className="text-lg md:text-xl text-gray-200 font-inter max-w-3xl mx-auto leading-relaxed mb-10">
+            Screen tenants faster and smarter with AI. Get comprehensive background checks,
+            credit reports, eviction history, and AI-powered risk scores — all in minutes.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to="/auth/register"
-              className="btn-accent inline-flex items-center gap-2 px-8 py-3.5 text-base font-semibold"
+              className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-semibold rounded-lg text-white transition-all duration-200 hover:opacity-90 active:scale-95"
+              style={{ backgroundColor: "#1A4F5A" }}
             >
-              Screen Tenants Free
+              Get Started Now
               <ArrowRight className="w-5 h-5" aria-hidden="true" />
             </Link>
-            <a
-              href="#checklist"
-              className="btn-outline border-white text-white hover:bg-white hover:text-realestate-primary inline-flex items-center gap-2 px-8 py-3.5 text-base font-semibold"
+            <Link
+              to="/pricing"
+              className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-semibold rounded-lg border border-white text-white hover:bg-white transition-all duration-200"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = "#5B7F63";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = "white";
+              }}
             >
-              View Free Checklist
-            </a>
+              View Pricing
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Pain Points Section */}
-      <section className="py-20 bg-gray-50" aria-labelledby="problems-heading">
+      {/* Stats Section */}
+      <section className="py-16" style={{ backgroundColor: "#F5F8F4" }} aria-labelledby="stats-heading">
+        <div className="section-container">
+          <h2 id="stats-heading" className="sr-only">
+            Screening Statistics
+          </h2>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+            {stats.map((stat) => (
+              <div
+                key={stat.label}
+                className="text-center p-6 rounded-2xl bg-white shadow-sm"
+              >
+                <p
+                  className="text-3xl md:text-4xl font-bold font-space-grotesk mb-2"
+                  style={{ color: "#5B7F63" }}
+                >
+                  {stat.value}
+                </p>
+                <p className="text-sm font-inter" style={{ color: "#8FAE7E" }}>
+                  {stat.label}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Core Features Section */}
+      <section className="py-20 bg-white" aria-labelledby="features-heading">
         <div className="section-container">
           <div className="text-center mb-14">
-            <span className="inline-block px-4 py-1.5 bg-realestate-accent/10 text-realestate-accent font-semibold text-sm rounded-full mb-4 font-inter">
-              Why Screening Matters
+            <span
+              className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-4 font-inter"
+              style={{ backgroundColor: "rgba(184, 212, 163, 0.2)", color: "#5B7F63" }}
+            >
+              Core Features
             </span>
             <h2
-              id="problems-heading"
-              className="text-heading text-realestate-primary font-space-grotesk mb-4"
+              id="features-heading"
+              className="text-heading font-space-grotesk mb-4"
+              style={{ color: "#1E2B22" }}
             >
-              The True Cost of Skipping Tenant Screening
+              Screening Made Simple and Smart
             </h2>
+            <p className="font-inter max-w-2xl mx-auto" style={{ color: "#8FAE7E" }}>
+              Everything you need to find reliable tenants and protect your investment,
+              powered by artificial intelligence.
+            </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-            {painPoints.map((point) => {
-              const IconComponent = point.icon;
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            {features.map((feature) => {
+              const IconComponent = feature.icon;
               return (
-                <article key={point.title} className="card-elevated p-8">
-                  <div className="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center mb-4">
-                    <IconComponent className="w-6 h-6 text-red-500" aria-hidden="true" />
+                <article
+                  key={feature.title}
+                  className="p-8 rounded-2xl border border-gray-100 hover:shadow-lg transition-shadow duration-300"
+                  style={{ backgroundColor: "#F5F8F4" }}
+                >
+                  <div
+                    className="w-14 h-14 rounded-xl flex items-center justify-center mb-5"
+                    style={{ backgroundColor: "rgba(184, 212, 163, 0.25)" }}
+                  >
+                    <IconComponent
+                      className="w-7 h-7"
+                      style={{ color: "#5B7F63" }}
+                      aria-hidden="true"
+                    />
                   </div>
-                  <h3 className="text-xl font-semibold text-realestate-primary font-space-grotesk mb-3">
-                    {point.title}
+                  <h3
+                    className="text-xl font-semibold font-space-grotesk mb-3"
+                    style={{ color: "#1E2B22" }}
+                  >
+                    {feature.title}
                   </h3>
-                  <p className="text-gray-600 font-inter leading-relaxed">
-                    {point.description}
+                  <p className="font-inter leading-relaxed" style={{ color: "#8FAE7E" }}>
+                    {feature.description}
                   </p>
                 </article>
               );
@@ -235,107 +282,54 @@ export const TenantScreeningPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Checklist Section */}
+      {/* Additional Features */}
       <section
-        id="checklist"
-        className="py-20 bg-white scroll-mt-24"
-        aria-labelledby="checklist-heading"
-      >
-        <div className="section-container">
-          <div className="text-center mb-14">
-            <span className="inline-block px-4 py-1.5 bg-realestate-accent/10 text-realestate-accent font-semibold text-sm rounded-full mb-4 font-inter">
-              Free Checklist
-            </span>
-            <h2
-              id="checklist-heading"
-              className="text-heading text-realestate-primary font-space-grotesk mb-4"
-            >
-              Complete Tenant Screening Checklist
-            </h2>
-            <p className="text-gray-600 font-inter max-w-2xl mx-auto">
-              Use this checklist for every applicant to ensure thorough, consistent,
-              and legally compliant screening. Every item marked "Essential" should
-              be completed before approving a tenancy.
-            </p>
-          </div>
-          <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {checklistItems.map((item) => {
-                const IconComponent = item.icon;
-                return (
-                  <article
-                    key={item.title}
-                    className="card p-5 hover:shadow-realestate-md transition-shadow duration-300"
-                  >
-                    <div className="flex items-start gap-4">
-                      <div className="w-10 h-10 bg-realestate-accent/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <IconComponent
-                          className="w-5 h-5 text-realestate-accent"
-                          aria-hidden="true"
-                        />
-                      </div>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <h3 className="font-semibold text-realestate-primary font-space-grotesk">
-                            {item.title}
-                          </h3>
-                          <span
-                            className={`text-xs px-2 py-0.5 rounded-full font-inter font-medium ${
-                              item.priority === "Essential"
-                                ? "bg-realestate-accent/10 text-realestate-accent"
-                                : "bg-gray-100 text-gray-500"
-                            }`}
-                          >
-                            {item.priority}
-                          </span>
-                        </div>
-                        <p className="text-sm text-gray-600 font-inter leading-relaxed">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  </article>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* AI Screening Features */}
-      <section
-        className="py-20 bg-realestate-primary"
+        className="py-20"
+        style={{ backgroundColor: "#5B7F63" }}
         aria-labelledby="ai-features-heading"
       >
         <div className="section-container">
           <div className="text-center mb-14">
-            <span className="inline-block px-4 py-1.5 bg-realestate-accent/20 text-realestate-accent font-semibold text-sm rounded-full mb-4 font-inter">
-              AI-Powered Screening
+            <span
+              className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-4 font-inter"
+              style={{ backgroundColor: "rgba(184, 212, 163, 0.2)", color: "#B8D4A3" }}
+            >
+              Advanced Capabilities
             </span>
             <h2
               id="ai-features-heading"
               className="text-heading text-white font-space-grotesk mb-4"
             >
-              Automate Your Screening with AI
+              Go Beyond Traditional Screening
             </h2>
-            <p className="text-gray-300 font-inter max-w-2xl mx-auto">
-              The checklist above is your foundation. RealEstate AI automates every
-              step and adds intelligent analysis that goes beyond what manual
+            <p className="text-gray-200 font-inter max-w-2xl mx-auto">
+              RealEstate AI adds intelligent analysis that goes beyond what manual
               screening can achieve.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {aiFeatures.map((feature) => {
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {additionalFeatures.map((feature) => {
               const IconComponent = feature.icon;
               return (
                 <article
                   key={feature.title}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 md:p-8 hover:bg-white/10 transition-colors duration-300"
+                  className="backdrop-blur-sm border rounded-2xl p-6 hover:bg-white/10 transition-colors duration-300"
+                  style={{
+                    backgroundColor: "rgba(255, 255, 255, 0.05)",
+                    borderColor: "rgba(255, 255, 255, 0.1)",
+                  }}
                 >
-                  <div className="w-12 h-12 bg-realestate-accent/20 rounded-xl flex items-center justify-center mb-4">
-                    <IconComponent className="w-6 h-6 text-realestate-accent" aria-hidden="true" />
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-4"
+                    style={{ backgroundColor: "rgba(184, 212, 163, 0.2)" }}
+                  >
+                    <IconComponent
+                      className="w-6 h-6"
+                      style={{ color: "#B8D4A3" }}
+                      aria-hidden="true"
+                    />
                   </div>
-                  <h3 className="text-lg font-semibold text-white font-space-grotesk mb-3">
+                  <h3 className="text-lg font-semibold text-white font-space-grotesk mb-2">
                     {feature.title}
                   </h3>
                   <p className="text-gray-300 font-inter leading-relaxed text-sm">
@@ -348,62 +342,52 @@ export const TenantScreeningPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-20 bg-gray-50" aria-labelledby="stats-heading">
-        <div className="section-container">
-          <h2 id="stats-heading" className="sr-only">Screening Statistics</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
-            {[
-              { value: "94%", label: "AI Prediction Accuracy" },
-              { value: "<10min", label: "Average Report Time" },
-              { value: "50K+", label: "Screenings Completed" },
-              { value: "0", label: "Fair Housing Violations" },
-            ].map((stat) => (
-              <div key={stat.label} className="card-elevated text-center p-6 md:p-8">
-                <p className="text-3xl md:text-4xl font-bold text-realestate-accent font-space-grotesk mb-2">
-                  {stat.value}
-                </p>
-                <p className="text-sm text-gray-500 font-inter">{stat.label}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Testimonials Section */}
       <section className="py-20 bg-white" aria-labelledby="testimonials-heading">
         <div className="section-container">
           <div className="text-center mb-14">
-            <span className="inline-block px-4 py-1.5 bg-realestate-accent/10 text-realestate-accent font-semibold text-sm rounded-full mb-4 font-inter">
+            <span
+              className="inline-block px-4 py-1.5 font-semibold text-sm rounded-full mb-4 font-inter"
+              style={{ backgroundColor: "rgba(184, 212, 163, 0.2)", color: "#5B7F63" }}
+            >
               Landlord Reviews
             </span>
             <h2
               id="testimonials-heading"
-              className="text-heading text-realestate-primary font-space-grotesk mb-4"
+              className="text-heading font-space-grotesk mb-4"
+              style={{ color: "#1E2B22" }}
             >
               Trusted by Thousands of Landlords
             </h2>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
             {testimonials.map((testimonial) => (
-              <article key={testimonial.name} className="card-elevated p-8">
+              <article
+                key={testimonial.name}
+                className="p-8 rounded-2xl border border-gray-100 shadow-sm"
+                style={{ backgroundColor: "#F5F8F4" }}
+              >
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: testimonial.rating }).map((_, i) => (
                     <Star
                       key={i}
-                      className="w-5 h-5 text-realestate-accent fill-realestate-accent"
+                      className="w-5 h-5 fill-current"
+                      style={{ color: "#8FAE7E" }}
                       aria-hidden="true"
                     />
                   ))}
                 </div>
-                <blockquote className="text-gray-600 font-inter leading-relaxed mb-6">
-                  "{testimonial.quote}"
+                <blockquote
+                  className="font-inter leading-relaxed mb-6"
+                  style={{ color: "#1E2B22" }}
+                >
+                  &ldquo;{testimonial.quote}&rdquo;
                 </blockquote>
                 <div>
-                  <p className="font-semibold text-realestate-primary font-space-grotesk">
+                  <p className="font-semibold font-space-grotesk" style={{ color: "#5B7F63" }}>
                     {testimonial.name}
                   </p>
-                  <p className="text-sm text-gray-500 font-inter">
+                  <p className="text-sm font-inter" style={{ color: "#8FAE7E" }}>
                     {testimonial.role}
                   </p>
                 </div>
@@ -414,9 +398,14 @@ export const TenantScreeningPage: React.FC = () => {
       </section>
 
       {/* Final CTA Section */}
-      <section className="py-20 bg-white" aria-labelledby="cta-heading">
+      <section className="py-20" style={{ backgroundColor: "#F5F8F4" }} aria-labelledby="cta-heading">
         <div className="section-container">
-          <div className="card-elevated bg-gradient-to-br from-realestate-primary to-realestate-secondary p-10 md:p-16 text-center rounded-3xl shadow-realestate-lg">
+          <div
+            className="p-10 md:p-16 text-center rounded-3xl shadow-lg"
+            style={{
+              background: "linear-gradient(135deg, #5B7F63, #1E2B22)",
+            }}
+          >
             <h2
               id="cta-heading"
               className="text-heading text-white font-space-grotesk mb-4"
@@ -430,14 +419,21 @@ export const TenantScreeningPage: React.FC = () => {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <Link
                 to="/auth/register"
-                className="btn-accent inline-flex items-center gap-2 px-8 py-3.5 text-base font-semibold"
+                className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-semibold rounded-lg text-white transition-all duration-200 hover:opacity-90 active:scale-95"
+                style={{ backgroundColor: "#1A4F5A" }}
               >
-                Start Screening Free
+                Get Started Now
                 <ArrowRight className="w-5 h-5" aria-hidden="true" />
               </Link>
               <Link
                 to="/pricing"
-                className="btn-outline border-white text-white hover:bg-white hover:text-realestate-primary inline-flex items-center gap-2 px-8 py-3.5 text-base font-semibold"
+                className="inline-flex items-center gap-2 px-8 py-3.5 text-base font-semibold rounded-lg border border-white text-white hover:bg-white transition-all duration-200"
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.color = "#5B7F63";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.color = "white";
+                }}
               >
                 View Pricing
               </Link>

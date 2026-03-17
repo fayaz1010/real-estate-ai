@@ -2,6 +2,7 @@ import React from "react";
 
 import { Footer } from "./Footer";
 import { Navbar } from "./Navbar";
+import { MobileNav } from "../MobileNav";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -17,10 +18,20 @@ export const Layout: React.FC<LayoutProps> = ({
   return (
     <div className="min-h-screen flex flex-col">
       {!hideNavbar && <Navbar />}
-      <main className="flex-1" role="main">
-        {children}
+      <MobileNav />
+      {/* Top bar offset for mobile (56px header) + bottom tab offset (64px) */}
+      <main
+        className="flex-1"
+        role="main"
+        style={{ paddingTop: 0 }}
+      >
+        <div className="lg:pt-0" style={{ paddingTop: 56 }}>
+          {children}
+        </div>
       </main>
       {!hideFooter && <Footer />}
+      {/* Bottom spacer for mobile tab bar */}
+      <div className="lg:hidden" style={{ height: 64 }} />
     </div>
   );
 };

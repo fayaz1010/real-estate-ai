@@ -1,9 +1,18 @@
-// AI Service Routes - Placeholder AI endpoints
+// AI Service Routes - AI-powered property management endpoints
 import { Router, Request, Response } from "express";
 
 import { authenticate } from "../../middleware/auth";
 import { asyncHandler } from "../../middleware/errorHandler";
+import { validate } from "../../middleware/validation";
 import { successResponse } from "../../utils/response";
+
+import * as aiController from "./ai.controller";
+import {
+  propertyValuationSchema,
+  marketAnalysisSchema,
+  tenantScreeningSchema,
+  predictiveMaintenanceSchema,
+} from "./ai.validation";
 
 const router = Router();
 
@@ -167,13 +176,38 @@ router.get(
       applicationId,
       overallScore: randInt(40, 98),
       categories: [
-        { label: "Credit Score", score: randInt(30, 100), maxScore: 100, weight: 0.3 },
-        { label: "Income Verification", score: randInt(40, 100), maxScore: 100, weight: 0.25 },
-        { label: "Rental History", score: randInt(20, 100), maxScore: 100, weight: 0.25 },
-        { label: "Background Check", score: randInt(50, 100), maxScore: 100, weight: 0.2 },
+        {
+          label: "Credit Score",
+          score: randInt(30, 100),
+          maxScore: 100,
+          weight: 0.3,
+        },
+        {
+          label: "Income Verification",
+          score: randInt(40, 100),
+          maxScore: 100,
+          weight: 0.25,
+        },
+        {
+          label: "Rental History",
+          score: randInt(20, 100),
+          maxScore: 100,
+          weight: 0.25,
+        },
+        {
+          label: "Background Check",
+          score: randInt(50, 100),
+          maxScore: 100,
+          weight: 0.2,
+        },
       ],
-      recommendation:
-        pick(["Strong Approve", "Approve", "Conditional Approve", "Review Required", "Decline"]),
+      recommendation: pick([
+        "Strong Approve",
+        "Approve",
+        "Conditional Approve",
+        "Review Required",
+        "Decline",
+      ]),
       riskLevel: pick(["low", "medium", "high"]),
       generatedAt: new Date().toISOString(),
     };
@@ -243,7 +277,11 @@ router.get(
       });
     }
 
-    return successResponse(res, { occupancy: data }, "Occupancy data generated");
+    return successResponse(
+      res,
+      { occupancy: data },
+      "Occupancy data generated",
+    );
   }),
 );
 
@@ -267,6 +305,73 @@ router.get(
 
     return successResponse(res, { metrics }, "Portfolio metrics generated");
   }),
+);
+
+// ---------------------------------------------------------------------------
+// New AI Endpoints — Property Valuation, Market Analysis, Tenant Screening,
+// Predictive Maintenance
+// ---------------------------------------------------------------------------
+
+/**
+ * POST /api/ai/property-valuation
+ * Generate an AI-powered property valuation estimate.
+ * @body {string} address - Property address
+ * @body {number} size - Property size in sq ft
+ * @body {number} bedrooms - Number of bedrooms
+ * @body {number} bathrooms - Number of bathrooms
+ * @body {Array} recentSales - Recent comparable sales data
+ * @returns {object} estimatedValue, confidenceScore (0-1), comparableSales
+ */
+router.post(
+  "/property-valuation",
+  authenticate,
+  validate(propertyValuationSchema),
+  asyncHandler(aiController.propertyValuation),
+);
+
+/**
+ * POST /api/ai/market-analysis
+ * Generate an AI-powered market analysis for a given location.
+ * @body {string} [city] - City name
+ * @body {string} [state] - State name
+ * @body {string} [zipCode] - Zip code
+ * @returns {object} averageRent, vacancyRate (%), medianHomePrice, marketTrend, dataSources
+ */
+router.post(
+  "/market-analysis",
+  authenticate,
+  validate(marketAnalysisSchema),
+  asyncHandler(aiController.marketAnalysis),
+);
+
+/**
+ * POST /api/ai/tenant-screening
+ * Generate AI-powered tenant screening insights.
+ * @body {number} creditScore - Applicant credit score (300-850)
+ * @body {object} backgroundCheck - Criminal and eviction check results
+ * @body {object} incomeVerification - Income and employment data
+ * @returns {object} overallRiskScore (0-100), recommendation, justification
+ */
+router.post(
+  "/tenant-screening",
+  authenticate,
+  validate(tenantScreeningSchema),
+  asyncHandler(aiController.tenantScreeningInsights),
+);
+
+/**
+ * POST /api/ai/predictive-maintenance
+ * Generate AI-powered predictive maintenance analysis.
+ * @body {number} propertyAge - Property age in years
+ * @body {Array} maintenanceHistory - Past maintenance records
+ * @body {Array} [sensorData] - Optional sensor readings
+ * @returns {object} potentialIssues (with severity), recommendedActions
+ */
+router.post(
+  "/predictive-maintenance",
+  authenticate,
+  validate(predictiveMaintenanceSchema),
+  asyncHandler(aiController.predictiveMaintenance),
 );
 
 export default router;

@@ -1,0 +1,134 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Nature-Inspired Warmth Color Palette */
+  --primary-color: #8B7355;
+  --secondary-color: #A0926B;
+  --accent-color: #C4A882;
+  --background-color: #FAF6F1;
+  --text-color: #2D2A26;
+
+  /* RGB channel values for Tailwind opacity support */
+  --primary-rgb: 139 115 85;
+  --secondary-rgb: 160 146 107;
+  --accent-rgb: 196 168 130;
+  --background-rgb: 250 246 241;
+  --text-rgb: 45 42 38;
+
+  /* Typography */
+  --font-display: 'DM Serif Display', serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Spacing (8px grid system) */
+  --space-xxs: 4px;   /* 0.25rem */
+  --space-xs: 8px;    /* 0.5rem */
+  --space-sm: 12px;   /* 0.75rem */
+  --space-md: 16px;   /* 1rem */
+  --space-lg: 24px;   /* 1.5rem */
+  --space-xl: 32px;   /* 2rem */
+  --space-xxl: 48px;  /* 3rem */
+  --space-3xl: 64px;  /* 4rem */
+
+  /* Responsive spacing defaults (mobile-first: small screens) */
+  --content-padding: 16px;
+  --content-margin: 8px;
+}
+
+/* ===== Base Styles (Mobile-First) ===== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-body);
+  color: var(--text-color);
+  background-color: var(--background-color);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  color: var(--text-color);
+  line-height: 1.2;
+  margin-top: 0;
+}
+
+/* ===== Touch-Friendly Elements ===== */
+
+button,
+[role="button"],
+input[type="submit"],
+input[type="button"],
+a.btn {
+  min-height: 44px;
+  min-width: 44px;
+  font-family: var(--font-body);
+}
+
+input,
+select,
+textarea {
+  font-size: 16px; /* Prevents iOS zoom on focus */
+  font-family: var(--font-body);
+}
+
+/* ===== Responsive Container ===== */
+
+.responsive-container {
+  width: 100%;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--content-padding);
+  padding-right: var(--content-padding);
+}
+
+.responsive-section {
+  padding-top: var(--content-padding);
+  padding-bottom: var(--content-padding);
+  margin-top: var(--content-margin);
+  margin-bottom: var(--content-margin);
+}
+
+/* ===== Mobile Navigation Spacing ===== */
+
+.mobile-nav-spacer {
+  padding-bottom: 80px; /* Space for bottom tab bar */
+}
+
+/* ===== Small Screens (up to 640px) — default / mobile-first ===== */
+
+/* ===== Medium Screens (641px to 1024px) ===== */
+
+@media (min-width: 641px) {
+  :root {
+    --content-padding: 24px;
+    --content-margin: 12px;
+  }
+}
+
+/* ===== Large Screens (1025px and above) ===== */
+
+@media (min-width: 1025px) {
+  :root {
+    --content-padding: 32px;
+    --content-margin: 16px;
+  }
+
+  .mobile-nav-spacer {
+    padding-bottom: 0;
+  }
+}

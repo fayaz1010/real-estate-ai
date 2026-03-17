@@ -7,6 +7,30 @@ export interface WebSocketMessage {
   data: any;
 }
 
+export type ConnectionState = "disconnected" | "connecting" | "connected";
+
+export type MessageType = "text" | "image" | "file";
+
+export interface SendMessagePayload {
+  conversationId: string;
+  content: string;
+  messageType?: MessageType;
+  recipientId?: string;
+  attachments?: { filename: string; url: string; contentType: string }[];
+}
+
+export interface TypingIndicator {
+  conversationId: string;
+  userId: string;
+  isTyping: boolean;
+}
+
+export interface UserPresence {
+  userId: string;
+  status: "online" | "offline";
+  lastSeen?: string;
+}
+
 type MessageCallback = (message: WebSocketMessage) => void;
 
 class WebSocketService {
@@ -17,10 +41,22 @@ class WebSocketService {
   private maxRetries = 5;
   private reconnectTimeouts = [1000, 2000, 4000, 8000, 16000];
   private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
-  private isConnected = false;
+  private connectionState: ConnectionState = "disconnected";
   private usingSse = false;
   private manuallyDisconnected = false;
   private connectionListeners: Set<(connected: boolean) => void> = new Set();
+  private connectionStateListeners: Set<(state: ConnectionState) => void> =
+    new Set();
+
+  // Typing indicator state
+  private typingTimers: Map<string, ReturnType<typeof setTimeout>> = new Map();
+  private localTypingTimer: ReturnType<typeof setTimeout> | null = null;
+  private typingListeners: Set<(indicator: TypingIndicator) => void> =
+    new Set();
+
+  // Presence state
+  private onlineUsers: Map<string, UserPresence> = new Map();
+  private presenceListeners: Set<(presence: UserPresence) => void> = new Set();
 
   /**
    * Derive the WebSocket URL from VITE_API_URL or use default
@@ -71,6 +107,14 @@ class WebSocketService {
       this.reconnectTimer = null;
     }
 
+    // Clear all typing timers
+    this.typingTimers.forEach((timer) => clearTimeout(timer));
+    this.typingTimers.clear();
+    if (this.localTypingTimer) {
+      clearTimeout(this.localTypingTimer);
+      this.localTypingTimer = null;
+    }
+
     if (this.ws) {
       this.ws.close(1000, "Client disconnect");
       this.ws = null;
@@ -82,7 +126,8 @@ class WebSocketService {
     }
 
     this.usingSse = false;
-    this.setConnected(false);
+    this.onlineUsers.clear();
+    this.setConnectionState("disconnected");
   }
 
   /**
@@ -118,14 +163,141 @@ class WebSocketService {
   }
 
   /**
+   * Send a message to a conversation via WebSocket
+   */
+  sendMessage(payload: SendMessagePayload): void {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) {
+      console.warn("WebSocket not connected, cannot send message");
+      return;
+    }
+
+    this.ws.send(
+      JSON.stringify({
+        type: "message",
+        channel: `communication:${payload.conversationId}`,
+        data: {
+          conversationId: payload.conversationId,
+          content: payload.content,
+          messageType: payload.messageType || "text",
+          recipientId: payload.recipientId,
+          attachments: payload.attachments,
+        },
+      }),
+    );
+
+    // Stop typing indicator when message is sent
+    this.stopTyping(payload.conversationId);
+  }
+
+  /**
+   * Send typing indicator for a conversation
+   */
+  startTyping(conversationId: string): void {
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+
+    // Debounce: only send if we haven't sent recently
+    if (this.localTypingTimer) return;
+
+    this.ws.send(
+      JSON.stringify({
+        type: "typing",
+        data: { conversationId, isTyping: true },
+      }),
+    );
+
+    // Auto-stop typing after 3 seconds of inactivity
+    this.localTypingTimer = setTimeout(() => {
+      this.stopTyping(conversationId);
+    }, 3000);
+  }
+
+  /**
+   * Stop typing indicator for a conversation
+   */
+  stopTyping(conversationId: string): void {
+    if (this.localTypingTimer) {
+      clearTimeout(this.localTypingTimer);
+      this.localTypingTimer = null;
+    }
+
+    if (!this.ws || this.ws.readyState !== WebSocket.OPEN) return;
+
+    this.ws.send(
+      JSON.stringify({
+        type: "typing",
+        data: { conversationId, isTyping: false },
+      }),
+    );
+  }
+
+  /**
+   * Register a listener for typing indicator changes
+   */
+  onTypingChange(
+    listener: (indicator: TypingIndicator) => void,
+  ): () => void {
+    this.typingListeners.add(listener);
+    return () => {
+      this.typingListeners.delete(listener);
+    };
+  }
+
+  /**
+   * Register a listener for user presence changes
+   */
+  onPresenceChange(listener: (presence: UserPresence) => void): () => void {
+    this.presenceListeners.add(listener);
+    return () => {
+      this.presenceListeners.delete(listener);
+    };
+  }
+
+  /**
+   * Get current online status for a user
+   */
+  getUserPresence(userId: string): UserPresence | undefined {
+    return this.onlineUsers.get(userId);
+  }
+
+  /**
+   * Check if a user is online
+   */
+  isUserOnline(userId: string): boolean {
+    const presence = this.onlineUsers.get(userId);
+    return presence?.status === "online";
+  }
+
+  /**
+   * Get all online users
+   */
+  getOnlineUsers(): UserPresence[] {
+    return Array.from(this.onlineUsers.values()).filter(
+      (p) => p.status === "online",
+    );
+  }
+
+  /**
    * Register a listener for connection state changes
    */
   onConnectionChange(listener: (connected: boolean) => void): () => void {
     this.connectionListeners.add(listener);
     // Immediately notify of current state
-    listener(this.isConnected);
+    listener(this.connectionState === "connected");
     return () => {
       this.connectionListeners.delete(listener);
+    };
+  }
+
+  /**
+   * Register a listener for detailed connection state changes
+   */
+  onConnectionStateChange(
+    listener: (state: ConnectionState) => void,
+  ): () => void {
+    this.connectionStateListeners.add(listener);
+    listener(this.connectionState);
+    return () => {
+      this.connectionStateListeners.delete(listener);
     };
   }
 
@@ -133,19 +305,30 @@ class WebSocketService {
    * Get current connection status
    */
   getIsConnected(): boolean {
-    return this.isConnected;
+    return this.connectionState === "connected";
+  }
+
+  /**
+   * Get detailed connection state
+   */
+  getConnectionState(): ConnectionState {
+    return this.connectionState;
   }
 
   // --- Private methods ---
 
-  private setConnected(connected: boolean): void {
-    if (this.isConnected !== connected) {
-      this.isConnected = connected;
+  private setConnectionState(state: ConnectionState): void {
+    if (this.connectionState !== state) {
+      this.connectionState = state;
+      const connected = state === "connected";
       this.connectionListeners.forEach((listener) => listener(connected));
+      this.connectionStateListeners.forEach((listener) => listener(state));
     }
   }
 
   private attemptWebSocketConnection(): void {
+    this.setConnectionState("connecting");
+
     try {
       const url = this.getWsUrl();
       this.ws = new WebSocket(url);
@@ -158,25 +341,30 @@ class WebSocketService {
         }
 
         this.retryCount = 0;
-        this.setConnected(true);
+        this.setConnectionState("connected");
 
         // Re-subscribe to all active channels
         for (const channel of Array.from(this.subscriptions.keys())) {
           this.ws!.send(JSON.stringify({ type: "subscribe", channel }));
         }
+
+        // Subscribe to presence channel
+        this.ws!.send(
+          JSON.stringify({ type: "subscribe", channel: "presence" }),
+        );
       };
 
       this.ws.onmessage = (event: MessageEvent) => {
         try {
           const message: WebSocketMessage = JSON.parse(event.data);
-          this.dispatchMessage(message);
+          this.handleIncomingMessage(message);
         } catch {
           // Ignore malformed messages
         }
       };
 
       this.ws.onclose = (event: CloseEvent) => {
-        this.setConnected(false);
+        this.setConnectionState("disconnected");
         this.ws = null;
 
         if (!this.manuallyDisconnected && event.code !== 1000) {
@@ -190,6 +378,77 @@ class WebSocketService {
     } catch {
       this.scheduleReconnect();
     }
+  }
+
+  private handleIncomingMessage(message: WebSocketMessage): void {
+    // Handle typing indicators
+    if (message.event === "typing") {
+      const indicator = message.data as TypingIndicator;
+      this.handleTypingIndicator(indicator);
+      return;
+    }
+
+    // Handle presence updates
+    if (
+      message.channel === "presence" ||
+      message.event === "presence" ||
+      message.event === "user_online" ||
+      message.event === "user_offline"
+    ) {
+      this.handlePresenceUpdate(message);
+      return;
+    }
+
+    // Dispatch to channel subscribers
+    this.dispatchMessage(message);
+  }
+
+  private handleTypingIndicator(indicator: TypingIndicator): void {
+    const key = `${indicator.conversationId}:${indicator.userId}`;
+
+    // Clear existing timer for this user/conversation
+    const existingTimer = this.typingTimers.get(key);
+    if (existingTimer) {
+      clearTimeout(existingTimer);
+      this.typingTimers.delete(key);
+    }
+
+    if (indicator.isTyping) {
+      // Auto-expire typing indicator after 4 seconds
+      const timer = setTimeout(() => {
+        this.typingTimers.delete(key);
+        this.typingListeners.forEach((listener) =>
+          listener({ ...indicator, isTyping: false }),
+        );
+      }, 4000);
+      this.typingTimers.set(key, timer);
+    }
+
+    // Notify listeners
+    this.typingListeners.forEach((listener) => listener(indicator));
+  }
+
+  private handlePresenceUpdate(message: WebSocketMessage): void {
+    const presence: UserPresence = {
+      userId: message.data.userId,
+      status:
+        message.event === "user_offline"
+          ? "offline"
+          : message.data.status || "online",
+      lastSeen: message.data.lastSeen,
+    };
+
+    if (presence.status === "online") {
+      this.onlineUsers.set(presence.userId, presence);
+    } else {
+      this.onlineUsers.set(presence.userId, {
+        ...presence,
+        lastSeen: presence.lastSeen || new Date().toISOString(),
+      });
+    }
+
+    // Notify listeners
+    this.presenceListeners.forEach((listener) => listener(presence));
   }
 
   private scheduleReconnect(): void {
@@ -207,6 +466,8 @@ class WebSocketService {
     const delay = this.reconnectTimeouts[this.retryCount] || 16000;
     this.retryCount++;
 
+    this.setConnectionState("connecting");
+
     this.reconnectTimer = setTimeout(() => {
       this.attemptWebSocketConnection();
     }, delay);
@@ -214,6 +475,7 @@ class WebSocketService {
 
   private connectSse(): void {
     this.usingSse = true;
+    this.setConnectionState("connecting");
 
     const token = tokenManager.getAccessToken();
     const sseUrl = `${this.getSseUrl()}${token ? `?token=${encodeURIComponent(token)}` : ""}`;
@@ -222,20 +484,20 @@ class WebSocketService {
       this.eventSource = new EventSource(sseUrl);
 
       this.eventSource.onopen = () => {
-        this.setConnected(true);
+        this.setConnectionState("connected");
       };
 
       this.eventSource.onmessage = (event: MessageEvent) => {
         try {
           const message: WebSocketMessage = JSON.parse(event.data);
-          this.dispatchMessage(message);
+          this.handleIncomingMessage(message);
         } catch {
           // Ignore malformed messages
         }
       };
 
       this.eventSource.onerror = () => {
-        this.setConnected(false);
+        this.setConnectionState("disconnected");
         if (this.eventSource) {
           this.eventSource.close();
           this.eventSource = null;
@@ -249,7 +511,7 @@ class WebSocketService {
         }
       };
     } catch {
-      this.setConnected(false);
+      this.setConnectionState("disconnected");
     }
   }
 

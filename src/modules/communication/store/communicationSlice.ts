@@ -13,6 +13,8 @@ interface CommunicationState {
   error: string | null;
   messagesTotal: number;
   messagesPage: number;
+  typingUsers: Record<string, string[]>; // conversationId -> userId[]
+  onlineUserIds: string[];
 }
 
 const initialState: CommunicationState = {
@@ -25,6 +27,8 @@ const initialState: CommunicationState = {
   error: null,
   messagesTotal: 0,
   messagesPage: 1,
+  typingUsers: {},
+  onlineUserIds: [],
 };
 
 export const fetchConversations = createAsyncThunk(
@@ -70,6 +74,44 @@ const communicationSlice = createSlice({
     },
     clearError(state) {
       state.error = null;
+    },
+    addRealtimeMessage(state, action: PayloadAction<Message>) {
+      const msg = action.payload;
+      // Only add if it belongs to the active conversation and isn't a duplicate
+      if (
+        msg.conversationId === state.activeConversationId &&
+        !state.messages.some((m) => m.id === msg.id)
+      ) {
+        state.messages.push(msg);
+      }
+      // Update last message in conversation list
+      const convo = state.conversations.find(
+        (c) => c.id === msg.conversationId,
+      );
+      if (convo) {
+        convo.lastMessage = msg;
+        convo.updatedAt = new Date() as unknown as Date;
+      }
+    },
+    setTypingUsers(
+      state,
+      action: PayloadAction<{ conversationId: string; userIds: string[] }>,
+    ) {
+      state.typingUsers[action.payload.conversationId] =
+        action.payload.userIds;
+    },
+    setOnlineUsers(state, action: PayloadAction<string[]>) {
+      state.onlineUserIds = action.payload;
+    },
+    addOnlineUser(state, action: PayloadAction<string>) {
+      if (!state.onlineUserIds.includes(action.payload)) {
+        state.onlineUserIds.push(action.payload);
+      }
+    },
+    removeOnlineUser(state, action: PayloadAction<string>) {
+      state.onlineUserIds = state.onlineUserIds.filter(
+        (id) => id !== action.payload,
+      );
     },
   },
   extraReducers: (builder) => {
@@ -125,5 +167,13 @@ const communicationSlice = createSlice({
   },
 });
 
-export const { setActiveConversation, clearError } = communicationSlice.actions;
+export const {
+  setActiveConversation,
+  clearError,
+  addRealtimeMessage,
+  setTypingUsers,
+  setOnlineUsers,
+  addOnlineUser,
+  removeOnlineUser,
+} = communicationSlice.actions;
 export default communicationSlice.reducer;
