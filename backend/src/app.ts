@@ -1,4 +1,6 @@
 // Express App Configuration
+import path from "path";
+
 import compression from "compression";
 import cors from "cors";
 import express, { Application } from "express";
@@ -76,16 +78,27 @@ app.get("/health", (_req, res) => {
 // API Routes
 app.use("/api", routes);
 
-// 404 Handler
-app.use((_req, res) => {
-  res.status(404).json({
-    success: false,
-    error: {
-      code: "NOT_FOUND",
-      message: "Route not found",
-    },
+// Serve frontend static files in production
+if (config.nodeEnv === "production") {
+  const frontendPath = path.resolve(__dirname, "../../dist");
+  app.use(express.static(frontendPath));
+
+  // SPA fallback - serve index.html for any non-API route
+  app.get("*", (_req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
   });
-});
+} else {
+  // 404 Handler (dev only - frontend runs on separate port)
+  app.use((_req, res) => {
+    res.status(404).json({
+      success: false,
+      error: {
+        code: "NOT_FOUND",
+        message: "Route not found",
+      },
+    });
+  });
+}
 
 // Error Handler (must be last)
 app.use(errorHandler);
