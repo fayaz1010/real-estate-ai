@@ -20,11 +20,19 @@ vi.mock("@/api/client", () => ({
 
 // ─── Mock lease slice actions ───────────────────────────────────────────────
 
-const mockFetchLeases = vi.fn();
-const mockCreateLease = vi.fn();
-const mockUpdateLeaseStatus = vi.fn();
-const mockTerminateLease = vi.fn();
-const mockClearError = vi.fn();
+const {
+  mockFetchLeases,
+  mockCreateLease,
+  mockUpdateLeaseStatus,
+  mockTerminateLease,
+  mockClearError,
+} = vi.hoisted(() => ({
+  mockFetchLeases: vi.fn(),
+  mockCreateLease: vi.fn(),
+  mockUpdateLeaseStatus: vi.fn(),
+  mockTerminateLease: vi.fn(),
+  mockClearError: vi.fn(),
+}));
 
 vi.mock("@/modules/leases/store/leaseSlice", () => ({
   __esModule: true,
