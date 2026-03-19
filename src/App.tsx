@@ -149,6 +149,17 @@ const WorkflowsPage = React.lazy(() =>
 const GoogleCallbackPage = React.lazy(
   () => import("./pages/GoogleCallbackPage"),
 );
+const PrivacyPage = React.lazy(() =>
+  import("./pages/PrivacyPage").then((m) => ({ default: m.PrivacyPage })),
+);
+const TermsPage = React.lazy(() =>
+  import("./pages/TermsPage").then((m) => ({ default: m.TermsPage })),
+);
+const CookiePolicyPage = React.lazy(() =>
+  import("./pages/CookiePolicyPage").then((m) => ({
+    default: m.CookiePolicyPage,
+  })),
+);
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -275,7 +286,7 @@ const AppContent: React.FC = () => {
             path="/"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <HomePage />
                 </Suspense>
               </Layout>
@@ -285,7 +296,7 @@ const AppContent: React.FC = () => {
             path="/properties"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <PropertiesPage />
                 </Suspense>
               </Layout>
@@ -295,7 +306,7 @@ const AppContent: React.FC = () => {
             path="/properties/:id"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <PropertyDetailsPage />
                 </Suspense>
               </Layout>
@@ -305,7 +316,7 @@ const AppContent: React.FC = () => {
             path="/pricing"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <PricingPage />
                 </Suspense>
               </Layout>
@@ -315,7 +326,7 @@ const AppContent: React.FC = () => {
             path="/about"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <AboutPage />
                 </Suspense>
               </Layout>
@@ -325,7 +336,7 @@ const AppContent: React.FC = () => {
             path="/contact"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <ContactPage />
                 </Suspense>
               </Layout>
@@ -336,7 +347,7 @@ const AppContent: React.FC = () => {
           <Route
             path="/auth/login"
             element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<LoadingSpinner />}>
                 <AuthPage />
               </Suspense>
             }
@@ -344,7 +355,7 @@ const AppContent: React.FC = () => {
           <Route
             path="/auth/register"
             element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<LoadingSpinner />}>
                 <AuthPage />
               </Suspense>
             }
@@ -352,7 +363,7 @@ const AppContent: React.FC = () => {
           <Route
             path="/auth/forgot-password"
             element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<LoadingSpinner />}>
                 <AuthPage />
               </Suspense>
             }
@@ -360,7 +371,7 @@ const AppContent: React.FC = () => {
           <Route
             path="/auth/google/callback"
             element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<LoadingSpinner />}>
                 <GoogleCallbackPage />
               </Suspense>
             }
@@ -368,7 +379,7 @@ const AppContent: React.FC = () => {
           <Route
             path="/trial/signup"
             element={
-              <Suspense fallback={<div>Loading...</div>}>
+              <Suspense fallback={<LoadingSpinner />}>
                 <TrialSignupPage />
               </Suspense>
             }
@@ -393,7 +404,7 @@ const AppContent: React.FC = () => {
             path="/landing/small-landlords"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <SmallLandlordsPage />
                 </Suspense>
               </Layout>
@@ -403,7 +414,7 @@ const AppContent: React.FC = () => {
             path="/landing/appfolio-alternative"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <AppFolioAlternativePage />
                 </Suspense>
               </Layout>
@@ -413,7 +424,7 @@ const AppContent: React.FC = () => {
             path="/landing/ai-property-management"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <AIPropertyManagementPage />
                 </Suspense>
               </Layout>
@@ -423,7 +434,7 @@ const AppContent: React.FC = () => {
             path="/landing/rent-collection"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <RentCollectionPage />
                 </Suspense>
               </Layout>
@@ -433,7 +444,7 @@ const AppContent: React.FC = () => {
             path="/landing/tenant-screening"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <TenantScreeningPage />
                 </Suspense>
               </Layout>
@@ -443,7 +454,7 @@ const AppContent: React.FC = () => {
             path="/landing/pricing-comparison"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <PricingComparisonPage />
                 </Suspense>
               </Layout>
@@ -453,7 +464,7 @@ const AppContent: React.FC = () => {
             path="/landing/automate-management"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <AutomateManagementPage />
                 </Suspense>
               </Layout>
@@ -463,8 +474,40 @@ const AppContent: React.FC = () => {
             path="/landing/property-management"
             element={
               <Layout>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <PropertyManagementPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+
+          {/* Legal Pages with Layout */}
+          <Route
+            path="/privacy"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PrivacyPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/terms"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <TermsPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/cookies"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <CookiePolicyPage />
                 </Suspense>
               </Layout>
             }
@@ -475,7 +518,7 @@ const AppContent: React.FC = () => {
             path="/onboarding"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <OnboardingPage />
                 </Suspense>
               </ProtectedRoute>
@@ -487,7 +530,7 @@ const AppContent: React.FC = () => {
             path="/dashboard"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <DashboardPage />
                 </Suspense>
               </ProtectedRoute>
@@ -497,7 +540,7 @@ const AppContent: React.FC = () => {
             path="/inspections"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <InspectionsPage />
                 </Suspense>
               </ProtectedRoute>
@@ -507,7 +550,7 @@ const AppContent: React.FC = () => {
             path="/applications"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <ApplicationsPage />
                 </Suspense>
               </ProtectedRoute>
@@ -517,7 +560,7 @@ const AppContent: React.FC = () => {
             path="/applications/:id"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <ApplicationsPage />
                 </Suspense>
               </ProtectedRoute>
@@ -527,7 +570,7 @@ const AppContent: React.FC = () => {
             path="/admin"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <AdminPage />
                 </Suspense>
               </ProtectedRoute>
@@ -537,7 +580,7 @@ const AppContent: React.FC = () => {
             path="/admin/users"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <AdminUsersPage />
                 </Suspense>
               </ProtectedRoute>
@@ -547,7 +590,7 @@ const AppContent: React.FC = () => {
             path="/admin/properties"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <AdminPropertiesPage />
                 </Suspense>
               </ProtectedRoute>
@@ -557,7 +600,7 @@ const AppContent: React.FC = () => {
             path="/admin/settings"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <AdminSettingsPage />
                 </Suspense>
               </ProtectedRoute>
@@ -581,7 +624,7 @@ const AppContent: React.FC = () => {
             path="/tenant-portal"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <TenantPortalPage />
                 </Suspense>
               </ProtectedRoute>
@@ -591,7 +634,7 @@ const AppContent: React.FC = () => {
             path="/landlord-portal"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <LandlordPortalPage />
                 </Suspense>
               </ProtectedRoute>
@@ -601,7 +644,7 @@ const AppContent: React.FC = () => {
             path="/developer-portal"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <DeveloperPortalPage />
                 </Suspense>
               </ProtectedRoute>
@@ -611,7 +654,7 @@ const AppContent: React.FC = () => {
             path="/maintenance"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <MaintenanceRequestPage />
                 </Suspense>
               </ProtectedRoute>
@@ -621,7 +664,7 @@ const AppContent: React.FC = () => {
             path="/leases"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <LeaseManagementPage />
                 </Suspense>
               </ProtectedRoute>
@@ -631,7 +674,7 @@ const AppContent: React.FC = () => {
             path="/payments"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <PaymentCollectionPage />
                 </Suspense>
               </ProtectedRoute>
@@ -641,7 +684,7 @@ const AppContent: React.FC = () => {
             path="/communication"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <CommunicationPage />
                 </Suspense>
               </ProtectedRoute>
@@ -651,7 +694,7 @@ const AppContent: React.FC = () => {
             path="/reporting"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <ReportingDashboardPage />
                 </Suspense>
               </ProtectedRoute>
@@ -662,7 +705,7 @@ const AppContent: React.FC = () => {
             path="/accounting"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <AccountingDashboardPage />
                 </Suspense>
               </ProtectedRoute>
@@ -672,7 +715,7 @@ const AppContent: React.FC = () => {
             path="/scheduling"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <SchedulingPage />
                 </Suspense>
               </ProtectedRoute>
@@ -682,7 +725,7 @@ const AppContent: React.FC = () => {
             path="/workflows"
             element={
               <ProtectedRoute>
-                <Suspense fallback={<div>Loading...</div>}>
+                <Suspense fallback={<LoadingSpinner />}>
                   <WorkflowsPage />
                 </Suspense>
               </ProtectedRoute>
