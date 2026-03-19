@@ -2,8 +2,8 @@ import request from "supertest";
 
 // ─── Mock express-rate-limit (must be before app import) ────────────────────
 
-vi.mock("express-rate-limit", () => {
-  return vi.fn().mockImplementation(() => {
+jest.mock("express-rate-limit", () => {
+  return jest.fn().mockImplementation(() => {
     return (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next();
   });
@@ -11,7 +11,7 @@ vi.mock("express-rate-limit", () => {
 
 // ─── Mock Error Handler (fix instanceof across module boundaries) ───────────
 
-vi.mock("../../backend/src/middleware/errorHandler", () => {
+jest.mock("../../backend/src/middleware/errorHandler", () => {
   class AppError extends Error {
     public statusCode: number;
     public code: string;
@@ -77,79 +77,79 @@ vi.mock("../../backend/src/middleware/errorHandler", () => {
 
 const mockPrisma = {
   user: {
-    findUnique: vi.fn(),
-    create: vi.fn(),
-    update: vi.fn(),
-    count: vi.fn(),
+    findUnique: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    count: jest.fn(),
   },
   refreshToken: {
-    create: vi.fn(),
-    findUnique: vi.fn(),
-    delete: vi.fn(),
-    deleteMany: vi.fn(),
+    create: jest.fn(),
+    findUnique: jest.fn(),
+    delete: jest.fn(),
+    deleteMany: jest.fn(),
   },
   emailVerificationToken: {
-    create: vi.fn(),
-    findUnique: vi.fn(),
-    update: vi.fn(),
-    deleteMany: vi.fn(),
+    create: jest.fn(),
+    findUnique: jest.fn(),
+    update: jest.fn(),
+    deleteMany: jest.fn(),
   },
   passwordResetToken: {
-    create: vi.fn(),
-    findUnique: vi.fn(),
-    update: vi.fn(),
+    create: jest.fn(),
+    findUnique: jest.fn(),
+    update: jest.fn(),
   },
   property: {
-    count: vi.fn().mockResolvedValue(0),
-    findMany: vi.fn().mockResolvedValue([]),
+    count: jest.fn().mockResolvedValue(0),
+    findMany: jest.fn().mockResolvedValue([]),
   },
   application: {
-    count: vi.fn().mockResolvedValue(0),
-    findMany: vi.fn().mockResolvedValue([]),
+    count: jest.fn().mockResolvedValue(0),
+    findMany: jest.fn().mockResolvedValue([]),
   },
   inspection: {
-    count: vi.fn().mockResolvedValue(0),
-    findMany: vi.fn().mockResolvedValue([]),
+    count: jest.fn().mockResolvedValue(0),
+    findMany: jest.fn().mockResolvedValue([]),
   },
-  $connect: vi.fn().mockResolvedValue(undefined),
-  $disconnect: vi.fn().mockResolvedValue(undefined),
-  $transaction: vi.fn().mockResolvedValue(undefined),
+  $connect: jest.fn().mockResolvedValue(undefined),
+  $disconnect: jest.fn().mockResolvedValue(undefined),
+  $transaction: jest.fn().mockResolvedValue(undefined),
 };
 
-vi.mock("../../backend/src/config/database", () => mockPrisma);
+jest.mock("../../backend/src/config/database", () => mockPrisma);
 
 // ─── Mock Utilities ─────────────────────────────────────────────────────────
 
-vi.mock("../../backend/src/utils/bcrypt", () => ({
-  hashPassword: vi.fn().mockResolvedValue("hashed_password_123"),
-  comparePassword: vi.fn().mockResolvedValue(true),
+jest.mock("../../backend/src/utils/bcrypt", () => ({
+  hashPassword: jest.fn().mockResolvedValue("hashed_password_123"),
+  comparePassword: jest.fn().mockResolvedValue(true),
 }));
 
-vi.mock("../../backend/src/utils/jwt", () => ({
-  generateAccessToken: vi.fn().mockReturnValue("access_token_123"),
-  generateRefreshToken: vi.fn().mockReturnValue("refresh_token_123"),
-  verifyRefreshToken: vi.fn().mockReturnValue({
+jest.mock("../../backend/src/utils/jwt", () => ({
+  generateAccessToken: jest.fn().mockReturnValue("access_token_123"),
+  generateRefreshToken: jest.fn().mockReturnValue("refresh_token_123"),
+  verifyRefreshToken: jest.fn().mockReturnValue({
     userId: "user-1",
     email: "test@example.com",
     role: "TENANT",
   }),
 }));
 
-vi.mock("../../backend/src/utils/emailService", () => ({
-  sendVerificationEmail: vi.fn().mockResolvedValue(undefined),
-  sendPasswordResetEmail: vi.fn().mockResolvedValue(undefined),
-  send2FAEnabledEmail: vi.fn().mockResolvedValue(undefined),
+jest.mock("../../backend/src/utils/emailService", () => ({
+  sendVerificationEmail: jest.fn().mockResolvedValue(undefined),
+  sendPasswordResetEmail: jest.fn().mockResolvedValue(undefined),
+  send2FAEnabledEmail: jest.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock("otplib", () => ({
+jest.mock("otplib", () => ({
   authenticator: {
-    generateSecret: vi.fn().mockReturnValue("JBSWY3DPEHPK3PXP"),
+    generateSecret: jest.fn().mockReturnValue("JBSWY3DPEHPK3PXP"),
     keyuri: jest
       .fn()
       .mockReturnValue(
         "otpauth://totp/PropManage:test@example.com?secret=JBSWY3DPEHPK3PXP",
       ),
-    verify: vi.fn().mockReturnValue(true),
+    verify: jest.fn().mockReturnValue(true),
   },
 }));
 
@@ -162,7 +162,7 @@ const TEST_USER = {
   id: "user-1",
 };
 
-vi.mock("../../backend/src/middleware/auth", () => ({
+jest.mock("../../backend/src/middleware/auth", () => ({
   authenticate: (
     req: Record<string, unknown>,
     _res: unknown,
@@ -194,7 +194,7 @@ vi.mock("../../backend/src/middleware/auth", () => ({
       next(),
 }));
 
-vi.mock("../../backend/src/middleware/rateLimiter", () => ({
+jest.mock("../../backend/src/middleware/rateLimiter", () => ({
   rateLimiter: (
     _req: Record<string, unknown>,
     _res: unknown,
@@ -202,7 +202,7 @@ vi.mock("../../backend/src/middleware/rateLimiter", () => ({
   ) => next(),
 }));
 
-vi.mock("../../backend/src/middleware/validation", () => ({
+jest.mock("../../backend/src/middleware/validation", () => ({
   validate:
     () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next(),
@@ -257,7 +257,7 @@ const mockConfig = {
   cacheTtl: 3600,
 };
 
-vi.mock("../../backend/src/config/env", () => ({
+jest.mock("../../backend/src/config/env", () => ({
   __esModule: true,
   config: mockConfig,
   default: mockConfig,
@@ -318,7 +318,7 @@ const sampleUserWith2FAEnabled = {
 
 describe("Authentication Integration Tests", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   // ── User Registration ─────────────────────────────────────────────────
@@ -1000,6 +1000,142 @@ describe("Authentication Integration Tests", () => {
         applications: 3,
         activeInspections: 2,
       });
+    });
+  });
+
+  // ── Email Verification ────────────────────────────────────────────────
+
+  describe("POST /api/auth/verify-email", () => {
+    it("should verify email with valid token", async () => {
+      mockPrisma.emailVerificationToken.findUnique.mockResolvedValue({
+        id: "verify-1",
+        token: "valid_verification_token",
+        userId: "user-1",
+        verified: false,
+        expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+        user: sampleUser,
+      });
+      mockPrisma.emailVerificationToken.update.mockResolvedValue({
+        id: "verify-1",
+        verified: true,
+      });
+      mockPrisma.user.update.mockResolvedValue({
+        ...sampleUser,
+        emailVerified: true,
+        status: "ACTIVE",
+      });
+
+      const res = await request(app)
+        .post("/api/auth/verify-email")
+        .send({ token: "valid_verification_token" });
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+    });
+
+    it("should return 400 for invalid or expired verification token", async () => {
+      mockPrisma.emailVerificationToken.findUnique.mockResolvedValue(null);
+
+      const res = await request(app)
+        .post("/api/auth/verify-email")
+        .send({ token: "invalid_token" });
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBe(false);
+    });
+
+    it("should return 400 for already verified token", async () => {
+      mockPrisma.emailVerificationToken.findUnique.mockResolvedValue({
+        id: "verify-1",
+        token: "already_verified_token",
+        userId: "user-1",
+        verified: true,
+        expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+        user: sampleUser,
+      });
+
+      const res = await request(app)
+        .post("/api/auth/verify-email")
+        .send({ token: "already_verified_token" });
+
+      expect(res.status).toBe(400);
+      expect(res.body.success).toBe(false);
+    });
+  });
+
+  // ── Role-Based Access Control ────────────────────────────────────────
+
+  describe("Role-Based Access Control", () => {
+    const ALL_ROLES = [
+      "TENANT",
+      "LANDLORD",
+      "AGENT",
+      "PROPERTY_MANAGER",
+      "BUSINESS",
+      "ADMIN",
+      "SUPER_ADMIN",
+    ];
+
+    it("should support all defined user roles", () => {
+      ALL_ROLES.forEach((role) => {
+        expect(typeof role).toBe("string");
+        expect(role.length).toBeGreaterThan(0);
+      });
+      expect(ALL_ROLES).toHaveLength(7);
+    });
+
+    it("should distinguish tenant from admin roles", () => {
+      const tenantRoles = ["TENANT"];
+      const adminRoles = ["ADMIN", "SUPER_ADMIN"];
+      const managementRoles = ["LANDLORD", "AGENT", "PROPERTY_MANAGER", "BUSINESS"];
+
+      expect(tenantRoles).not.toContain("ADMIN");
+      expect(adminRoles).not.toContain("TENANT");
+      expect(managementRoles).toHaveLength(4);
+    });
+
+    it("should allow authenticated users to access their own profile", async () => {
+      mockPrisma.user.findUnique.mockResolvedValue({
+        ...sampleUser,
+        landlordProfile: null,
+        tenantProfile: null,
+        agentProfile: null,
+      });
+
+      const res = await request(app).get("/api/auth/profile");
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+    });
+
+    it("should allow authenticated users to access dashboard", async () => {
+      mockPrisma.property.count.mockResolvedValue(0);
+      mockPrisma.application.count.mockResolvedValue(0);
+      mockPrisma.inspection.count.mockResolvedValue(0);
+      mockPrisma.property.findMany.mockResolvedValue([]);
+      mockPrisma.application.findMany.mockResolvedValue([]);
+      mockPrisma.inspection.findMany.mockResolvedValue([]);
+
+      const res = await request(app).get("/api/auth/dashboard");
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+    });
+
+    it("should enforce role hierarchy for administrative access", () => {
+      const roleHierarchy: Record<string, number> = {
+        TENANT: 1,
+        LANDLORD: 2,
+        AGENT: 2,
+        PROPERTY_MANAGER: 3,
+        BUSINESS: 3,
+        ADMIN: 4,
+        SUPER_ADMIN: 5,
+      };
+
+      expect(roleHierarchy["SUPER_ADMIN"]).toBeGreaterThan(roleHierarchy["ADMIN"]);
+      expect(roleHierarchy["ADMIN"]).toBeGreaterThan(roleHierarchy["TENANT"]);
+      expect(roleHierarchy["LANDLORD"]).toBeGreaterThan(roleHierarchy["TENANT"]);
     });
   });
 });

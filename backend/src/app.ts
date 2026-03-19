@@ -3,6 +3,7 @@ import path from "path";
 
 import * as Sentry from "@sentry/node";
 import compression from "compression";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Application } from "express";
 import helmet from "helmet";
@@ -16,6 +17,9 @@ import { securityMiddleware } from "./middleware/security";
 import routes from "./routes";
 
 const app: Application = express();
+
+// Trust first proxy (Nginx) for correct client IP in rate limiting & secure cookies
+app.set("trust proxy", 1);
 
 // Initialize Sentry for error tracking (must be early, before routes)
 if (config.sentryDsn && config.sentryDsn !== "REPLACE_WITH_SENTRY_DSN") {
@@ -45,6 +49,9 @@ app.use((_req, res, next) => {
   );
   next();
 });
+
+// Cookie parser (required for CSRF double-submit cookie pattern)
+app.use(cookieParser());
 
 // Toggleable security middleware (CSRF, CSP, HSTS, XSS via env vars)
 app.use(securityMiddleware());
@@ -96,6 +103,11 @@ if (config.swaggerEnabled) {
     `📚 API Docs available at http://localhost:${config.port}/api-docs`,
   );
 }
+
+// Sentry debug/test route
+app.get("/debug-sentry", () => {
+  throw new Error("My first Sentry error!");
+});
 
 // Health Check
 app.get("/health", (_req, res) => {

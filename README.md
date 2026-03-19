@@ -115,22 +115,36 @@ Set these in your repository's Settings > Secrets and variables > Actions:
 
 ## Database Backup Automation
 
-Automated daily PostgreSQL backups run inside Docker via a cron-based container.
+Automated daily PostgreSQL backups run inside Docker via a cron-based `db_backup` container using Alpine Linux with `bash` and `postgresql-client`.
 
 ### Configuration
 
-Set these variables in your `.env` file:
+1. Copy the example environment file and set your values:
+
+```bash
+cp .env.example .env
+```
+
+2. Set these variables in your `.env` file:
 
 | Variable | Description | Example |
 |---|---|---|
-| `DB_BACKUP_NAME` | Database name to back up | `realestate` |
-| `DB_BACKUP_USER` | PostgreSQL username | `postgres` |
-| `DB_BACKUP_PASSWORD` | PostgreSQL password | *(your password)* |
-| `DB_BACKUP_PATH` | Host path for backup storage | `/opt/realestateai/backups` |
+| `DB_BACKUP_DB_NAME` | Database name to back up | `realestate` |
+| `DB_BACKUP_DB_USER` | PostgreSQL username | `postgres` |
+| `DB_BACKUP_DB_PASSWORD` | PostgreSQL password | *(your password)* |
+| `DB_BACKUP_PATH` | Host path for backup storage | `./db_backups` |
+
+3. Start all services including the backup container:
+
+```bash
+docker-compose up --build
+```
+
+The `db_backup` service depends on the `db` service and will wait for the database to be healthy before starting.
 
 ### Backup Schedule
 
-Backups run daily at **3:00 AM UTC** by default. To change the schedule, edit the cron expression in `docker-compose.yml` under the `db-backup` service:
+Backups run daily at **3:00 AM UTC** by default. To change the schedule, edit the cron expression in `docker-compose.yml` under the `db_backup` service:
 
 ```yaml
 # Format: minute hour day month weekday
@@ -138,17 +152,19 @@ Backups run daily at **3:00 AM UTC** by default. To change the schedule, edit th
 "0 */6 * * * DB_HOST=db /scripts/backup_db.sh ..."
 ```
 
+Backup files are stored in the `db_backups/` directory with the format `real-estate-ai-backup-YYYY-MM-DD-HH-MM-SS.sql.gz`.
+
 ### Manual Backup
 
 ```bash
-docker-compose exec db-backup /scripts/backup_db.sh realestate postgres postgres /backups
+docker-compose exec db_backup /scripts/backup_db.sh realestate postgres postgres /backups
 ```
 
 ### Restoring a Backup
 
 ```bash
 # Decompress and restore
-gunzip -c /opt/realestateai/backups/real_estate_ai_backup_2026-03-19_03-00-00.sql.gz \
+gunzip -c db_backups/real-estate-ai-backup-2026-03-20-03-00-00.sql.gz \
   | docker-compose exec -T db psql -U postgres -d realestate
 ```
 
@@ -157,8 +173,12 @@ gunzip -c /opt/realestateai/backups/real_estate_ai_backup_2026-03-19_03-00-00.sq
 Logs are written to `scripts/backup.log` inside the backup container. To view:
 
 ```bash
-docker-compose exec db-backup cat /scripts/backup.log
+docker-compose exec db_backup cat /scripts/backup.log
 ```
+
+### Error Handling
+
+The backup script exits with a non-zero exit code if `pg_dump` fails, the database is unreachable, or the backup file is empty. The `db_backup` service will reflect this exit code.
 
 ## SSL/HTTPS Configuration
 
@@ -170,6 +190,36 @@ The production deployment uses Nginx as a reverse proxy with SSL termination via
 Client → Nginx (port 443, SSL) → Express app (port 4041, internal)
          ↓ (port 80 redirects to 443)
 ```
+
+### Installing Certbot
+
+#### Linux (Ubuntu/Debian)
+
+```bash
+sudo apt update
+sudo apt install -y certbot
+# If using Nginx directly (non-Docker):
+sudo apt install -y python3-certbot-nginx
+```
+
+#### Linux (RHEL/CentOS/Fedora)
+
+```bash
+sudo dnf install -y certbot
+# If using Nginx directly (non-Docker):
+sudo dnf install -y python3-certbot-nginx
+```
+
+#### Windows
+
+1. Install via [Certbot for Windows](https://dl.eff.org/certbot-beta-installer-win_amd64.exe) (official EFF installer).
+2. Or use `winget`:
+
+```powershell
+winget install --id EFF.Certbot
+```
+
+3. After installation, `certbot` is available in your terminal. For Docker-based deployments (recommended), Certbot runs inside the container — no host installation needed.
 
 ### SSL Certificate Files
 
@@ -188,7 +238,9 @@ NGINX_HOST=yourdomain.com
 SECURITY_HSTS_ENABLED=true
 ```
 
-2. Obtain the initial certificate (run from the project root):
+2. Obtain the initial certificate:
+
+**Docker (recommended for both Linux and Windows):**
 
 ```bash
 # Start nginx temporarily to serve the ACME challenge
@@ -202,6 +254,13 @@ docker-compose run --rm certbot certonly \
 
 # Restart nginx to pick up the new certificate
 docker-compose restart nginx
+```
+
+**Standalone (Linux only, without Docker):**
+
+```bash
+sudo certbot certonly --standalone -d yourdomain.com -d www.yourdomain.com \
+  --email your-email@example.com --agree-tos --no-eff-email
 ```
 
 3. Start all services:
@@ -221,6 +280,14 @@ docker-compose run --rm certbot renew
 docker-compose exec nginx nginx -s reload
 ```
 
+**Linux standalone auto-renewal** (if not using Docker):
+
+```bash
+# Certbot installs a systemd timer or cron job automatically.
+# Verify with:
+sudo systemctl list-timers | grep certbot
+```
+
 ### Nginx Configuration
 
 The SSL configuration in `nginx/nginx.conf` includes:
@@ -235,6 +302,27 @@ The SSL configuration in `nginx/nginx.conf` includes:
   - `X-Content-Type-Options: nosniff`
   - `Referrer-Policy: strict-origin-when-cross-origin`
   - `Permissions-Policy: geolocation=(), microphone=(), camera=()`
+
+### Express Backend Configuration
+
+The Express backend is configured to work behind the Nginx proxy:
+
+- **`trust proxy`** is set to `1` so Express correctly resolves client IPs from the `X-Forwarded-For` header (required for rate limiting and secure cookies).
+- **Helmet** provides base security headers. CSP, HSTS, and XSS protection are toggled via environment variables (see below).
+- **Cookie parser** is enabled for the CSRF double-submit cookie pattern.
+
+### Security Environment Variables
+
+All security toggles in the backend `.env`:
+
+| Variable | Default | Effect |
+|---|---|---|
+| `SECURITY_CSRF_ENABLED` | `true` | Enables CSRF double-submit cookie validation on POST/PUT/PATCH/DELETE |
+| `SECURITY_CSP_ENABLED` | `true` | Enables Content-Security-Policy header |
+| `SECURITY_HSTS_ENABLED` | `true` | Enables HSTS header in both Nginx and Express (max-age=1 year, includeSubDomains, preload) |
+| `SECURITY_XSS_ENABLED` | `true` | Enables X-XSS-Protection header |
+| `RATE_LIMIT_WINDOW_MS` | `900000` | Global rate limit window (15 minutes) |
+| `RATE_LIMIT_MAX_REQUESTS` | `100` | Max requests per window globally |
 
 ### HSTS Toggle
 
@@ -252,6 +340,19 @@ SECURITY_HSTS_ENABLED=false
 docker-compose restart nginx
 ```
 
+### Rate Limiting
+
+Authentication endpoints have stricter rate limits to prevent brute-force attacks:
+
+| Endpoint | Window | Max Requests |
+|---|---|---|
+| `POST /api/auth/login` | 15 minutes | 10 |
+| `POST /api/auth/register` | 15 minutes | 10 |
+| `POST /api/auth/forgot-password` | 15 minutes | 10 |
+| `POST /api/auth/reset-password` | 15 minutes | 10 |
+| Other auth endpoints | 15 minutes | 50 |
+| Global (all routes) | 15 minutes | 100 |
+
 ### Troubleshooting
 
 - **Certificate not found:** Ensure you ran `certbot certonly` first and that `NGINX_HOST` matches the domain used during certificate issuance.
@@ -259,6 +360,9 @@ docker-compose restart nginx
 - **SSL Labs score below A:** Verify that `ssl_protocols` only lists TLSv1.2 and TLSv1.3 and that `ssl_ciphers` uses the configured strong suite.
 - **Mixed content warnings:** Ensure all API calls and asset URLs use HTTPS. Check `CORS_ORIGIN` uses `https://`.
 - **HSTS not working:** Verify `SECURITY_HSTS_ENABLED=true` in `.env` and restart the nginx container.
+- **CSRF errors on POST requests:** Ensure the frontend reads the `_csrf_token` cookie and sends it in the `x-csrf-token` request header.
+- **Rate limit hit on login:** Wait 15 minutes or adjust `strictAuthRateLimiter` values in `auth.routes.ts`.
+- **Certbot on Windows:** Use Docker-based Certbot (recommended). Native Windows Certbot has limited plugin support.
 
 ### Testing SSL
 

@@ -380,6 +380,7 @@ model Property {
   views           Int            @default(0)
   featured        Boolean        @default(false)
   verified        Boolean        @default(false)
+  searchVector    Unsupported("tsvector")? @map("search_vector")
   publishedAt     DateTime?
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt

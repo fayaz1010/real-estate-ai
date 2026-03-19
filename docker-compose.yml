@@ -72,30 +72,30 @@ services:
       retries: 5
     restart: unless-stopped
 
-  db-backup:
-    image: postgres:15-alpine
+  db_backup:
+    image: alpine:3.19
     depends_on:
       db:
         condition: service_healthy
     environment:
-      - DB_NAME=${DB_BACKUP_NAME:-realestate}
-      - DB_USER=${DB_BACKUP_USER:-postgres}
-      - DB_PASSWORD=${DB_BACKUP_PASSWORD:-postgres}
-      - BACKUP_PATH=/backups
+      - DB_NAME=${DB_BACKUP_DB_NAME:-realestate}
+      - DB_USER=${DB_BACKUP_DB_USER:-postgres}
+      - DB_PASSWORD=${DB_BACKUP_DB_PASSWORD:-postgres}
+      - BACKUP_PATH=${DB_BACKUP_PATH:-/backups}
       - DB_HOST=db
     volumes:
       - ./scripts/backup_db.sh:/scripts/backup_db.sh:ro
-      - db_backups:/backups
+      - ./db_backups:/backups
     entrypoint: ["/bin/sh", "-c"]
     command:
       - |
+        apk add --no-cache bash postgresql-client
         chmod +x /scripts/backup_db.sh
-        echo "0 3 * * * DB_HOST=db /scripts/backup_db.sh $$DB_NAME $$DB_USER $$DB_PASSWORD /backups >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+        echo "0 3 * * * DB_HOST=db /scripts/backup_db.sh $$DB_NAME $$DB_USER $$DB_PASSWORD $$BACKUP_PATH >> /var/log/cron.log 2>&1" > /etc/crontabs/root
         crond -f -l 2
     restart: unless-stopped
 
 volumes:
   postgres_data:
-  db_backups:
   certbot_conf:
   certbot_www:

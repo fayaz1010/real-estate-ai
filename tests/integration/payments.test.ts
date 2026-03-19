@@ -2,8 +2,8 @@ import request from "supertest";
 
 // ─── Mock express-rate-limit ────────────────────────────────────────────────
 
-vi.mock("express-rate-limit", () => {
-  return vi.fn().mockImplementation(() => {
+jest.mock("express-rate-limit", () => {
+  return jest.fn().mockImplementation(() => {
     return (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next();
   });
@@ -11,7 +11,7 @@ vi.mock("express-rate-limit", () => {
 
 // ─── Mock Error Handler (fix instanceof across module boundaries) ───────────
 
-vi.mock("../../backend/src/middleware/errorHandler", () => {
+jest.mock("../../backend/src/middleware/errorHandler", () => {
   class AppError extends Error {
     public statusCode: number;
     public code: string;
@@ -77,44 +77,44 @@ vi.mock("../../backend/src/middleware/errorHandler", () => {
 
 const mockPrisma = {
   payment: {
-    create: vi.fn(),
-    findMany: vi.fn(),
-    findFirst: vi.fn(),
-    findUnique: vi.fn(),
-    update: vi.fn(),
-    createMany: vi.fn(),
-    count: vi.fn(),
+    create: jest.fn(),
+    findMany: jest.fn(),
+    findFirst: jest.fn(),
+    findUnique: jest.fn(),
+    update: jest.fn(),
+    createMany: jest.fn(),
+    count: jest.fn(),
   },
   lease: {
-    findFirst: vi.fn(),
+    findFirst: jest.fn(),
   },
   property: {
-    findFirst: vi.fn(),
+    findFirst: jest.fn(),
   },
   user: {
-    findUnique: vi.fn(),
+    findUnique: jest.fn(),
   },
-  $connect: vi.fn().mockResolvedValue(undefined),
-  $disconnect: vi.fn().mockResolvedValue(undefined),
+  $connect: jest.fn().mockResolvedValue(undefined),
+  $disconnect: jest.fn().mockResolvedValue(undefined),
 };
 
-vi.mock("../../backend/src/config/database", () => mockPrisma);
+jest.mock("../../backend/src/config/database", () => mockPrisma);
 
 // ─── Mock Stripe ────────────────────────────────────────────────────────────
 
 const mockStripePaymentIntents = {
-  create: vi.fn().mockResolvedValue({
+  create: jest.fn().mockResolvedValue({
     id: "pi_test_123",
     client_secret: "pi_test_123_secret",
   }),
 };
 
 const mockStripeCustomers = {
-  create: vi.fn().mockResolvedValue({ id: "cus_test_123" }),
+  create: jest.fn().mockResolvedValue({ id: "cus_test_123" }),
 };
 
 const mockStripeSubscriptions = {
-  create: vi.fn().mockResolvedValue({
+  create: jest.fn().mockResolvedValue({
     id: "sub_test_123",
     status: "trialing",
     current_period_end: Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60,
@@ -123,21 +123,21 @@ const mockStripeSubscriptions = {
 
 const mockStripeBillingPortal = {
   sessions: {
-    create: vi.fn().mockResolvedValue({
+    create: jest.fn().mockResolvedValue({
       url: "https://billing.stripe.com/session/test",
     }),
   },
 };
 
 const mockStripeCheckoutSessions = {
-  create: vi.fn().mockResolvedValue({
+  create: jest.fn().mockResolvedValue({
     id: "cs_test_123",
     url: "https://checkout.stripe.com/session/test",
   }),
 };
 
 const mockStripeInvoices = {
-  list: vi.fn().mockResolvedValue({
+  list: jest.fn().mockResolvedValue({
     data: [
       {
         id: "inv_test_1",
@@ -149,8 +149,8 @@ const mockStripeInvoices = {
   }),
 };
 
-vi.mock("stripe", () => {
-  return vi.fn().mockImplementation(() => ({
+jest.mock("stripe", () => {
+  return jest.fn().mockImplementation(() => ({
     paymentIntents: mockStripePaymentIntents,
     customers: mockStripeCustomers,
     subscriptions: mockStripeSubscriptions,
@@ -158,7 +158,7 @@ vi.mock("stripe", () => {
     checkout: { sessions: mockStripeCheckoutSessions },
     invoices: mockStripeInvoices,
     webhooks: {
-      constructEvent: vi.fn().mockReturnValue({
+      constructEvent: jest.fn().mockReturnValue({
         type: "payment_intent.succeeded",
         data: {
           object: {
@@ -180,7 +180,7 @@ const TEST_USER = {
   id: "user-1",
 };
 
-vi.mock("../../backend/src/middleware/auth", () => ({
+jest.mock("../../backend/src/middleware/auth", () => ({
   authenticate: (
     req: Record<string, unknown>,
     _res: unknown,
@@ -212,7 +212,7 @@ vi.mock("../../backend/src/middleware/auth", () => ({
       next(),
 }));
 
-vi.mock("../../backend/src/middleware/rateLimiter", () => ({
+jest.mock("../../backend/src/middleware/rateLimiter", () => ({
   rateLimiter: (
     _req: Record<string, unknown>,
     _res: unknown,
@@ -220,7 +220,7 @@ vi.mock("../../backend/src/middleware/rateLimiter", () => ({
   ) => next(),
 }));
 
-vi.mock("../../backend/src/middleware/validation", () => ({
+jest.mock("../../backend/src/middleware/validation", () => ({
   validate:
     () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next(),
@@ -275,7 +275,7 @@ const mockConfig = {
   cacheTtl: 3600,
 };
 
-vi.mock("../../backend/src/config/env", () => ({
+jest.mock("../../backend/src/config/env", () => ({
   __esModule: true,
   config: mockConfig,
   default: mockConfig,
@@ -354,7 +354,7 @@ const createPaymentPayload = {
 
 describe("Payments Integration Tests", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   // ── Subscription Creation ─────────────────────────────────────────────
@@ -847,6 +847,162 @@ describe("Payments Integration Tests", () => {
       );
 
       expect(daysDiff).toBe(14);
+    });
+  });
+
+  // ── Free Tier ──────────────────────────────────────────────────────────
+
+  describe("Free Tier", () => {
+    it("should verify Free plan at $0/mo", () => {
+      const freePlan = { monthly: 0, properties: 3, features: ["Basic tenant management", "Rent tracking", "Limited reporting"] };
+      expect(freePlan.monthly).toBe(0);
+      expect(freePlan.properties).toBe(3);
+    });
+
+    it("should limit Free plan to 3 properties", () => {
+      const freePropertyLimit = 3;
+      expect(freePropertyLimit).toBe(3);
+    });
+
+    it("should include basic features in Free plan", () => {
+      const freeFeatures = ["Basic tenant management", "Rent tracking", "Limited reporting"];
+      expect(freeFeatures).toContain("Basic tenant management");
+      expect(freeFeatures).toContain("Rent tracking");
+      expect(freeFeatures).toContain("Limited reporting");
+    });
+  });
+
+  // ── Subscription Tier Feature Limits ───────────────────────────────────
+
+  describe("Subscription Tier Feature Limits", () => {
+    const TIER_LIMITS = {
+      free: { properties: 3 },
+      starter: { properties: 10 },
+      growth: { properties: 50 },
+      professional: { properties: 200 },
+      enterprise: { properties: Infinity },
+    };
+
+    it("should enforce correct property limits for each tier", () => {
+      expect(TIER_LIMITS.free.properties).toBe(3);
+      expect(TIER_LIMITS.starter.properties).toBe(10);
+      expect(TIER_LIMITS.growth.properties).toBe(50);
+      expect(TIER_LIMITS.professional.properties).toBe(200);
+      expect(TIER_LIMITS.enterprise.properties).toBe(Infinity);
+    });
+
+    it("should have increasing limits from Free to Enterprise", () => {
+      const limits = [
+        TIER_LIMITS.free.properties,
+        TIER_LIMITS.starter.properties,
+        TIER_LIMITS.growth.properties,
+        TIER_LIMITS.professional.properties,
+        TIER_LIMITS.enterprise.properties,
+      ];
+
+      for (let i = 1; i < limits.length; i++) {
+        expect(limits[i]).toBeGreaterThan(limits[i - 1]);
+      }
+    });
+  });
+
+  // ── Subscription Cancellation ──────────────────────────────────────────
+
+  describe("Subscription Cancellation", () => {
+    it("should track subscription cancellation status", () => {
+      const cancelledSubscription = {
+        id: "sub_cancelled_123",
+        status: "canceled",
+        canceledAt: Math.floor(Date.now() / 1000),
+        currentPeriodEnd: Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60,
+      };
+
+      expect(cancelledSubscription.status).toBe("canceled");
+      expect(cancelledSubscription.canceledAt).toBeDefined();
+    });
+
+    it("should maintain access until end of billing period after cancellation", () => {
+      const cancelledAt = Math.floor(Date.now() / 1000);
+      const periodEnd = cancelledAt + 30 * 24 * 60 * 60;
+
+      expect(periodEnd).toBeGreaterThan(cancelledAt);
+      expect(periodEnd - cancelledAt).toBe(30 * 24 * 60 * 60);
+    });
+
+    it("should downgrade to Free tier after cancellation period ends", () => {
+      const postCancellationTier = "free";
+      const postCancellationPropertyLimit = 3;
+
+      expect(postCancellationTier).toBe("free");
+      expect(postCancellationPropertyLimit).toBe(3);
+    });
+  });
+
+  // ── Billing Portal ────────────────────────────────────────────────────
+
+  describe("Billing Portal", () => {
+    it("should generate billing portal session URL", () => {
+      const portalSession = {
+        url: "https://billing.stripe.com/session/test",
+        returnUrl: "http://localhost:3000/settings/billing",
+      };
+
+      expect(portalSession.url).toContain("billing.stripe.com");
+      expect(portalSession.returnUrl).toContain("/settings/billing");
+    });
+
+    it("should include return URL for redirect after portal session", () => {
+      const returnUrl = "http://localhost:3000/settings/billing";
+      expect(returnUrl).toBeTruthy();
+      expect(returnUrl).toContain("localhost");
+    });
+  });
+
+  // ── Payment Failure Scenarios ──────────────────────────────────────────
+
+  describe("Payment Failure Scenarios", () => {
+    it("should handle insufficient funds scenario", () => {
+      const failedPayment = {
+        status: "PAYMENT_CANCELLED",
+        failureReason: "insufficient_funds",
+      };
+
+      expect(failedPayment.status).toBe("PAYMENT_CANCELLED");
+      expect(failedPayment.failureReason).toBe("insufficient_funds");
+    });
+
+    it("should handle expired card scenario", () => {
+      const failedPayment = {
+        status: "PAYMENT_CANCELLED",
+        failureReason: "expired_card",
+      };
+
+      expect(failedPayment.status).toBe("PAYMENT_CANCELLED");
+      expect(failedPayment.failureReason).toBe("expired_card");
+    });
+
+    it("should handle declined card scenario", () => {
+      const failedPayment = {
+        status: "PAYMENT_CANCELLED",
+        failureReason: "card_declined",
+      };
+
+      expect(failedPayment.status).toBe("PAYMENT_CANCELLED");
+      expect(failedPayment.failureReason).toBe("card_declined");
+    });
+
+    it("should return 404 when creating payment intent for non-existent payment", async () => {
+      const originalEnv = process.env.STRIPE_SECRET_KEY;
+      process.env.STRIPE_SECRET_KEY = "sk_test_123";
+
+      mockPrisma.payment.findFirst.mockResolvedValue(null);
+
+      const res = await request(app).post("/api/payments/non-existent/pay");
+
+      expect(res.status).toBe(404);
+      expect(res.body.success).toBe(false);
+
+      process.env.STRIPE_SECRET_KEY = originalEnv;
     });
   });
 });

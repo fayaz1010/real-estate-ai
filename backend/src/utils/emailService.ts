@@ -72,6 +72,12 @@ let transporter: nodemailer.Transporter | null = null;
 
 function getTransporter(): nodemailer.Transporter {
   if (!transporter) {
+    if (!config.smtp.pass) {
+      logger.warn(
+        "[EmailService] No SMTP password / SendGrid API key configured. Set SENDGRID_API_KEY or SMTP_PASS in .env",
+      );
+    }
+
     transporter = nodemailer.createTransport({
       host: config.smtp.host,
       port: config.smtp.port,
@@ -80,6 +86,10 @@ function getTransporter(): nodemailer.Transporter {
         user: config.smtp.user,
         pass: config.smtp.pass,
       },
+      pool: true,
+      maxConnections: 5,
+      maxMessages: 100,
+      rateLimit: 10, // max 10 messages/second to respect SendGrid limits
     });
     logger.info(
       `[EmailService] Transporter initialized (host: ${config.smtp.host}, port: ${config.smtp.port})`,
@@ -87,6 +97,31 @@ function getTransporter(): nodemailer.Transporter {
   }
   return transporter;
 }
+
+/**
+ * Verify SMTP connection. Call on server startup to catch config errors early.
+ * Returns true if connection is valid, false otherwise.
+ */
+export const verifyEmailConnection = async (): Promise<boolean> => {
+  if (config.nodeEnv === "development" && !config.smtp.pass) {
+    logger.info(
+      "[EmailService] Skipping SMTP verification in dev (no credentials configured)",
+    );
+    return false;
+  }
+
+  try {
+    const transport = getTransporter();
+    await transport.verify();
+    logger.info("[EmailService] SMTP connection verified successfully");
+    return true;
+  } catch (error: unknown) {
+    const message =
+      error instanceof Error ? error.message : "Unknown verification error";
+    logger.error(`[EmailService] SMTP connection verification failed: ${message}`);
+    return false;
+  }
+};
 
 // ─── Email Template Wrapper ─────────────────────────────────────────────────
 export function wrapEmailTemplate(title: string, bodyHtml: string): string {

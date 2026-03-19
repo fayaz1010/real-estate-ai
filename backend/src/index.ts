@@ -4,6 +4,7 @@ import http from "http";
 import app from "./app";
 import prisma from "./config/database";
 import { config } from "./config/env";
+import { verifyEmailConnection } from "./utils/emailService";
 import { initWebSocket } from "./websocket";
 import sseRouter from "./websocket/sseHandler";
 
@@ -20,6 +21,10 @@ const startServer = async () => {
     // Test database connection
     await prisma.$connect();
     console.log("✅ Database connected");
+
+    // Verify email (SendGrid SMTP) connection
+    const emailOk = await verifyEmailConnection();
+    console.log(emailOk ? "✅ Email service connected (SendGrid)" : "⚠️ Email service not verified (check SENDGRID_API_KEY)");
 
     // Initialize WebSocket server
     initWebSocket(server);

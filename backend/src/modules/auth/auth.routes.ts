@@ -1,10 +1,9 @@
 // Auth Routes
-import { Router, Request, Response } from "express";
+import { Router } from "express";
 import rateLimit from "express-rate-limit";
 
 import { authenticate } from "../../middleware/auth";
 import { validate } from "../../middleware/validation";
-import logger from "../../utils/logger";
 
 import authController from "./auth.controller";
 import {
@@ -18,50 +17,61 @@ import {
 
 const router = Router();
 
+// General auth rate limiter (e.g. email verification, profile)
 const authRateLimiter = rateLimit({
-  windowMs: 60 * 1000,
-  max: 10,
-  keyGenerator: (req: Request) => req.ip || "unknown",
-  handler: (req: Request, res: Response) => {
-    logger.info(
-      `Rate limit triggered for IP: ${req.ip}, Route: ${req.originalUrl}`,
-    );
-    res.status(429).json({
-      success: false,
-      message: "Too many requests, please try again later.",
-    });
+  windowMs: 15 * 60 * 1000,
+  max: 50,
+  message: {
+    success: false,
+    message:
+      "Too many requests from this IP, please try again after 15 minutes.",
   },
   standardHeaders: true,
+  legacyHeaders: false,
 });
 
-// Public routes
+// Strict rate limiter for brute-force sensitive endpoints (login, register, password reset)
+const strictAuthRateLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: {
+    success: false,
+    message:
+      "Too many attempts from this IP, please try again after 15 minutes.",
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Public routes — login, register, password reset use strict rate limiter
 router.post(
   "/register",
-  authRateLimiter,
+  strictAuthRateLimiter,
   validate(registerSchema),
   authController.register,
 );
 router.post(
   "/login",
-  authRateLimiter,
+  strictAuthRateLimiter,
   validate(loginSchema),
   authController.login,
 );
 router.post(
   "/refresh",
+  authRateLimiter,
   validate(refreshTokenSchema),
   authController.refreshToken,
 );
 router.post("/logout", authController.logout);
 router.post(
   "/forgot-password",
-  authRateLimiter,
+  strictAuthRateLimiter,
   validate(forgotPasswordSchema),
   authController.forgotPassword,
 );
 router.post(
   "/reset-password",
-  authRateLimiter,
+  strictAuthRateLimiter,
   validate(resetPasswordSchema),
   authController.resetPassword,
 );

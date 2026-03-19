@@ -7,10 +7,17 @@ import "./index.css";
 
 Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_DSN,
-  integrations: [Sentry.browserTracingIntegration()],
+  integrations: [
+    Sentry.browserTracingIntegration(),
+    Sentry.replayIntegration(),
+  ],
   environment: import.meta.env.MODE,
   release: `real-estate-ai@${import.meta.env.VITE_APP_VERSION || "1.0.0"}`,
+  // Performance Monitoring — capture 10% of transactions
   tracesSampleRate: 0.1,
+  // Session Replay — 10% of sessions, 100% on error
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
   enabled:
     !!import.meta.env.VITE_SENTRY_DSN &&
     import.meta.env.VITE_SENTRY_DSN !== "REPLACE_WITH_SENTRY_DSN",

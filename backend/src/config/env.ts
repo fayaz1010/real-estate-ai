@@ -18,13 +18,13 @@ export const config = {
   jwtExpiresIn: process.env.JWT_EXPIRES_IN || "15m",
   refreshTokenExpiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN || "7d",
 
-  // Email
+  // Email (SendGrid SMTP)
   smtp: {
-    host: process.env.SMTP_HOST || "smtp.example.com",
+    host: process.env.SMTP_HOST || "smtp.sendgrid.net",
     port: parseInt(process.env.SMTP_PORT || "587", 10),
     secure: process.env.SMTP_SECURE === "true",
-    user: process.env.SMTP_USER || "",
-    pass: process.env.SMTP_PASS || "",
+    user: process.env.SMTP_USER || "apikey",
+    pass: process.env.SENDGRID_API_KEY || process.env.SMTP_PASS || "",
     fromName: process.env.SMTP_FROM_NAME || "RealEstateAI",
     fromEmail: process.env.SMTP_FROM_EMAIL || "noreply@realestateai.com",
     replyToEmail:

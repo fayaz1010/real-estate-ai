@@ -4,6 +4,8 @@ import crypto from "crypto";
 import { Request, Response, NextFunction, Router } from "express";
 import helmet from "helmet";
 
+import logger from "../utils/logger";
+
 // Read toggle env vars (default: false)
 const isEnabled = (envVar: string): boolean => process.env[envVar] === "true";
 
@@ -52,8 +54,17 @@ function csrfProtection(req: Request, res: Response, next: NextFunction): void {
 export function securityMiddleware(): Router {
   const router = Router();
 
+  const toggles = {
+    csp: isEnabled("SECURITY_CSP_ENABLED"),
+    hsts: isEnabled("SECURITY_HSTS_ENABLED"),
+    xss: isEnabled("SECURITY_XSS_ENABLED"),
+    csrf: isEnabled("SECURITY_CSRF_ENABLED"),
+  };
+
+  logger.info("Security middleware configuration", { toggles });
+
   // CSP toggle
-  if (isEnabled("CSP_ENABLED")) {
+  if (toggles.csp) {
     router.use(
       helmet.contentSecurityPolicy({
         directives: {
@@ -73,7 +84,7 @@ export function securityMiddleware(): Router {
   }
 
   // HSTS toggle
-  if (isEnabled("SECURITY_HSTS_ENABLED")) {
+  if (toggles.hsts) {
     router.use(
       helmet.hsts({
         maxAge: 31536000, // 1 year
@@ -84,7 +95,7 @@ export function securityMiddleware(): Router {
   }
 
   // XSS Protection toggle
-  if (isEnabled("XSS_PROTECTION_ENABLED")) {
+  if (toggles.xss) {
     router.use((_req: Request, res: Response, next: NextFunction) => {
       res.setHeader("X-XSS-Protection", "1; mode=block");
       next();
@@ -92,9 +103,26 @@ export function securityMiddleware(): Router {
   }
 
   // CSRF toggle
-  if (isEnabled("CSRF_ENABLED")) {
+  if (toggles.csrf) {
     router.use(csrfProtection);
   }
+
+  // Error handler for security middleware failures
+  router.use(
+    (err: Error, _req: Request, res: Response, next: NextFunction) => {
+      logger.error("Security middleware error", {
+        error: err.message,
+        stack: err.stack,
+      });
+      res.status(500).json({
+        success: false,
+        error: {
+          code: "SECURITY_ERROR",
+          message: "A security check could not be completed",
+        },
+      });
+    },
+  );
 
   return router;
 }

@@ -9,6 +9,7 @@ export {
   send2FAEnabledEmail,
   sendNotificationEmail,
   sendTestEmail,
+  verifyEmailConnection,
   wrapEmailTemplate,
   sendInspectionConfirmationEmail,
   sendInspectionReminderEmail,

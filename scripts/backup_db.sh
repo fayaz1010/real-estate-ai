@@ -14,8 +14,8 @@ BACKUP_DIR="${4:-}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 LOG_FILE="${SCRIPT_DIR}/backup.log"
-TIMESTAMP="$(date '+%Y-%m-%d_%H-%M-%S')"
-BACKUP_FILENAME="real_estate_ai_backup_${TIMESTAMP}.sql.gz"
+TIMESTAMP="$(date '+%Y-%m-%d-%H-%M-%S')"
+BACKUP_FILENAME="real-estate-ai-backup-${TIMESTAMP}.sql.gz"
 
 # --- Logging ---
 log() {

@@ -1,0 +1,167 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 800" preserveAspectRatio="xMidYMid slice" fill="none">
+  <defs>
+    <!-- Diagonal gradient overlay for depth -->
+    <linearGradient id="bgGradient" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2E2E54"/>
+      <stop offset="50%" stop-color="#1A1A40"/>
+      <stop offset="100%" stop-color="#141432"/>
+    </linearGradient>
+
+    <!-- Radial glow for AI focal point -->
+    <radialGradient id="aiGlow" cx="0.7" cy="0.4" r="0.45">
+      <stop offset="0%" stop-color="#87CEEB" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#1A1A40" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Grid pattern suggesting floor plans / property layouts -->
+    <pattern id="gridPattern" x="0" y="0" width="60" height="60" patternUnits="userSpaceOnUse">
+      <path d="M 60 0 L 0 0 0 60" fill="none" stroke="#87CEEB" stroke-width="0.3" opacity="0.08"/>
+    </pattern>
+
+    <!-- Animated pulse for circuit nodes -->
+    <style>
+      @keyframes pulseNode {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 0.8; }
+      }
+      @keyframes fadeSlide {
+        0% { opacity: 0; transform: translateY(4px); }
+        50% { opacity: 0.6; }
+        100% { opacity: 0; transform: translateY(-4px); }
+      }
+      @keyframes glowPulse {
+        0%, 100% { stop-opacity: 0.08; }
+        50% { stop-opacity: 0.18; }
+      }
+      .node { animation: pulseNode 4s ease-in-out infinite; }
+      .node-delay1 { animation-delay: 0.8s; }
+      .node-delay2 { animation-delay: 1.6s; }
+      .node-delay3 { animation-delay: 2.4s; }
+      .data-line { animation: fadeSlide 6s ease-in-out infinite; }
+      .data-line-d1 { animation-delay: 1s; }
+      .data-line-d2 { animation-delay: 2s; }
+      .data-line-d3 { animation-delay: 3s; }
+    </style>
+  </defs>
+
+  <!-- Base background -->
+  <rect width="1440" height="800" fill="#1A1A40"/>
+
+  <!-- Gradient overlay -->
+  <rect width="1440" height="800" fill="url(#bgGradient)"/>
+
+  <!-- AI radial glow -->
+  <rect width="1440" height="800" fill="url(#aiGlow)"/>
+
+  <!-- Subtle grid pattern (property layout / blueprint feel) -->
+  <rect width="1440" height="800" fill="url(#gridPattern)"/>
+
+  <!-- Abstract cityscape — geometric buildings, left cluster -->
+  <g opacity="0.12" fill="#87CEEB">
+    <rect x="80" y="420" width="40" height="180"/>
+    <rect x="130" y="350" width="55" height="250"/>
+    <rect x="195" y="390" width="35" height="210"/>
+    <rect x="240" y="300" width="60" height="300"/>
+    <rect x="310" y="370" width="45" height="230"/>
+    <rect x="365" y="430" width="30" height="170"/>
+  </g>
+
+  <!-- Abstract cityscape — geometric buildings, right cluster -->
+  <g opacity="0.08" fill="#87CEEB">
+    <rect x="950" y="380" width="50" height="220"/>
+    <rect x="1010" y="310" width="65" height="290"/>
+    <rect x="1085" y="360" width="40" height="240"/>
+    <rect x="1135" y="280" width="70" height="320"/>
+    <rect x="1215" y="350" width="45" height="250"/>
+    <rect x="1270" y="400" width="55" height="200"/>
+  </g>
+
+  <!-- Building window dots — left cluster -->
+  <g fill="#87CEEB" opacity="0.25">
+    <rect x="142" y="370" width="6" height="6" rx="1"/>
+    <rect x="158" y="370" width="6" height="6" rx="1"/>
+    <rect x="142" y="390" width="6" height="6" rx="1"/>
+    <rect x="158" y="390" width="6" height="6" rx="1"/>
+    <rect x="142" y="410" width="6" height="6" rx="1"/>
+    <rect x="158" y="410" width="6" height="6" rx="1"/>
+    <rect x="255" y="320" width="6" height="6" rx="1"/>
+    <rect x="275" y="320" width="6" height="6" rx="1"/>
+    <rect x="255" y="340" width="6" height="6" rx="1"/>
+    <rect x="275" y="340" width="6" height="6" rx="1"/>
+    <rect x="255" y="360" width="6" height="6" rx="1"/>
+    <rect x="275" y="360" width="6" height="6" rx="1"/>
+    <rect x="255" y="380" width="6" height="6" rx="1"/>
+    <rect x="275" y="380" width="6" height="6" rx="1"/>
+  </g>
+
+  <!-- Building window dots — right cluster -->
+  <g fill="#87CEEB" opacity="0.18">
+    <rect x="1025" y="330" width="6" height="6" rx="1"/>
+    <rect x="1045" y="330" width="6" height="6" rx="1"/>
+    <rect x="1025" y="350" width="6" height="6" rx="1"/>
+    <rect x="1045" y="350" width="6" height="6" rx="1"/>
+    <rect x="1025" y="370" width="6" height="6" rx="1"/>
+    <rect x="1045" y="370" width="6" height="6" rx="1"/>
+    <rect x="1150" y="300" width="6" height="6" rx="1"/>
+    <rect x="1170" y="300" width="6" height="6" rx="1"/>
+    <rect x="1150" y="320" width="6" height="6" rx="1"/>
+    <rect x="1170" y="320" width="6" height="6" rx="1"/>
+    <rect x="1150" y="340" width="6" height="6" rx="1"/>
+    <rect x="1170" y="340" width="6" height="6" rx="1"/>
+  </g>
+
+  <!-- AI network / neural connection lines — center -->
+  <g stroke="#87CEEB" stroke-width="0.5" opacity="0.15">
+    <line x1="500" y1="200" x2="680" y2="280"/>
+    <line x1="680" y1="280" x2="780" y2="220"/>
+    <line x1="780" y1="220" x2="920" y2="300"/>
+    <line x1="680" y1="280" x2="720" y2="400"/>
+    <line x1="720" y1="400" x2="860" y2="350"/>
+    <line x1="860" y1="350" x2="920" y2="300"/>
+    <line x1="500" y1="200" x2="550" y2="340"/>
+    <line x1="550" y1="340" x2="720" y2="400"/>
+    <line x1="920" y1="300" x2="950" y2="200"/>
+    <line x1="550" y1="340" x2="680" y2="280"/>
+  </g>
+
+  <!-- Network nodes with pulse animation -->
+  <g fill="#87CEEB">
+    <circle cx="500" cy="200" r="3" class="node" opacity="0.4"/>
+    <circle cx="680" cy="280" r="4" class="node node-delay1" opacity="0.5"/>
+    <circle cx="780" cy="220" r="3" class="node node-delay2" opacity="0.4"/>
+    <circle cx="920" cy="300" r="3.5" class="node node-delay3" opacity="0.45"/>
+    <circle cx="720" cy="400" r="3" class="node node-delay1" opacity="0.4"/>
+    <circle cx="860" cy="350" r="2.5" class="node node-delay2" opacity="0.35"/>
+    <circle cx="550" cy="340" r="3" class="node" opacity="0.4"/>
+    <circle cx="950" cy="200" r="2.5" class="node node-delay3" opacity="0.35"/>
+  </g>
+
+  <!-- Floating data stream lines (animated) -->
+  <g stroke="#87CEEB" stroke-width="1" stroke-linecap="round">
+    <line x1="620" y1="150" x2="620" y2="170" class="data-line" opacity="0.3"/>
+    <line x1="750" y1="120" x2="750" y2="145" class="data-line data-line-d1" opacity="0.25"/>
+    <line x1="850" y1="160" x2="850" y2="185" class="data-line data-line-d2" opacity="0.2"/>
+    <line x1="700" y1="450" x2="700" y2="475" class="data-line data-line-d3" opacity="0.25"/>
+    <line x1="580" y1="430" x2="580" y2="450" class="data-line data-line-d1" opacity="0.2"/>
+  </g>
+
+  <!-- Triangular rooftop accents on buildings -->
+  <g fill="#87CEEB" opacity="0.1">
+    <polygon points="130,350 157,310 185,350"/>
+    <polygon points="240,300 270,260 300,300"/>
+    <polygon points="1010,310 1042,270 1075,310"/>
+    <polygon points="1135,280 1170,240 1205,280"/>
+  </g>
+
+  <!-- Horizon line -->
+  <line x1="0" y1="600" x2="1440" y2="600" stroke="#87CEEB" stroke-width="0.5" opacity="0.06"/>
+
+  <!-- Bottom fade overlay for content readability -->
+  <defs>
+    <linearGradient id="bottomFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1A1A40" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#1A1A40" stop-opacity="0.6"/>
+    </linearGradient>
+  </defs>
+  <rect y="500" width="1440" height="300" fill="url(#bottomFade)"/>
+</svg>

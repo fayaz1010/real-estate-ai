@@ -110,17 +110,20 @@ vi.mock("lucide-react", () => {
 
 // ─── Mock Redux actions ─────────────────────────────────────────────────────
 
-const mockDispatch = vi.fn(() => ({
-  unwrap: () => Promise.resolve(),
-  then: (fn: (value: unknown) => unknown) => Promise.resolve().then(fn),
-  type: "",
-  payload: undefined,
-  meta: { requestStatus: "fulfilled" },
+const { mockDispatch, mockUseAppSelector } = vi.hoisted(() => ({
+  mockDispatch: vi.fn(() => ({
+    unwrap: () => Promise.resolve(),
+    then: (fn: (value: unknown) => unknown) => Promise.resolve().then(fn),
+    type: "",
+    payload: undefined,
+    meta: { requestStatus: "fulfilled" },
+  })),
+  mockUseAppSelector: vi.fn(),
 }));
 
 vi.mock("@/store", () => ({
   useAppDispatch: () => mockDispatch,
-  useAppSelector: vi.fn(),
+  useAppSelector: mockUseAppSelector,
 }));
 
 // ─── Test Data ──────────────────────────────────────────────────────────────
@@ -251,8 +254,6 @@ function setupMockSelector(
     error: string | null;
   }> = {},
 ) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const { useAppSelector } = require("@/store");
   const state = {
     leases: overrides.leases ?? mockLeases,
     loading: overrides.loading ?? {
@@ -263,7 +264,7 @@ function setupMockSelector(
     },
     error: overrides.error ?? null,
   };
-  useAppSelector.mockImplementation(
+  mockUseAppSelector.mockImplementation(
     (selector: (s: { leases: typeof state }) => unknown) =>
       selector({ leases: state }),
   );

@@ -101,6 +101,16 @@ export class PropertyService {
     };
   }
 
+  // Convert a raw search string into a tsquery-compatible string
+  // Supports partial matches by appending :* to each term
+  private buildTsQueryString(raw: string): string {
+    const sanitized = raw.replace(/[^\w\s]/g, " ").trim();
+    if (!sanitized) return "";
+    const terms = sanitized.split(/\s+/).filter(Boolean);
+    // Each term gets prefix matching (:*) and they are ANDed together
+    return terms.map((t) => `${t}:*`).join(" & ");
+  }
+
   // Full-text search using PostgreSQL tsvector
   private async fullTextSearch(filters: Record<string, unknown>) {
     const {
@@ -116,15 +126,21 @@ export class PropertyService {
     } = filters;
 
     const searchQuery = (search as string).trim();
+    const tsQueryStr = this.buildTsQueryString(searchQuery);
     const offset = ((page as number) - 1) * (limit as number);
+
+    // If query is empty after sanitization, fall back to non-search getAll
+    if (!tsQueryStr) {
+      return this.getAll({ ...filters, search: undefined });
+    }
 
     // Build WHERE conditions
     const conditions: string[] = [
       `p."deletedAt" IS NULL`,
       `p.status = $1`,
-      `p.search_vector @@ plainto_tsquery('english', $2)`,
+      `p.search_vector @@ to_tsquery('english', $2)`,
     ];
-    const params: unknown[] = [status || "ACTIVE", searchQuery];
+    const params: unknown[] = [status || "ACTIVE", tsQueryStr];
     let paramIdx = 3;
 
     if (propertyType) {
@@ -174,7 +190,7 @@ export class PropertyService {
               p."petPolicy", p."virtualTourUrl", p."videoUrl", p."floorPlanUrl",
               p."availableFrom", p."leaseTerm", p.views, p.featured, p.verified,
               p."publishedAt", p."createdAt", p."updatedAt", p."deletedAt",
-              ts_rank(p.search_vector, plainto_tsquery('english', $2)) as search_rank,
+              ts_rank(p.search_vector, to_tsquery('english', $2)) as search_rank,
               json_build_object('id', u.id, 'firstName', u."firstName", 'lastName', u."lastName") as owner
        FROM "Property" p
        LEFT JOIN "User" u ON p."ownerId" = u.id

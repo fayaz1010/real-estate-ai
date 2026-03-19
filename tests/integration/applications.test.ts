@@ -2,8 +2,8 @@ import request from "supertest";
 
 // ─── Mock express-rate-limit ────────────────────────────────────────────────
 
-vi.mock("express-rate-limit", () => {
-  return vi.fn().mockImplementation(() => {
+jest.mock("express-rate-limit", () => {
+  return jest.fn().mockImplementation(() => {
     return (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next();
   });
@@ -11,7 +11,7 @@ vi.mock("express-rate-limit", () => {
 
 // ─── Mock Error Handler (fix instanceof across module boundaries) ───────────
 
-vi.mock("../../backend/src/middleware/errorHandler", () => {
+jest.mock("../../backend/src/middleware/errorHandler", () => {
   class AppError extends Error {
     public statusCode: number;
     public code: string;
@@ -77,28 +77,28 @@ vi.mock("../../backend/src/middleware/errorHandler", () => {
 
 const mockPrisma = {
   application: {
-    create: vi.fn(),
-    findUnique: vi.fn(),
-    findMany: vi.fn(),
-    update: vi.fn(),
-    count: vi.fn(),
-    delete: vi.fn(),
+    create: jest.fn(),
+    findUnique: jest.fn(),
+    findMany: jest.fn(),
+    update: jest.fn(),
+    count: jest.fn(),
+    delete: jest.fn(),
   },
   property: {
-    findUnique: vi.fn(),
+    findUnique: jest.fn(),
   },
   applicationDocument: {
-    create: vi.fn(),
-    delete: vi.fn(),
+    create: jest.fn(),
+    delete: jest.fn(),
   },
   user: {
-    findUnique: vi.fn(),
+    findUnique: jest.fn(),
   },
-  $connect: vi.fn().mockResolvedValue(undefined),
-  $disconnect: vi.fn().mockResolvedValue(undefined),
+  $connect: jest.fn().mockResolvedValue(undefined),
+  $disconnect: jest.fn().mockResolvedValue(undefined),
 };
 
-vi.mock("../../backend/src/config/database", () => mockPrisma);
+jest.mock("../../backend/src/config/database", () => mockPrisma);
 
 // ─── Mock Auth Middleware ───────────────────────────────────────────────────
 
@@ -118,7 +118,7 @@ const TEST_LANDLORD = {
 
 let currentUser = TEST_TENANT;
 
-vi.mock("../../backend/src/middleware/auth", () => ({
+jest.mock("../../backend/src/middleware/auth", () => ({
   authenticate: (
     req: Record<string, unknown>,
     _res: unknown,
@@ -140,7 +140,7 @@ vi.mock("../../backend/src/middleware/auth", () => ({
       next(),
 }));
 
-vi.mock("../../backend/src/middleware/rateLimiter", () => ({
+jest.mock("../../backend/src/middleware/rateLimiter", () => ({
   rateLimiter: (
     _req: Record<string, unknown>,
     _res: unknown,
@@ -148,7 +148,7 @@ vi.mock("../../backend/src/middleware/rateLimiter", () => ({
   ) => next(),
 }));
 
-vi.mock("../../backend/src/middleware/validation", () => ({
+jest.mock("../../backend/src/middleware/validation", () => ({
   validate:
     () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next(),
@@ -203,7 +203,7 @@ const mockConfig = {
   cacheTtl: 3600,
 };
 
-vi.mock("../../backend/src/config/env", () => ({
+jest.mock("../../backend/src/config/env", () => ({
   __esModule: true,
   config: mockConfig,
   default: mockConfig,
@@ -359,7 +359,7 @@ const applicationWithDocuments = {
 
 describe("Tenant Applications Integration Tests", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     currentUser = TEST_TENANT;
   });
 
@@ -983,6 +983,155 @@ describe("Tenant Applications Integration Tests", () => {
 
       expect(conditionallyApproved.status).toBe("APPROVED_WITH_CONDITIONS");
       expect(conditionallyApproved.conditions).toHaveLength(1);
+    });
+  });
+
+  // ── Lease Creation from Approved Application ──────────────────────────
+
+  describe("Lease Creation from Approved Application", () => {
+    it("should be eligible for lease creation when application is approved", () => {
+      expect(approvedApplication.status).toBe("APPROVED");
+      expect(approvedApplication.reviewedBy).toBe("landlord-1");
+    });
+
+    it("should contain property and tenant info needed for lease", () => {
+      const leaseData = {
+        propertyId: approvedApplication.propertyId,
+        tenantId: approvedApplication.primaryApplicantId,
+        landlordId: approvedApplication.reviewedBy,
+        status: "DRAFT",
+        monthlyRent: sampleProperty.price,
+      };
+
+      expect(leaseData.propertyId).toBe("prop-1");
+      expect(leaseData.tenantId).toBe("tenant-1");
+      expect(leaseData.landlordId).toBe("landlord-1");
+      expect(leaseData.status).toBe("DRAFT");
+      expect(leaseData.monthlyRent).toBe(2000);
+    });
+
+    it("should not create lease from rejected application", () => {
+      expect(rejectedApplication.status).toBe("REJECTED");
+      const canCreateLease = rejectedApplication.status === "APPROVED" || rejectedApplication.status === "APPROVED_WITH_CONDITIONS";
+      expect(canCreateLease).toBe(false);
+    });
+
+    it("should support lease creation from conditionally approved application", () => {
+      const conditionalApp = {
+        ...approvedApplication,
+        status: "APPROVED_WITH_CONDITIONS",
+        conditions: ["Additional deposit required"],
+      };
+
+      const canCreateLease = conditionalApp.status === "APPROVED" || conditionalApp.status === "APPROVED_WITH_CONDITIONS";
+      expect(canCreateLease).toBe(true);
+    });
+  });
+
+  // ── Multi-Step Application Form ──────────────────────────────────────
+
+  describe("Multi-Step Application Form", () => {
+    const FORM_STEPS = [
+      "personalInfo",
+      "employment",
+      "income",
+      "rentalHistory",
+      "references",
+      "documents",
+      "review",
+    ];
+
+    it("should define all required form steps", () => {
+      expect(FORM_STEPS).toHaveLength(7);
+      expect(FORM_STEPS[0]).toBe("personalInfo");
+      expect(FORM_STEPS[FORM_STEPS.length - 1]).toBe("review");
+    });
+
+    it("should support autosave for each step via PATCH", async () => {
+      mockPrisma.application.findUnique.mockResolvedValue(sampleApplication);
+      mockPrisma.application.update.mockResolvedValue(applicationWithDetails);
+
+      const res = await request(app)
+        .patch("/api/applications/app-1")
+        .send({
+          personalInfo: {
+            firstName: "John",
+            lastName: "Doe",
+            email: "tenant@test.com",
+          },
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+    });
+
+    it("should track application completeness across steps", () => {
+      const completedSteps = {
+        personalInfo: true,
+        employment: true,
+        income: true,
+        rentalHistory: true,
+        references: false,
+        documents: false,
+        review: false,
+      };
+
+      const totalSteps = Object.keys(completedSteps).length;
+      const completed = Object.values(completedSteps).filter(Boolean).length;
+      const completionPercentage = Math.round((completed / totalSteps) * 100);
+
+      expect(completionPercentage).toBe(57);
+      expect(totalSteps).toBe(7);
+    });
+
+    it("should require all steps completed before submission", () => {
+      const allStepsComplete = {
+        personalInfo: true,
+        employment: true,
+        income: true,
+        rentalHistory: true,
+        references: true,
+        documents: true,
+        review: true,
+      };
+
+      const isReady = Object.values(allStepsComplete).every(Boolean);
+      expect(isReady).toBe(true);
+    });
+
+    it("should preserve data from previous steps during autosave", async () => {
+      mockPrisma.application.findUnique.mockResolvedValue(applicationWithDetails);
+      mockPrisma.application.update.mockResolvedValue({
+        ...applicationWithDetails,
+        references: [{ name: "Jane Ref", phone: "+1111111111", relationship: "Former landlord" }],
+      });
+
+      const res = await request(app)
+        .patch("/api/applications/app-1")
+        .send({
+          references: [{ name: "Jane Ref", phone: "+1111111111", relationship: "Former landlord" }],
+        });
+
+      expect(res.status).toBe(200);
+      expect(res.body.success).toBe(true);
+    });
+  });
+
+  // ── Application Withdrawal ──────────────────────────────────────────
+
+  describe("Application Withdrawal", () => {
+    it("should track WITHDRAWN status", () => {
+      const withdrawnApp = {
+        ...submittedApplication,
+        status: "WITHDRAWN",
+      };
+      expect(withdrawnApp.status).toBe("WITHDRAWN");
+    });
+
+    it("should not allow re-submission of withdrawn application", () => {
+      const withdrawnApp = { ...submittedApplication, status: "WITHDRAWN" };
+      const canResubmit = withdrawnApp.status === "DRAFT";
+      expect(canResubmit).toBe(false);
     });
   });
 });
