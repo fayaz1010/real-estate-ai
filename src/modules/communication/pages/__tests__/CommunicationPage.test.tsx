@@ -7,7 +7,28 @@ import "@testing-library/jest-dom";
 import communicationReducer from "../../store/communicationSlice";
 import { CommunicationPage } from "../CommunicationPage";
 
-jest.mock("../../../auth/hooks/useAuth", () => ({
+vi.mock("@/services/webSocketService", () => ({
+  __esModule: true,
+  default: {
+    onTypingChange: vi.fn(() => vi.fn()),
+    onPresenceChange: vi.fn(() => vi.fn()),
+    onConnectionStateChange: vi.fn(() => vi.fn()),
+    onMessage: vi.fn(() => vi.fn()),
+    startTyping: vi.fn(),
+    stopTyping: vi.fn(),
+    getIsConnected: vi.fn(() => false),
+    getConnectionState: vi.fn(() => "disconnected"),
+    connect: vi.fn(),
+    disconnect: vi.fn(),
+    subscribe: vi.fn(() => vi.fn()),
+    send: vi.fn(),
+    onConnectionChange: vi.fn(() => vi.fn()),
+    unsubscribe: vi.fn(),
+  },
+  ConnectionState: { CONNECTED: "connected", DISCONNECTED: "disconnected" },
+}));
+
+vi.mock("../../../auth/hooks/useAuth", () => ({
   useAuth: () => ({
     user: { id: "user-1", firstName: "John", lastName: "Doe" },
     isAuthenticated: true,
@@ -15,9 +36,9 @@ jest.mock("../../../auth/hooks/useAuth", () => ({
   }),
 }));
 
-jest.mock("../../api/communicationService", () => ({
+vi.mock("../../api/communicationService", () => ({
   communicationService: {
-    getConversations: jest.fn().mockResolvedValue({
+    getConversations: vi.fn().mockResolvedValue({
       conversations: [
         {
           id: "conv-1",
@@ -63,7 +84,7 @@ jest.mock("../../api/communicationService", () => ({
       ],
       total: 2,
     }),
-    getMessages: jest.fn().mockResolvedValue({
+    getMessages: vi.fn().mockResolvedValue({
       messages: [
         {
           id: "msg-1",
@@ -86,7 +107,7 @@ jest.mock("../../api/communicationService", () => ({
       page: 1,
       limit: 50,
     }),
-    sendMessage: jest.fn().mockImplementation(({ content }) =>
+    sendMessage: vi.fn().mockImplementation(({ content }) =>
       Promise.resolve({
         id: "msg-3",
         conversationId: "conv-1",
@@ -96,7 +117,7 @@ jest.mock("../../api/communicationService", () => ({
         createdAt: new Date().toISOString(),
       }),
     ),
-    markAsRead: jest.fn().mockResolvedValue(undefined),
+    markAsRead: vi.fn().mockResolvedValue(undefined),
   },
 }));
 
@@ -117,8 +138,8 @@ function renderWithStore(ui: React.ReactElement) {
 
 describe("CommunicationPage", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    Element.prototype.scrollIntoView = jest.fn();
+    vi.clearAllMocks();
+    Element.prototype.scrollIntoView = vi.fn();
   });
 
   it("renders the page title", async () => {

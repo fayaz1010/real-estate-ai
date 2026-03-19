@@ -297,11 +297,6 @@ const ApplicationCardItem: React.FC<ApplicationCardItemProps> = ({
   onCompareToggle,
 }) => {
   const badge = getStatusBadge(application.status);
-  const overallScore = Math.round(
-    application.scoring.reduce((sum, s) => sum + s.score, 0) /
-      application.scoring.length,
-  );
-
   return (
     <div
       className={`bg-white rounded-realestate-lg shadow-realestate-sm border transition-all cursor-pointer ${

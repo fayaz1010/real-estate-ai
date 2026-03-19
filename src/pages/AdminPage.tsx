@@ -153,12 +153,12 @@ const AdminPage: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [userSearchQuery, setUserSearchQuery] = useState("");
-  const [_loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [platformStats, setPlatformStats] = useState(INITIAL_PLATFORM_STATS);
-  const [users, _setUsers] = useState<MockUser[]>(INITIAL_USERS);
+  const [users] = useState<MockUser[]>(INITIAL_USERS);
   const [properties, setProperties] =
     useState<MockProperty[]>(INITIAL_PROPERTIES);
-  const [revenueData, _setRevenueData] = useState(INITIAL_REVENUE_DATA);
+  const [revenueData] = useState(INITIAL_REVENUE_DATA);
 
   // Fetch real data from backend
   useEffect(() => {

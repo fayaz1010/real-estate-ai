@@ -18,7 +18,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   showSaveButton = true,
 }) => {
   const [isSaved, setIsSaved] = React.useState(false);
-  const [_isHovered, setIsHovered] = React.useState(false);
+  const [, setIsHovered] = React.useState(false);
 
   const handleSaveClick = (e: React.MouseEvent) => {
     e.stopPropagation();

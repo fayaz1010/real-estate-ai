@@ -2,8 +2,8 @@ import request from "supertest";
 
 // ─── Mock express-rate-limit ────────────────────────────────────────────────
 
-jest.mock("express-rate-limit", () => {
-  return jest.fn().mockImplementation(() => {
+vi.mock("express-rate-limit", () => {
+  return vi.fn().mockImplementation(() => {
     return (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next();
   });
@@ -11,7 +11,7 @@ jest.mock("express-rate-limit", () => {
 
 // ─── Mock Error Handler (fix instanceof across module boundaries) ───────────
 
-jest.mock("../../backend/src/middleware/errorHandler", () => {
+vi.mock("../../backend/src/middleware/errorHandler", () => {
   class AppError extends Error {
     public statusCode: number;
     public code: string;
@@ -77,28 +77,28 @@ jest.mock("../../backend/src/middleware/errorHandler", () => {
 
 const mockPrisma = {
   application: {
-    create: jest.fn(),
-    findUnique: jest.fn(),
-    findMany: jest.fn(),
-    update: jest.fn(),
-    count: jest.fn(),
-    delete: jest.fn(),
+    create: vi.fn(),
+    findUnique: vi.fn(),
+    findMany: vi.fn(),
+    update: vi.fn(),
+    count: vi.fn(),
+    delete: vi.fn(),
   },
   property: {
-    findUnique: jest.fn(),
+    findUnique: vi.fn(),
   },
   applicationDocument: {
-    create: jest.fn(),
-    delete: jest.fn(),
+    create: vi.fn(),
+    delete: vi.fn(),
   },
   user: {
-    findUnique: jest.fn(),
+    findUnique: vi.fn(),
   },
-  $connect: jest.fn().mockResolvedValue(undefined),
-  $disconnect: jest.fn().mockResolvedValue(undefined),
+  $connect: vi.fn().mockResolvedValue(undefined),
+  $disconnect: vi.fn().mockResolvedValue(undefined),
 };
 
-jest.mock("../../backend/src/config/database", () => mockPrisma);
+vi.mock("../../backend/src/config/database", () => mockPrisma);
 
 // ─── Mock Auth Middleware ───────────────────────────────────────────────────
 
@@ -118,7 +118,7 @@ const TEST_LANDLORD = {
 
 let currentUser = TEST_TENANT;
 
-jest.mock("../../backend/src/middleware/auth", () => ({
+vi.mock("../../backend/src/middleware/auth", () => ({
   authenticate: (
     req: Record<string, unknown>,
     _res: unknown,
@@ -140,7 +140,7 @@ jest.mock("../../backend/src/middleware/auth", () => ({
       next(),
 }));
 
-jest.mock("../../backend/src/middleware/rateLimiter", () => ({
+vi.mock("../../backend/src/middleware/rateLimiter", () => ({
   rateLimiter: (
     _req: Record<string, unknown>,
     _res: unknown,
@@ -148,7 +148,7 @@ jest.mock("../../backend/src/middleware/rateLimiter", () => ({
   ) => next(),
 }));
 
-jest.mock("../../backend/src/middleware/validation", () => ({
+vi.mock("../../backend/src/middleware/validation", () => ({
   validate:
     () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next(),
@@ -203,7 +203,7 @@ const mockConfig = {
   cacheTtl: 3600,
 };
 
-jest.mock("../../backend/src/config/env", () => ({
+vi.mock("../../backend/src/config/env", () => ({
   __esModule: true,
   config: mockConfig,
   default: mockConfig,
@@ -359,7 +359,7 @@ const applicationWithDocuments = {
 
 describe("Tenant Applications Integration Tests", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     currentUser = TEST_TENANT;
   });
 

@@ -139,25 +139,6 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
   const isRental = listingType === "rent";
   const priceChange = pricing.priceChange ?? 0;
 
-  // Calculate monthly payment (example calculation)
-  const _calculateMonthlyPayment = (): number => {
-    if (isRental) return pricing.price;
-
-    // Simple mortgage calculation (30-year fixed, 4% interest)
-    const principal = pricing.price;
-    const monthlyInterestRate = 0.04 / 12;
-    const numberOfPayments = 30 * 12;
-
-    if (monthlyInterestRate === 0) return principal / numberOfPayments;
-
-    return (
-      (principal *
-        (monthlyInterestRate *
-          Math.pow(1 + monthlyInterestRate, numberOfPayments))) /
-      (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1)
-    );
-  };
-
   return (
     <div className="bg-white rounded-lg shadow p-6" id="pricing-section">
       <div className="flex items-start justify-between mb-6">

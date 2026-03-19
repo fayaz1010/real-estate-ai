@@ -2,8 +2,8 @@ import request from "supertest";
 
 // ─── Mock express-rate-limit ────────────────────────────────────────────────
 
-jest.mock("express-rate-limit", () => {
-  return jest.fn().mockImplementation(() => {
+vi.mock("express-rate-limit", () => {
+  return vi.fn().mockImplementation(() => {
     return (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next();
   });
@@ -11,7 +11,7 @@ jest.mock("express-rate-limit", () => {
 
 // ─── Mock Error Handler (fix instanceof across module boundaries) ───────────
 
-jest.mock("../../backend/src/middleware/errorHandler", () => {
+vi.mock("../../backend/src/middleware/errorHandler", () => {
   class AppError extends Error {
     public statusCode: number;
     public code: string;
@@ -77,44 +77,44 @@ jest.mock("../../backend/src/middleware/errorHandler", () => {
 
 const mockPrisma = {
   payment: {
-    create: jest.fn(),
-    findMany: jest.fn(),
-    findFirst: jest.fn(),
-    findUnique: jest.fn(),
-    update: jest.fn(),
-    createMany: jest.fn(),
-    count: jest.fn(),
+    create: vi.fn(),
+    findMany: vi.fn(),
+    findFirst: vi.fn(),
+    findUnique: vi.fn(),
+    update: vi.fn(),
+    createMany: vi.fn(),
+    count: vi.fn(),
   },
   lease: {
-    findFirst: jest.fn(),
+    findFirst: vi.fn(),
   },
   property: {
-    findFirst: jest.fn(),
+    findFirst: vi.fn(),
   },
   user: {
-    findUnique: jest.fn(),
+    findUnique: vi.fn(),
   },
-  $connect: jest.fn().mockResolvedValue(undefined),
-  $disconnect: jest.fn().mockResolvedValue(undefined),
+  $connect: vi.fn().mockResolvedValue(undefined),
+  $disconnect: vi.fn().mockResolvedValue(undefined),
 };
 
-jest.mock("../../backend/src/config/database", () => mockPrisma);
+vi.mock("../../backend/src/config/database", () => mockPrisma);
 
 // ─── Mock Stripe ────────────────────────────────────────────────────────────
 
 const mockStripePaymentIntents = {
-  create: jest.fn().mockResolvedValue({
+  create: vi.fn().mockResolvedValue({
     id: "pi_test_123",
     client_secret: "pi_test_123_secret",
   }),
 };
 
 const mockStripeCustomers = {
-  create: jest.fn().mockResolvedValue({ id: "cus_test_123" }),
+  create: vi.fn().mockResolvedValue({ id: "cus_test_123" }),
 };
 
 const mockStripeSubscriptions = {
-  create: jest.fn().mockResolvedValue({
+  create: vi.fn().mockResolvedValue({
     id: "sub_test_123",
     status: "trialing",
     current_period_end: Math.floor(Date.now() / 1000) + 30 * 24 * 60 * 60,
@@ -123,21 +123,21 @@ const mockStripeSubscriptions = {
 
 const mockStripeBillingPortal = {
   sessions: {
-    create: jest.fn().mockResolvedValue({
+    create: vi.fn().mockResolvedValue({
       url: "https://billing.stripe.com/session/test",
     }),
   },
 };
 
 const mockStripeCheckoutSessions = {
-  create: jest.fn().mockResolvedValue({
+  create: vi.fn().mockResolvedValue({
     id: "cs_test_123",
     url: "https://checkout.stripe.com/session/test",
   }),
 };
 
 const mockStripeInvoices = {
-  list: jest.fn().mockResolvedValue({
+  list: vi.fn().mockResolvedValue({
     data: [
       {
         id: "inv_test_1",
@@ -149,8 +149,8 @@ const mockStripeInvoices = {
   }),
 };
 
-jest.mock("stripe", () => {
-  return jest.fn().mockImplementation(() => ({
+vi.mock("stripe", () => {
+  return vi.fn().mockImplementation(() => ({
     paymentIntents: mockStripePaymentIntents,
     customers: mockStripeCustomers,
     subscriptions: mockStripeSubscriptions,
@@ -158,7 +158,7 @@ jest.mock("stripe", () => {
     checkout: { sessions: mockStripeCheckoutSessions },
     invoices: mockStripeInvoices,
     webhooks: {
-      constructEvent: jest.fn().mockReturnValue({
+      constructEvent: vi.fn().mockReturnValue({
         type: "payment_intent.succeeded",
         data: {
           object: {
@@ -180,7 +180,7 @@ const TEST_USER = {
   id: "user-1",
 };
 
-jest.mock("../../backend/src/middleware/auth", () => ({
+vi.mock("../../backend/src/middleware/auth", () => ({
   authenticate: (
     req: Record<string, unknown>,
     _res: unknown,
@@ -212,7 +212,7 @@ jest.mock("../../backend/src/middleware/auth", () => ({
       next(),
 }));
 
-jest.mock("../../backend/src/middleware/rateLimiter", () => ({
+vi.mock("../../backend/src/middleware/rateLimiter", () => ({
   rateLimiter: (
     _req: Record<string, unknown>,
     _res: unknown,
@@ -220,7 +220,7 @@ jest.mock("../../backend/src/middleware/rateLimiter", () => ({
   ) => next(),
 }));
 
-jest.mock("../../backend/src/middleware/validation", () => ({
+vi.mock("../../backend/src/middleware/validation", () => ({
   validate:
     () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next(),
@@ -275,7 +275,7 @@ const mockConfig = {
   cacheTtl: 3600,
 };
 
-jest.mock("../../backend/src/config/env", () => ({
+vi.mock("../../backend/src/config/env", () => ({
   __esModule: true,
   config: mockConfig,
   default: mockConfig,
@@ -354,7 +354,7 @@ const createPaymentPayload = {
 
 describe("Payments Integration Tests", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   // ── Subscription Creation ─────────────────────────────────────────────

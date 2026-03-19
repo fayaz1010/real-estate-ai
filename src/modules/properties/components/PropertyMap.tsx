@@ -47,7 +47,7 @@ export const PropertyMap: React.FC<PropertyMapProps> = ({
     libraries: ["places", "geometry"],
   });
 
-  const [_map, setMap] = useState<google.maps.Map | null>(null);
+  const [, setMap] = useState<google.maps.Map | null>(null);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
     null,
   );

@@ -70,7 +70,7 @@ export const usePropertySearch = () => {
     }, 300); // Debounce search
 
     return () => clearTimeout(timeoutId);
-  }, [filters, searchQuery, sortBy]);
+  }, [filters, searchQuery, sortBy, performSearch]);
 
   return {
     filters,

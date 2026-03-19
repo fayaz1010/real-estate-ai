@@ -35,11 +35,7 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
   type,
   className = "",
 }) => {
-  const {
-    loadInspections: _loadInspections,
-    isLoading,
-    error,
-  } = useInspections();
+  const { isLoading, error } = useInspections();
   const [analytics, setAnalytics] = useState<InspectionAnalytics | null>(null);
   const [propertyMetrics, setPropertyMetrics] =
     useState<PropertyInspectionMetrics | null>(null);
@@ -49,6 +45,7 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
 
   useEffect(() => {
     loadMetrics();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [landlordId, propertyId, dateRange]);
 
   const loadMetrics = async () => {

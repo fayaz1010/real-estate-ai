@@ -1,17 +1,13 @@
 import {
   Cpu,
-  Clock,
   ArrowRight,
   Star,
-  Zap,
   MessageSquare,
   TrendingUp,
   Search,
   Hammer,
   FileText,
   BarChart,
-  Shield,
-  CheckCircle,
 } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";

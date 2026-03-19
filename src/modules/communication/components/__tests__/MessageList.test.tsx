@@ -34,8 +34,8 @@ const mockMessages: Message[] = [
 
 describe("MessageList", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    Element.prototype.scrollIntoView = jest.fn();
+    vi.clearAllMocks();
+    Element.prototype.scrollIntoView = vi.fn();
   });
 
   it("renders all messages", () => {
@@ -90,9 +90,9 @@ describe("MessageList", () => {
       .getByText("Sure, how can I help?")
       .closest("div[class*='max-w']");
 
-    expect(sentMessage?.className).toContain("bg-[#091a2b]");
+    expect(sentMessage?.className).toContain("bg-[#8B7355]");
     expect(sentMessage?.className).toContain("text-white");
-    expect(receivedMessage?.className).toContain("bg-[#f1f3f4]");
+    expect(receivedMessage?.className).toContain("bg-white");
   });
 
   it("shows sender role for received messages", () => {

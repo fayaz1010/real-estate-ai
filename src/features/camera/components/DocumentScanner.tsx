@@ -65,15 +65,6 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleCapture = useCallback(() => {
-    if (!videoRef.current) return;
-    const dataUrl = captureVideoFrame(videoRef.current);
-    setCapturedImage(dataUrl);
-    setCorners(detectEdges(dataUrl));
-    setStep("adjust");
-    stopCamera();
-  }, [videoRef, stopCamera]);
-
   // Simple edge detection heuristic — returns default corners
   // In production, use a vision library for actual edge detection
   const detectEdges = useCallback((_dataUrl: string): Corner[] => {
@@ -86,6 +77,15 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
       { x: 0.06, y: 0.94 },
     ];
   }, []);
+
+  const handleCapture = useCallback(() => {
+    if (!videoRef.current) return;
+    const dataUrl = captureVideoFrame(videoRef.current);
+    setCapturedImage(dataUrl);
+    setCorners(detectEdges(dataUrl));
+    setStep("adjust");
+    stopCamera();
+  }, [videoRef, stopCamera, detectEdges]);
 
   const handleCornerDrag = useCallback(
     (e: React.MouseEvent | React.TouchEvent) => {

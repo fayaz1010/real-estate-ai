@@ -119,7 +119,7 @@ export interface FeatureAccess {
  */
 export async function checkFeatureAccess(
   userId: string,
-  feature: TrialFeature,
+  _feature: TrialFeature,
 ): Promise<FeatureAccess> {
   const status = await getTrialStatus(userId);
 

@@ -2,7 +2,7 @@
 // TODO: Add your implementation here
 
 import { Upload, FileText, Check, X, Eye, Loader } from "lucide-react";
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 
 import { useApplication } from "../../hooks/useApplication";
 import { applicationService } from "../../services/applicationService";
@@ -17,8 +17,6 @@ const DocumentUploadStep: React.FC = () => {
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>(
     {},
   );
-  const _fileInputRef = useRef<HTMLInputElement>(null);
-
   const requiredDocs = [
     { type: "id", label: "Government-Issued ID", required: true },
     {

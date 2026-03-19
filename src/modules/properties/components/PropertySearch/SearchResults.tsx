@@ -58,16 +58,8 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     if (displayProperties.length === 0) {
       performSearch();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const _sortOptions: Array<{ value: SortOption; label: string }> = [
-    { value: "relevant", label: "Most Relevant" },
-    { value: "newest", label: "Newest Listings" },
-    { value: "price", label: "Price: Low to High" },
-    { value: "price", label: "Price: High to Low" },
-    { value: "sqft", label: "Square Feet" },
-    { value: "bedrooms", label: "Bedrooms" },
-  ];
 
   const handleSortChange = (
     sortBy: SortOption,

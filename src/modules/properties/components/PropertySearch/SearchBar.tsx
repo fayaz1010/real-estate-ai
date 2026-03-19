@@ -4,7 +4,6 @@
 import { useJsApiLoader } from "@react-google-maps/api";
 import { Search, MapPin, X, TrendingUp } from "lucide-react";
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 import { usePropertySearch } from "../../hooks/usePropertySearch";
 import { searchService } from "../../services/searchService";
@@ -26,7 +25,6 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   showSuggestions = true,
   className = "",
 }) => {
-  const _navigate = useNavigate();
   const { updateFilters, performSearch } = usePropertySearch();
   const { saveRecentSearch } = useBrowsingHistory();
 

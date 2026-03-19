@@ -27,11 +27,7 @@ import { RescheduleModal } from "./RescheduleModal";
 export const InspectionDetails: React.FC = () => {
   const { inspectionId } = useParams<{ inspectionId: string }>();
   const navigate = useNavigate();
-  const {
-    inspection,
-    isLoading,
-    setCurrentInspection: _setCurrentInspection,
-  } = useInspection(inspectionId);
+  const { inspection, isLoading } = useInspection(inspectionId);
 
   const [showRescheduleModal, setShowRescheduleModal] = useState(false);
   const [showCancelModal, setShowCancelModal] = useState(false);

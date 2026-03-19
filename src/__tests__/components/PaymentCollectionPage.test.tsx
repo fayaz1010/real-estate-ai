@@ -5,7 +5,7 @@ import { render } from "../test-utils";
 
 // ─── Mock lucide-react icons ────────────────────────────────────────────────
 
-jest.mock("lucide-react", () => {
+vi.mock("lucide-react", () => {
   const actual: Record<string, unknown> = {};
   const icons = [
     "DollarSign",
@@ -34,32 +34,32 @@ jest.mock("lucide-react", () => {
 
 // ─── Mock API Client ────────────────────────────────────────────────────────
 
-const mockApiGet = jest.fn();
-jest.mock("@/api/client", () => ({
+const mockApiGet = vi.fn();
+vi.mock("@/api/client", () => ({
   __esModule: true,
   default: {
     get: (...args: unknown[]) => mockApiGet(...args),
-    post: jest.fn(),
-    patch: jest.fn(),
-    delete: jest.fn(),
+    post: vi.fn(),
+    patch: vi.fn(),
+    delete: vi.fn(),
     interceptors: {
-      request: { use: jest.fn() },
-      response: { use: jest.fn() },
+      request: { use: vi.fn() },
+      response: { use: vi.fn() },
     },
   },
 }));
 
 // ─── Mock Payment Service ───────────────────────────────────────────────────
 
-jest.mock("@/modules/payments/api/paymentService", () => ({
-  getPaymentMethods: jest.fn().mockResolvedValue([]),
-  createPaymentIntent: jest.fn(),
-  confirmPaymentIntent: jest.fn(),
-  addPaymentMethod: jest.fn(),
-  setDefaultPaymentMethod: jest.fn(),
-  removePaymentMethod: jest.fn(),
-  getOutstandingBalance: jest.fn(),
-  getSubscriptionDetails: jest.fn(),
+vi.mock("@/modules/payments/api/paymentService", () => ({
+  getPaymentMethods: vi.fn().mockResolvedValue([]),
+  createPaymentIntent: vi.fn(),
+  confirmPaymentIntent: vi.fn(),
+  addPaymentMethod: vi.fn(),
+  setDefaultPaymentMethod: vi.fn(),
+  removePaymentMethod: vi.fn(),
+  getOutstandingBalance: vi.fn(),
+  getSubscriptionDetails: vi.fn(),
 }));
 
 // ─── Test Data ──────────────────────────────────────────────────────────────
@@ -132,7 +132,7 @@ import { PaymentCollectionPage } from "@/pages/PaymentCollectionPage";
 
 describe("PaymentCollectionPage", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   // ── Rendering ─────────────────────────────────────────────────────────

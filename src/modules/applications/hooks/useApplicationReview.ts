@@ -16,10 +16,6 @@ import {
   ApplicationFilters,
   ApplicationStatus,
 } from "../types/application.types";
-import {
-  calculateApplicationScore as _calculateApplicationScore,
-  getScoreRating as _getScoreRating,
-} from "../utils/scoringAlgorithm";
 
 export const useApplicationReview = (propertyId?: string) => {
   const dispatch = useDispatch<AppDispatch>();

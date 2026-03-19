@@ -66,15 +66,6 @@ const ApplicationsList: React.FC<ApplicationsListProps> = ({ propertyId }) => {
     );
   };
 
-  const _toggleSort = (field: "score" | "date" | "name") => {
-    if (sortBy === field) {
-      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
-    } else {
-      setSortBy(field);
-      setSortOrder("desc");
-    }
-  };
-
   return (
     <div className="space-y-6">
       {/* Header */}

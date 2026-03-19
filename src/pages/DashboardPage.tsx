@@ -28,8 +28,6 @@ import {
   DollarSign,
   Activity,
   Clock,
-  CheckCircle,
-  XCircle,
   ArrowUpRight,
   Shield,
   Loader2,

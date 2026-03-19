@@ -20,7 +20,6 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
     updateSchedule,
     deleteSchedule,
     toggleSchedule,
-    isLoading: _isLoading,
   } = useAvailability();
 
   const [showForm, setShowForm] = useState(false);

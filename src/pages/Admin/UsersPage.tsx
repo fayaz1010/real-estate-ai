@@ -13,7 +13,6 @@ import {
 import React, { useState, useEffect, useCallback } from "react";
 
 import apiClient from "@/api/client";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";

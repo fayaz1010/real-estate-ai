@@ -22,13 +22,8 @@ interface IncomeVerificationProps {
 const IncomeVerification: React.FC<IncomeVerificationProps> = ({
   applicationId,
 }) => {
-  const {
-    incomeStatus,
-    startIncomeVerification,
-    initializePlaid,
-    connectPlaid: _connectPlaid,
-    loading,
-  } = useVerification(applicationId);
+  const { incomeStatus, startIncomeVerification, initializePlaid, loading } =
+    useVerification(applicationId);
   const { formData } = useApplicationForm();
 
   const [method, setMethod] = useState<"documents" | "plaid" | null>(null);
@@ -47,7 +42,7 @@ const IncomeVerification: React.FC<IncomeVerificationProps> = ({
 
   const handlePlaidVerification = async () => {
     try {
-      const _linkToken = await initializePlaid();
+      await initializePlaid();
       // In production, integrate with Plaid Link SDK
       alert(
         "Plaid integration coming soon! For demo, this would open Plaid Link.",

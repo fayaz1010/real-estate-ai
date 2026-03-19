@@ -2,8 +2,8 @@ import request from "supertest";
 
 // ─── Mock express-rate-limit (must be before app import) ────────────────────
 
-jest.mock("express-rate-limit", () => {
-  return jest.fn().mockImplementation(() => {
+vi.mock("express-rate-limit", () => {
+  return vi.fn().mockImplementation(() => {
     return (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next();
   });
@@ -11,7 +11,7 @@ jest.mock("express-rate-limit", () => {
 
 // ─── Mock Error Handler (fix instanceof across module boundaries) ───────────
 
-jest.mock("../../backend/src/middleware/errorHandler", () => {
+vi.mock("../../backend/src/middleware/errorHandler", () => {
   class AppError extends Error {
     public statusCode: number;
     public code: string;
@@ -77,79 +77,79 @@ jest.mock("../../backend/src/middleware/errorHandler", () => {
 
 const mockPrisma = {
   user: {
-    findUnique: jest.fn(),
-    create: jest.fn(),
-    update: jest.fn(),
-    count: jest.fn(),
+    findUnique: vi.fn(),
+    create: vi.fn(),
+    update: vi.fn(),
+    count: vi.fn(),
   },
   refreshToken: {
-    create: jest.fn(),
-    findUnique: jest.fn(),
-    delete: jest.fn(),
-    deleteMany: jest.fn(),
+    create: vi.fn(),
+    findUnique: vi.fn(),
+    delete: vi.fn(),
+    deleteMany: vi.fn(),
   },
   emailVerificationToken: {
-    create: jest.fn(),
-    findUnique: jest.fn(),
-    update: jest.fn(),
-    deleteMany: jest.fn(),
+    create: vi.fn(),
+    findUnique: vi.fn(),
+    update: vi.fn(),
+    deleteMany: vi.fn(),
   },
   passwordResetToken: {
-    create: jest.fn(),
-    findUnique: jest.fn(),
-    update: jest.fn(),
+    create: vi.fn(),
+    findUnique: vi.fn(),
+    update: vi.fn(),
   },
   property: {
-    count: jest.fn().mockResolvedValue(0),
-    findMany: jest.fn().mockResolvedValue([]),
+    count: vi.fn().mockResolvedValue(0),
+    findMany: vi.fn().mockResolvedValue([]),
   },
   application: {
-    count: jest.fn().mockResolvedValue(0),
-    findMany: jest.fn().mockResolvedValue([]),
+    count: vi.fn().mockResolvedValue(0),
+    findMany: vi.fn().mockResolvedValue([]),
   },
   inspection: {
-    count: jest.fn().mockResolvedValue(0),
-    findMany: jest.fn().mockResolvedValue([]),
+    count: vi.fn().mockResolvedValue(0),
+    findMany: vi.fn().mockResolvedValue([]),
   },
-  $connect: jest.fn().mockResolvedValue(undefined),
-  $disconnect: jest.fn().mockResolvedValue(undefined),
-  $transaction: jest.fn().mockResolvedValue(undefined),
+  $connect: vi.fn().mockResolvedValue(undefined),
+  $disconnect: vi.fn().mockResolvedValue(undefined),
+  $transaction: vi.fn().mockResolvedValue(undefined),
 };
 
-jest.mock("../../backend/src/config/database", () => mockPrisma);
+vi.mock("../../backend/src/config/database", () => mockPrisma);
 
 // ─── Mock Utilities ─────────────────────────────────────────────────────────
 
-jest.mock("../../backend/src/utils/bcrypt", () => ({
-  hashPassword: jest.fn().mockResolvedValue("hashed_password_123"),
-  comparePassword: jest.fn().mockResolvedValue(true),
+vi.mock("../../backend/src/utils/bcrypt", () => ({
+  hashPassword: vi.fn().mockResolvedValue("hashed_password_123"),
+  comparePassword: vi.fn().mockResolvedValue(true),
 }));
 
-jest.mock("../../backend/src/utils/jwt", () => ({
-  generateAccessToken: jest.fn().mockReturnValue("access_token_123"),
-  generateRefreshToken: jest.fn().mockReturnValue("refresh_token_123"),
-  verifyRefreshToken: jest.fn().mockReturnValue({
+vi.mock("../../backend/src/utils/jwt", () => ({
+  generateAccessToken: vi.fn().mockReturnValue("access_token_123"),
+  generateRefreshToken: vi.fn().mockReturnValue("refresh_token_123"),
+  verifyRefreshToken: vi.fn().mockReturnValue({
     userId: "user-1",
     email: "test@example.com",
     role: "TENANT",
   }),
 }));
 
-jest.mock("../../backend/src/utils/emailService", () => ({
-  sendVerificationEmail: jest.fn().mockResolvedValue(undefined),
-  sendPasswordResetEmail: jest.fn().mockResolvedValue(undefined),
-  send2FAEnabledEmail: jest.fn().mockResolvedValue(undefined),
+vi.mock("../../backend/src/utils/emailService", () => ({
+  sendVerificationEmail: vi.fn().mockResolvedValue(undefined),
+  sendPasswordResetEmail: vi.fn().mockResolvedValue(undefined),
+  send2FAEnabledEmail: vi.fn().mockResolvedValue(undefined),
 }));
 
-jest.mock("otplib", () => ({
+vi.mock("otplib", () => ({
   authenticator: {
-    generateSecret: jest.fn().mockReturnValue("JBSWY3DPEHPK3PXP"),
+    generateSecret: vi.fn().mockReturnValue("JBSWY3DPEHPK3PXP"),
     keyuri: jest
       .fn()
       .mockReturnValue(
         "otpauth://totp/PropManage:test@example.com?secret=JBSWY3DPEHPK3PXP",
       ),
-    verify: jest.fn().mockReturnValue(true),
+    verify: vi.fn().mockReturnValue(true),
   },
 }));
 
@@ -162,7 +162,7 @@ const TEST_USER = {
   id: "user-1",
 };
 
-jest.mock("../../backend/src/middleware/auth", () => ({
+vi.mock("../../backend/src/middleware/auth", () => ({
   authenticate: (
     req: Record<string, unknown>,
     _res: unknown,
@@ -194,7 +194,7 @@ jest.mock("../../backend/src/middleware/auth", () => ({
       next(),
 }));
 
-jest.mock("../../backend/src/middleware/rateLimiter", () => ({
+vi.mock("../../backend/src/middleware/rateLimiter", () => ({
   rateLimiter: (
     _req: Record<string, unknown>,
     _res: unknown,
@@ -202,7 +202,7 @@ jest.mock("../../backend/src/middleware/rateLimiter", () => ({
   ) => next(),
 }));
 
-jest.mock("../../backend/src/middleware/validation", () => ({
+vi.mock("../../backend/src/middleware/validation", () => ({
   validate:
     () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next(),
@@ -257,7 +257,7 @@ const mockConfig = {
   cacheTtl: 3600,
 };
 
-jest.mock("../../backend/src/config/env", () => ({
+vi.mock("../../backend/src/config/env", () => ({
   __esModule: true,
   config: mockConfig,
   default: mockConfig,
@@ -318,7 +318,7 @@ const sampleUserWith2FAEnabled = {
 
 describe("Authentication Integration Tests", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   // ── User Registration ─────────────────────────────────────────────────

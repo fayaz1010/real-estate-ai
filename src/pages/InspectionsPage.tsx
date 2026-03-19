@@ -11,7 +11,6 @@ import {
   Video,
   Users,
   CheckCircle,
-  XCircle,
   Grid,
   Columns,
   Home,

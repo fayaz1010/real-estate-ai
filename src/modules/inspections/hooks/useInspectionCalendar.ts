@@ -15,7 +15,7 @@ interface CalendarDay {
 
 export const useInspectionCalendar = () => {
   const { inspections } = useInspections();
-  const { slots: _slots, loadSlots: _loadSlots } = useAvailability();
+  useAvailability();
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [view, setView] = useState<"month" | "week" | "day">("month");
@@ -79,7 +79,6 @@ export const useInspectionCalendar = () => {
     const year = currentDate.getFullYear();
     const month = currentDate.getMonth();
     const firstDay = new Date(year, month, 1);
-    const _lastDay = new Date(year, month + 1, 0);
     const startDate = new Date(firstDay);
     startDate.setDate(startDate.getDate() - startDate.getDay());
 

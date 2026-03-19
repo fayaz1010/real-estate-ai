@@ -2,11 +2,9 @@ import {
   ArrowRight,
   Star,
   Zap,
-  Cpu,
   Clock,
   CheckCircle,
   Settings,
-  Bell,
   CreditCard,
   Search,
   Hammer,
@@ -14,7 +12,6 @@ import {
   BarChart,
   TrendingUp,
   Users,
-  GitBranch,
 } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";

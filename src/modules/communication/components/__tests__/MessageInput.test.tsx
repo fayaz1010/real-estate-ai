@@ -5,10 +5,10 @@ import "@testing-library/jest-dom";
 import { MessageInput } from "../MessageInput";
 
 describe("MessageInput", () => {
-  const mockOnSend = jest.fn();
+  const mockOnSend = vi.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   it("renders textarea and send button", () => {

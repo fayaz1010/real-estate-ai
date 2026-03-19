@@ -101,12 +101,12 @@ const createTestProperty = (
 });
 
 describe("PropertyPricing", () => {
-  const mockOnContactAgent = jest.fn();
-  const mockOnScheduleTour = jest.fn();
+  const mockOnContactAgent = vi.fn();
+  const mockOnScheduleTour = vi.fn();
   let testProperty: TestProperty;
 
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     testProperty = createTestProperty();
   });
 

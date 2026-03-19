@@ -7,26 +7,26 @@ import type { Lease } from "@/modules/leases/api/leaseService";
 /* eslint-enable import/order */
 
 // ─── Mock API client (before any module that imports it) ────────────────────
-jest.mock("@/api/client", () => ({
+vi.mock("@/api/client", () => ({
   __esModule: true,
   default: {
-    get: jest.fn(),
-    post: jest.fn(),
-    patch: jest.fn(),
-    delete: jest.fn(),
-    interceptors: { request: { use: jest.fn() }, response: { use: jest.fn() } },
+    get: vi.fn(),
+    post: vi.fn(),
+    patch: vi.fn(),
+    delete: vi.fn(),
+    interceptors: { request: { use: vi.fn() }, response: { use: vi.fn() } },
   },
 }));
 
 // ─── Mock lease slice actions ───────────────────────────────────────────────
 
-const mockFetchLeases = jest.fn();
-const mockCreateLease = jest.fn();
-const mockUpdateLeaseStatus = jest.fn();
-const mockTerminateLease = jest.fn();
-const mockClearError = jest.fn();
+const mockFetchLeases = vi.fn();
+const mockCreateLease = vi.fn();
+const mockUpdateLeaseStatus = vi.fn();
+const mockTerminateLease = vi.fn();
+const mockClearError = vi.fn();
 
-jest.mock("@/modules/leases/store/leaseSlice", () => ({
+vi.mock("@/modules/leases/store/leaseSlice", () => ({
   __esModule: true,
   fetchLeases: Object.assign(mockFetchLeases, {
     pending: { type: "leases/fetchLeases/pending" },
@@ -71,7 +71,7 @@ import { LeaseManagementPage } from "@/pages/LeaseManagementPage";
 
 // ─── Mock lucide-react icons ────────────────────────────────────────────────
 
-jest.mock("lucide-react", () => {
+vi.mock("lucide-react", () => {
   const actual: Record<string, unknown> = {};
   const icons = [
     "FileText",
@@ -102,7 +102,7 @@ jest.mock("lucide-react", () => {
 
 // ─── Mock Redux actions ─────────────────────────────────────────────────────
 
-const mockDispatch = jest.fn(() => ({
+const mockDispatch = vi.fn(() => ({
   unwrap: () => Promise.resolve(),
   then: (fn: (value: unknown) => unknown) => Promise.resolve().then(fn),
   type: "",
@@ -110,9 +110,9 @@ const mockDispatch = jest.fn(() => ({
   meta: { requestStatus: "fulfilled" },
 }));
 
-jest.mock("@/store", () => ({
+vi.mock("@/store", () => ({
   useAppDispatch: () => mockDispatch,
-  useAppSelector: jest.fn(),
+  useAppSelector: vi.fn(),
 }));
 
 // ─── Test Data ──────────────────────────────────────────────────────────────
@@ -265,7 +265,7 @@ function setupMockSelector(
 
 describe("LeaseManagementPage", () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     setupMockSelector();
   });
 

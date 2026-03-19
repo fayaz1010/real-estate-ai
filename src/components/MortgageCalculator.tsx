@@ -44,6 +44,7 @@ export const MortgageCalculator: React.FC<MortgageCalculatorProps> = ({
   // Calculate mortgage when inputs change
   useEffect(() => {
     calculateMortgage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inputs]);
 
   const calculateMortgage = () => {
@@ -91,10 +92,6 @@ export const MortgageCalculator: React.FC<MortgageCalculatorProps> = ({
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     }).format(amount);
-  };
-
-  const _formatPercent = (rate: number) => {
-    return `${rate}%`;
   };
 
   return (

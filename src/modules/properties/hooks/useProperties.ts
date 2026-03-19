@@ -68,6 +68,7 @@ export const useProperties = () => {
     if (properties.length === 0 && !loading) {
       loadProperties();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {

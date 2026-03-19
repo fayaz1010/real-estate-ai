@@ -33,7 +33,7 @@ const ApprovalWorkflow: React.FC<ApprovalWorkflowProps> = ({ application }) => {
   );
   const [newCondition, setNewCondition] = useState("");
   const [requestMessage, setRequestMessage] = useState("");
-  const [requiredFields, _setRequiredFields] = useState<string[]>([]);
+  const [requiredFields] = useState<string[]>([]);
   const [processing, setProcessing] = useState(false);
 
   const rejectionReasons = [
