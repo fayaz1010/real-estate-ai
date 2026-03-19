@@ -2,7 +2,7 @@
 // TODO: Add your implementation here
 
 import { X, TrendingUp, AlertCircle } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 
 import { Application } from "../../types/application.types";
 import { calculateMonthlyIncome } from "../../utils/scoringAlgorithm";

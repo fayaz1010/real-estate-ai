@@ -5,7 +5,6 @@ import { ArrowLeft, Share2, Flag } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { PropertyIntelligence } from "../../../../components/PropertyIntelligence";
 import { PropertyJsonLd } from "../../../../components/seo";
 import { useProperties } from "../../hooks/useProperties";
 import { propertyService } from "../../services/propertyService";

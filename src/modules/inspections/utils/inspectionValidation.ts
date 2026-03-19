@@ -4,7 +4,6 @@
 import {
   InspectionBookingRequest,
   CreateInspectionDto,
-  UpdateInspectionDto,
   RecurringSchedule,
   BlackoutDate,
 } from "../types/inspection.types";

@@ -1,10 +1,10 @@
 // FILE PATH: src/modules/properties/components/PropertyDetails/PropertyContact.tsx
 // Module 1.2: Property Listings Management - Property Contact Component
 
-import { Mail, Phone, MessageSquare, Home, Check, X } from "lucide-react";
+import { Mail, Phone, MessageSquare, Home, Check } from "lucide-react";
 import React, { useState } from "react";
 
-import { Property, AgentInfo } from "../../types/property.types";
+import { Property } from "../../types/property.types";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

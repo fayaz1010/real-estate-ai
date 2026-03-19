@@ -2,7 +2,6 @@
 
 import {
   User as UserIcon,
-  Upload,
   Camera,
   Home,
   Briefcase,

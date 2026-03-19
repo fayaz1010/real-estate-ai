@@ -1,12 +1,7 @@
 ﻿// PLACEHOLDER FILE: components\ApplicationReview\ScoringBreakdown.tsx
 // TODO: Add your implementation here
 
-import {
-  TrendingUp,
-  TrendingDown,
-  AlertCircle,
-  CheckCircle,
-} from "lucide-react";
+import { AlertCircle, CheckCircle } from "lucide-react";
 import React from "react";
 
 import { Application } from "../../types/application.types";

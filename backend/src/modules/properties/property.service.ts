@@ -48,9 +48,14 @@ export class PropertyService {
       search,
     } = filters;
 
+    // If full-text search query is provided, use raw SQL with tsvector
+    if (search && typeof search === "string" && search.trim()) {
+      return this.fullTextSearch(filters);
+    }
+
     const where: Record<string, unknown> = {
       deletedAt: null,
-      status: status || "ACTIVE", // Default to ACTIVE properties
+      status: status || "ACTIVE",
     };
 
     if (propertyType) where.propertyType = propertyType;
@@ -62,12 +67,6 @@ export class PropertyService {
     }
     if (bedrooms) where.bedrooms = parseInt(bedrooms as string);
     if (bathrooms) where.bathrooms = parseFloat(bathrooms as string);
-    if (search) {
-      where.OR = [
-        { title: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } },
-      ];
-    }
 
     const [properties, total] = await Promise.all([
       prisma.property.findMany({
@@ -93,6 +92,123 @@ export class PropertyService {
 
     return {
       properties,
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / (limit as number)),
+      },
+    };
+  }
+
+  // Full-text search using PostgreSQL tsvector
+  private async fullTextSearch(filters: Record<string, unknown>) {
+    const {
+      page = 1,
+      limit = 20,
+      propertyType,
+      status,
+      minPrice,
+      maxPrice,
+      bedrooms,
+      bathrooms,
+      search,
+    } = filters;
+
+    const searchQuery = (search as string).trim();
+    const offset = ((page as number) - 1) * (limit as number);
+
+    // Build WHERE conditions
+    const conditions: string[] = [
+      `p."deletedAt" IS NULL`,
+      `p.status = $1`,
+      `p.search_vector @@ plainto_tsquery('english', $2)`,
+    ];
+    const params: unknown[] = [status || "ACTIVE", searchQuery];
+    let paramIdx = 3;
+
+    if (propertyType) {
+      conditions.push(`p."propertyType" = $${paramIdx}::"PropertyType"`);
+      params.push(propertyType);
+      paramIdx++;
+    }
+    if (minPrice) {
+      conditions.push(`p.price >= $${paramIdx}`);
+      params.push(parseFloat(minPrice as string));
+      paramIdx++;
+    }
+    if (maxPrice) {
+      conditions.push(`p.price <= $${paramIdx}`);
+      params.push(parseFloat(maxPrice as string));
+      paramIdx++;
+    }
+    if (bedrooms) {
+      conditions.push(`p.bedrooms = $${paramIdx}`);
+      params.push(parseInt(bedrooms as string));
+      paramIdx++;
+    }
+    if (bathrooms) {
+      conditions.push(`p.bathrooms = $${paramIdx}`);
+      params.push(parseFloat(bathrooms as string));
+      paramIdx++;
+    }
+
+    const whereClause = conditions.join(" AND ");
+
+    // Count query
+    const countResult = await prisma.$queryRawUnsafe<[{ count: bigint }]>(
+      `SELECT COUNT(*) as count FROM "Property" p WHERE ${whereClause}`,
+      ...params,
+    );
+    const total = Number(countResult[0].count);
+
+    // Main query with rank ordering and joined data
+    const limitParam = paramIdx;
+    const offsetParam = paramIdx + 1;
+    params.push(limit as number, offset);
+
+    const properties = await prisma.$queryRawUnsafe<Record<string, unknown>[]>(
+      `SELECT p.id, p."ownerId", p.title, p.description, p.slug, p."propertyType", p.status,
+              p.address, p.bedrooms, p.bathrooms, p.sqft, p."lotSize", p."yearBuilt",
+              p.price, p."pricePerSqft", p.deposit, p.amenities, p.utilities, p.parking,
+              p."petPolicy", p."virtualTourUrl", p."videoUrl", p."floorPlanUrl",
+              p."availableFrom", p."leaseTerm", p.views, p.featured, p.verified,
+              p."publishedAt", p."createdAt", p."updatedAt", p."deletedAt",
+              ts_rank(p.search_vector, plainto_tsquery('english', $2)) as search_rank,
+              json_build_object('id', u.id, 'firstName', u."firstName", 'lastName', u."lastName") as owner
+       FROM "Property" p
+       LEFT JOIN "User" u ON p."ownerId" = u.id
+       WHERE ${whereClause}
+       ORDER BY search_rank DESC, p."createdAt" DESC
+       LIMIT $${limitParam} OFFSET $${offsetParam}`,
+      ...params,
+    );
+
+    // Fetch images for the returned properties
+    const propertyIds = properties.map((p) => p.id as string);
+    const images =
+      propertyIds.length > 0
+        ? await prisma.propertyImage.findMany({
+            where: { propertyId: { in: propertyIds } },
+            orderBy: { order: "asc" },
+          })
+        : [];
+
+    // Attach images to properties
+    const imagesByProperty = new Map<string, typeof images>();
+    for (const img of images) {
+      const list = imagesByProperty.get(img.propertyId) || [];
+      list.push(img);
+      imagesByProperty.set(img.propertyId, list);
+    }
+
+    const propertiesWithImages = properties.map((p) => ({
+      ...p,
+      images: imagesByProperty.get(p.id as string) || [],
+    }));
+
+    return {
+      properties: propertiesWithImages,
       pagination: {
         page,
         limit,

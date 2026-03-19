@@ -1,14 +1,7 @@
 // FILE PATH: src/modules/properties/components/PropertyDetails/PropertyOverview.tsx
 // Module 1.2: Property Listings Management - Property Overview Section
 
-import {
-  MapPin,
-  Droplet,
-  Maximize,
-  Home,
-  Calendar,
-  TrendingUp,
-} from "lucide-react";
+import { MapPin, Droplet, Maximize, Home } from "lucide-react";
 import React from "react";
 
 import { Property } from "../../types/property.types";

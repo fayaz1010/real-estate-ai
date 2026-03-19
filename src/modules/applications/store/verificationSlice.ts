@@ -1,7 +1,7 @@
 // PLACEHOLDER FILE: store\verificationSlice.ts
 // TODO: Add your implementation here
 
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import {
   backgroundCheckService,
@@ -241,7 +241,7 @@ const verificationSlice = createSlice({
       state.error = null;
     },
 
-    resetVerification: (state) => {
+    resetVerification: (_state) => {
       return initialState;
     },
 

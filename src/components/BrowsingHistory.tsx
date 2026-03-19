@@ -1,7 +1,7 @@
 // FILE PATH: src/components/BrowsingHistory.tsx
 // Component for displaying recent searches and viewed properties for non-signed-in users
 
-import { Clock, Eye, Search, X, TrendingUp, MapPin } from "lucide-react";
+import { Clock, Eye, Search, X } from "lucide-react";
 import React from "react";
 
 import { useBrowsingHistory } from "../hooks/useBrowsingHistory";

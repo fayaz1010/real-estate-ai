@@ -93,7 +93,7 @@ export const MortgageCalculator: React.FC<MortgageCalculatorProps> = ({
     }).format(amount);
   };
 
-  const formatPercent = (rate: number) => {
+  const _formatPercent = (rate: number) => {
     return `${rate}%`;
   };
 

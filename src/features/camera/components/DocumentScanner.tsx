@@ -1,10 +1,8 @@
 import {
-  Crosshair,
   RotateCcw,
   Download,
   Check,
   ZoomIn,
-  Sliders,
   X,
   Scan,
   Contrast,

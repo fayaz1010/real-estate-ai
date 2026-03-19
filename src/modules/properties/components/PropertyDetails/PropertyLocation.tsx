@@ -11,7 +11,6 @@ import {
   MapPin,
   Navigation,
   ShoppingCart,
-  TrendingUp,
   BookOpen,
   Coffee,
   ShoppingBag,

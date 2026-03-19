@@ -10,15 +10,23 @@ export interface JwtPayload {
 }
 
 export const generateAccessToken = (payload: JwtPayload): string => {
-  return jwt.sign(payload, config.jwtSecret, {
-    expiresIn: config.jwtExpiresIn as string,
-  });
+  return jwt.sign(
+    payload as object,
+    config.jwtSecret as jwt.Secret,
+    {
+      expiresIn: config.jwtExpiresIn,
+    } as jwt.SignOptions,
+  );
 };
 
 export const generateRefreshToken = (payload: JwtPayload): string => {
-  return jwt.sign(payload, config.jwtRefreshSecret, {
-    expiresIn: config.refreshTokenExpiresIn as string,
-  });
+  return jwt.sign(
+    payload as object,
+    config.jwtRefreshSecret as jwt.Secret,
+    {
+      expiresIn: config.refreshTokenExpiresIn,
+    } as jwt.SignOptions,
+  );
 };
 
 export const verifyAccessToken = (token: string): JwtPayload => {

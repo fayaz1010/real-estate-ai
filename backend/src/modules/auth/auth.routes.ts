@@ -1,8 +1,10 @@
 // Auth Routes
-import { Router } from "express";
+import { Router, Request, Response } from "express";
+import rateLimit from "express-rate-limit";
 
 import { authenticate } from "../../middleware/auth";
 import { validate } from "../../middleware/validation";
+import logger from "../../utils/logger";
 
 import authController from "./auth.controller";
 import {
@@ -16,9 +18,35 @@ import {
 
 const router = Router();
 
+const authRateLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 10,
+  keyGenerator: (req: Request) => req.ip || "unknown",
+  handler: (req: Request, res: Response) => {
+    logger.info(
+      `Rate limit triggered for IP: ${req.ip}, Route: ${req.originalUrl}`,
+    );
+    res.status(429).json({
+      success: false,
+      message: "Too many requests, please try again later.",
+    });
+  },
+  standardHeaders: true,
+});
+
 // Public routes
-router.post("/register", validate(registerSchema), authController.register);
-router.post("/login", validate(loginSchema), authController.login);
+router.post(
+  "/register",
+  authRateLimiter,
+  validate(registerSchema),
+  authController.register,
+);
+router.post(
+  "/login",
+  authRateLimiter,
+  validate(loginSchema),
+  authController.login,
+);
 router.post(
   "/refresh",
   validate(refreshTokenSchema),
@@ -27,17 +55,19 @@ router.post(
 router.post("/logout", authController.logout);
 router.post(
   "/forgot-password",
+  authRateLimiter,
   validate(forgotPasswordSchema),
   authController.forgotPassword,
 );
 router.post(
   "/reset-password",
+  authRateLimiter,
   validate(resetPasswordSchema),
   authController.resetPassword,
 );
 
 // Email verification
-router.post("/verify-email", authController.verifyEmail);
+router.post("/verify-email", authRateLimiter, authController.verifyEmail);
 router.post(
   "/resend-verification",
   authenticate,

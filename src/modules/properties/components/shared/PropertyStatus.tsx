@@ -1,7 +1,7 @@
 // FILE PATH: src/modules/properties/components/shared/PropertyStatus.tsx
 // Module 1.2: Property Listings Management - Property Status Component
 
-import { CheckCircle, Clock, XCircle, EyeOff, Edit } from "lucide-react";
+import { CheckCircle, Clock, EyeOff, Edit } from "lucide-react";
 import React from "react";
 
 import { PropertyStatus as PropertyStatusType } from "../../types/property.types";

@@ -1,7 +1,7 @@
 ﻿// PLACEHOLDER FILE: components\CoApplicants\CoApplicantForm.tsx
 // TODO: Add your implementation here
 
-import { User, Briefcase, DollarSign, Save, CheckCircle } from "lucide-react";
+import { User, Briefcase, DollarSign, Save } from "lucide-react";
 import React, { useState } from "react";
 
 import { applicationService } from "../../services/applicationService";

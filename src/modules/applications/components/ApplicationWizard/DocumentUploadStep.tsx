@@ -17,7 +17,7 @@ const DocumentUploadStep: React.FC = () => {
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>(
     {},
   );
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const _fileInputRef = useRef<HTMLInputElement>(null);
 
   const requiredDocs = [
     { type: "id", label: "Government-Issued ID", required: true },

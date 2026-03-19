@@ -1,7 +1,7 @@
 // FILE PATH: src/modules/properties/components/PropertyDetails/PropertyGallery.tsx
 // Module 1.2: Property Listings Management - Image Gallery Lightbox
 
-import { X, ChevronLeft, ChevronRight, Download, Maximize } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, Download } from "lucide-react";
 import React, { useState, useEffect } from "react";
 
 import { PropertyImage } from "../../types/property.types";

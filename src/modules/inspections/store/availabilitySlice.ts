@@ -1,7 +1,7 @@
 // PLACEHOLDER FILE: src/modules/inspections/store/availabilitySlice.ts
 // TODO: Add your implementation here
 
-import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { RootState } from "../../../store";
 import availabilityService from "../services/availabilityService";

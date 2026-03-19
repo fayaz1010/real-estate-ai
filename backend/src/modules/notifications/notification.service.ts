@@ -39,7 +39,10 @@ export class NotificationService {
         status: "DELIVERED",
         title: params.title,
         message: params.message,
-        data: params.data || {},
+        data: (params.data || {}) as Record<
+          string,
+          unknown
+        > as import("@prisma/client").Prisma.InputJsonValue,
         inspectionId: params.inspectionId,
         propertyId: params.propertyId,
         sentAt: new Date(),

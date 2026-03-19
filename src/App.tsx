@@ -63,9 +63,6 @@ const PaymentCollectionPage = React.lazy(() =>
     default: m.PaymentCollectionPage,
   })),
 );
-const PredictiveMaintenancePage = React.lazy(
-  () => import("./pages/maintenance/predictive"),
-);
 const ReportingDashboardPage = React.lazy(() =>
   import("./pages/ReportingDashboardPage").then((m) => ({
     default: m.ReportingDashboardPage,
@@ -127,6 +124,76 @@ const PropertyManagementPage = React.lazy(() =>
   })),
 );
 
+// Lazy-loaded feature pages
+const BookingPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({ default: m.BookingPage })),
+);
+const GoogleMapsPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({ default: m.GoogleMapsPage })),
+);
+const LeadGenerationPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({
+    default: m.LeadGenerationPage,
+  })),
+);
+const CRMPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({ default: m.CRMPage })),
+);
+const PropertyValuationPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({
+    default: m.PropertyValuationPage,
+  })),
+);
+const MarketAnalysisPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({
+    default: m.MarketAnalysisPage,
+  })),
+);
+const PredictiveAnalyticsPage_ = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({
+    default: m.PredictiveAnalyticsPage,
+  })),
+);
+const AIChatbotsPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({ default: m.AIChatbotsPage })),
+);
+const VirtualToursPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({ default: m.VirtualToursPage })),
+);
+const AutomatedMarketingPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({
+    default: m.AutomatedMarketingPage,
+  })),
+);
+const DocumentManagementPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({
+    default: m.DocumentManagementPage,
+  })),
+);
+const InteractiveDemoPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({
+    default: m.InteractiveDemoPage,
+  })),
+);
+const PricingCalculatorPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({
+    default: m.PricingCalculatorPage,
+  })),
+);
+const FeatureComparisonPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({
+    default: m.FeatureComparisonPage,
+  })),
+);
+const ROICalculatorPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({
+    default: m.ROICalculatorPage,
+  })),
+);
+const CheckoutPage = React.lazy(() =>
+  import("./pages/FeaturePages").then((m) => ({ default: m.CheckoutPage })),
+);
+
 // Lazy-loaded module pages
 const PropertyDetailsPage = React.lazy(() =>
   import("./modules/properties/components/PropertyDetails/PropertyDetailsPage").then(
@@ -181,8 +248,11 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    void errorInfo;
-    void error;
+    import("@sentry/react").then((Sentry) => {
+      Sentry.captureException(error, {
+        extra: { componentStack: errorInfo.componentStack },
+      });
+    });
   }
 
   render(): ReactNode {
@@ -730,6 +800,206 @@ const AppContent: React.FC = () => {
                 </Suspense>
               </ProtectedRoute>
             }
+          />
+
+          {/* Feature Pages with Layout */}
+          <Route
+            path="/booking"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <BookingPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/google-maps"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <GoogleMapsPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/lead-generation"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <LeadGenerationPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/crm"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <CRMPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/property-valuation"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PropertyValuationPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/market-analysis"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <MarketAnalysisPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/predictive-analytics"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PredictiveAnalyticsPage_ />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/ai-chatbots"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <AIChatbotsPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/virtual-tours"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <VirtualToursPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/automated-marketing"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <AutomatedMarketingPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/document-management"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <DocumentManagementPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/interactive-demo"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <InteractiveDemoPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/pricing-calculator"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <PricingCalculatorPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/feature-comparison"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <FeatureComparisonPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/roi-calculator"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <ROICalculatorPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/checkout"
+            element={
+              <Layout>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <CheckoutPage />
+                </Suspense>
+              </Layout>
+            }
+          />
+          <Route
+            path="/property-listings"
+            element={<Navigate to="/properties" replace />}
+          />
+          <Route
+            path="/onboarding-wizard"
+            element={<Navigate to="/onboarding" replace />}
+          />
+
+          {/* SEO-friendly root-level landing page routes */}
+          <Route
+            path="/property-management-software"
+            element={<Navigate to="/landing/property-management" replace />}
+          />
+          <Route
+            path="/landlord-software"
+            element={<Navigate to="/landing/small-landlords" replace />}
+          />
+          <Route
+            path="/rent-collection-app"
+            element={<Navigate to="/landing/rent-collection" replace />}
+          />
+          <Route
+            path="/tenant-screening-software"
+            element={<Navigate to="/landing/tenant-screening" replace />}
+          />
+          <Route
+            path="/property-management-ai"
+            element={<Navigate to="/landing/ai-property-management" replace />}
+          />
+          <Route
+            path="/small-landlords"
+            element={<Navigate to="/landing/small-landlords" replace />}
+          />
+          <Route
+            path="/appfolio-alternative"
+            element={<Navigate to="/landing/appfolio-alternative" replace />}
           />
 
           {/* Catch-all */}

@@ -2,7 +2,7 @@
 // TODO: Add your implementation here
 
 import { Plus, Edit, Trash2, Clock, Calendar, Power } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { useAvailability } from "../../hooks/useAvailability";
 import { RecurringSchedule as RecurringScheduleType } from "../../types/inspection.types";
@@ -20,7 +20,7 @@ export const RecurringSchedule: React.FC<RecurringScheduleProps> = ({
     updateSchedule,
     deleteSchedule,
     toggleSchedule,
-    isLoading,
+    isLoading: _isLoading,
   } = useAvailability();
 
   const [showForm, setShowForm] = useState(false);

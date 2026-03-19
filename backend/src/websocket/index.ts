@@ -230,7 +230,7 @@ function handleDirectMessage(
   // If a specific recipient, send only to that user
   if (recipientId) {
     sendToUser(
-      recipientId,
+      recipientId as string,
       "communication:messages",
       "new_message",
       outgoingPayload.data,

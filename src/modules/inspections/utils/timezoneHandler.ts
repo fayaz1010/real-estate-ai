@@ -234,8 +234,8 @@ export function getTimezoneDisplay(timezone: string): string {
  * Detect timezone from coordinates
  */
 export async function getTimezoneFromCoordinates(
-  latitude: number,
-  longitude: number,
+  _latitude: number,
+  _longitude: number,
 ): Promise<string> {
   // This would typically use an external API like Google Time Zone API
   // For now, return user's timezone as fallback

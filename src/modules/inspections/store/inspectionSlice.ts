@@ -11,7 +11,6 @@ import {
   InspectionState,
   InspectionBookingRequest,
   InspectionStatus,
-  AvailabilitySlot,
 } from "../types/inspection.types";
 
 // ============================================================================

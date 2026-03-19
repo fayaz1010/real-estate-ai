@@ -9,8 +9,6 @@ import { searchService } from "../services/searchService";
 import {
   SearchState,
   SearchFilters,
-  SavedSearch,
-  Property,
   SortOption,
   MapBounds,
 } from "../types/property.types";

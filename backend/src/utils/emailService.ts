@@ -4,6 +4,8 @@ import nodemailer from "nodemailer";
 
 import { config } from "../config/env";
 
+import logger from "./logger";
+
 // ─── Design System Constants ─────────────────────────────────────────────────
 export const COLORS = {
   primary: "#091a2b",
@@ -50,7 +52,7 @@ function checkEmailRateLimit(recipient: string): boolean {
   }
 
   if (entry.count >= max) {
-    console.warn(
+    logger.warn(
       `[EmailService] Rate limit exceeded for recipient: ${maskEmail(recipient)}`,
     );
     return false;
@@ -79,7 +81,7 @@ function getTransporter(): nodemailer.Transporter {
         pass: config.smtp.pass,
       },
     });
-    console.log(
+    logger.info(
       `[EmailService] Transporter initialized (host: ${config.smtp.host}, port: ${config.smtp.port})`,
     );
   }
@@ -169,12 +171,13 @@ export const sendEmail = async (options: EmailOptions): Promise<void> => {
     const error = new Error(
       `Email rate limit exceeded for recipient. Max ${config.emailRateLimit.max} emails per ${config.emailRateLimit.windowMs / 60000} minutes.`,
     );
-    console.error("[EmailService] Rate limit error:", error.message);
+    logger.error("[EmailService] Rate limit error:", error.message);
     throw error;
   }
 
   const mailOptions = {
     from: `"${config.smtp.fromName}" <${config.smtp.fromEmail}>`,
+    replyTo: config.smtp.replyToEmail,
     to: options.to,
     subject: options.subject,
     html: options.html,
@@ -183,7 +186,7 @@ export const sendEmail = async (options: EmailOptions): Promise<void> => {
 
   // In development without SMTP credentials, log instead of sending
   if (config.nodeEnv === "development" && !config.smtp.user) {
-    console.log("[EmailService] [DEV] Email would be sent:", {
+    logger.info("[EmailService] [DEV] Email would be sent:", {
       to: options.to,
       subject: options.subject,
     });
@@ -193,15 +196,14 @@ export const sendEmail = async (options: EmailOptions): Promise<void> => {
   try {
     const transport = getTransporter();
     const info = await transport.sendMail(mailOptions);
-    console.log(
+    logger.info(
       `[EmailService] Email sent successfully to ${maskEmail(options.to)} (messageId: ${info.messageId})`,
     );
   } catch (error: unknown) {
     const message =
       error instanceof Error ? error.message : "Unknown email error";
-    console.error(
-      `[EmailService] Failed to send email to ${maskEmail(options.to)}:`,
-      message,
+    logger.error(
+      `[EmailService] Failed to send email to ${maskEmail(options.to)}: ${message}`,
     );
     throw error;
   }
@@ -482,6 +484,25 @@ export const sendInspectionNoShowEmail = async (
     subject,
     html: wrapEmailTemplate(subject, bodyHtml),
     text: `Hi ${vars.userName}, you missed your inspection for ${vars.propertyTitle} on ${vars.date} at ${vars.time}. Please reschedule at your convenience.`,
+  });
+};
+
+// ─── Test Email ────────────────────────────────────────────────────────────
+export const sendTestEmail = async (to: string): Promise<void> => {
+  const bodyHtml = `
+    <h2 style="margin: 0 0 16px; color: ${COLORS.primary}; font-family: ${FONTS.display}; font-size: 20px;">
+      Email Configuration Test
+    </h2>
+    <p style="margin: 0 0 12px;">This is a test email from RealEstateAI.</p>
+    <p style="margin: 0 0 12px;">If you received this email, the email service is configured correctly.</p>
+    ${buildInfoBox(`<strong>SMTP Host:</strong> ${config.smtp.host}<br/><strong>From:</strong> ${config.smtp.fromEmail}<br/><strong>Sent at:</strong> ${new Date().toISOString()}`)}
+  `;
+
+  await sendEmail({
+    to,
+    subject: "Test Email – RealEstateAI",
+    html: wrapEmailTemplate("Email Configuration Test", bodyHtml),
+    text: `This is a test email from RealEstateAI. SMTP Host: ${config.smtp.host}. From: ${config.smtp.fromEmail}. Sent at: ${new Date().toISOString()}.`,
   });
 };
 

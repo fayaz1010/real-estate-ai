@@ -1,6 +1,7 @@
 // Express App Configuration
 import path from "path";
 
+import * as Sentry from "@sentry/node";
 import compression from "compression";
 import cors from "cors";
 import express, { Application } from "express";
@@ -11,38 +12,42 @@ import { config } from "./config/env";
 import { swaggerDocument } from "./config/swagger";
 import { errorHandler } from "./middleware/errorHandler";
 import { rateLimiter } from "./middleware/rateLimiter";
+import { securityMiddleware } from "./middleware/security";
 import routes from "./routes";
 
 const app: Application = express();
 
-// Security Middleware
+// Initialize Sentry for error tracking (must be early, before routes)
+if (config.sentryDsn && config.sentryDsn !== "REPLACE_WITH_SENTRY_DSN") {
+  Sentry.init({
+    dsn: config.sentryDsn,
+    environment: config.nodeEnv,
+    release: `real-estate-ai@${process.env.npm_package_version || "1.0.0"}`,
+    tracesSampleRate: 0.1,
+  });
+}
+
+// Security Middleware - base helmet (CSP, HSTS, XSS are toggled separately via env vars)
 app.use(
   helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "https://js.stripe.com", "https://unpkg.com"],
-        styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com", "https://unpkg.com"],
-        imgSrc: ["'self'", "data:", "https:", "blob:"],
-        fontSrc: ["'self'", "https://fonts.gstatic.com"],
-        connectSrc: ["'self'", "https://api.stripe.com", "wss:", "ws:"],
-        frameSrc: ["'self'", "https://js.stripe.com"],
-        objectSrc: ["'none'"],
-        baseUri: ["'self'"],
-        formAction: ["'self'"],
-        upgradeInsecureRequests: [],
-      },
-    },
+    contentSecurityPolicy: false, // Toggled via CSP_ENABLED
+    hsts: false, // Toggled via HSTS_ENABLED
+    xssFilter: false, // Toggled via XSS_PROTECTION_ENABLED
     crossOriginEmbedderPolicy: false,
     crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
     referrerPolicy: { policy: "strict-origin-when-cross-origin" },
-    hsts: { maxAge: 31536000, includeSubDomains: true, preload: true },
   }),
 );
 app.use((_req, res, next) => {
-  res.setHeader("Permissions-Policy", "camera=(), microphone=(), geolocation=(self), payment=(self)");
+  res.setHeader(
+    "Permissions-Policy",
+    "camera=(), microphone=(), geolocation=(self), payment=(self)",
+  );
   next();
 });
+
+// Toggleable security middleware (CSRF, CSP, HSTS, XSS via env vars)
+app.use(securityMiddleware());
 app.use(
   cors({
     origin: config.corsOrigin,
@@ -125,6 +130,9 @@ if (config.nodeEnv === "production") {
     });
   });
 }
+
+// Sentry error handler (must be before other error middleware)
+Sentry.setupExpressErrorHandler(app);
 
 // Error Handler (must be last)
 app.use(errorHandler);

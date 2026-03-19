@@ -1,4 +1,4 @@
-import { Home, CreditCard, Wrench, ChevronRight, Menu, X } from "lucide-react";
+import { Home, CreditCard, Wrench, Menu, X } from "lucide-react";
 import { useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 

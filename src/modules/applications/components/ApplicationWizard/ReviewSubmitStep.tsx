@@ -9,7 +9,6 @@ import {
   DollarSign,
   Home,
   Users,
-  Shield,
   FileText,
 } from "lucide-react";
 import React from "react";

@@ -1,11 +1,11 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionManagement/CheckInOut.tsx
 // TODO: Add your implementation here
 
-import { MapPin, Camera, CheckCircle, Star } from "lucide-react";
+import { MapPin, CheckCircle, Star } from "lucide-react";
 import React, { useState } from "react";
 
 import { useInspections } from "../../hooks/useInspections";
-import { Inspection, CheckOutDto } from "../../types/inspection.types";
+import { Inspection } from "../../types/inspection.types";
 
 interface CheckInOutProps {
   inspection: Inspection;

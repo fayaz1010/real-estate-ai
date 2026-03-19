@@ -26,7 +26,7 @@ export interface AutoFillSource {
  */
 export const getAutoFillSuggestions = async (
   userId: string,
-  propertyId: string,
+  _propertyId: string,
 ): Promise<AutoFillSource[]> => {
   const suggestions: AutoFillSource[] = [];
 
@@ -381,7 +381,7 @@ const getSuggestedEmployers = (partial: string): string[] => {
 
 const getSuggestedJobTitles = (
   partial: string,
-  employer?: string,
+  _employer?: string,
 ): string[] => {
   const titles = [
     "Software Engineer",

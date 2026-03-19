@@ -27,6 +27,10 @@ export const config = {
     pass: process.env.SMTP_PASS || "",
     fromName: process.env.SMTP_FROM_NAME || "RealEstateAI",
     fromEmail: process.env.SMTP_FROM_EMAIL || "noreply@realestateai.com",
+    replyToEmail:
+      process.env.SMTP_REPLY_TO_EMAIL ||
+      process.env.SMTP_FROM_EMAIL ||
+      "noreply@realestateai.com",
   },
 
   // CORS
@@ -42,7 +46,8 @@ export const config = {
     accountId: process.env.CLOUDFLARE_ACCOUNT_ID || "",
     accessKeyId: process.env.CLOUDFLARE_ACCESS_KEY_ID || "",
     accessKeySecret: process.env.CLOUDFLARE_ACCESS_KEY_SECRET || "",
-    bucketName: process.env.CLOUDFLARE_BUCKET_NAME || "real-estate-ai-images",
+    bucketName:
+      process.env.CLOUDFLARE_BUCKET_NAME || "real-estate-ai-images-prod",
     region: process.env.CLOUDFLARE_REGION || "auto",
   },
 
@@ -96,6 +101,9 @@ export const config = {
     phoneVerification: process.env.FEATURE_PHONE_VERIFICATION === "true",
     twoFactor: process.env.FEATURE_2FA === "true",
   },
+
+  // Sentry
+  sentryDsn: process.env.SENTRY_DSN || "",
 };
 
 // Validate required environment variables

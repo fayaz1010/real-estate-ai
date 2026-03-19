@@ -9,7 +9,7 @@ interface BufferTimeSettingsProps {
 }
 
 export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
-  propertyId,
+  propertyId: _propertyId,
 }) => {
   const [settings, setSettings] = useState({
     defaultBuffer: 15,

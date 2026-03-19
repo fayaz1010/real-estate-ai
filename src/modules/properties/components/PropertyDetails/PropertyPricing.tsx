@@ -2,7 +2,6 @@
 // Module 1.2: Property Listings Management - Property Pricing Component
 
 import {
-  DollarSign,
   TrendingUp,
   TrendingDown,
   Info,
@@ -20,7 +19,6 @@ import { MortgageCalculator } from "../../../../components/MortgageCalculator";
 import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
 import { formatCurrency } from "../../../../lib/utils";
-import { Property } from "../../types/property.types";
 
 // Import using relative path to avoid module resolution issues
 
@@ -142,7 +140,7 @@ export const PropertyPricing: React.FC<PropertyPricingProps> = ({
   const priceChange = pricing.priceChange ?? 0;
 
   // Calculate monthly payment (example calculation)
-  const calculateMonthlyPayment = (): number => {
+  const _calculateMonthlyPayment = (): number => {
     if (isRental) return pricing.price;
 
     // Simple mortgage calculation (30-year fixed, 4% interest)

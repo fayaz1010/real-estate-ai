@@ -647,41 +647,59 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 /* ------------------------------------------------------------------ */
 const tiers = [
   {
+    name: "Free",
+    price: "$0",
+    period: "/mo",
+    description: "Try it out, no commitment",
+    features: [
+      "Up to 3 properties",
+      "Basic tenant management",
+      "Rent tracking",
+      "Limited reporting",
+    ],
+    highlighted: false,
+  },
+  {
     name: "Starter",
     price: "$29",
     period: "/mo",
     description: "For small landlords getting started",
     features: [
       "Up to 10 properties",
-      "Basic tenant management",
       "Online rent collection",
       "Maintenance requests",
+      "Basic AI insights",
+      "Email support",
     ],
     highlighted: false,
   },
   {
-    name: "Professional",
-    price: "$79",
+    name: "Growth",
+    price: "$99",
     period: "/mo",
     description: "For growing portfolios",
     features: [
       "Up to 50 properties",
-      "AI-powered analytics",
-      "Automated lease management",
-      "Tenant screening",
+      "Full AI analytics",
+      "Automated screening",
+      "Financial reporting",
+      "API access",
+      "Priority support",
     ],
     highlighted: true,
   },
   {
-    name: "Business",
-    price: "$149",
+    name: "Professional",
+    price: "$249",
     period: "/mo",
     description: "For property management firms",
     features: [
       "Up to 200 properties",
-      "Advanced market reports",
-      "API access",
-      "Priority support",
+      "Advanced AI predictions",
+      "Custom workflows",
+      "White-label options",
+      "Dedicated account manager",
+      "Phone support",
     ],
     highlighted: false,
   },
@@ -692,9 +710,11 @@ const tiers = [
     description: "For large-scale operators",
     features: [
       "Unlimited properties",
-      "Dedicated account manager",
       "Custom integrations",
       "SLA guarantees",
+      "On-premise option",
+      "Custom AI models",
+      "Dedicated success team",
     ],
     highlighted: false,
   },
@@ -718,7 +738,7 @@ const PricingPreview: React.FC = () => (
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         {tiers.map((tier) => (
           <div
             key={tier.name}

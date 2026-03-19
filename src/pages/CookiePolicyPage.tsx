@@ -26,9 +26,9 @@ export const CookiePolicyPage: React.FC = () => {
                 1. What Are Cookies
               </h2>
               <p>
-                Cookies are small text files stored on your device when you visit a website.
-                They help us recognize your browser, remember your preferences, and improve
-                your experience on our platform.
+                Cookies are small text files stored on your device when you
+                visit a website. They help us recognize your browser, remember
+                your preferences, and improve your experience on our platform.
               </p>
             </section>
 
@@ -38,16 +38,16 @@ export const CookiePolicyPage: React.FC = () => {
               </h2>
               <ul className="list-disc pl-6 space-y-2">
                 <li>
-                  <strong>Essential Cookies:</strong> Required for the platform to function,
-                  including authentication and security tokens.
+                  <strong>Essential Cookies:</strong> Required for the platform
+                  to function, including authentication and security tokens.
                 </li>
                 <li>
-                  <strong>Analytics Cookies:</strong> Help us understand how users interact
-                  with our platform so we can improve it.
+                  <strong>Analytics Cookies:</strong> Help us understand how
+                  users interact with our platform so we can improve it.
                 </li>
                 <li>
-                  <strong>Preference Cookies:</strong> Remember your settings and preferences
-                  for a personalized experience.
+                  <strong>Preference Cookies:</strong> Remember your settings
+                  and preferences for a personalized experience.
                 </li>
               </ul>
             </section>
@@ -57,8 +57,9 @@ export const CookiePolicyPage: React.FC = () => {
                 3. Managing Cookies
               </h2>
               <p>
-                You can control and delete cookies through your browser settings. Please note
-                that disabling essential cookies may affect the functionality of our platform.
+                You can control and delete cookies through your browser
+                settings. Please note that disabling essential cookies may
+                affect the functionality of our platform.
               </p>
             </section>
 
@@ -68,9 +69,13 @@ export const CookiePolicyPage: React.FC = () => {
               </h2>
               <p>
                 For questions about our cookie practices, please{" "}
-                <Link to="/contact" className="text-realestate-accent hover:underline">
+                <Link
+                  to="/contact"
+                  className="text-realestate-accent hover:underline"
+                >
                   contact us
-                </Link>.
+                </Link>
+                .
               </p>
             </section>
           </div>

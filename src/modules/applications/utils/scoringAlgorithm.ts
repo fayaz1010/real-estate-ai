@@ -4,9 +4,7 @@
 import {
   Application,
   ScoreBreakdown,
-  EmploymentInfo,
   IncomeInfo,
-  RentalHistoryEntry,
 } from "../types/application.types";
 
 // Scoring weights (totals 100%)

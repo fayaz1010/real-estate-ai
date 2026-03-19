@@ -1,13 +1,6 @@
 // PLACEHOLDER FILE: components\Shared\DocumentViewer.tsx
 // TODO: Add your implementation here
-import {
-  X,
-  Download,
-  ZoomIn,
-  ZoomOut,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-react";
+import { X, Download, ZoomIn, ZoomOut } from "lucide-react";
 import React, { useState } from "react";
 
 import { ApplicationDocument } from "../../types/application.types";

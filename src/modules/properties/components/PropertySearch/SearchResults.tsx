@@ -60,7 +60,7 @@ export const SearchResults: React.FC<SearchResultsProps> = ({
     }
   }, []);
 
-  const sortOptions: Array<{ value: SortOption; label: string }> = [
+  const _sortOptions: Array<{ value: SortOption; label: string }> = [
     { value: "relevant", label: "Most Relevant" },
     { value: "newest", label: "Newest Listings" },
     { value: "price", label: "Price: Low to High" },

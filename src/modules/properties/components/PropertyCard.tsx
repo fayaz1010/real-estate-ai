@@ -1,4 +1,4 @@
-import { Heart, MapPin, Home, Droplet, Maximize, Star } from "lucide-react";
+import { Heart, MapPin, Home, Droplet, Star } from "lucide-react";
 import React from "react";
 
 import { formatCurrency } from "../../../lib/utils";
@@ -18,7 +18,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
   showSaveButton = true,
 }) => {
   const [isSaved, setIsSaved] = React.useState(false);
-  const [isHovered, setIsHovered] = React.useState(false);
+  const [_isHovered, setIsHovered] = React.useState(false);
 
   const handleSaveClick = (e: React.MouseEvent) => {
     e.stopPropagation();

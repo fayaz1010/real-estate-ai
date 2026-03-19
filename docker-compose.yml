@@ -1,12 +1,37 @@
 version: '3.8'
 
 services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      - NGINX_HOST=${NGINX_HOST:-localhost}
+      - SECURITY_HSTS_ENABLED=${SECURITY_HSTS_ENABLED:-true}
+    volumes:
+      - certbot_conf:/etc/letsencrypt:ro
+      - certbot_www:/var/www/certbot:ro
+    depends_on:
+      - app
+    restart: unless-stopped
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
+    restart: unless-stopped
+
   app:
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - "4041:4041"
+    expose:
+      - "4041"
     environment:
       - NODE_ENV=production
       - PORT=4041
@@ -24,6 +49,7 @@ services:
       - VITE_STRIPE_PRICE_BUSINESS=${VITE_STRIPE_PRICE_BUSINESS}
       - VITE_STRIPE_PRICE_ENTERPRISE=${VITE_STRIPE_PRICE_ENTERPRISE}
       - STRIPE_SECRET_KEY=${STRIPE_SECRET_KEY}
+      - SECURITY_HSTS_ENABLED=${SECURITY_HSTS_ENABLED:-true}
     depends_on:
       db:
         condition: service_healthy
@@ -46,5 +72,30 @@ services:
       retries: 5
     restart: unless-stopped
 
+  db-backup:
+    image: postgres:15-alpine
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DB_NAME=${DB_BACKUP_NAME:-realestate}
+      - DB_USER=${DB_BACKUP_USER:-postgres}
+      - DB_PASSWORD=${DB_BACKUP_PASSWORD:-postgres}
+      - BACKUP_PATH=/backups
+      - DB_HOST=db
+    volumes:
+      - ./scripts/backup_db.sh:/scripts/backup_db.sh:ro
+      - db_backups:/backups
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        chmod +x /scripts/backup_db.sh
+        echo "0 3 * * * DB_HOST=db /scripts/backup_db.sh $$DB_NAME $$DB_USER $$DB_PASSWORD /backups >> /var/log/cron.log 2>&1" > /etc/crontabs/root
+        crond -f -l 2
+    restart: unless-stopped
+
 volumes:
   postgres_data:
+  db_backups:
+  certbot_conf:
+  certbot_www:

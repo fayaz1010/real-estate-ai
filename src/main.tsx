@@ -7,8 +7,9 @@ import "./index.css";
 
 Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_DSN,
+  integrations: [Sentry.browserTracingIntegration()],
   environment: import.meta.env.MODE,
-  release: `real-estate-platform@${import.meta.env.VITE_APP_VERSION || "1.0.0"}`,
+  release: `real-estate-ai@${import.meta.env.VITE_APP_VERSION || "1.0.0"}`,
   tracesSampleRate: 0.1,
   enabled:
     !!import.meta.env.VITE_SENTRY_DSN &&

@@ -26,7 +26,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   showSuggestions = true,
   className = "",
 }) => {
-  const navigate = useNavigate();
+  const _navigate = useNavigate();
   const { updateFilters, performSearch } = usePropertySearch();
   const { saveRecentSearch } = useBrowsingHistory();
 
@@ -142,7 +142,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     // Save to browsing history
     saveRecentSearch(searchQuery);
 
-    updateFilters({ location: searchQuery, page: 1 });
+    updateFilters({ location: searchQuery, keywords: searchQuery, page: 1 });
     performSearch();
     setShowDropdown(false);
 
@@ -168,6 +168,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   const clearSearch = () => {
     setQuery("");
     setSuggestions([]);
+    updateFilters({ keywords: undefined, location: undefined });
     inputRef.current?.focus();
   };
 

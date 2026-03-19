@@ -1,14 +1,7 @@
 // PLACEHOLDER FILE: components\Verification\IdentityVerification.tsx
 // TODO: Add your implementation here
 
-import {
-  Camera,
-  Upload,
-  CheckCircle,
-  XCircle,
-  Loader,
-  User,
-} from "lucide-react";
+import { Camera, Upload, CheckCircle, XCircle, Loader } from "lucide-react";
 import React, { useState, useRef } from "react";
 
 import { useApplicationForm } from "../../hooks/useApplicationForm";

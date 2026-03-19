@@ -293,6 +293,9 @@ model Property {
   availableFrom   DateTime?
   leaseTerm       Int?           // months
   
+  // Full-text search
+  search_vector   Unsupported("tsvector")?
+
   // Metadata
   views           Int            @default(0)
   featured        Boolean        @default(false)
@@ -301,7 +304,7 @@ model Property {
   createdAt       DateTime       @default(now())
   updatedAt       DateTime       @updatedAt
   deletedAt       DateTime?
-  
+
   // Relations
   inspections     Inspection[]
   applications    Application[]

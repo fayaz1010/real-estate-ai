@@ -1,7 +1,7 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/Availability/BlackoutDates.tsx
 // TODO: Add your implementation here
 
-import { Plus, Trash2, XCircle, Calendar } from "lucide-react";
+import { Plus, Trash2, XCircle } from "lucide-react";
 import React, { useState } from "react";
 
 import { useAvailability } from "../../hooks/useAvailability";

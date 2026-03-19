@@ -1,14 +1,7 @@
 ﻿// PLACEHOLDER FILE: components\Verification\CreditReport.tsx
 // TODO: Add your implementation here
 
-import {
-  CreditCard,
-  TrendingUp,
-  TrendingDown,
-  AlertTriangle,
-  CheckCircle,
-  Download,
-} from "lucide-react";
+import { CreditCard, AlertTriangle, CheckCircle, Download } from "lucide-react";
 import React from "react";
 
 import { Application } from "../../types/application.types";

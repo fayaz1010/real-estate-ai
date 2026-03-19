@@ -17,8 +17,8 @@ import {
   ApplicationStatus,
 } from "../types/application.types";
 import {
-  calculateApplicationScore,
-  getScoreRating,
+  calculateApplicationScore as _calculateApplicationScore,
+  getScoreRating as _getScoreRating,
 } from "../utils/scoringAlgorithm";
 
 export const useApplicationReview = (propertyId?: string) => {

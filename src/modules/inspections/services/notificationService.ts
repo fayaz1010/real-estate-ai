@@ -268,9 +268,9 @@ class NotificationService {
   // ─── Access code & directions (SMS-dependent, stubbed) ─────────
 
   async sendAccessCode(
-    inspectionId: string,
-    phoneNumber: string,
-    code: string,
+    _inspectionId: string,
+    _phoneNumber: string,
+    _code: string,
   ): Promise<{ success: boolean }> {
     // SMS integration placeholder — requires Twilio or similar service
     console.warn("SMS access code sending requires SMS provider configuration");

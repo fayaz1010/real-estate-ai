@@ -66,7 +66,7 @@ const ApplicationsList: React.FC<ApplicationsListProps> = ({ propertyId }) => {
     );
   };
 
-  const toggleSort = (field: "score" | "date" | "name") => {
+  const _toggleSort = (field: "score" | "date" | "name") => {
     if (sortBy === field) {
       setSortOrder(sortOrder === "asc" ? "desc" : "asc");
     } else {

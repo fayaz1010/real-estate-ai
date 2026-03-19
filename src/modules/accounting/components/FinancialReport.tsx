@@ -1,7 +1,6 @@
 import {
   DollarSign,
   TrendingUp,
-  TrendingDown,
   FileText,
   Download,
   ChevronDown,

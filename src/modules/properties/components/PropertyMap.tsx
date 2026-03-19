@@ -7,7 +7,7 @@ import {
   Marker,
   InfoWindow,
 } from "@react-google-maps/api";
-import { Home, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import React, { useState, useCallback, useMemo } from "react";
 
 import { Property } from "../types/property.types";
@@ -47,7 +47,7 @@ export const PropertyMap: React.FC<PropertyMapProps> = ({
     libraries: ["places", "geometry"],
   });
 
-  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [_map, setMap] = useState<google.maps.Map | null>(null);
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(
     null,
   );

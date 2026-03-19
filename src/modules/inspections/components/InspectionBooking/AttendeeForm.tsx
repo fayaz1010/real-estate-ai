@@ -34,7 +34,7 @@ export const AttendeeForm: React.FC<AttendeeFormProps> = ({
   tenantNotes,
   onAddAttendee,
   onRemoveAttendee,
-  onUpdateAttendee,
+  onUpdateAttendee: _onUpdateAttendee,
   onNotesChange,
   errors,
 }) => {

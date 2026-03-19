@@ -21,7 +21,6 @@ import {
   cancelSubscription,
   getPlanById,
   formatPrice,
-  PLANS,
 } from "@/services/billingService";
 import type { Subscription, UsageSummary } from "@/types/billing";
 import type { BillingInterval } from "@/types/billing";

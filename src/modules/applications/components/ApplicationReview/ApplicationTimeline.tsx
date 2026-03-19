@@ -229,7 +229,7 @@ const ApplicationTimeline: React.FC<ApplicationTimelineProps> = ({
 
         {/* Timeline Events */}
         <div className="space-y-6">
-          {events.map((event, index) => {
+          {events.map((event, _index) => {
             const colors = getColorClasses(event.color);
             const Icon = event.icon;
 

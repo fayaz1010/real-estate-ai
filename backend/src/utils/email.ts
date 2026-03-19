@@ -8,6 +8,7 @@ export {
   sendPasswordResetEmail,
   send2FAEnabledEmail,
   sendNotificationEmail,
+  sendTestEmail,
   wrapEmailTemplate,
   sendInspectionConfirmationEmail,
   sendInspectionReminderEmail,

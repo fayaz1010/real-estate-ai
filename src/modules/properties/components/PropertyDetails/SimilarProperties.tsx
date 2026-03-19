@@ -1,12 +1,12 @@
 // FILE PATH: src/modules/properties/components/PropertyDetails/SimilarProperties.tsx
 // Module 1.2: Property Listings Management - Similar Properties Component
 
-import { Home, MapPin, ArrowRight } from "lucide-react";
+import { Home, ArrowRight } from "lucide-react";
 import React, { useEffect, useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { propertyService } from "../../services/propertyService";
-import { Property, SearchFilters } from "../../types/property.types";
+import { Property } from "../../types/property.types";
 import { PropertyCard } from "../PropertyCard";
 
 import { Button } from "@/components/ui/button";

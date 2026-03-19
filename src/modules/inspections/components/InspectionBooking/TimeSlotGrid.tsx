@@ -2,7 +2,7 @@
 // TODO: Add your implementation here
 
 import { Clock, Check } from "lucide-react";
-import React, { useEffect } from "react";
+import React from "react";
 
 import { useDateSlots } from "../../hooks/useAvailability";
 
@@ -15,7 +15,7 @@ interface TimeSlotGridProps {
 }
 
 export const TimeSlotGrid: React.FC<TimeSlotGridProps> = ({
-  propertyId,
+  propertyId: _propertyId,
   date,
   selectedTime,
   onTimeSelect,

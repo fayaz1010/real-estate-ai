@@ -4,7 +4,6 @@
 import {
   PropertyAddress,
   PropertyFormData,
-  PropertyType,
   ListingType,
 } from "../types/property.types";
 

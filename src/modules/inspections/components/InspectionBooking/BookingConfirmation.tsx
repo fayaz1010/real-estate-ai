@@ -1,14 +1,7 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionBooking/BookingConfirmation.tsx
 // TODO: Add your implementation here
 
-import {
-  CheckCircle,
-  Calendar,
-  Mail,
-  MessageSquare,
-  Download,
-  Share2,
-} from "lucide-react";
+import { CheckCircle, Calendar, MessageSquare, Download } from "lucide-react";
 import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 

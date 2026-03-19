@@ -1,15 +1,7 @@
 // PLACEHOLDER FILE: components\ApplicationWizard\PersonalInfoStep.tsx
 // TODO: Add your implementation here
 
-import {
-  User,
-  Mail,
-  Phone,
-  Calendar,
-  CreditCard,
-  MapPin,
-  Upload,
-} from "lucide-react";
+import { User, Mail, Phone, Calendar, CreditCard, MapPin } from "lucide-react";
 import React, { useState } from "react";
 
 import { useApplicationForm } from "../../hooks/useApplicationForm";

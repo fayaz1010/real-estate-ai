@@ -6,7 +6,7 @@ import {
   formatPrice,
   getMonthlyEquivalent,
 } from "@/services/billingService";
-import type { Plan, BillingInterval } from "@/types/billing";
+import type { BillingInterval } from "@/types/billing";
 
 interface PlanSelectorProps {
   currentPlanId?: string;

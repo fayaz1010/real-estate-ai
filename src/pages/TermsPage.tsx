@@ -26,8 +26,9 @@ export const TermsPage: React.FC = () => {
                 1. Acceptance of Terms
               </h2>
               <p>
-                By accessing or using the RealEstate AI platform, you agree to be bound by
-                these Terms of Service. If you do not agree, you may not use our services.
+                By accessing or using the RealEstate AI platform, you agree to
+                be bound by these Terms of Service. If you do not agree, you may
+                not use our services.
               </p>
             </section>
 
@@ -36,9 +37,10 @@ export const TermsPage: React.FC = () => {
                 2. Description of Service
               </h2>
               <p>
-                RealEstate AI provides an AI-powered property management platform that includes
-                tenant screening, rent collection, maintenance management, communication tools,
-                and analytics for landlords and property managers.
+                RealEstate AI provides an AI-powered property management
+                platform that includes tenant screening, rent collection,
+                maintenance management, communication tools, and analytics for
+                landlords and property managers.
               </p>
             </section>
 
@@ -47,9 +49,10 @@ export const TermsPage: React.FC = () => {
                 3. User Accounts
               </h2>
               <p>
-                You are responsible for maintaining the confidentiality of your account
-                credentials and for all activities that occur under your account. You must
-                provide accurate and complete information when creating an account.
+                You are responsible for maintaining the confidentiality of your
+                account credentials and for all activities that occur under your
+                account. You must provide accurate and complete information when
+                creating an account.
               </p>
             </section>
 
@@ -58,9 +61,10 @@ export const TermsPage: React.FC = () => {
                 4. Acceptable Use
               </h2>
               <p>
-                You agree not to misuse the platform, including attempting unauthorized access,
-                transmitting harmful code, or using the service for any unlawful purpose.
-                We reserve the right to suspend or terminate accounts that violate these terms.
+                You agree not to misuse the platform, including attempting
+                unauthorized access, transmitting harmful code, or using the
+                service for any unlawful purpose. We reserve the right to
+                suspend or terminate accounts that violate these terms.
               </p>
             </section>
 
@@ -69,9 +73,10 @@ export const TermsPage: React.FC = () => {
                 5. Payment Terms
               </h2>
               <p>
-                Paid subscriptions are billed in advance on a recurring basis. You authorize
-                us to charge your payment method for all applicable fees. Refunds are handled
-                in accordance with our refund policy.
+                Paid subscriptions are billed in advance on a recurring basis.
+                You authorize us to charge your payment method for all
+                applicable fees. Refunds are handled in accordance with our
+                refund policy.
               </p>
             </section>
 
@@ -80,9 +85,10 @@ export const TermsPage: React.FC = () => {
                 6. Limitation of Liability
               </h2>
               <p>
-                RealEstate AI is provided &quot;as is&quot; without warranties of any kind.
-                We shall not be liable for any indirect, incidental, or consequential damages
-                arising from your use of the platform.
+                RealEstate AI is provided &quot;as is&quot; without warranties
+                of any kind. We shall not be liable for any indirect,
+                incidental, or consequential damages arising from your use of
+                the platform.
               </p>
             </section>
 
@@ -92,9 +98,13 @@ export const TermsPage: React.FC = () => {
               </h2>
               <p>
                 For questions about these Terms, please{" "}
-                <Link to="/contact" className="text-realestate-accent hover:underline">
+                <Link
+                  to="/contact"
+                  className="text-realestate-accent hover:underline"
+                >
                   contact us
-                </Link>.
+                </Link>
+                .
               </p>
             </section>
           </div>

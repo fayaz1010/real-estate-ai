@@ -1,4 +1,3 @@
-import { Loader2 } from "lucide-react";
 import {
   Layout,
   Users,
@@ -11,8 +10,6 @@ import {
   DollarSign,
   Home,
   Key,
-  ChevronDown,
-  ChevronUp,
   Search,
   Bell,
   LogOut,
@@ -28,10 +25,7 @@ import { Link } from "react-router-dom";
 
 import { useAuth } from "../modules/auth/hooks/useAuth";
 import { UserRole, AccountStatus } from "../modules/auth/types/auth.types";
-import {
-  fetchDashboardStats,
-  type DashboardStats,
-} from "../services/dashboardService";
+import { fetchDashboardStats } from "../services/dashboardService";
 
 type AdminSection =
   | "overview"
@@ -159,12 +153,12 @@ const AdminPage: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [roleFilter, setRoleFilter] = useState<string>("all");
   const [userSearchQuery, setUserSearchQuery] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [_loading, setLoading] = useState(true);
   const [platformStats, setPlatformStats] = useState(INITIAL_PLATFORM_STATS);
-  const [users, setUsers] = useState<MockUser[]>(INITIAL_USERS);
+  const [users, _setUsers] = useState<MockUser[]>(INITIAL_USERS);
   const [properties, setProperties] =
     useState<MockProperty[]>(INITIAL_PROPERTIES);
-  const [revenueData, setRevenueData] = useState(INITIAL_REVENUE_DATA);
+  const [revenueData, _setRevenueData] = useState(INITIAL_REVENUE_DATA);
 
   // Fetch real data from backend
   useEffect(() => {

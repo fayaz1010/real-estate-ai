@@ -13,7 +13,6 @@ import {
   XCircle,
   BarChart,
   AlertCircle,
-  MapPin,
 } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
@@ -36,7 +35,11 @@ export const InspectionMetrics: React.FC<InspectionMetricsProps> = ({
   type,
   className = "",
 }) => {
-  const { loadInspections, isLoading, error } = useInspections();
+  const {
+    loadInspections: _loadInspections,
+    isLoading,
+    error,
+  } = useInspections();
   const [analytics, setAnalytics] = useState<InspectionAnalytics | null>(null);
   const [propertyMetrics, setPropertyMetrics] =
     useState<PropertyInspectionMetrics | null>(null);

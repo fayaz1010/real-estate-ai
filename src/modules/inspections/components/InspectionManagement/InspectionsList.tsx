@@ -1,11 +1,10 @@
 // PLACEHOLDER FILE: src/modules/inspections/components/InspectionManagement/InspectionsList.tsx
 // TODO: Add your implementation here
 
-import { Loader, Search, Filter, Calendar } from "lucide-react";
+import { Loader, Search, Calendar } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import { useInspections } from "../../hooks/useInspections";
-import { InspectionStatus } from "../../types/inspection.types";
 
 import { InspectionCard } from "./InspectionCard";
 

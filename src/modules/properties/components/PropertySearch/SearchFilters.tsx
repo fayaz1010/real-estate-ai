@@ -2,7 +2,6 @@
 // Module 1.2: Property Listings Management - Search Filters Sidebar
 
 import {
-  Sliders as SlidersHorizontal,
   X,
   DollarSign,
   Home,

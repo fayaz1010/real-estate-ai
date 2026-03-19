@@ -1,5 +1,5 @@
 /* eslint-disable import/order */
-import { screen, fireEvent, waitFor, within } from "@testing-library/react";
+import { screen, fireEvent, within } from "@testing-library/react";
 import React from "react";
 
 import { render } from "../test-utils";

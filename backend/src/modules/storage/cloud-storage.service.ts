@@ -1,13 +1,13 @@
 // Cloud Storage Service - Cloudflare R2 via S3-compatible API
 import {
   S3Client,
-  PutObjectCommand,
   DeleteObjectCommand,
   HeadObjectCommand,
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
-import mime from "mime";
+
+import logger from "../../utils/logger";
 
 export interface CloudFile {
   key: string;
@@ -30,8 +30,15 @@ export interface DeleteResult {
 
 const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
 const bucketName =
-  process.env.CLOUDFLARE_BUCKET_NAME || "real-estate-ai-images";
+  process.env.CLOUDFLARE_BUCKET_NAME || "real-estate-ai-images-prod";
 const region = process.env.CLOUDFLARE_REGION || "auto";
+
+if (!accountId) {
+  logger.warn("CLOUDFLARE_ACCOUNT_ID is not set — R2 storage will not work");
+}
+if (!process.env.CLOUDFLARE_ACCESS_KEY_ID) {
+  logger.warn("CLOUDFLARE_ACCESS_KEY_ID is not set — R2 storage will not work");
+}
 
 const s3Client = new S3Client({
   region,
@@ -49,7 +56,7 @@ function getPublicUrl(key: string): string {
 class CloudStorageService {
   private bucket: string;
 
-  constructor(bucket: string = bucketName || "real-estate-ai-images") {
+  constructor(bucket: string = bucketName || "real-estate-ai-images-prod") {
     this.bucket = bucket;
   }
 
@@ -61,28 +68,40 @@ class CloudStorageService {
     key: string,
     contentType: string,
   ): Promise<UploadResult> {
-    const upload = new Upload({
-      client: s3Client,
-      params: {
-        Bucket: this.bucket,
-        Key: key,
-        Body: buffer,
-        ContentType: contentType,
-      },
-    });
+    try {
+      const upload = new Upload({
+        client: s3Client,
+        params: {
+          Bucket: this.bucket,
+          Key: key,
+          Body: buffer,
+          ContentType: contentType,
+        },
+      });
 
-    await upload.done();
+      await upload.done();
 
-    const cloudFile: CloudFile = {
-      key,
-      url: getPublicUrl(key),
-      size: buffer.length,
-      contentType,
-      uploadedAt: new Date().toISOString(),
-      bucket: this.bucket,
-    };
+      const cloudFile: CloudFile = {
+        key,
+        url: getPublicUrl(key),
+        size: buffer.length,
+        contentType,
+        uploadedAt: new Date().toISOString(),
+        bucket: this.bucket,
+      };
 
-    return { success: true, file: cloudFile };
+      logger.info(`R2 upload success: ${key} (${buffer.length} bytes)`);
+      return { success: true, file: cloudFile };
+    } catch (error) {
+      logger.error("R2 upload failed", {
+        key,
+        bucket: this.bucket,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      throw new Error(
+        `Failed to upload image to cloud storage: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+    }
   }
 
   /**
@@ -102,36 +121,59 @@ class CloudStorageService {
    * Download a file from R2
    */
   async download(key: string): Promise<Buffer> {
-    const response = await s3Client.send(
-      new GetObjectCommand({
-        Bucket: this.bucket,
-        Key: key,
-      }),
-    );
+    try {
+      const response = await s3Client.send(
+        new GetObjectCommand({
+          Bucket: this.bucket,
+          Key: key,
+        }),
+      );
 
-    if (!response.Body) {
-      throw new Error(`File not found in cloud storage: ${key}`);
-    }
+      if (!response.Body) {
+        throw new Error(`File not found in cloud storage: ${key}`);
+      }
 
-    const chunks: Uint8Array[] = [];
-    const stream = response.Body as AsyncIterable<Uint8Array>;
-    for await (const chunk of stream) {
-      chunks.push(chunk);
+      const chunks: Uint8Array[] = [];
+      const stream = response.Body as AsyncIterable<Uint8Array>;
+      for await (const chunk of stream) {
+        chunks.push(chunk);
+      }
+      return Buffer.concat(chunks);
+    } catch (error) {
+      logger.error("R2 download failed", {
+        key,
+        bucket: this.bucket,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      throw new Error(
+        `Failed to download from cloud storage: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
     }
-    return Buffer.concat(chunks);
   }
 
   /**
    * Delete a file from R2
    */
   async delete(key: string): Promise<DeleteResult> {
-    await s3Client.send(
-      new DeleteObjectCommand({
-        Bucket: this.bucket,
-        Key: key,
-      }),
-    );
-    return { success: true, key };
+    try {
+      await s3Client.send(
+        new DeleteObjectCommand({
+          Bucket: this.bucket,
+          Key: key,
+        }),
+      );
+      logger.info(`R2 delete success: ${key}`);
+      return { success: true, key };
+    } catch (error) {
+      logger.error("R2 delete failed", {
+        key,
+        bucket: this.bucket,
+        error: error instanceof Error ? error.message : String(error),
+      });
+      throw new Error(
+        `Failed to delete from cloud storage: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+    }
   }
 
   /**

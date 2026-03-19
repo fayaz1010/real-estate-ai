@@ -3,6 +3,8 @@ import { Router, Request, Response } from "express";
 
 import { authenticate } from "../middleware/auth";
 import { asyncHandler } from "../middleware/errorHandler";
+import { sendTestEmail } from "../utils/email";
+import logger from "../utils/logger";
 import { successResponse } from "../utils/response";
 
 const router = Router();
@@ -163,6 +165,45 @@ router.put(
   authenticate,
   asyncHandler(async (req: Request, res: Response) => {
     return successResponse(res, req.body, "Settings updated");
+  }),
+);
+
+// POST /api/admin/test-email - Send a test email to verify email configuration
+router.post(
+  "/test-email",
+  authenticate,
+  asyncHandler(async (req: Request, res: Response) => {
+    const { to } = req.body;
+
+    if (!to || typeof to !== "string" || !to.includes("@")) {
+      return res.status(400).json({
+        success: false,
+        error: {
+          code: "VALIDATION_ERROR",
+          message: "A valid 'to' email address is required",
+        },
+      });
+    }
+
+    try {
+      await sendTestEmail(to);
+      logger.info(`[Admin] Test email sent successfully to ${to}`);
+      return successResponse(
+        res,
+        { to, sentAt: new Date().toISOString() },
+        "Test email sent successfully",
+      );
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      logger.error(`[Admin] Failed to send test email: ${message}`);
+      return res.status(500).json({
+        success: false,
+        error: {
+          code: "EMAIL_SEND_FAILED",
+          message: `Failed to send test email: ${message}`,
+        },
+      });
+    }
   }),
 );
 

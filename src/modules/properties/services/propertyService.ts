@@ -20,6 +20,7 @@ class PropertyService {
 
     if (filters) {
       if (filters.location) params.location = filters.location;
+      if (filters.keywords) params.search = filters.keywords;
       if (filters.listingType) params.listingType = filters.listingType;
       if (filters.propertyType) params.propertyType = filters.propertyType;
       if (filters.priceMin) params.priceMin = filters.priceMin.toString();
