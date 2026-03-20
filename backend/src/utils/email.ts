@@ -20,6 +20,17 @@ export {
   sendInspectionFollowUpEmail,
   sendInspectionNoShowEmail,
   INSPECTION_EMAIL_SENDERS,
+  sendMaintenanceRequestEmail,
+  sendMaintenanceStatusUpdateEmail,
+  sendLeaseRenewalReminderEmail,
+  sendLeaseRenewalConfirmationEmail,
+  sendPaymentConfirmationEmail,
+  sendPaymentFailedEmail,
 } from "./emailService";
 
-export type { InspectionEmailVars } from "./emailService";
+export type {
+  InspectionEmailVars,
+  MaintenanceEmailVars,
+  LeaseRenewalEmailVars,
+  PaymentEmailVars,
+} from "./emailService";

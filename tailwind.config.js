@@ -107,8 +107,8 @@ module.exports = {
           '50%': { transform: 'translateX(2px)' },
         },
         'skeleton-loading': {
-          '0%': { backgroundColor: 'hsl(200, 20%, 70%)' },
-          '100%': { backgroundColor: 'hsl(200, 20%, 95%)' },
+          '0%': { backgroundColor: 'hsl(180, 10%, 85%)' },
+          '100%': { backgroundColor: 'hsl(180, 10%, 95%)' },
         },
         blob: {
           "0%": { transform: "translate(0px, 0px) scale(1)" },

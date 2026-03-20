@@ -80,122 +80,115 @@ const faqs: FAQ[] = [
 interface FeatureRow {
   name: string;
   starter: boolean | string;
+  growth: boolean | string;
   professional: boolean | string;
-  business: boolean | string;
   enterprise: boolean | string;
 }
 
 const featureRows: FeatureRow[] = [
   {
     name: "Units included",
-    starter: "Up to 25",
-    professional: "Up to 100",
-    business: "Up to 500",
+    starter: "Up to 5",
+    growth: "Up to 100",
+    professional: "Up to 300",
     enterprise: "Unlimited",
   },
   {
-    name: "AI insights",
-    starter: "Limited",
-    professional: "Full",
-    business: "Advanced",
+    name: "AI-powered analytics",
+    starter: false,
+    growth: true,
+    professional: "Advanced",
     enterprise: "Custom AI",
   },
   {
     name: "Tenant screening",
-    starter: true,
+    starter: false,
+    growth: true,
     professional: true,
-    business: true,
     enterprise: true,
   },
   {
     name: "Rent collection",
+    starter: "Tracking only",
+    growth: "Automated",
+    professional: "Automated",
+    enterprise: "Automated",
+  },
+  {
+    name: "Maintenance requests",
     starter: true,
+    growth: true,
     professional: true,
-    business: true,
-    enterprise: true,
-  },
-  {
-    name: "Predictive maintenance",
-    starter: false,
-    professional: true,
-    business: true,
-    enterprise: true,
-  },
-  {
-    name: "Smart rent pricing",
-    starter: false,
-    professional: true,
-    business: true,
-    enterprise: true,
-  },
-  {
-    name: "Automated workflows",
-    starter: false,
-    professional: false,
-    business: true,
     enterprise: true,
   },
   {
     name: "Financial reporting",
     starter: false,
+    growth: true,
     professional: true,
-    business: true,
+    enterprise: true,
+  },
+  {
+    name: "Document management",
+    starter: false,
+    growth: true,
+    professional: true,
+    enterprise: true,
+  },
+  {
+    name: "Owner portal",
+    starter: false,
+    growth: false,
+    professional: true,
     enterprise: true,
   },
   {
     name: "API access",
     starter: false,
+    growth: false,
     professional: true,
-    business: true,
-    enterprise: true,
-  },
-  {
-    name: "Portfolio optimization",
-    starter: false,
-    professional: false,
-    business: true,
     enterprise: true,
   },
   {
     name: "Custom workflows",
     starter: false,
-    professional: false,
-    business: true,
+    growth: false,
+    professional: true,
+    enterprise: true,
+  },
+  {
+    name: "Market reports",
+    starter: false,
+    growth: false,
+    professional: true,
     enterprise: true,
   },
   {
     name: "White-label options",
     starter: false,
+    growth: false,
     professional: false,
-    business: true,
     enterprise: true,
   },
   {
-    name: "Dedicated account manager",
+    name: "Dedicated CSM",
     starter: false,
+    growth: false,
     professional: false,
-    business: false,
-    enterprise: true,
-  },
-  {
-    name: "Custom integrations",
-    starter: false,
-    professional: false,
-    business: false,
     enterprise: true,
   },
   {
     name: "SLA guarantees",
     starter: false,
+    growth: false,
     professional: false,
-    business: false,
     enterprise: true,
   },
   {
     name: "Support",
     starter: "Email",
+    growth: "Email + Chat",
     professional: "Priority",
-    business: "Priority",
     enterprise: "24/7 Dedicated",
   },
 ];
@@ -206,8 +199,8 @@ const featureRows: FeatureRow[] = [
 
 const PLAN_ICONS: Record<string, React.ReactNode> = {
   starter: <Building className="w-6 h-6" />,
-  professional: <Zap className="w-6 h-6" />,
-  business: <Award className="w-6 h-6" />,
+  growth: <Zap className="w-6 h-6" />,
+  professional: <Award className="w-6 h-6" />,
   enterprise: <Star className="w-6 h-6" />,
 };
 
@@ -301,11 +294,11 @@ function PricingCard({
 
       <p className="font-body text-sm text-gray-500 mb-6">
         {plan.id === "starter" &&
-          "Perfect for small landlords getting started with AI management."}
+          "Get started free — perfect for small landlords with a few units."}
+        {plan.id === "growth" &&
+          "For growing portfolios that need AI-powered analytics and automation."}
         {plan.id === "professional" &&
-          "For growing portfolios that need powerful AI tools."}
-        {plan.id === "business" &&
-          "For property management firms scaling operations."}
+          "Advanced tools for scaling property management companies."}
         {plan.id === "enterprise" &&
           "Tailored solutions for large-scale property operations."}
       </p>
@@ -474,10 +467,10 @@ export default function BillingPricingPage() {
                   Starter
                 </th>
                 <th className="text-center py-4 px-4 text-heading text-sm text-realestate-accent w-1/5">
-                  Professional
+                  Growth
                 </th>
                 <th className="text-center py-4 px-4 text-heading text-sm text-realestate-primary w-1/5">
-                  Business
+                  Professional
                 </th>
                 <th className="text-center py-4 px-4 text-heading text-sm text-realestate-primary w-1/5">
                   Enterprise
@@ -497,10 +490,10 @@ export default function BillingPricingPage() {
                     <FeatureCell value={row.starter} />
                   </td>
                   <td className="py-3.5 px-4 text-center bg-realestate-accent/[0.03]">
-                    <FeatureCell value={row.professional} />
+                    <FeatureCell value={row.growth} />
                   </td>
                   <td className="py-3.5 px-4 text-center">
-                    <FeatureCell value={row.business} />
+                    <FeatureCell value={row.professional} />
                   </td>
                   <td className="py-3.5 px-4 text-center">
                     <FeatureCell value={row.enterprise} />

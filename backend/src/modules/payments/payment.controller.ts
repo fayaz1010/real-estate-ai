@@ -4,6 +4,7 @@ import Stripe from "stripe";
 
 import { config } from "../../config/env";
 import { asyncHandler, AppError } from "../../middleware/errorHandler";
+import logger from "../../utils/logger";
 import { successResponse } from "../../utils/response";
 
 import paymentService from "./payment.service";
@@ -87,7 +88,7 @@ export class PaymentController {
         );
         await paymentService.handleStripeWebhook(event);
       } catch (err) {
-        console.error("[Stripe Webhook] Signature verification failed:", err);
+        logger.error("[Stripe Webhook] Signature verification failed", { error: err });
         throw new AppError("Webhook signature verification failed", 400);
       }
     } else {

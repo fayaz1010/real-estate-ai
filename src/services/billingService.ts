@@ -19,63 +19,67 @@ export const PLANS: Plan[] = [
   {
     id: "starter",
     name: "Starter",
-    monthlyPrice: 29,
-    yearlyPrice: 278, // ~$23.20/mo — 20% off (2 months free)
+    monthlyPrice: 0,
+    yearlyPrice: 0,
     features: [
-      "Up to 10 properties",
+      "Up to 5 units",
       "Basic tenant management",
-      "Online rent collection",
+      "Rent tracking",
       "Maintenance requests",
+    ],
+    limits: { maxProperties: 5, maxUnits: 5, maxUsers: 1, hasAI: false },
+    highlighted: false,
+  },
+  {
+    id: "growth",
+    name: "Growth",
+    monthlyPrice: 125,
+    yearlyPrice: 1200, // ~$100/mo — 20% off (2 months free)
+    features: [
+      "Up to 100 units",
+      "AI-powered analytics",
+      "Automated rent collection",
+      "Financial reporting",
+      "Tenant screening",
+      "Document management",
+      "$2/unit overage",
       "14-day free trial",
     ],
-    limits: { maxProperties: 10, maxUnits: 25, maxUsers: 2, hasAI: false },
-    highlighted: false,
+    limits: { maxProperties: 100, maxUnits: 100, maxUsers: 5, hasAI: true },
+    highlighted: true,
   },
   {
     id: "professional",
     name: "Professional",
-    monthlyPrice: 79,
-    yearlyPrice: 758, // ~$63.20/mo — 20% off (2 months free)
+    monthlyPrice: 400,
+    yearlyPrice: 3840, // ~$320/mo — 20% off (2 months free)
     features: [
-      "Up to 50 properties",
-      "AI-powered analytics",
-      "Automated lease management",
-      "Financial reporting",
-      "Tenant screening",
-      "14-day free trial",
-    ],
-    limits: { maxProperties: 50, maxUnits: 100, maxUsers: 5, hasAI: true },
-    highlighted: true,
-  },
-  {
-    id: "business",
-    name: "Business",
-    monthlyPrice: 149,
-    yearlyPrice: 1430, // ~$119.20/mo — 20% off (2 months free)
-    features: [
-      "Up to 200 properties",
-      "Advanced market reports",
+      "Up to 300 units",
+      "Advanced AI insights",
+      "Owner portal",
       "API access",
-      "Multi-user seats",
-      "Priority support",
       "Custom workflows",
+      "Priority support",
+      "Market reports",
+      "$1.50/unit overage",
       "14-day free trial",
     ],
-    limits: { maxProperties: 200, maxUnits: 500, maxUsers: 15, hasAI: true },
+    limits: { maxProperties: 300, maxUnits: 300, maxUsers: 15, hasAI: true },
     highlighted: false,
   },
   {
     id: "enterprise",
     name: "Enterprise",
-    monthlyPrice: 0, // Custom pricing — contact sales
+    monthlyPrice: 0, // Custom pricing — $1,264+/mo, contact sales
     yearlyPrice: 0,
     features: [
-      "Unlimited properties",
-      "Dedicated account manager",
+      "Unlimited units",
       "White-label options",
-      "SLA guarantees",
+      "Dedicated CSM",
       "Custom integrations",
-      "Executive Business Reviews",
+      "SLA guarantees",
+      "Advanced security",
+      "Data-driven market reports",
     ],
     limits: { maxProperties: 9999, maxUnits: 9999, maxUsers: 999, hasAI: true },
     highlighted: false,
@@ -132,19 +136,18 @@ export async function createPaymentIntent(
   params: CreatePaymentIntentParams,
 ): Promise<{ clientSecret: string; paymentIntentId: string }> {
   const { data } = await apiClient.post<{
-    clientSecret: string;
-    paymentIntentId: string;
+    data: { clientSecret: string };
   }>("/billing/create-payment-intent", {
     amount: params.amount,
+    currency: "usd",
     metadata: {
       userId: params.userId,
       propertyId: params.propertyId,
       paymentType: params.paymentType,
-      leaseId: params.leaseId,
+      ...(params.leaseId && { leaseId: params.leaseId }),
     },
-    description: params.description,
   });
-  return data;
+  return { clientSecret: data.data.clientSecret, paymentIntentId: "" };
 }
 
 // ---------------------------------------------------------------------------

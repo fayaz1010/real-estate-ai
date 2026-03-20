@@ -12,22 +12,29 @@ export enum UserRole {
   SUPER_ADMIN = "SUPER_ADMIN",
 }
 
+export type UserStatus =
+  | "ACTIVE"
+  | "INACTIVE"
+  | "SUSPENDED"
+  | "PENDING_VERIFICATION";
+
 export type User = {
   id: string;
-  email: string;
-  password?: string;
-  firstName: string;
-  lastName: string;
-  role:
-    | "TENANT"
-    | "LANDLORD"
-    | "AGENT"
-    | "PROPERTY_MANAGER"
-    | "BUSINESS"
-    | "ADMIN"
-    | "SUPER_ADMIN";
-  emailVerified: boolean;
-  image?: string;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date | null;
+  email: string;
+  passwordHash: string;
+  firstName: string;
+  lastName: string;
+  phone?: string | null;
+  role: UserRole;
+  avatar?: string | null;
+  status: UserStatus;
+  emailVerified: boolean;
+  phoneVerified: boolean;
+  twoFactorEnabled: boolean;
+  twoFactorSecret?: string | null;
+  profileCompletion: number;
+  lastLoginAt?: Date | null;
 };

@@ -23,16 +23,20 @@ function requireStripe(): Stripe {
 
 const PLAN_PRICE_IDS: Record<string, { monthly: string; annual: string }> = {
   STARTER: {
-    monthly: process.env.STRIPE_PRICE_STARTER_MONTHLY ?? "",
-    annual: process.env.STRIPE_PRICE_STARTER_ANNUAL ?? "",
+    monthly: process.env.STRIPE_PRICE_ID_STARTER ?? "",
+    annual: process.env.STRIPE_PRICE_ID_STARTER_ANNUAL ?? "",
+  },
+  GROWTH: {
+    monthly: process.env.STRIPE_PRICE_ID_GROWTH ?? "",
+    annual: process.env.STRIPE_PRICE_ID_GROWTH_ANNUAL ?? "",
   },
   PROFESSIONAL: {
-    monthly: process.env.STRIPE_PRICE_PROFESSIONAL_MONTHLY ?? "",
-    annual: process.env.STRIPE_PRICE_PROFESSIONAL_ANNUAL ?? "",
+    monthly: process.env.STRIPE_PRICE_ID_PROFESSIONAL ?? "",
+    annual: process.env.STRIPE_PRICE_ID_PROFESSIONAL_ANNUAL ?? "",
   },
-  BUSINESS: {
-    monthly: process.env.STRIPE_PRICE_BUSINESS_MONTHLY ?? "",
-    annual: process.env.STRIPE_PRICE_BUSINESS_ANNUAL ?? "",
+  ENTERPRISE: {
+    monthly: process.env.STRIPE_PRICE_ID_ENTERPRISE ?? "",
+    annual: process.env.STRIPE_PRICE_ID_ENTERPRISE_ANNUAL ?? "",
   },
 };
 
@@ -60,9 +64,9 @@ export class BillingService {
   }): Promise<{ subscriptionId: string }> {
     const s = requireStripe();
 
-    if (data.plan === "FREE" || data.plan === "ENTERPRISE") {
+    if (data.plan === "FREE" || data.plan === "STARTER") {
       throw new AppError(
-        `Cannot create Stripe subscription for plan: ${data.plan}`,
+        `Cannot create Stripe subscription for free plan: ${data.plan}`,
         400,
       );
     }
@@ -130,6 +134,7 @@ export class BillingService {
         customer: customerId,
         limit: 100,
       });
+      logger.info(`Fetched ${invoices.data.length} invoices for customer ${customerId}`);
       return invoices.data.map((inv) => ({
         id: inv.id,
         created: inv.created,
@@ -143,6 +148,130 @@ export class BillingService {
       logger.error("Failed to fetch invoice history", { error: err });
       throw new AppError("Failed to fetch invoice history", 502);
     }
+  }
+
+  async createCheckoutSession(
+    priceId: string,
+    customerId: string,
+    successUrl: string,
+    cancelUrl: string,
+  ): Promise<string> {
+    const s = requireStripe();
+    try {
+      const session = await s.checkout.sessions.create({
+        customer: customerId,
+        payment_method_types: ["card"],
+        line_items: [{ price: priceId, quantity: 1 }],
+        mode: "subscription",
+        success_url: successUrl,
+        cancel_url: cancelUrl,
+      });
+      logger.info(
+        `Stripe checkout session created: ${session.id} for customer ${customerId}`,
+      );
+      return session.id;
+    } catch (err) {
+      logger.error("Failed to create checkout session", { error: err });
+      throw new AppError("Failed to create Stripe checkout session", 502);
+    }
+  }
+
+  async getSubscriptionStatus(subscriptionId: string): Promise<string> {
+    const s = requireStripe();
+    try {
+      const subscription = await s.subscriptions.retrieve(subscriptionId);
+      logger.info(
+        `Retrieved subscription status: ${subscription.status} for ${subscriptionId}`,
+      );
+      return subscription.status;
+    } catch (err) {
+      logger.error("Failed to get subscription status", { error: err });
+      throw new AppError("Failed to get subscription status", 502);
+    }
+  }
+
+  async getUpcomingInvoice(subscriptionId: string): Promise<{
+    amount_due: number;
+    currency: string;
+    period_start: number;
+    period_end: number;
+    lines: Array<{ description: string | null; amount: number }>;
+  }> {
+    const s = requireStripe();
+    try {
+      const invoice = await s.invoices.createPreview({
+        subscription: subscriptionId,
+      });
+      logger.info(`Retrieved upcoming invoice for subscription ${subscriptionId}`);
+      return {
+        amount_due: invoice.amount_due,
+        currency: invoice.currency,
+        period_start: invoice.period_start ?? 0,
+        period_end: invoice.period_end ?? 0,
+        lines: invoice.lines.data.map((line) => ({
+          description: line.description,
+          amount: line.amount,
+        })),
+      };
+    } catch (err) {
+      logger.error("Failed to get upcoming invoice", { error: err });
+      throw new AppError("Failed to get upcoming invoice", 502);
+    }
+  }
+
+  async createPaymentIntent(
+    amount: number,
+    currency: string = "usd",
+    metadata: Record<string, string> = {},
+  ): Promise<string> {
+    const s = requireStripe();
+    try {
+      const paymentIntent = await s.paymentIntents.create({
+        amount: Math.round(amount * 100),
+        currency,
+        metadata,
+      });
+      logger.info(
+        `Stripe payment intent created: ${paymentIntent.id} for ${amount} ${currency}`,
+      );
+      return paymentIntent.client_secret!;
+    } catch (err) {
+      logger.error("Failed to create payment intent", { error: err });
+      throw new AppError("Failed to create Stripe payment intent", 502);
+    }
+  }
+
+  async retrievePaymentIntent(paymentIntentId: string): Promise<{
+    id: string;
+    amount: number;
+    currency: string;
+    status: string;
+    metadata: Record<string, string>;
+  }> {
+    const s = requireStripe();
+    try {
+      const pi = await s.paymentIntents.retrieve(paymentIntentId);
+      logger.info(`Retrieved payment intent: ${pi.id} status=${pi.status}`);
+      return {
+        id: pi.id,
+        amount: pi.amount,
+        currency: pi.currency,
+        status: pi.status,
+        metadata: pi.metadata as Record<string, string>,
+      };
+    } catch (err) {
+      logger.error("Failed to retrieve payment intent", { error: err });
+      throw new AppError("Failed to retrieve payment intent", 502);
+    }
+  }
+
+  constructEvent(
+    payload: Buffer,
+    signature: string,
+    webhookSecret: string,
+  ): Stripe.Event {
+    const s = requireStripe();
+    return s.webhooks.constructEvent(payload, signature, webhookSecret);
   }
 }
 

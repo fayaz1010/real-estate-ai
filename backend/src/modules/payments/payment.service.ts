@@ -3,7 +3,7 @@ import Stripe from "stripe";
 
 import prisma from "../../config/database";
 import { AppError } from "../../middleware/errorHandler";
-// Stripe key read directly from env
+import logger from "../../utils/logger";
 
 // Initialize Stripe (optional - only if key is configured)
 const stripe = process.env.STRIPE_SECRET_KEY
@@ -176,18 +176,18 @@ export class PaymentService {
         if (paymentId) {
           try {
             await this.confirmPayment(paymentId);
-            console.log(
+            logger.info(
               `[Stripe Webhook] Payment confirmed: ${paymentId} (intent: ${paymentIntent.id})`,
             );
           } catch (err) {
-            console.error(
+            logger.error(
               `[Stripe Webhook] Failed to confirm payment ${paymentId}:`,
-              err,
+              { error: err },
             );
             throw err;
           }
         } else {
-          console.warn(
+          logger.warn(
             `[Stripe Webhook] payment_intent.succeeded without paymentId in metadata: ${paymentIntent.id}`,
           );
         }
@@ -198,7 +198,7 @@ export class PaymentService {
         const failedIntent = event.data.object as Stripe.PaymentIntent;
         const failedPaymentId = failedIntent.metadata.paymentId;
         if (failedPaymentId) {
-          console.error(
+          logger.error(
             `[Stripe Webhook] Payment failed: ${failedPaymentId} (intent: ${failedIntent.id})`,
           );
         }
@@ -206,7 +206,7 @@ export class PaymentService {
       }
 
       default:
-        console.log(`[Stripe Webhook] Unhandled event type: ${event.type}`);
+        logger.info(`[Stripe Webhook] Unhandled event type: ${event.type}`);
     }
   }
 

@@ -18,7 +18,8 @@
         "test:integration": "jest --config jest.integration.config.js",
         "test:integration:coverage": "jest --config jest.integration.config.js --coverage",
         "type-check": "tsc --noEmit",
-        "db:seed": "npx prisma db seed"
+        "db:seed": "npx prisma db seed",
+        "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
     },
     "prisma": {
         "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
@@ -28,6 +29,8 @@
         "@radix-ui/react-slot": "^1.2.3",
         "@react-google-maps/api": "^2.20.7",
         "@reduxjs/toolkit": "^2.0.1",
+        "@sendgrid/mail": "^8.1.6",
+        "@sentry/node": "^10.45.0",
         "@sentry/react": "^10.43.0",
         "@stripe/react-stripe-js": "^5.6.1",
         "@stripe/stripe-js": "^8.10.0",
@@ -46,6 +49,7 @@
         "recharts": "^3.8.0",
         "stripe": "^20.4.1",
         "tailwind-merge": "^3.3.1",
+        "winston": "^3.19.0",
         "zod": "^4.3.6"
     },
     "devDependencies": {

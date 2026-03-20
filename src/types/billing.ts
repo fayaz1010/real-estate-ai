@@ -1,6 +1,11 @@
 // Billing & Subscription Types for Stripe Integration
 
-export type PlanId = "starter" | "professional" | "business" | "enterprise";
+export type PlanId =
+  | "starter"
+  | "growth"
+  | "professional"
+  | "business"
+  | "enterprise";
 
 export interface PlanLimits {
   maxProperties: number;

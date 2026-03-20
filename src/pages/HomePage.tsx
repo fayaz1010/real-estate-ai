@@ -31,6 +31,15 @@ import { Link } from "react-router-dom";
 import { PageMeta } from "../components/seo";
 
 /* ------------------------------------------------------------------ */
+/*  Tagline options (available for A/B testing and marketing)           */
+/* ------------------------------------------------------------------ */
+export const TAGLINES = [
+  "Property Management That Thinks Ahead",
+  "AI-Powered Property Management for Modern Landlords",
+  "Stop Managing Properties. Start Growing Your Portfolio.",
+] as const;
+
+/* ------------------------------------------------------------------ */
 /*  1. HERO SECTION                                                    */
 /* ------------------------------------------------------------------ */
 const HeroSection: React.FC = () => (

@@ -1,0 +1,183 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" fill="none">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#e0f2f1"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+    <linearGradient id="bldGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#006666"/>
+      <stop offset="1" stop-color="#008080"/>
+    </linearGradient>
+    <linearGradient id="graphGrad" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#008080" stop-opacity=".15"/>
+      <stop offset="1" stop-color="#008080" stop-opacity=".45"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="600" fill="url(#bgGrad)" rx="0"/>
+
+  <!-- Subtle grid / circuit pattern -->
+  <g stroke="#008080" stroke-opacity=".07" stroke-width="1">
+    <line x1="100" y1="0" x2="100" y2="600"/>
+    <line x1="200" y1="0" x2="200" y2="600"/>
+    <line x1="300" y1="0" x2="300" y2="600"/>
+    <line x1="400" y1="0" x2="400" y2="600"/>
+    <line x1="500" y1="0" x2="500" y2="600"/>
+    <line x1="600" y1="0" x2="600" y2="600"/>
+    <line x1="700" y1="0" x2="700" y2="600"/>
+    <line x1="0" y1="100" x2="800" y2="100"/>
+    <line x1="0" y1="200" x2="800" y2="200"/>
+    <line x1="0" y1="300" x2="800" y2="300"/>
+    <line x1="0" y1="400" x2="800" y2="400"/>
+    <line x1="0" y1="500" x2="800" y2="500"/>
+  </g>
+
+  <!-- Neural network / AI nodes in background -->
+  <g>
+    <!-- Connection lines -->
+    <line x1="580" y1="120" x2="650" y2="180" stroke="#008080" stroke-opacity=".12" stroke-width="1.5"/>
+    <line x1="650" y1="180" x2="720" y2="140" stroke="#008080" stroke-opacity=".12" stroke-width="1.5"/>
+    <line x1="650" y1="180" x2="690" y2="260" stroke="#008080" stroke-opacity=".12" stroke-width="1.5"/>
+    <line x1="580" y1="120" x2="520" y2="190" stroke="#008080" stroke-opacity=".12" stroke-width="1.5"/>
+    <line x1="520" y1="190" x2="580" y2="270" stroke="#008080" stroke-opacity=".12" stroke-width="1.5"/>
+    <line x1="580" y1="270" x2="690" y2="260" stroke="#008080" stroke-opacity=".12" stroke-width="1.5"/>
+    <line x1="720" y1="140" x2="750" y2="220" stroke="#008080" stroke-opacity=".12" stroke-width="1.5"/>
+    <line x1="750" y1="220" x2="690" y2="260" stroke="#008080" stroke-opacity=".12" stroke-width="1.5"/>
+    <!-- Nodes -->
+    <circle cx="580" cy="120" r="5" fill="#008080" opacity=".2"/>
+    <circle cx="650" cy="180" r="6" fill="#008080" opacity=".25"/>
+    <circle cx="720" cy="140" r="4" fill="#008080" opacity=".18"/>
+    <circle cx="520" cy="190" r="4.5" fill="#008080" opacity=".2"/>
+    <circle cx="580" cy="270" r="5" fill="#008080" opacity=".22"/>
+    <circle cx="690" cy="260" r="5.5" fill="#008080" opacity=".25"/>
+    <circle cx="750" cy="220" r="4" fill="#008080" opacity=".18"/>
+  </g>
+
+  <!-- More AI nodes top-left -->
+  <g>
+    <line x1="80" y1="80" x2="150" y2="130" stroke="#008080" stroke-opacity=".08" stroke-width="1"/>
+    <line x1="150" y1="130" x2="120" y2="200" stroke="#008080" stroke-opacity=".08" stroke-width="1"/>
+    <line x1="80" y1="80" x2="40" y2="150" stroke="#008080" stroke-opacity=".08" stroke-width="1"/>
+    <circle cx="80" cy="80" r="3.5" fill="#008080" opacity=".15"/>
+    <circle cx="150" cy="130" r="4" fill="#008080" opacity=".18"/>
+    <circle cx="120" cy="200" r="3" fill="#008080" opacity=".12"/>
+    <circle cx="40" cy="150" r="3" fill="#008080" opacity=".12"/>
+  </g>
+
+  <!-- Growth chart area (filled) -->
+  <g transform="translate(80, 310)">
+    <!-- Chart area fill -->
+    <path d="M0,220 L0,180 L80,160 L160,140 L240,100 L320,80 L400,30 L480,10 L480,220 Z" fill="url(#graphGrad)"/>
+    <!-- Chart line -->
+    <polyline points="0,180 80,160 160,140 240,100 320,80 400,30 480,10" stroke="#008080" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Data points -->
+    <circle cx="0" cy="180" r="4" fill="#008080"/>
+    <circle cx="80" cy="160" r="4" fill="#008080"/>
+    <circle cx="160" cy="140" r="4" fill="#008080"/>
+    <circle cx="240" cy="100" r="4.5" fill="#008080"/>
+    <circle cx="320" cy="80" r="4.5" fill="#008080"/>
+    <circle cx="400" cy="30" r="5" fill="#008080"/>
+    <circle cx="480" cy="10" r="5.5" fill="#006666"/>
+    <!-- Baseline -->
+    <line x1="0" y1="220" x2="480" y2="220" stroke="#006666" stroke-opacity=".2" stroke-width="1"/>
+    <!-- Y-axis ticks -->
+    <line x1="-5" y1="220" x2="0" y2="220" stroke="#006666" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="-5" y1="165" x2="0" y2="165" stroke="#006666" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="-5" y1="110" x2="0" y2="110" stroke="#006666" stroke-opacity=".3" stroke-width="1"/>
+    <line x1="-5" y1="55" x2="0" y2="55" stroke="#006666" stroke-opacity=".3" stroke-width="1"/>
+  </g>
+
+  <!-- Modern building cluster (center-right) -->
+  <g transform="translate(420, 130)">
+    <!-- Tall tower -->
+    <rect x="0" y="0" width="60" height="200" rx="3" fill="url(#bldGrad)"/>
+    <!-- Tower windows -->
+    <g fill="#e0f2f1" opacity=".6">
+      <rect x="10" y="15" width="15" height="10" rx="1"/>
+      <rect x="35" y="15" width="15" height="10" rx="1"/>
+      <rect x="10" y="35" width="15" height="10" rx="1"/>
+      <rect x="35" y="35" width="15" height="10" rx="1"/>
+      <rect x="10" y="55" width="15" height="10" rx="1"/>
+      <rect x="35" y="55" width="15" height="10" rx="1"/>
+      <rect x="10" y="75" width="15" height="10" rx="1"/>
+      <rect x="35" y="75" width="15" height="10" rx="1"/>
+      <rect x="10" y="95" width="15" height="10" rx="1"/>
+      <rect x="35" y="95" width="15" height="10" rx="1"/>
+      <rect x="10" y="115" width="15" height="10" rx="1"/>
+      <rect x="35" y="115" width="15" height="10" rx="1"/>
+      <rect x="10" y="135" width="15" height="10" rx="1"/>
+      <rect x="35" y="135" width="15" height="10" rx="1"/>
+      <rect x="10" y="155" width="15" height="10" rx="1"/>
+      <rect x="35" y="155" width="15" height="10" rx="1"/>
+      <rect x="10" y="175" width="15" height="10" rx="1"/>
+      <rect x="35" y="175" width="15" height="10" rx="1"/>
+    </g>
+
+    <!-- Medium building -->
+    <rect x="70" y="60" width="50" height="140" rx="3" fill="#008080" opacity=".85"/>
+    <g fill="#e0f2f1" opacity=".5">
+      <rect x="80" y="75" width="12" height="8" rx="1"/>
+      <rect x="98" y="75" width="12" height="8" rx="1"/>
+      <rect x="80" y="93" width="12" height="8" rx="1"/>
+      <rect x="98" y="93" width="12" height="8" rx="1"/>
+      <rect x="80" y="111" width="12" height="8" rx="1"/>
+      <rect x="98" y="111" width="12" height="8" rx="1"/>
+      <rect x="80" y="129" width="12" height="8" rx="1"/>
+      <rect x="98" y="129" width="12" height="8" rx="1"/>
+      <rect x="80" y="147" width="12" height="8" rx="1"/>
+      <rect x="98" y="147" width="12" height="8" rx="1"/>
+      <rect x="80" y="165" width="12" height="8" rx="1"/>
+      <rect x="98" y="165" width="12" height="8" rx="1"/>
+    </g>
+
+    <!-- Short building -->
+    <rect x="130" y="110" width="45" height="90" rx="3" fill="#006666" opacity=".75"/>
+    <g fill="#e0f2f1" opacity=".45">
+      <rect x="138" y="122" width="10" height="7" rx="1"/>
+      <rect x="156" y="122" width="10" height="7" rx="1"/>
+      <rect x="138" y="138" width="10" height="7" rx="1"/>
+      <rect x="156" y="138" width="10" height="7" rx="1"/>
+      <rect x="138" y="154" width="10" height="7" rx="1"/>
+      <rect x="156" y="154" width="10" height="7" rx="1"/>
+      <rect x="138" y="170" width="10" height="7" rx="1"/>
+      <rect x="156" y="170" width="10" height="7" rx="1"/>
+    </g>
+
+    <!-- House silhouette (left of tower) -->
+    <g transform="translate(-90, 140)">
+      <polygon points="35,0 70,30 0,30" fill="#008080" opacity=".7"/>
+      <rect x="5" y="30" width="60" height="30" rx="1" fill="#006666" opacity=".7"/>
+      <rect x="22" y="38" width="16" height="22" rx="1" fill="#e0f2f1" opacity=".5"/>
+      <rect x="45" y="38" width="12" height="10" rx="1" fill="#e0f2f1" opacity=".4"/>
+    </g>
+  </g>
+
+  <!-- Circuit / tech traces connecting buildings to chart -->
+  <g stroke="#008080" stroke-opacity=".1" stroke-width="1.5" fill="none" stroke-dasharray="4,4">
+    <path d="M420,330 L350,380 L200,380"/>
+    <path d="M480,330 L480,370 L400,420"/>
+    <path d="M540,330 L560,380 L560,440"/>
+  </g>
+  <!-- Circuit junction dots -->
+  <circle cx="350" cy="380" r="3" fill="#008080" opacity=".15"/>
+  <circle cx="480" cy="370" r="3" fill="#008080" opacity=".15"/>
+  <circle cx="560" cy="380" r="3" fill="#008080" opacity=".15"/>
+
+  <!-- Decorative floating elements -->
+  <g opacity=".12">
+    <rect x="680" y="400" width="30" height="30" rx="6" stroke="#008080" stroke-width="1.5" fill="none" transform="rotate(15,695,415)"/>
+    <rect x="710" y="450" width="20" height="20" rx="4" stroke="#006666" stroke-width="1" fill="none" transform="rotate(-10,720,460)"/>
+    <circle cx="660" cy="460" r="10" stroke="#008080" stroke-width="1" fill="none"/>
+  </g>
+  <g opacity=".1">
+    <rect x="50" y="450" width="25" height="25" rx="5" stroke="#008080" stroke-width="1.5" fill="none" transform="rotate(20,62,462)"/>
+    <circle cx="110" cy="480" r="8" stroke="#006666" stroke-width="1" fill="none"/>
+  </g>
+
+  <!-- Upward arrow accent on chart peak -->
+  <g transform="translate(556,316)">
+    <line x1="0" y1="10" x2="0" y2="-10" stroke="#006666" stroke-width="2" stroke-linecap="round"/>
+    <polyline points="-5,-4 0,-10 5,-4" stroke="#006666" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>

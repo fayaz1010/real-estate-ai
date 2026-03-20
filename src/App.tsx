@@ -971,6 +971,10 @@ const AppContent: React.FC = () => {
             path="/onboarding-wizard"
             element={<Navigate to="/onboarding" replace />}
           />
+          <Route
+            path="/trial-signup"
+            element={<Navigate to="/trial/signup" replace />}
+          />
 
           {/* SEO-friendly root-level landing page routes */}
           <Route

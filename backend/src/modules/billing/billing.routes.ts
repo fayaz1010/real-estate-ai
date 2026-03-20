@@ -1,5 +1,5 @@
 // Billing Routes - Stripe subscription management
-import { Router } from "express";
+import express, { Router } from "express";
 
 import { authenticate, authorize } from "../../middleware/auth";
 
@@ -15,7 +15,15 @@ const BILLING_ROLES = [
   "SUPER_ADMIN",
 ];
 
-// All billing routes require authentication + authorized roles
+// Stripe webhook — no auth, verified by Stripe signature.
+// Must use express.raw() so the body is a Buffer for signature verification.
+router.post(
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  billingController.stripeWebhook,
+);
+
+// All billing routes below require authentication + authorized roles
 router.post(
   "/create-customer",
   authenticate,
@@ -42,6 +50,41 @@ router.get(
   authenticate,
   authorize(...BILLING_ROLES),
   billingController.getInvoices,
+);
+
+router.post(
+  "/create-checkout-session",
+  authenticate,
+  authorize(...BILLING_ROLES),
+  billingController.createCheckoutSession,
+);
+
+router.get(
+  "/subscription-status/:subscriptionId",
+  authenticate,
+  authorize(...BILLING_ROLES),
+  billingController.getSubscriptionStatus,
+);
+
+router.get(
+  "/upcoming-invoice/:subscriptionId",
+  authenticate,
+  authorize(...BILLING_ROLES),
+  billingController.getUpcomingInvoice,
+);
+
+router.post(
+  "/create-payment-intent",
+  authenticate,
+  authorize(...BILLING_ROLES),
+  billingController.createPaymentIntent,
+);
+
+router.get(
+  "/payment-intent/:paymentIntentId",
+  authenticate,
+  authorize(...BILLING_ROLES),
+  billingController.getPaymentIntent,
 );
 
 export default router;

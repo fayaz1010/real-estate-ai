@@ -3,7 +3,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import App from "./App";
-import "./index.css";
+import "./app.css";
 
 Sentry.init({
   dsn: import.meta.env.VITE_SENTRY_DSN,
@@ -32,8 +32,8 @@ function FallbackUI() {
         alignItems: "center",
         justifyContent: "center",
         minHeight: "100vh",
-        backgroundColor: "#FAF6F1",
-        color: "#2D2A26",
+        backgroundColor: "#FFFFFF",
+        color: "#1A1A2E",
         fontFamily: "Inter, system-ui, sans-serif",
         padding: "2rem",
         textAlign: "center",
@@ -51,8 +51,8 @@ function FallbackUI() {
         style={{
           marginTop: "1.5rem",
           padding: "0.625rem 1.5rem",
-          backgroundColor: "#2D2A26",
-          color: "#FAF6F1",
+          backgroundColor: "#008080",
+          color: "#FFFFFF",
           border: "none",
           borderRadius: "0.375rem",
           fontSize: "0.875rem",

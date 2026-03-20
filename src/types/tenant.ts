@@ -1,19 +1,28 @@
 /**
- * TypeScript types for the Tenant data model.
+ * TypeScript types for the TenantProfile data model.
  */
 
 export type Tenant = {
   id: string;
-  userId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  dateOfBirth: Date;
-  occupation: string;
-  income: number;
-  creditScore: number;
-  rentalHistory: string;
   createdAt: Date;
   updatedAt: Date;
+  userId: string;
+  employmentStatus?: string | null;
+  employerName?: string | null;
+  jobTitle?: string | null;
+  annualIncome?: number | null;
+  creditScore?: number | null;
+  hasPets: boolean;
+  petsDescription?: string | null;
+  hasVehicle: boolean;
+  vehicleDescription?: string | null;
+  smoking: boolean;
+  references?: Record<string, unknown> | null;
+  moveInDate?: Date | null;
+  leaseTerm?: number | null;
+  preferredLocations: string[];
+  budgetMin?: number | null;
+  budgetMax?: number | null;
+  preferredPropertyTypes: string[];
+  specialRequirements?: string | null;
 };

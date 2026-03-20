@@ -1,1198 +1,1159 @@
-import {
-  PrismaClient,
-  UserRole,
-  UserStatus,
-  PropertyType,
-  PropertyStatus,
-  LeaseStatus,
-  PaymentStatus,
-  PaymentType,
-  ApplicationStatus,
-  MaintenanceSystemType,
-} from "@prisma/client";
-import bcrypt from "bcryptjs";
+import { PrismaClient } from '@prisma/client';
+import * as bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
-// ==========================================
-// SEED DATA
-// ==========================================
-
-const SALT_ROUNDS = 10;
-
-async function hashPassword(password: string): Promise<string> {
-  return bcrypt.hash(password, SALT_ROUNDS);
-}
-
 async function main() {
-  console.log("🌱 Starting database seed...");
+  console.log('🌱 Starting database seed...');
 
-  // Clean existing data in reverse dependency order
-  console.log("Cleaning existing seed data...");
-  await prisma.payment.deleteMany();
-  await prisma.lease.deleteMany();
-  await prisma.applicationDocument.deleteMany();
-  await prisma.application.deleteMany();
-  await prisma.maintenanceRecord.deleteMany();
-  await prisma.maintenancePrediction.deleteMany();
-  await prisma.propertyImage.deleteMany();
-  await prisma.inspection.deleteMany();
-  await prisma.screeningRequest.deleteMany();
-  await prisma.booking.deleteMany();
-  await prisma.availability.deleteMany();
-  await prisma.transaction.deleteMany();
-  await prisma.financialReport.deleteMany();
-  await prisma.notification.deleteMany();
-  await prisma.notificationPreference.deleteMany();
-  await prisma.workflowExecution.deleteMany();
-  await prisma.workflow.deleteMany();
-  await prisma.subscription.deleteMany();
-  await prisma.userFeatureUsage.deleteMany();
-  await prisma.tipDismissal.deleteMany();
-  await prisma.pushSubscription.deleteMany();
-  await prisma.refreshToken.deleteMany();
-  await prisma.passwordResetToken.deleteMany();
-  await prisma.emailVerificationToken.deleteMany();
-  await prisma.landlordProfile.deleteMany();
-  await prisma.tenantProfile.deleteMany();
-  await prisma.agentProfile.deleteMany();
-  await prisma.property.deleteMany();
-  await prisma.user.deleteMany();
+  // =============================================
+  // CLEAR EXISTING DATA (respecting FK constraints)
+  // =============================================
+  console.log('🗑️  Clearing existing data...');
 
-  // ------------------------------------------
-  // USERS
-  // ------------------------------------------
-  console.log("Creating users...");
+  const tablesToClear = [
+    // Leaf / dependent tables first
+    'TipDismissal',
+    'UserFeatureUsage',
+    'PushSubscription',
+    'NotificationPreference',
+    'WorkflowExecution',
+    'Notification',
+    'Transaction',
+    'FinancialReport',
+    'MaintenancePrediction',
+    'MaintenanceRecord',
+    'Workflow',
+    'Availability',
+    'Booking',
+    'ScreeningRequest',
+    'Inspection',
+    'ApplicationDocument',
+    'Application',
+    'Payment',
+    'Lease',
+    'PropertyImage',
+    'Property',
+    'Subscription',
+    'AgentProfile',
+    'TenantProfile',
+    'LandlordProfile',
+    'EmailVerificationToken',
+    'PasswordResetToken',
+    'RefreshToken',
+    'User',
+  ];
 
-  const adminPassword = await hashPassword("Admin@2026!Secure");
-  const landlordPassword = await hashPassword("Landlord@2026!Secure");
-  const tenantPassword = await hashPassword("Tenant@2026!Secure");
-  const tenant2Password = await hashPassword("Tenant2@2026!Secure");
+  for (const table of tablesToClear) {
+    await prisma.$executeRawUnsafe(`TRUNCATE TABLE "${table}" CASCADE`);
+  }
 
-  await prisma.user.create({
-    data: {
-      email: "admin@realestate-ai.com",
-      passwordHash: adminPassword,
-      firstName: "Sarah",
-      lastName: "Mitchell",
-      phone: "+1-555-100-0001",
-      role: UserRole.ADMIN,
-      status: UserStatus.ACTIVE,
-      emailVerified: true,
-      profileCompletion: 100,
-      lastLoginAt: new Date("2026-03-19T09:00:00Z"),
-    },
-  });
+  console.log('✅ Existing data cleared.');
+
+  // =============================================
+  // HASH PASSWORD
+  // =============================================
+  const passwordHash = bcrypt.hashSync('password123', 10);
+
+  // =============================================
+  // CREATE USERS
+  // =============================================
+  console.log('👤 Creating users...');
 
   const landlord = await prisma.user.create({
     data: {
-      email: "james.hartwell@outlook.com",
-      passwordHash: landlordPassword,
-      firstName: "James",
-      lastName: "Hartwell",
-      phone: "+1-555-200-0002",
-      role: UserRole.LANDLORD,
-      status: UserStatus.ACTIVE,
+      email: 'landlord@example.com',
+      passwordHash,
+      firstName: 'James',
+      lastName: 'Mitchell',
+      phone: '+1-555-100-2000',
+      role: 'LANDLORD',
+      status: 'ACTIVE',
       emailVerified: true,
-      profileCompletion: 95,
-      lastLoginAt: new Date("2026-03-18T14:30:00Z"),
+      profileCompletion: 100,
+      lastLoginAt: new Date('2026-03-19T10:00:00Z'),
     },
   });
 
   const tenant = await prisma.user.create({
     data: {
-      email: "maria.chen@gmail.com",
-      passwordHash: tenantPassword,
-      firstName: "Maria",
-      lastName: "Chen",
-      phone: "+1-555-300-0003",
-      role: UserRole.TENANT,
-      status: UserStatus.ACTIVE,
+      email: 'tenant@example.com',
+      passwordHash,
+      firstName: 'Sarah',
+      lastName: 'Chen',
+      phone: '+1-555-200-3000',
+      role: 'TENANT',
+      status: 'ACTIVE',
       emailVerified: true,
       profileCompletion: 85,
-      lastLoginAt: new Date("2026-03-20T08:15:00Z"),
+      lastLoginAt: new Date('2026-03-18T14:30:00Z'),
+    },
+  });
+
+  const admin = await prisma.user.create({
+    data: {
+      email: 'admin@example.com',
+      passwordHash,
+      firstName: 'Alex',
+      lastName: 'Rivera',
+      phone: '+1-555-300-4000',
+      role: 'ADMIN',
+      status: 'ACTIVE',
+      emailVerified: true,
+      profileCompletion: 100,
+      lastLoginAt: new Date('2026-03-20T08:00:00Z'),
     },
   });
 
   const tenant2 = await prisma.user.create({
     data: {
-      email: "david.okafor@yahoo.com",
-      passwordHash: tenant2Password,
-      firstName: "David",
-      lastName: "Okafor",
-      phone: "+1-555-400-0004",
-      role: UserRole.TENANT,
-      status: UserStatus.ACTIVE,
+      email: 'tenant2@example.com',
+      passwordHash,
+      firstName: 'Marcus',
+      lastName: 'Johnson',
+      phone: '+1-555-400-5000',
+      role: 'TENANT',
+      status: 'ACTIVE',
       emailVerified: true,
       profileCompletion: 70,
-      lastLoginAt: new Date("2026-03-17T11:00:00Z"),
+      lastLoginAt: new Date('2026-03-17T16:00:00Z'),
     },
   });
 
-  console.log(`  Created ${4} users`);
+  const tenant3 = await prisma.user.create({
+    data: {
+      email: 'tenant3@example.com',
+      passwordHash,
+      firstName: 'Emily',
+      lastName: 'Park',
+      phone: '+1-555-500-6000',
+      role: 'TENANT',
+      status: 'ACTIVE',
+      emailVerified: true,
+      profileCompletion: 90,
+      lastLoginAt: new Date('2026-03-16T11:00:00Z'),
+    },
+  });
 
-  // ------------------------------------------
-  // PROFILES
-  // ------------------------------------------
-  console.log("Creating profiles...");
+  console.log('✅ Users created.');
+
+  // =============================================
+  // CREATE PROFILES
+  // =============================================
+  console.log('📋 Creating profiles...');
 
   await prisma.landlordProfile.create({
     data: {
       userId: landlord.id,
-      businessName: "Hartwell Property Group",
-      taxId: "XX-XXXXXXX",
+      businessName: 'Mitchell Property Group',
+      taxId: 'EIN-12-3456789',
       bankAccountVerified: true,
       propertiesCount: 5,
       rating: 4.7,
-      verificationStatus: "verified",
-      bio: "Experienced property manager with over 12 years in residential and commercial real estate across the greater Austin area.",
-      website: "https://hartwellproperties.example.com",
-      languages: ["English", "Spanish"],
+      verificationStatus: 'verified',
+      bio: 'Professional property manager with over 10 years of experience in residential real estate.',
+      languages: ['English', 'Spanish'],
     },
   });
 
   await prisma.tenantProfile.create({
     data: {
       userId: tenant.id,
-      employmentStatus: "Full-Time",
-      employerName: "Meridian Health Systems",
-      jobTitle: "Senior Data Analyst",
-      annualIncome: 92000,
-      creditScore: 745,
+      employmentStatus: 'Full-time',
+      employerName: 'Acme Corp',
+      jobTitle: 'Senior Software Engineer',
+      annualIncome: 125000,
+      creditScore: 780,
       hasPets: true,
-      petsDescription: "1 small dog (Corgi, 25 lbs)",
+      petsDescription: 'One small dog (Corgi, 25 lbs)',
       hasVehicle: true,
-      vehicleDescription: "2024 Honda Civic",
-      smoking: false,
-      moveInDate: new Date("2026-04-01"),
-      leaseTerm: 12,
-      preferredLocations: ["Austin", "Round Rock", "Cedar Park"],
+      vehicleDescription: '2024 Toyota Camry',
+      moveInDate: new Date('2025-06-01'),
       budgetMin: 1500,
-      budgetMax: 2500,
-      preferredPropertyTypes: ["APARTMENT", "CONDO"],
+      budgetMax: 3000,
+      preferredPropertyTypes: ['APARTMENT', 'CONDO'],
     },
   });
 
   await prisma.tenantProfile.create({
     data: {
       userId: tenant2.id,
-      employmentStatus: "Full-Time",
-      employerName: "TechBridge Solutions",
-      jobTitle: "Frontend Developer",
-      annualIncome: 105000,
-      creditScore: 710,
+      employmentStatus: 'Full-time',
+      employerName: 'Global Finance Inc',
+      jobTitle: 'Financial Analyst',
+      annualIncome: 95000,
+      creditScore: 720,
       hasPets: false,
       hasVehicle: true,
-      vehicleDescription: "2023 Tesla Model 3",
-      smoking: false,
-      moveInDate: new Date("2026-05-01"),
-      leaseTerm: 12,
-      preferredLocations: ["Austin", "South Congress"],
-      budgetMin: 1800,
-      budgetMax: 3000,
-      preferredPropertyTypes: ["APARTMENT", "LOFT"],
+      vehicleDescription: '2023 Honda Civic',
+      budgetMin: 1200,
+      budgetMax: 2200,
+      preferredPropertyTypes: ['APARTMENT'],
     },
   });
 
-  // ------------------------------------------
-  // PROPERTIES
-  // ------------------------------------------
-  console.log("Creating properties...");
+  await prisma.tenantProfile.create({
+    data: {
+      userId: tenant3.id,
+      employmentStatus: 'Full-time',
+      employerName: 'City General Hospital',
+      jobTitle: 'Registered Nurse',
+      annualIncome: 82000,
+      creditScore: 750,
+      hasPets: true,
+      petsDescription: 'One cat (indoor)',
+      hasVehicle: false,
+      budgetMin: 1000,
+      budgetMax: 1800,
+      preferredPropertyTypes: ['APARTMENT', 'STUDIO'],
+    },
+  });
+
+  console.log('✅ Profiles created.');
+
+  // =============================================
+  // CREATE SUBSCRIPTIONS
+  // =============================================
+  console.log('💳 Creating subscriptions...');
+
+  await prisma.subscription.create({
+    data: {
+      userId: landlord.id,
+      plan: 'PROFESSIONAL',
+      status: 'ACTIVE',
+      currentPeriodStart: new Date('2026-03-01'),
+      currentPeriodEnd: new Date('2026-04-01'),
+    },
+  });
+
+  await prisma.subscription.create({
+    data: {
+      userId: admin.id,
+      plan: 'ENTERPRISE',
+      status: 'ACTIVE',
+      currentPeriodStart: new Date('2026-03-01'),
+      currentPeriodEnd: new Date('2026-04-01'),
+    },
+  });
+
+  console.log('✅ Subscriptions created.');
+
+  // =============================================
+  // CREATE PROPERTIES
+  // =============================================
+  console.log('🏠 Creating properties...');
 
   const properties = await Promise.all([
     prisma.property.create({
       data: {
         ownerId: landlord.id,
-        title: "Modern Downtown Austin Loft",
+        title: 'Modern Downtown Apartment',
         description:
-          "Stunning open-concept loft in the heart of downtown Austin. Floor-to-ceiling windows flood the space with natural light, showcasing polished concrete floors and exposed brick walls. The chef-grade kitchen features quartz countertops and stainless steel appliances. Walking distance to Rainey Street entertainment district and Lady Bird Lake trails.",
-        slug: "modern-downtown-austin-loft",
-        propertyType: PropertyType.LOFT,
-        status: PropertyStatus.ACTIVE,
+          'Stylish 2-bedroom apartment in the heart of downtown with panoramic city views, modern finishes, and access to premium amenities including a rooftop pool and fitness center.',
+        slug: 'modern-downtown-apartment',
+        propertyType: 'APARTMENT',
+        status: 'RENTED',
         address: {
-          street: "301 Congress Ave",
-          unit: "Unit 1204",
-          city: "Austin",
-          state: "TX",
-          zip: "78701",
-          country: "US",
-          lat: 30.2652,
-          lng: -97.7443,
+          street: '450 Market Street',
+          unit: 'Apt 1204',
+          city: 'San Francisco',
+          state: 'CA',
+          zip: '94105',
+          country: 'US',
+          lat: 37.7911,
+          lng: -122.3986,
         },
-        bedrooms: 1,
-        bathrooms: 1,
-        sqft: 850,
-        yearBuilt: 2019,
+        bedrooms: 2,
+        bathrooms: 2,
+        sqft: 1100,
+        yearBuilt: 2020,
         price: 2200,
-        pricePerSqft: 2.59,
-        deposit: 2200,
+        deposit: 4400,
         amenities: [
-          "Rooftop Pool",
-          "Fitness Center",
-          "Concierge",
-          "Parking Garage",
-          "Pet Friendly",
-          "In-Unit Laundry",
+          'Rooftop Pool',
+          'Fitness Center',
+          'In-unit Laundry',
+          'Parking Garage',
+          'Doorman',
+          'EV Charging',
         ],
-        availableFrom: new Date("2026-04-01"),
+        availableFrom: new Date('2025-06-01'),
         leaseTerm: 12,
         views: 342,
         featured: true,
         verified: true,
-        publishedAt: new Date("2026-02-15"),
-        images: {
-          create: [
-            {
-              url: "/assets/generated/property-1-living.png",
-              caption: "Open-concept living area",
-              order: 0,
-              isPrimary: true,
-            },
-            {
-              url: "/assets/generated/property-1-kitchen.png",
-              caption: "Modern kitchen with quartz countertops",
-              order: 1,
-            },
-            {
-              url: "/assets/generated/property-1-bedroom.png",
-              caption: "Spacious bedroom with city views",
-              order: 2,
-            },
-          ],
-        },
+        publishedAt: new Date('2025-04-15'),
       },
     }),
-
     prisma.property.create({
       data: {
         ownerId: landlord.id,
-        title: "Charming Craftsman House in Travis Heights",
+        title: 'Charming Victorian House',
         description:
-          "Beautifully restored 1940s Craftsman bungalow nestled on a tree-lined street in sought-after Travis Heights. Original hardwood floors, built-in bookshelves, and a wraparound porch create timeless character. Updated kitchen with farmhouse sink. Large backyard with mature pecan trees, perfect for entertaining. Minutes from South Congress shops and restaurants.",
-        slug: "craftsman-house-travis-heights",
-        propertyType: PropertyType.HOUSE,
-        status: PropertyStatus.ACTIVE,
+          'Beautifully restored 3-bedroom Victorian home with original hardwood floors, a private garden, and a detached garage. Located in a quiet, tree-lined neighborhood.',
+        slug: 'charming-victorian-house',
+        propertyType: 'HOUSE',
+        status: 'RENTED',
         address: {
-          street: "1512 Travis Heights Blvd",
-          city: "Austin",
-          state: "TX",
-          zip: "78704",
-          country: "US",
-          lat: 30.2437,
-          lng: -97.7546,
+          street: '782 Oak Avenue',
+          city: 'Portland',
+          state: 'OR',
+          zip: '97205',
+          country: 'US',
+          lat: 45.5231,
+          lng: -122.6765,
         },
         bedrooms: 3,
-        bathrooms: 2,
-        sqft: 1650,
-        lotSize: 6500,
-        yearBuilt: 1942,
-        price: 3200,
-        pricePerSqft: 1.94,
-        deposit: 3200,
+        bathrooms: 2.5,
+        sqft: 1800,
+        yearBuilt: 1905,
+        price: 3000,
+        deposit: 6000,
         amenities: [
-          "Hardwood Floors",
-          "Wraparound Porch",
-          "Fenced Yard",
-          "Pet Friendly",
-          "Garage",
-          "Washer/Dryer",
+          'Private Garden',
+          'Detached Garage',
+          'Hardwood Floors',
+          'Fireplace',
+          'Basement Storage',
         ],
-        availableFrom: new Date("2026-04-15"),
+        availableFrom: new Date('2025-05-01'),
         leaseTerm: 12,
-        views: 578,
+        views: 518,
         featured: true,
         verified: true,
-        publishedAt: new Date("2026-02-20"),
-        images: {
-          create: [
-            {
-              url: "/assets/generated/property-2-exterior.png",
-              caption: "Craftsman exterior with wraparound porch",
-              order: 0,
-              isPrimary: true,
-            },
-            {
-              url: "/assets/generated/property-2-living.png",
-              caption: "Living room with original hardwood floors",
-              order: 1,
-            },
-            {
-              url: "/assets/generated/property-2-backyard.png",
-              caption: "Spacious backyard with pecan trees",
-              order: 2,
-            },
-          ],
-        },
+        publishedAt: new Date('2025-03-20'),
       },
     }),
-
     prisma.property.create({
       data: {
         ownerId: landlord.id,
-        title: "Luxury Condo at The Domain",
+        title: 'Luxury Waterfront Condo',
         description:
-          "Upscale 2-bedroom condo in The Domain, Austin's premier mixed-use destination. This corner unit offers panoramic views and an open floor plan with designer finishes. Italian marble bathroom, custom closets, and a private balcony overlooking the courtyard. Resort-style amenities include infinity pool, spa, and 24-hour fitness center. Steps from world-class dining and shopping.",
-        slug: "luxury-condo-the-domain",
-        propertyType: PropertyType.CONDO,
-        status: PropertyStatus.ACTIVE,
+          'Premium 2-bedroom waterfront condo with floor-to-ceiling windows, a chef-grade kitchen, and a private balcony overlooking the harbor. Building includes concierge service.',
+        slug: 'luxury-waterfront-condo',
+        propertyType: 'CONDO',
+        status: 'ACTIVE',
         address: {
-          street: "11600 Domain Dr",
-          unit: "Suite 3401",
-          city: "Austin",
-          state: "TX",
-          zip: "78758",
-          country: "US",
-          lat: 30.4022,
-          lng: -97.7253,
+          street: '100 Harbor Boulevard',
+          unit: 'Unit 3501',
+          city: 'Seattle',
+          state: 'WA',
+          zip: '98101',
+          country: 'US',
+          lat: 47.6062,
+          lng: -122.3321,
         },
         bedrooms: 2,
         bathrooms: 2,
-        sqft: 1200,
+        sqft: 1350,
         yearBuilt: 2022,
-        price: 2800,
-        pricePerSqft: 2.33,
-        deposit: 2800,
+        price: 3500,
+        deposit: 7000,
         amenities: [
-          "Infinity Pool",
-          "Spa",
-          "24hr Fitness",
-          "Concierge",
-          "Valet Parking",
-          "Dog Park",
-          "Balcony",
-          "In-Unit Laundry",
+          'Concierge',
+          'Private Balcony',
+          'Wine Cellar',
+          'Spa',
+          'Theater Room',
+          'Dog Park',
         ],
-        availableFrom: new Date("2026-05-01"),
+        availableFrom: new Date('2026-04-01'),
         leaseTerm: 12,
-        views: 210,
+        views: 215,
         featured: false,
         verified: true,
-        publishedAt: new Date("2026-03-01"),
-        images: {
-          create: [
-            {
-              url: "/assets/generated/property-3-living.png",
-              caption: "Corner unit with panoramic views",
-              order: 0,
-              isPrimary: true,
-            },
-            {
-              url: "/assets/generated/property-3-bathroom.png",
-              caption: "Italian marble bathroom",
-              order: 1,
-            },
-            {
-              url: "/assets/generated/property-3-pool.png",
-              caption: "Resort-style infinity pool",
-              order: 2,
-            },
-          ],
-        },
+        publishedAt: new Date('2026-02-10'),
       },
     }),
-
     prisma.property.create({
       data: {
         ownerId: landlord.id,
-        title: "Cozy Studio near UT Campus",
+        title: 'Cozy Studio Near University',
         description:
-          "Efficient and well-designed studio apartment just two blocks from the University of Texas campus. Recently renovated with modern finishes, full kitchen with dishwasher, and spacious closet with built-in organizers. Large windows facing east bring in morning sunlight. Ideal for students or young professionals seeking walkable access to campus, restaurants, and public transit.",
-        slug: "cozy-studio-ut-campus",
-        propertyType: PropertyType.STUDIO,
-        status: PropertyStatus.ACTIVE,
+          'Efficient and well-designed studio apartment steps from the university campus. Features built-in storage, a kitchenette, and high-speed internet included.',
+        slug: 'cozy-studio-near-university',
+        propertyType: 'STUDIO',
+        status: 'RENTED',
         address: {
-          street: "2505 University Ave",
-          unit: "Apt 210",
-          city: "Austin",
-          state: "TX",
-          zip: "78712",
-          country: "US",
-          lat: 30.2862,
-          lng: -97.7394,
+          street: '55 College Road',
+          unit: 'Studio 8B',
+          city: 'Austin',
+          state: 'TX',
+          zip: '78705',
+          country: 'US',
+          lat: 30.2849,
+          lng: -97.7341,
         },
         bedrooms: 0,
         bathrooms: 1,
         sqft: 450,
         yearBuilt: 2018,
-        price: 1350,
-        pricePerSqft: 3.0,
-        deposit: 1350,
+        price: 1500,
+        deposit: 1500,
         amenities: [
-          "Dishwasher",
-          "In-Unit Laundry",
-          "Bike Storage",
-          "Study Lounge",
-          "Package Lockers",
-          "Rooftop Deck",
+          'High-speed Internet',
+          'Laundry Room',
+          'Bike Storage',
+          'Study Lounge',
+          'Package Lockers',
         ],
-        availableFrom: new Date("2026-06-01"),
+        availableFrom: new Date('2025-08-01'),
         leaseTerm: 12,
-        views: 125,
+        views: 189,
         featured: false,
         verified: true,
-        publishedAt: new Date("2026-03-10"),
-        images: {
-          create: [
-            {
-              url: "/assets/generated/property-4-main.png",
-              caption: "Bright studio with modern finishes",
-              order: 0,
-              isPrimary: true,
-            },
-            {
-              url: "/assets/generated/property-4-kitchen.png",
-              caption: "Full kitchen with dishwasher",
-              order: 1,
-            },
-          ],
-        },
+        publishedAt: new Date('2025-06-01'),
       },
     }),
-
     prisma.property.create({
       data: {
         ownerId: landlord.id,
-        title: "Spacious Townhouse in Mueller",
+        title: 'Spacious Family Townhouse',
         description:
-          "Contemporary 3-bedroom townhouse in the award-winning Mueller community. Open-plan living with 10-foot ceilings, hardwood floors throughout, and a gourmet kitchen with gas range and waterfall island. Private rooftop terrace with Hill Country views. Two-car garage and EV charging station. Walking distance to Mueller Lake Park, Thinkery children's museum, and H-E-B grocery.",
-        slug: "spacious-townhouse-mueller",
-        propertyType: PropertyType.TOWNHOUSE,
-        status: PropertyStatus.RENTED,
+          'A 4-bedroom townhouse perfect for families, featuring an open-concept living area, a modern kitchen with stainless steel appliances, and a private backyard.',
+        slug: 'spacious-family-townhouse',
+        propertyType: 'TOWNHOUSE',
+        status: 'ACTIVE',
         address: {
-          street: "4209 Berkman Dr",
-          city: "Austin",
-          state: "TX",
-          zip: "78723",
-          country: "US",
-          lat: 30.2988,
-          lng: -97.7025,
+          street: '1220 Maple Drive',
+          city: 'Denver',
+          state: 'CO',
+          zip: '80220',
+          country: 'US',
+          lat: 39.7392,
+          lng: -104.9903,
         },
-        bedrooms: 3,
-        bathrooms: 2.5,
-        sqft: 1850,
-        yearBuilt: 2021,
-        price: 2950,
-        pricePerSqft: 1.59,
-        deposit: 2950,
+        bedrooms: 4,
+        bathrooms: 3,
+        sqft: 2200,
+        yearBuilt: 2015,
+        price: 2800,
+        deposit: 5600,
         amenities: [
-          "Rooftop Terrace",
-          "EV Charging",
-          "2-Car Garage",
-          "Hardwood Floors",
-          "Gas Range",
-          "Community Pool",
+          'Private Backyard',
+          'Attached Garage',
+          'Central Air',
+          'Stainless Steel Appliances',
+          'Walk-in Closets',
+          'Patio',
         ],
-        availableFrom: null,
+        availableFrom: new Date('2026-05-01'),
         leaseTerm: 12,
-        views: 415,
+        views: 127,
         featured: true,
         verified: true,
-        publishedAt: new Date("2026-01-10"),
-        images: {
-          create: [
-            {
-              url: "/assets/generated/property-5-exterior.png",
-              caption: "Modern townhouse exterior",
-              order: 0,
-              isPrimary: true,
-            },
-            {
-              url: "/assets/generated/property-5-kitchen.png",
-              caption: "Gourmet kitchen with waterfall island",
-              order: 1,
-            },
-            {
-              url: "/assets/generated/property-5-rooftop.png",
-              caption: "Private rooftop terrace",
-              order: 2,
-            },
-          ],
-        },
+        publishedAt: new Date('2026-03-01'),
       },
     }),
   ]);
 
-  console.log(`  Created ${properties.length} properties`);
+  console.log('✅ Properties created.');
 
-  // ------------------------------------------
-  // LEASES
-  // ------------------------------------------
-  console.log("Creating leases...");
+  // =============================================
+  // CREATE PROPERTY IMAGES
+  // =============================================
+  console.log('📸 Creating property images...');
+
+  for (let i = 0; i < properties.length; i++) {
+    await prisma.propertyImage.createMany({
+      data: [
+        {
+          propertyId: properties[i].id,
+          url: `/assets/properties/property-${i + 1}-main.jpg`,
+          caption: 'Main view',
+          order: 0,
+          isPrimary: true,
+        },
+        {
+          propertyId: properties[i].id,
+          url: `/assets/properties/property-${i + 1}-interior.jpg`,
+          caption: 'Living area',
+          order: 1,
+          isPrimary: false,
+        },
+      ],
+    });
+  }
+
+  console.log('✅ Property images created.');
+
+  // =============================================
+  // CREATE LEASES
+  // =============================================
+  console.log('📝 Creating leases...');
 
   const leases = await Promise.all([
-    // Active lease — Mueller Townhouse
-    prisma.lease.create({
-      data: {
-        propertyId: properties[4].id,
-        tenantId: tenant.id,
-        landlordId: landlord.id,
-        status: LeaseStatus.ACTIVE,
-        startDate: new Date("2026-01-15"),
-        endDate: new Date("2027-01-14"),
-        monthlyRent: 2950,
-        depositAmount: 2950,
-        depositPaid: true,
-        lateFeeAmount: 75,
-        lateFeeGraceDays: 5,
-        leaseDocumentUrl: "/documents/leases/lease-mueller-townhouse.pdf",
-        signedByTenant: true,
-        signedByLandlord: true,
-        signedAt: new Date("2026-01-10"),
-      },
-    }),
-
-    // Active lease — Downtown Loft (tenant2)
     prisma.lease.create({
       data: {
         propertyId: properties[0].id,
-        tenantId: tenant2.id,
+        tenantId: tenant.id,
         landlordId: landlord.id,
-        status: LeaseStatus.PENDING_SIGNATURES,
-        startDate: new Date("2026-04-01"),
-        endDate: new Date("2027-03-31"),
+        status: 'ACTIVE',
+        startDate: new Date('2025-06-01'),
+        endDate: new Date('2026-06-01'),
         monthlyRent: 2200,
-        depositAmount: 2200,
-        depositPaid: false,
+        depositAmount: 4400,
+        depositPaid: true,
         lateFeeAmount: 50,
         lateFeeGraceDays: 5,
-        leaseDocumentUrl: "/documents/leases/lease-downtown-loft.pdf",
         signedByTenant: true,
-        signedByLandlord: false,
+        signedByLandlord: true,
+        signedAt: new Date('2025-05-20'),
       },
     }),
-
-    // Expired lease — Craftsman House
     prisma.lease.create({
       data: {
         propertyId: properties[1].id,
-        tenantId: tenant.id,
+        tenantId: tenant2.id,
         landlordId: landlord.id,
-        status: LeaseStatus.EXPIRED,
-        startDate: new Date("2025-02-01"),
-        endDate: new Date("2026-01-31"),
+        status: 'ACTIVE',
+        startDate: new Date('2025-07-01'),
+        endDate: new Date('2026-07-01'),
         monthlyRent: 3000,
-        depositAmount: 3000,
+        depositAmount: 6000,
         depositPaid: true,
         lateFeeAmount: 75,
         lateFeeGraceDays: 5,
-        leaseDocumentUrl: "/documents/leases/lease-craftsman-house.pdf",
         signedByTenant: true,
         signedByLandlord: true,
-        signedAt: new Date("2025-01-25"),
+        signedAt: new Date('2025-06-25'),
       },
     }),
-  ]);
-
-  console.log(`  Created ${leases.length} leases`);
-
-  // ------------------------------------------
-  // PAYMENTS
-  // ------------------------------------------
-  console.log("Creating payments...");
-
-  const payments = await Promise.all([
-    // Paid rent — Mueller Townhouse (Feb 2026)
-    prisma.payment.create({
+    prisma.lease.create({
       data: {
-        leaseId: leases[0].id,
-        payerId: tenant.id,
-        type: PaymentType.RENT,
-        status: PaymentStatus.PAID,
-        amount: 2950,
-        currency: "USD",
-        dueDate: new Date("2026-02-01"),
-        paidAt: new Date("2026-01-30"),
-        description: "February 2026 rent — Mueller Townhouse",
+        propertyId: properties[3].id,
+        tenantId: tenant3.id,
+        landlordId: landlord.id,
+        status: 'ACTIVE',
+        startDate: new Date('2025-08-15'),
+        endDate: new Date('2026-08-15'),
+        monthlyRent: 1500,
+        depositAmount: 1500,
+        depositPaid: true,
+        lateFeeAmount: 35,
+        lateFeeGraceDays: 5,
+        signedByTenant: true,
+        signedByLandlord: true,
+        signedAt: new Date('2025-08-10'),
       },
     }),
-
-    // Paid rent — Mueller Townhouse (Mar 2026)
-    prisma.payment.create({
-      data: {
-        leaseId: leases[0].id,
-        payerId: tenant.id,
-        type: PaymentType.RENT,
-        status: PaymentStatus.PAID,
-        amount: 2950,
-        currency: "USD",
-        dueDate: new Date("2026-03-01"),
-        paidAt: new Date("2026-02-28"),
-        description: "March 2026 rent — Mueller Townhouse",
-      },
-    }),
-
-    // Pending rent — Mueller Townhouse (Apr 2026)
-    prisma.payment.create({
-      data: {
-        leaseId: leases[0].id,
-        payerId: tenant.id,
-        type: PaymentType.RENT,
-        status: PaymentStatus.PAYMENT_PENDING,
-        amount: 2950,
-        currency: "USD",
-        dueDate: new Date("2026-04-01"),
-        description: "April 2026 rent — Mueller Townhouse",
-      },
-    }),
-
-    // Security deposit — Mueller Townhouse
-    prisma.payment.create({
-      data: {
-        leaseId: leases[0].id,
-        payerId: tenant.id,
-        type: PaymentType.DEPOSIT,
-        status: PaymentStatus.PAID,
-        amount: 2950,
-        currency: "USD",
-        dueDate: new Date("2026-01-15"),
-        paidAt: new Date("2026-01-10"),
-        description: "Security deposit — Mueller Townhouse",
-      },
-    }),
-
-    // Overdue from expired lease
-    prisma.payment.create({
-      data: {
-        leaseId: leases[2].id,
-        payerId: tenant.id,
-        type: PaymentType.RENT,
-        status: PaymentStatus.OVERDUE,
-        amount: 3000,
-        currency: "USD",
-        dueDate: new Date("2026-01-01"),
-        description: "January 2026 rent — Craftsman House (final month)",
-      },
-    }),
-  ]);
-
-  console.log(`  Created ${payments.length} payments`);
-
-  // ------------------------------------------
-  // MAINTENANCE RECORDS
-  // ------------------------------------------
-  console.log("Creating maintenance records...");
-
-  const maintenanceRecords = await Promise.all([
-    prisma.maintenanceRecord.create({
-      data: {
-        propertyId: properties[4].id,
-        systemType: MaintenanceSystemType.PLUMBING,
-        description:
-          "Kitchen faucet leaking at the base. Water pooling under the sink cabinet, causing mild water damage to the shelf liner. Replaced cartridge and tightened connections.",
-        cost: 185,
-        completedAt: new Date("2026-03-05"),
-        nextPredictedDate: new Date("2027-03-05"),
-      },
-    }),
-
-    prisma.maintenanceRecord.create({
-      data: {
-        propertyId: properties[4].id,
-        systemType: MaintenanceSystemType.HVAC,
-        description:
-          "Annual HVAC filter replacement and system tune-up. Cleaned condensate drain line and checked refrigerant levels. System operating within normal parameters.",
-        cost: 250,
-        completedAt: new Date("2026-02-15"),
-        nextPredictedDate: new Date("2026-08-15"),
-      },
-    }),
-
-    prisma.maintenanceRecord.create({
-      data: {
-        propertyId: properties[1].id,
-        systemType: MaintenanceSystemType.ELECTRICAL,
-        description:
-          "GFCI outlet in master bathroom tripping intermittently. Replaced outlet and tested all bathroom circuits. Wiring in good condition.",
-        cost: 120,
-        completedAt: new Date("2026-01-20"),
-      },
-    }),
-
-    prisma.maintenanceRecord.create({
-      data: {
-        propertyId: properties[0].id,
-        systemType: MaintenanceSystemType.APPLIANCE,
-        description:
-          "Dishwasher not draining properly. Cleared clogged drain hose and cleaned filter basket. Ran test cycle successfully.",
-        cost: 95,
-        completedAt: new Date("2026-03-12"),
-      },
-    }),
-
-    prisma.maintenanceRecord.create({
+    prisma.lease.create({
       data: {
         propertyId: properties[2].id,
-        systemType: MaintenanceSystemType.HVAC,
-        description:
-          "Thermostat displaying incorrect temperature. Replaced batteries and recalibrated sensor. Verified readings against independent thermometer.",
-        cost: 65,
-        completedAt: new Date("2026-02-28"),
+        tenantId: tenant.id,
+        landlordId: landlord.id,
+        status: 'PENDING_SIGNATURES',
+        startDate: new Date('2026-04-01'),
+        endDate: new Date('2027-04-01'),
+        monthlyRent: 3500,
+        depositAmount: 7000,
+        depositPaid: false,
+        lateFeeAmount: 100,
+        lateFeeGraceDays: 5,
       },
     }),
-
-    prisma.maintenanceRecord.create({
+    prisma.lease.create({
       data: {
         propertyId: properties[4].id,
-        systemType: MaintenanceSystemType.STRUCTURAL,
-        description:
-          "Hairline crack noticed in garage ceiling drywall. Inspected and determined to be cosmetic settling crack, not structural. Patched and repainted.",
-        cost: 175,
-        completedAt: new Date("2026-03-18"),
+        tenantId: tenant2.id,
+        landlordId: landlord.id,
+        status: 'DRAFT',
+        startDate: new Date('2026-05-01'),
+        endDate: new Date('2027-05-01'),
+        monthlyRent: 2800,
+        depositAmount: 5600,
+        depositPaid: false,
+        lateFeeAmount: 65,
+        lateFeeGraceDays: 5,
       },
     }),
   ]);
 
-  console.log(`  Created ${maintenanceRecords.length} maintenance records`);
+  console.log('✅ Leases created.');
 
-  // ------------------------------------------
-  // APPLICATIONS (with AI Smart Score data)
-  // ------------------------------------------
-  console.log("Creating applications...");
+  // =============================================
+  // CREATE PAYMENTS
+  // =============================================
+  console.log('💰 Creating payments...');
 
-  const applications = await Promise.all([
-    // Maria applying for Downtown Loft
-    prisma.application.create({
-      data: {
+  // Lease 1 — Downtown Apartment $2,200/mo
+  const lease1Payments: Parameters<typeof prisma.payment.createMany>[0]['data'] = [];
+  for (let month = 6; month <= 12; month++) {
+    const dueDate = new Date(`2025-${String(month).padStart(2, '0')}-01`);
+    lease1Payments.push({
+      leaseId: leases[0].id,
+      payerId: tenant.id,
+      type: 'RENT',
+      status: 'PAID',
+      amount: 2200,
+      dueDate,
+      paidAt: new Date(dueDate.getTime() + 2 * 86400000),
+      description: `Rent — ${dueDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`,
+    });
+  }
+  for (let month = 1; month <= 2; month++) {
+    const dueDate = new Date(`2026-${String(month).padStart(2, '0')}-01`);
+    lease1Payments.push({
+      leaseId: leases[0].id,
+      payerId: tenant.id,
+      type: 'RENT',
+      status: 'PAID',
+      amount: 2200,
+      dueDate,
+      paidAt: new Date(dueDate.getTime() + 86400000),
+      description: `Rent — ${dueDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`,
+    });
+  }
+  // March 2026 — overdue
+  lease1Payments.push({
+    leaseId: leases[0].id,
+    payerId: tenant.id,
+    type: 'RENT',
+    status: 'OVERDUE',
+    amount: 2200,
+    dueDate: new Date('2026-03-01'),
+    description: 'Rent — March 2026',
+  });
+  // Deposit
+  lease1Payments.push({
+    leaseId: leases[0].id,
+    payerId: tenant.id,
+    type: 'DEPOSIT',
+    status: 'PAID',
+    amount: 4400,
+    dueDate: new Date('2025-05-25'),
+    paidAt: new Date('2025-05-25'),
+    description: 'Security deposit',
+  });
+  await prisma.payment.createMany({ data: lease1Payments });
+
+  // Lease 2 — Victorian House $3,000/mo
+  const lease2Payments: Parameters<typeof prisma.payment.createMany>[0]['data'] = [];
+  for (let month = 7; month <= 12; month++) {
+    const dueDate = new Date(`2025-${String(month).padStart(2, '0')}-01`);
+    lease2Payments.push({
+      leaseId: leases[1].id,
+      payerId: tenant2.id,
+      type: 'RENT',
+      status: 'PAID',
+      amount: 3000,
+      dueDate,
+      paidAt: new Date(dueDate.getTime() + 86400000),
+      description: `Rent — ${dueDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`,
+    });
+  }
+  for (let month = 1; month <= 3; month++) {
+    const dueDate = new Date(`2026-${String(month).padStart(2, '0')}-01`);
+    lease2Payments.push({
+      leaseId: leases[1].id,
+      payerId: tenant2.id,
+      type: 'RENT',
+      status: 'PAID',
+      amount: 3000,
+      dueDate,
+      paidAt: new Date(dueDate.getTime() + 3 * 86400000),
+      description: `Rent — ${dueDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`,
+    });
+  }
+  await prisma.payment.createMany({ data: lease2Payments });
+
+  // Lease 3 — Studio $1,500/mo
+  const lease3Payments: Parameters<typeof prisma.payment.createMany>[0]['data'] = [];
+  for (let month = 9; month <= 12; month++) {
+    const dueDate = new Date(`2025-${String(month).padStart(2, '0')}-01`);
+    lease3Payments.push({
+      leaseId: leases[2].id,
+      payerId: tenant3.id,
+      type: 'RENT',
+      status: 'PAID',
+      amount: 1500,
+      dueDate,
+      paidAt: new Date(dueDate.getTime() + 86400000),
+      description: `Rent — ${dueDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`,
+    });
+  }
+  lease3Payments.push({
+    leaseId: leases[2].id,
+    payerId: tenant3.id,
+    type: 'RENT',
+    status: 'PAID',
+    amount: 1500,
+    dueDate: new Date('2026-01-01'),
+    paidAt: new Date('2026-01-02'),
+    description: 'Rent — January 2026',
+  });
+  lease3Payments.push({
+    leaseId: leases[2].id,
+    payerId: tenant3.id,
+    type: 'RENT',
+    status: 'PAID',
+    amount: 1500,
+    dueDate: new Date('2026-02-01'),
+    paidAt: new Date('2026-02-08'),
+    description: 'Rent — February 2026',
+  });
+  lease3Payments.push({
+    leaseId: leases[2].id,
+    payerId: tenant3.id,
+    type: 'RENT',
+    status: 'PAYMENT_PENDING',
+    amount: 1500,
+    dueDate: new Date('2026-03-01'),
+    description: 'Rent — March 2026',
+  });
+  await prisma.payment.createMany({ data: lease3Payments });
+
+  console.log('✅ Payments created.');
+
+  // =============================================
+  // CREATE MAINTENANCE RECORDS
+  // =============================================
+  console.log('🔧 Creating maintenance records...');
+
+  await prisma.maintenanceRecord.createMany({
+    data: [
+      {
+        propertyId: properties[0].id,
+        systemType: 'PLUMBING',
+        description: 'Kitchen faucet leak repaired — replaced cartridge and seals.',
+        cost: 250,
+        completedAt: new Date('2025-11-15'),
+      },
+      {
+        propertyId: properties[0].id,
+        systemType: 'HVAC',
+        description: 'Annual HVAC inspection and filter replacement.',
+        cost: 180,
+        completedAt: new Date('2025-10-01'),
+        nextPredictedDate: new Date('2026-10-01'),
+      },
+      {
+        propertyId: properties[1].id,
+        systemType: 'ELECTRICAL',
+        description: 'Replaced outdated wiring in the kitchen. Upgraded to meet current code.',
+        cost: 1200,
+        completedAt: new Date('2025-09-20'),
+      },
+      {
+        propertyId: properties[1].id,
+        systemType: 'ROOFING',
+        description: 'Patched minor roof leak near chimney flashing.',
+        cost: 650,
+        completedAt: new Date('2026-01-10'),
+        nextPredictedDate: new Date('2027-01-10'),
+      },
+      {
+        propertyId: properties[3].id,
+        systemType: 'APPLIANCE',
+        description: 'Replaced dishwasher with energy-efficient model.',
+        cost: 800,
+        completedAt: new Date('2026-02-05'),
+      },
+    ],
+  });
+
+  console.log('✅ Maintenance records created.');
+
+  // =============================================
+  // CREATE MAINTENANCE PREDICTIONS
+  // =============================================
+  console.log('🔮 Creating maintenance predictions...');
+
+  await prisma.maintenancePrediction.createMany({
+    data: [
+      {
+        propertyId: properties[0].id,
+        systemType: 'HVAC',
+        predictedFailureDate: new Date('2026-09-15'),
+        confidence: 0.82,
+      },
+      {
+        propertyId: properties[1].id,
+        systemType: 'PLUMBING',
+        predictedFailureDate: new Date('2026-07-20'),
+        confidence: 0.65,
+      },
+      {
+        propertyId: properties[4].id,
+        systemType: 'STRUCTURAL',
+        predictedFailureDate: new Date('2027-01-10'),
+        confidence: 0.45,
+      },
+    ],
+  });
+
+  console.log('✅ Maintenance predictions created.');
+
+  // =============================================
+  // CREATE INSPECTIONS
+  // =============================================
+  console.log('🔍 Creating inspections...');
+
+  await prisma.inspection.createMany({
+    data: [
+      {
+        propertyId: properties[0].id,
+        userId: tenant.id,
+        type: 'IN_PERSON',
+        status: 'COMPLETED',
+        scheduledDate: new Date('2025-05-15'),
+        scheduledTime: '10:00',
+        duration: 30,
+        tenantNotes: 'Great condition, loved the views.',
+        confirmedAt: new Date('2025-05-14'),
+        completedAt: new Date('2025-05-15T10:35:00Z'),
+        reminderSent: true,
+        reminderSentAt: new Date('2025-05-14T18:00:00Z'),
+      },
+      {
+        propertyId: properties[1].id,
+        userId: tenant2.id,
+        type: 'VIRTUAL',
+        status: 'COMPLETED',
+        scheduledDate: new Date('2025-06-10'),
+        scheduledTime: '14:00',
+        duration: 20,
+        meetingLink: 'https://meet.example.com/inspection-abc',
+        confirmedAt: new Date('2025-06-09'),
+        completedAt: new Date('2025-06-10T14:25:00Z'),
+        reminderSent: true,
+      },
+      {
+        propertyId: properties[2].id,
+        userId: tenant.id,
+        type: 'IN_PERSON',
+        status: 'SCHEDULED',
+        scheduledDate: new Date('2026-03-25'),
+        scheduledTime: '11:00',
+        duration: 45,
+        tenantNotes: 'Interested in the harbor view unit.',
+        reminderSent: false,
+      },
+      {
+        propertyId: properties[4].id,
+        userId: tenant2.id,
+        type: 'OPEN_HOUSE',
+        status: 'CONFIRMED',
+        scheduledDate: new Date('2026-04-05'),
+        scheduledTime: '13:00',
+        duration: 60,
+        confirmedAt: new Date('2026-03-20'),
+        reminderSent: false,
+      },
+    ],
+  });
+
+  console.log('✅ Inspections created.');
+
+  // =============================================
+  // CREATE APPLICATIONS
+  // =============================================
+  console.log('📄 Creating applications...');
+
+  await prisma.application.createMany({
+    data: [
+      {
         propertyId: properties[0].id,
         primaryApplicantId: tenant.id,
-        status: ApplicationStatus.APPROVED,
-        score: 82,
-        scoreBreakdown: {
-          creditScore: { value: 745, weight: 0.3, normalizedScore: 85 },
-          incomeToRent: { value: 3.48, weight: 0.25, normalizedScore: 90 },
-          rentalHistory: {
-            value: "positive",
-            weight: 0.25,
-            normalizedScore: 80,
-          },
-          employmentStability: {
-            value: "3 years",
-            weight: 0.2,
-            normalizedScore: 70,
-          },
-          overallRisk: "low",
-          recommendation:
-            "Approve — strong income-to-rent ratio and solid credit history.",
-        },
+        status: 'APPROVED',
+        score: 92,
+        scoreBreakdown: { creditScore: 30, income: 25, rentalHistory: 20, employment: 17 },
         personalInfo: {
-          firstName: "Maria",
-          lastName: "Chen",
-          dateOfBirth: "1994-07-15",
-          ssn: "***-**-4521",
-          currentAddress: "908 E 5th St, Austin, TX 78702",
+          firstName: 'Sarah',
+          lastName: 'Chen',
+          email: 'tenant@example.com',
+          phone: '+1-555-200-3000',
+          dateOfBirth: '1992-08-15',
         },
         employment: [
-          {
-            employer: "Meridian Health Systems",
-            title: "Senior Data Analyst",
-            startDate: "2023-03-01",
-            income: 92000,
-            type: "Full-Time",
-            supervisorPhone: "+1-555-600-7890",
-          },
+          { employer: 'Acme Corp', title: 'Senior Software Engineer', startDate: '2021-03-01', current: true, monthlyIncome: 10417 },
         ],
-        income: [{ source: "Employment", monthlyAmount: 7666, verified: true }],
+        income: [{ source: 'Employment', monthlyAmount: 10417, verified: true }],
         rentalHistory: [
-          {
-            address: "908 E 5th St, Austin, TX 78702",
-            landlordName: "Patricia Flores",
-            landlordPhone: "+1-555-700-1234",
-            monthlyRent: 1800,
-            startDate: "2023-06-01",
-            endDate: "2026-01-31",
-            reasonForLeaving: "Seeking larger space",
-          },
+          { address: '200 Pine St, San Francisco, CA', duration: '3 years', landlordName: 'Bay Area Rentals', reasonForLeaving: 'Seeking larger space' },
         ],
-        references: [
-          {
-            name: "Patricia Flores",
-            relationship: "Former Landlord",
-            phone: "+1-555-700-1234",
-          },
-          {
-            name: "Kevin Brooks",
-            relationship: "Colleague",
-            phone: "+1-555-800-5678",
-          },
-        ],
-        creditCheck: {
-          score: 745,
-          provider: "TransUnion",
-          date: "2026-02-20",
-          status: "clean",
-          derogatory: 0,
-          collections: 0,
-        },
-        backgroundCheck: {
-          status: "clear",
-          provider: "GoodHire",
-          date: "2026-02-22",
-          criminalRecords: 0,
-          evictions: 0,
-        },
-        moveInDate: new Date("2026-04-01"),
+        references: [{ name: 'John Smith', relationship: 'Former Landlord', phone: '+1-555-999-0001' }],
+        moveInDate: new Date('2025-06-01'),
         leaseTerm: 12,
-        pets: [{ type: "Dog", breed: "Corgi", weight: 25, name: "Biscuit" }],
-        vehicles: [
-          {
-            make: "Honda",
-            model: "Civic",
-            year: 2024,
-            licensePlate: "TX-BRK-4521",
-          },
-        ],
-        emergencyContact: {
-          name: "Lin Chen",
-          relationship: "Mother",
-          phone: "+1-555-900-1111",
-        },
+        pets: [{ type: 'Dog', breed: 'Corgi', weight: 25 }],
+        vehicles: [{ make: 'Toyota', model: 'Camry', year: 2024 }],
+        emergencyContact: { name: 'David Chen', relationship: 'Brother', phone: '+1-555-200-3001' },
         coApplicants: [],
-        submittedAt: new Date("2026-02-18"),
+        submittedAt: new Date('2025-05-10'),
         reviewedBy: landlord.id,
-        reviewedAt: new Date("2026-02-25"),
-        documents: {
-          create: [
-            {
-              type: "pay_stub",
-              filename: "maria-chen-paystub-feb2026.pdf",
-              url: "/documents/applications/maria-chen-paystub.pdf",
-              size: 245000,
-              uploadedBy: tenant.id,
-              parsed: true,
-              extractedData: {
-                grossPay: 7666.67,
-                netPay: 5800.12,
-                payPeriod: "Monthly",
-              },
-            },
-            {
-              type: "id_document",
-              filename: "maria-chen-drivers-license.pdf",
-              url: "/documents/applications/maria-chen-id.pdf",
-              size: 180000,
-              uploadedBy: tenant.id,
-              parsed: true,
-              extractedData: {
-                documentType: "Drivers License",
-                state: "TX",
-                expiry: "2028-07-15",
-              },
-            },
-          ],
-        },
+        reviewedAt: new Date('2025-05-15'),
       },
-    }),
-
-    // David applying for Luxury Condo
-    prisma.application.create({
-      data: {
-        propertyId: properties[2].id,
+      {
+        propertyId: properties[1].id,
         primaryApplicantId: tenant2.id,
-        status: ApplicationStatus.UNDER_REVIEW,
-        score: 74,
-        scoreBreakdown: {
-          creditScore: { value: 710, weight: 0.3, normalizedScore: 75 },
-          incomeToRent: { value: 3.12, weight: 0.25, normalizedScore: 82 },
-          rentalHistory: {
-            value: "positive",
-            weight: 0.25,
-            normalizedScore: 70,
-          },
-          employmentStability: {
-            value: "2 years",
-            weight: 0.2,
-            normalizedScore: 65,
-          },
-          overallRisk: "moderate",
-          recommendation:
-            "Conditionally approve — income adequate but shorter employment history. Consider requiring additional deposit.",
-        },
+        status: 'APPROVED',
+        score: 85,
+        scoreBreakdown: { creditScore: 26, income: 22, rentalHistory: 20, employment: 17 },
         personalInfo: {
-          firstName: "David",
-          lastName: "Okafor",
-          dateOfBirth: "1996-11-03",
-          ssn: "***-**-8832",
-          currentAddress: "4400 S Lamar Blvd, Apt 312, Austin, TX 78745",
+          firstName: 'Marcus',
+          lastName: 'Johnson',
+          email: 'tenant2@example.com',
+          phone: '+1-555-400-5000',
         },
         employment: [
-          {
-            employer: "TechBridge Solutions",
-            title: "Frontend Developer",
-            startDate: "2024-05-15",
-            income: 105000,
-            type: "Full-Time",
-            supervisorPhone: "+1-555-500-3456",
-          },
+          { employer: 'Global Finance Inc', title: 'Financial Analyst', startDate: '2022-01-15', current: true, monthlyIncome: 7917 },
         ],
-        income: [{ source: "Employment", monthlyAmount: 8750, verified: true }],
+        income: [{ source: 'Employment', monthlyAmount: 7917, verified: true }],
         rentalHistory: [
-          {
-            address: "4400 S Lamar Blvd, Apt 312, Austin, TX 78745",
-            landlordName: "Mark Stevenson",
-            landlordPhone: "+1-555-600-9876",
-            monthlyRent: 2100,
-            startDate: "2024-08-01",
-            endDate: "2026-04-30",
-            reasonForLeaving: "Upgrading to larger unit",
-          },
+          { address: '55 Elm St, Portland, OR', duration: '2 years', landlordName: 'Rose City Properties', reasonForLeaving: 'Relocating for work' },
         ],
-        references: [
-          {
-            name: "Mark Stevenson",
-            relationship: "Current Landlord",
-            phone: "+1-555-600-9876",
-          },
-          {
-            name: "Amara Williams",
-            relationship: "Colleague",
-            phone: "+1-555-700-4321",
-          },
-        ],
-        creditCheck: {
-          score: 710,
-          provider: "Equifax",
-          date: "2026-03-10",
-          status: "clean",
-          derogatory: 0,
-          collections: 0,
-        },
-        backgroundCheck: {
-          status: "clear",
-          provider: "GoodHire",
-          date: "2026-03-12",
-          criminalRecords: 0,
-          evictions: 0,
-        },
-        moveInDate: new Date("2026-05-01"),
+        references: [{ name: 'Lisa Wang', relationship: 'Employer', phone: '+1-555-999-0002' }],
+        moveInDate: new Date('2025-07-01'),
         leaseTerm: 12,
         pets: [],
-        vehicles: [
-          {
-            make: "Tesla",
-            model: "Model 3",
-            year: 2023,
-            licensePlate: "TX-EV-8832",
-          },
-        ],
-        emergencyContact: {
-          name: "Grace Okafor",
-          relationship: "Sister",
-          phone: "+1-555-900-2222",
-        },
+        vehicles: [{ make: 'Honda', model: 'Civic', year: 2023 }],
         coApplicants: [],
-        submittedAt: new Date("2026-03-08"),
-        documents: {
-          create: [
-            {
-              type: "pay_stub",
-              filename: "david-okafor-paystub-mar2026.pdf",
-              url: "/documents/applications/david-okafor-paystub.pdf",
-              size: 230000,
-              uploadedBy: tenant2.id,
-              parsed: true,
-              extractedData: {
-                grossPay: 8750.0,
-                netPay: 6425.0,
-                payPeriod: "Monthly",
-              },
-            },
-          ],
-        },
+        submittedAt: new Date('2025-06-05'),
+        reviewedBy: landlord.id,
+        reviewedAt: new Date('2025-06-12'),
       },
-    }),
-
-    // Maria applying for Craftsman House (new application)
-    prisma.application.create({
-      data: {
-        propertyId: properties[1].id,
+      {
+        propertyId: properties[2].id,
         primaryApplicantId: tenant.id,
-        status: ApplicationStatus.SUBMITTED,
-        score: 78,
-        scoreBreakdown: {
-          creditScore: { value: 745, weight: 0.3, normalizedScore: 85 },
-          incomeToRent: { value: 2.39, weight: 0.25, normalizedScore: 68 },
-          rentalHistory: {
-            value: "positive",
-            weight: 0.25,
-            normalizedScore: 80,
-          },
-          employmentStability: {
-            value: "3 years",
-            weight: 0.2,
-            normalizedScore: 70,
-          },
-          overallRisk: "low-moderate",
-          recommendation:
-            "Approve — income-to-rent ratio is slightly below ideal but credit and history are solid.",
-        },
+        status: 'UNDER_REVIEW',
+        score: 0,
         personalInfo: {
-          firstName: "Maria",
-          lastName: "Chen",
-          dateOfBirth: "1994-07-15",
-          ssn: "***-**-4521",
-          currentAddress: "4209 Berkman Dr, Austin, TX 78723",
+          firstName: 'Sarah',
+          lastName: 'Chen',
+          email: 'tenant@example.com',
+          phone: '+1-555-200-3000',
         },
         employment: [
-          {
-            employer: "Meridian Health Systems",
-            title: "Senior Data Analyst",
-            startDate: "2023-03-01",
-            income: 92000,
-            type: "Full-Time",
-            supervisorPhone: "+1-555-600-7890",
-          },
+          { employer: 'Acme Corp', title: 'Senior Software Engineer', startDate: '2021-03-01', current: true, monthlyIncome: 10417 },
         ],
-        income: [
-          { source: "Employment", monthlyAmount: 7666, verified: false },
-        ],
-        rentalHistory: [
-          {
-            address: "4209 Berkman Dr, Austin, TX 78723",
-            landlordName: "James Hartwell",
-            landlordPhone: "+1-555-200-0002",
-            monthlyRent: 2950,
-            startDate: "2026-01-15",
-            endDate: null,
-            reasonForLeaving: "Seeking different neighborhood",
-          },
-        ],
-        references: [
-          {
-            name: "James Hartwell",
-            relationship: "Current Landlord",
-            phone: "+1-555-200-0002",
-          },
-        ],
-        moveInDate: new Date("2026-04-15"),
-        leaseTerm: 12,
-        pets: [{ type: "Dog", breed: "Corgi", weight: 25, name: "Biscuit" }],
-        vehicles: [
-          {
-            make: "Honda",
-            model: "Civic",
-            year: 2024,
-            licensePlate: "TX-BRK-4521",
-          },
-        ],
-        emergencyContact: {
-          name: "Lin Chen",
-          relationship: "Mother",
-          phone: "+1-555-900-1111",
-        },
+        income: [{ source: 'Employment', monthlyAmount: 10417, verified: false }],
+        rentalHistory: [],
+        references: [],
+        pets: [{ type: 'Dog', breed: 'Corgi', weight: 25 }],
+        vehicles: [],
         coApplicants: [],
-        submittedAt: new Date("2026-03-15"),
-        documents: {
-          create: [
-            {
-              type: "pay_stub",
-              filename: "maria-chen-paystub-mar2026.pdf",
-              url: "/documents/applications/maria-chen-paystub-mar.pdf",
-              size: 248000,
-              uploadedBy: tenant.id,
-              parsed: false,
-            },
-          ],
-        },
+        submittedAt: new Date('2026-03-15'),
       },
-    }),
-  ]);
-
-  console.log(`  Created ${applications.length} applications`);
-
-  // ------------------------------------------
-  // SUBSCRIPTIONS
-  // ------------------------------------------
-  console.log("Creating subscriptions...");
-
-  await prisma.subscription.create({
-    data: {
-      userId: landlord.id,
-      plan: "PROFESSIONAL",
-      status: "ACTIVE",
-      currentPeriodStart: new Date("2026-03-01"),
-      currentPeriodEnd: new Date("2026-04-01"),
-    },
+    ],
   });
 
-  await prisma.subscription.create({
-    data: {
-      userId: tenant.id,
-      plan: "FREE",
-      status: "ACTIVE",
-    },
-  });
+  console.log('✅ Applications created.');
 
-  // ------------------------------------------
-  // NOTIFICATIONS
-  // ------------------------------------------
-  console.log("Creating notifications...");
+  // =============================================
+  // CREATE NOTIFICATIONS
+  // =============================================
+  console.log('🔔 Creating notifications...');
 
   await prisma.notification.createMany({
     data: [
       {
         userId: tenant.id,
-        type: "APPLICATION_STATUS",
-        channel: "IN_APP",
-        status: "DELIVERED",
-        title: "Application Approved",
-        message:
-          "Your application for Modern Downtown Austin Loft has been approved. Please review and sign the lease agreement.",
-        sentAt: new Date("2026-02-25"),
-        readAt: new Date("2026-02-25"),
-      },
-      {
-        userId: landlord.id,
-        type: "SYSTEM",
-        channel: "IN_APP",
-        status: "DELIVERED",
-        title: "New Application Received",
-        message:
-          "Maria Chen has submitted a new application for Charming Craftsman House in Travis Heights.",
-        sentAt: new Date("2026-03-15"),
+        type: 'INSPECTION_CONFIRMATION',
+        channel: 'EMAIL',
+        status: 'DELIVERED',
+        title: 'Inspection Confirmed',
+        message: 'Your inspection for Modern Downtown Apartment on May 15, 2025 at 10:00 AM has been confirmed.',
+        sentAt: new Date('2025-05-14T09:00:00Z'),
+        readAt: new Date('2025-05-14T09:15:00Z'),
       },
       {
         userId: tenant.id,
-        type: "SYSTEM",
-        channel: "IN_APP",
-        status: "DELIVERED",
-        title: "Rent Payment Due Soon",
-        message:
-          "Your rent payment of $2,950 for Mueller Townhouse is due on April 1, 2026.",
-        sentAt: new Date("2026-03-25"),
+        type: 'APPLICATION_STATUS',
+        channel: 'IN_APP',
+        status: 'READ',
+        title: 'Application Approved',
+        message: 'Your rental application for Modern Downtown Apartment has been approved. Congratulations!',
+        sentAt: new Date('2025-05-15T12:00:00Z'),
+        readAt: new Date('2025-05-15T12:30:00Z'),
+      },
+      {
+        userId: tenant2.id,
+        type: 'INSPECTION_REMINDER',
+        channel: 'SMS',
+        status: 'DELIVERED',
+        title: 'Upcoming Open House',
+        message: 'Reminder: Open house for Spacious Family Townhouse is on April 5, 2026 at 1:00 PM.',
+        sentAt: new Date('2026-03-20T10:00:00Z'),
+      },
+      {
+        userId: landlord.id,
+        type: 'SYSTEM',
+        channel: 'IN_APP',
+        status: 'SENT',
+        title: 'New Application Received',
+        message: 'A new rental application has been submitted for Luxury Waterfront Condo by Sarah Chen.',
+        sentAt: new Date('2026-03-15T08:00:00Z'),
+      },
+      {
+        userId: tenant3.id,
+        type: 'SYSTEM',
+        channel: 'IN_APP',
+        status: 'PENDING',
+        title: 'Rent Payment Due',
+        message: 'Your rent payment of $1,500 for March 2026 is due. Please submit payment at your earliest convenience.',
       },
     ],
   });
 
-  console.log("  Created 3 notifications");
+  console.log('✅ Notifications created.');
 
-  // ------------------------------------------
+  // =============================================
+  // CREATE BOOKINGS
+  // =============================================
+  console.log('📅 Creating bookings...');
+
+  await prisma.booking.createMany({
+    data: [
+      {
+        propertyId: properties[2].id,
+        tenantId: tenant.id,
+        type: 'VIEWING',
+        title: 'Property Viewing — Luxury Waterfront Condo',
+        startTime: new Date('2026-03-25T11:00:00Z'),
+        endTime: new Date('2026-03-25T11:45:00Z'),
+        status: 'CONFIRMED',
+        notes: 'Prospective tenant wants to see the harbor view.',
+        location: '100 Harbor Boulevard, Unit 3501, Seattle, WA',
+      },
+      {
+        propertyId: properties[4].id,
+        tenantId: tenant2.id,
+        type: 'VIEWING',
+        title: 'Open House — Spacious Family Townhouse',
+        startTime: new Date('2026-04-05T13:00:00Z'),
+        endTime: new Date('2026-04-05T14:00:00Z'),
+        status: 'PENDING',
+        location: '1220 Maple Drive, Denver, CO',
+      },
+    ],
+  });
+
+  console.log('✅ Bookings created.');
+
+  // =============================================
+  // CREATE WORKFLOWS
+  // =============================================
+  console.log('⚙️ Creating workflows...');
+
+  await prisma.workflow.createMany({
+    data: [
+      {
+        userId: landlord.id,
+        name: 'New Tenant Welcome',
+        description: 'Automated welcome sequence for new tenants after lease signing.',
+        triggerType: 'NEW_TENANT',
+        steps: [
+          { order: 1, action: 'send_email', template: 'welcome_email' },
+          { order: 2, action: 'create_checklist', template: 'move_in_checklist' },
+          { order: 3, action: 'schedule_inspection', type: 'move_in', daysAfter: 3 },
+        ],
+        isActive: true,
+      },
+      {
+        userId: landlord.id,
+        name: 'Lease Expiry Reminder',
+        description: 'Sends reminders 90, 60, and 30 days before lease expiry.',
+        triggerType: 'LEASE_EXPIRY',
+        steps: [
+          { order: 1, action: 'send_email', daysBefore: 90, template: 'lease_expiry_90' },
+          { order: 2, action: 'send_email', daysBefore: 60, template: 'lease_expiry_60' },
+          { order: 3, action: 'send_email', daysBefore: 30, template: 'lease_expiry_30' },
+        ],
+        isActive: true,
+      },
+    ],
+  });
+
+  console.log('✅ Workflows created.');
+
+  // =============================================
+  // CREATE TRANSACTIONS & FINANCIAL REPORTS
+  // =============================================
+  console.log('📊 Creating financial data...');
+
+  await prisma.transaction.createMany({
+    data: [
+      {
+        propertyId: properties[0].id,
+        type: 'INCOME',
+        category: 'Rent',
+        amount: 2200,
+        date: new Date('2026-02-01'),
+        description: 'February 2026 rent — Modern Downtown Apartment',
+      },
+      {
+        propertyId: properties[0].id,
+        type: 'EXPENSE',
+        category: 'Maintenance',
+        amount: 250,
+        date: new Date('2025-11-15'),
+        description: 'Kitchen faucet repair',
+      },
+      {
+        propertyId: properties[1].id,
+        type: 'INCOME',
+        category: 'Rent',
+        amount: 3000,
+        date: new Date('2026-03-01'),
+        description: 'March 2026 rent — Charming Victorian House',
+      },
+      {
+        propertyId: properties[1].id,
+        type: 'EXPENSE',
+        category: 'Repairs',
+        amount: 650,
+        date: new Date('2026-01-10'),
+        description: 'Roof leak patch near chimney',
+      },
+    ],
+  });
+
+  await prisma.financialReport.createMany({
+    data: [
+      {
+        propertyId: properties[0].id,
+        startDate: new Date('2026-01-01'),
+        endDate: new Date('2026-01-31'),
+        netIncome: 2020,
+        grossIncome: 2200,
+        expenses: 180,
+      },
+      {
+        propertyId: properties[1].id,
+        startDate: new Date('2026-01-01'),
+        endDate: new Date('2026-01-31'),
+        netIncome: 2350,
+        grossIncome: 3000,
+        expenses: 650,
+      },
+    ],
+  });
+
+  console.log('✅ Financial data created.');
+
+  // =============================================
   // DONE
-  // ------------------------------------------
-  console.log("");
-  console.log("✅ Database seeded successfully!");
-  console.log("");
-  console.log("  Users:                4 (1 Admin, 1 Landlord, 2 Tenants)");
-  console.log("  Properties:           5");
-  console.log("  Leases:               3");
-  console.log("  Payments:             5");
-  console.log("  Maintenance Records:  6");
-  console.log("  Applications:         3");
-  console.log("  Subscriptions:        2");
-  console.log("  Notifications:        3");
-  console.log("");
-  console.log("Demo credentials:");
-  console.log("  Admin:    admin@realestate-ai.com     / Admin@2026!Secure");
-  console.log("  Landlord: james.hartwell@outlook.com  / Landlord@2026!Secure");
-  console.log("  Tenant:   maria.chen@gmail.com        / Tenant@2026!Secure");
-  console.log("  Tenant2:  david.okafor@yahoo.com      / Tenant2@2026!Secure");
+  // =============================================
+  console.log('');
+  console.log('🎉 Database seed completed successfully!');
+  console.log('');
+  console.log('   Users:          5 (1 landlord, 3 tenants, 1 admin)');
+  console.log('   Properties:     5');
+  console.log('   Leases:         5');
+  console.log('   Payments:       ~30');
+  console.log('   Inspections:    4');
+  console.log('   Applications:   3');
+  console.log('   Notifications:  5');
+  console.log('   Bookings:       2');
+  console.log('   Workflows:      2');
+  console.log('');
 }
 
 main()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error("❌ Seed failed:", e);
-    await prisma.$disconnect();
+  .catch((e) => {
+    console.error('❌ Seed failed:', e);
     process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
   });
