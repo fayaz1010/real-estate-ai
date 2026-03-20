@@ -4,20 +4,20 @@ import request from "supertest";
 
 const mockPrisma = {
   property: {
-    create: vi.fn(),
-    findMany: vi.fn(),
-    findUnique: vi.fn(),
-    update: vi.fn(),
-    count: vi.fn(),
+    create: jest.fn(),
+    findMany: jest.fn(),
+    findUnique: jest.fn(),
+    update: jest.fn(),
+    count: jest.fn(),
   },
   user: {
-    findUnique: vi.fn(),
+    findUnique: jest.fn(),
   },
-  $connect: vi.fn().mockResolvedValue(undefined),
-  $disconnect: vi.fn().mockResolvedValue(undefined),
+  $connect: jest.fn().mockResolvedValue(undefined),
+  $disconnect: jest.fn().mockResolvedValue(undefined),
 };
 
-vi.mock("../../config/database", () => mockPrisma);
+jest.mock("../../config/database", () => mockPrisma);
 
 // ─── Mock Auth Middleware ───────────────────────────────────────────────────
 
@@ -28,7 +28,7 @@ const TEST_USER = {
   id: "user-1",
 };
 
-vi.mock("../../middleware/auth", () => ({
+jest.mock("../../middleware/auth", () => ({
   authenticate: (
     req: Record<string, unknown>,
     _res: unknown,
@@ -62,7 +62,7 @@ vi.mock("../../middleware/auth", () => ({
 
 // ─── Mock Rate Limiter ─────────────────────────────────────────────────────
 
-vi.mock("../../middleware/rateLimiter", () => ({
+jest.mock("../../middleware/rateLimiter", () => ({
   rateLimiter: (
     _req: Record<string, unknown>,
     _res: unknown,
@@ -72,7 +72,7 @@ vi.mock("../../middleware/rateLimiter", () => ({
 
 // ─── Mock Validation ────────────────────────────────────────────────────────
 
-vi.mock("../../middleware/validation", () => ({
+jest.mock("../../middleware/validation", () => ({
   validate:
     () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next(),
@@ -129,7 +129,7 @@ const mockConfig = {
   cacheTtl: 3600,
 };
 
-vi.mock("../../config/env", () => ({
+jest.mock("../../config/env", () => ({
   __esModule: true,
   config: mockConfig,
   default: mockConfig,
@@ -182,7 +182,7 @@ const createPropertyPayload = {
 
 describe("Properties API", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   // ── GET /api/properties ─────────────────────────────────────────────────

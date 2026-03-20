@@ -55,7 +55,7 @@ export async function createSubscription(
 ): Promise<string> {
   const { data } = await apiClient.post<{
     data: { subscriptionId: string };
-  }>("/billing/create-subscription", {
+  }>("/stripe/create-subscription", {
     customerId,
     plan,
     interval,
@@ -67,7 +67,7 @@ export async function createSubscription(
 export async function cancelSubscription(
   subscriptionId: string,
 ): Promise<void> {
-  await apiClient.post("/billing/cancel-subscription", { subscriptionId });
+  await apiClient.post("/stripe/cancel-subscription", { subscriptionId });
 }
 
 export async function getInvoiceHistory(
@@ -116,7 +116,7 @@ export async function createPaymentIntent(
   metadata: Record<string, string> = {},
 ): Promise<string> {
   const { data } = await apiClient.post<{ data: { clientSecret: string } }>(
-    "/billing/create-payment-intent",
+    "/stripe/create-payment-intent",
     { amount, currency, metadata },
   );
   return data.data.clientSecret;

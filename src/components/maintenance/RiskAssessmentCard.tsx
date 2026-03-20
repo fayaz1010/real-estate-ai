@@ -9,9 +9,9 @@ const RiskAssessmentCard: React.FC<RiskAssessmentCardProps> = ({
   riskScore,
 }) => {
   let riskLevel = "Low";
-  let riskColor = "text-green-600";
-  let riskBg = "bg-green-50 border-green-200";
-  let progressColor = "bg-green-500";
+  let riskColor = "text-realestate-success";
+  let riskBg = "bg-realestate-success/5 border-green-200";
+  let progressColor = "bg-realestate-success";
 
   if (riskScore > 30 && riskScore <= 70) {
     riskLevel = "Medium";

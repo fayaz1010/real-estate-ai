@@ -1,265 +1,385 @@
-import { PrismaClient } from '@prisma/client';
-import * as bcrypt from 'bcryptjs';
+// Complete Database Seed Script
+// Seeds all models with realistic sample data
+
+import { PrismaClient } from "@prisma/client";
+import * as bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('🌱 Starting database seed...');
+  console.log("🌱 Starting database seed...");
 
   // =============================================
   // CLEAR EXISTING DATA (respecting FK constraints)
   // =============================================
-  console.log('🗑️  Clearing existing data...');
+  console.log("🗑️  Clearing existing data...");
 
   const tablesToClear = [
-    // Leaf / dependent tables first
-    'TipDismissal',
-    'UserFeatureUsage',
-    'PushSubscription',
-    'NotificationPreference',
-    'WorkflowExecution',
-    'Notification',
-    'Transaction',
-    'FinancialReport',
-    'MaintenancePrediction',
-    'MaintenanceRecord',
-    'Workflow',
-    'Availability',
-    'Booking',
-    'ScreeningRequest',
-    'Inspection',
-    'ApplicationDocument',
-    'Application',
-    'Payment',
-    'Lease',
-    'PropertyImage',
-    'Property',
-    'Subscription',
-    'AgentProfile',
-    'TenantProfile',
-    'LandlordProfile',
-    'EmailVerificationToken',
-    'PasswordResetToken',
-    'RefreshToken',
-    'User',
+    "TipDismissal",
+    "UserFeatureUsage",
+    "PushSubscription",
+    "NotificationPreference",
+    "WorkflowExecution",
+    "Notification",
+    "Transaction",
+    "FinancialReport",
+    "MaintenancePrediction",
+    "MaintenanceRecord",
+    "Workflow",
+    "Availability",
+    "Booking",
+    "ScreeningRequest",
+    "Inspection",
+    "ApplicationDocument",
+    "Application",
+    "Payment",
+    "Lease",
+    "PropertyImage",
+    "Property",
+    "Subscription",
+    "AgentProfile",
+    "TenantProfile",
+    "LandlordProfile",
+    "EmailVerificationToken",
+    "PasswordResetToken",
+    "RefreshToken",
+    "User",
   ];
 
   for (const table of tablesToClear) {
     await prisma.$executeRawUnsafe(`TRUNCATE TABLE "${table}" CASCADE`);
   }
 
-  console.log('✅ Existing data cleared.');
+  console.log("✅ Existing data cleared.");
 
   // =============================================
-  // HASH PASSWORD
+  // HASH PASSWORDS
   // =============================================
-  const passwordHash = bcrypt.hashSync('password123', 10);
+  const defaultHash = bcrypt.hashSync("password123", 10);
+  const adminHash = bcrypt.hashSync("SuperAdmin@2024", 10);
 
   // =============================================
   // CREATE USERS
   // =============================================
-  console.log('👤 Creating users...');
+  console.log("👤 Creating users...");
 
-  const landlord = await prisma.user.create({
+  // SUPER_ADMIN
+  await prisma.user.create({
     data: {
-      email: 'landlord@example.com',
-      passwordHash,
-      firstName: 'James',
-      lastName: 'Mitchell',
-      phone: '+1-555-100-2000',
-      role: 'LANDLORD',
-      status: 'ACTIVE',
+      email: "superadmin@propmanage.com",
+      passwordHash: adminHash,
+      firstName: "Super",
+      lastName: "Admin",
+      phone: "+1-555-000-1000",
+      role: "SUPER_ADMIN",
+      status: "ACTIVE",
       emailVerified: true,
       profileCompletion: 100,
-      lastLoginAt: new Date('2026-03-19T10:00:00Z'),
+      lastLoginAt: new Date("2026-03-20T08:00:00Z"),
     },
   });
 
-  const tenant = await prisma.user.create({
-    data: {
-      email: 'tenant@example.com',
-      passwordHash,
-      firstName: 'Sarah',
-      lastName: 'Chen',
-      phone: '+1-555-200-3000',
-      role: 'TENANT',
-      status: 'ACTIVE',
-      emailVerified: true,
-      profileCompletion: 85,
-      lastLoginAt: new Date('2026-03-18T14:30:00Z'),
-    },
-  });
-
+  // ADMIN
   const admin = await prisma.user.create({
     data: {
-      email: 'admin@example.com',
-      passwordHash,
-      firstName: 'Alex',
-      lastName: 'Rivera',
-      phone: '+1-555-300-4000',
-      role: 'ADMIN',
-      status: 'ACTIVE',
+      email: "admin@realestateai.com",
+      passwordHash: defaultHash,
+      firstName: "Alex",
+      lastName: "Rivera",
+      phone: "+1-555-100-1000",
+      role: "ADMIN",
+      status: "ACTIVE",
       emailVerified: true,
       profileCompletion: 100,
-      lastLoginAt: new Date('2026-03-20T08:00:00Z'),
+      lastLoginAt: new Date("2026-03-20T09:00:00Z"),
     },
   });
 
-  const tenant2 = await prisma.user.create({
+  // LANDLORD 1
+  const landlord1 = await prisma.user.create({
     data: {
-      email: 'tenant2@example.com',
-      passwordHash,
-      firstName: 'Marcus',
-      lastName: 'Johnson',
-      phone: '+1-555-400-5000',
-      role: 'TENANT',
-      status: 'ACTIVE',
+      email: "james.mitchell@example.com",
+      passwordHash: defaultHash,
+      firstName: "James",
+      lastName: "Mitchell",
+      phone: "+1-555-200-2000",
+      role: "LANDLORD",
+      status: "ACTIVE",
       emailVerified: true,
-      profileCompletion: 70,
-      lastLoginAt: new Date('2026-03-17T16:00:00Z'),
+      profileCompletion: 100,
+      lastLoginAt: new Date("2026-03-19T10:00:00Z"),
     },
   });
 
-  const tenant3 = await prisma.user.create({
+  // LANDLORD 2
+  const landlord2 = await prisma.user.create({
     data: {
-      email: 'tenant3@example.com',
-      passwordHash,
-      firstName: 'Emily',
-      lastName: 'Park',
-      phone: '+1-555-500-6000',
-      role: 'TENANT',
-      status: 'ACTIVE',
+      email: "diana.wells@example.com",
+      passwordHash: defaultHash,
+      firstName: "Diana",
+      lastName: "Wells",
+      phone: "+1-555-200-3000",
+      role: "LANDLORD",
+      status: "ACTIVE",
+      emailVerified: true,
+      profileCompletion: 95,
+      lastLoginAt: new Date("2026-03-18T14:00:00Z"),
+    },
+  });
+
+  // TENANT 1
+  const tenant1 = await prisma.user.create({
+    data: {
+      email: "sarah.chen@example.com",
+      passwordHash: defaultHash,
+      firstName: "Sarah",
+      lastName: "Chen",
+      phone: "+1-555-300-1000",
+      role: "TENANT",
+      status: "ACTIVE",
       emailVerified: true,
       profileCompletion: 90,
-      lastLoginAt: new Date('2026-03-16T11:00:00Z'),
+      lastLoginAt: new Date("2026-03-18T14:30:00Z"),
     },
   });
 
-  console.log('✅ Users created.');
+  // TENANT 2
+  const tenant2 = await prisma.user.create({
+    data: {
+      email: "marcus.johnson@example.com",
+      passwordHash: defaultHash,
+      firstName: "Marcus",
+      lastName: "Johnson",
+      phone: "+1-555-300-2000",
+      role: "TENANT",
+      status: "ACTIVE",
+      emailVerified: true,
+      profileCompletion: 75,
+      lastLoginAt: new Date("2026-03-17T16:00:00Z"),
+    },
+  });
+
+  // TENANT 3
+  const tenant3 = await prisma.user.create({
+    data: {
+      email: "emily.park@example.com",
+      passwordHash: defaultHash,
+      firstName: "Emily",
+      lastName: "Park",
+      phone: "+1-555-300-3000",
+      role: "TENANT",
+      status: "ACTIVE",
+      emailVerified: false,
+      profileCompletion: 85,
+      lastLoginAt: new Date("2026-03-16T11:00:00Z"),
+    },
+  });
+
+  // AGENT
+  const agent = await prisma.user.create({
+    data: {
+      email: "lisa.anderson@example.com",
+      passwordHash: defaultHash,
+      firstName: "Lisa",
+      lastName: "Anderson",
+      phone: "+1-555-400-1000",
+      role: "AGENT",
+      status: "ACTIVE",
+      emailVerified: true,
+      profileCompletion: 100,
+      lastLoginAt: new Date("2026-03-19T08:30:00Z"),
+    },
+  });
+
+  console.log("✅ Users created (8 total).");
 
   // =============================================
   // CREATE PROFILES
   // =============================================
-  console.log('📋 Creating profiles...');
+  console.log("📋 Creating profiles...");
 
   await prisma.landlordProfile.create({
     data: {
-      userId: landlord.id,
-      businessName: 'Mitchell Property Group',
-      taxId: 'EIN-12-3456789',
+      userId: landlord1.id,
+      businessName: "Mitchell Property Group",
+      taxId: "EIN-12-3456789",
       bankAccountVerified: true,
       propertiesCount: 5,
       rating: 4.7,
-      verificationStatus: 'verified',
-      bio: 'Professional property manager with over 10 years of experience in residential real estate.',
-      languages: ['English', 'Spanish'],
+      verificationStatus: "verified",
+      bio: "Professional property manager with over 10 years of experience in residential real estate across the West Coast.",
+      languages: ["English", "Spanish"],
+    },
+  });
+
+  await prisma.landlordProfile.create({
+    data: {
+      userId: landlord2.id,
+      businessName: "Wells Realty Holdings",
+      bankAccountVerified: true,
+      propertiesCount: 3,
+      rating: 4.9,
+      verificationStatus: "verified",
+      bio: "Luxury property specialist focused on waterfront and urban living.",
+      website: "https://wellsrealty.example.com",
+      languages: ["English", "French"],
     },
   });
 
   await prisma.tenantProfile.create({
     data: {
-      userId: tenant.id,
-      employmentStatus: 'Full-time',
-      employerName: 'Acme Corp',
-      jobTitle: 'Senior Software Engineer',
+      userId: tenant1.id,
+      employmentStatus: "Full-time",
+      employerName: "Acme Corp",
+      jobTitle: "Senior Software Engineer",
       annualIncome: 125000,
       creditScore: 780,
       hasPets: true,
-      petsDescription: 'One small dog (Corgi, 25 lbs)',
+      petsDescription: "One small dog (Corgi, 25 lbs)",
       hasVehicle: true,
-      vehicleDescription: '2024 Toyota Camry',
-      moveInDate: new Date('2025-06-01'),
+      vehicleDescription: "2024 Toyota Camry",
+      moveInDate: new Date("2025-06-01"),
       budgetMin: 1500,
       budgetMax: 3000,
-      preferredPropertyTypes: ['APARTMENT', 'CONDO'],
+      preferredPropertyTypes: ["APARTMENT", "CONDO"],
     },
   });
 
   await prisma.tenantProfile.create({
     data: {
       userId: tenant2.id,
-      employmentStatus: 'Full-time',
-      employerName: 'Global Finance Inc',
-      jobTitle: 'Financial Analyst',
+      employmentStatus: "Full-time",
+      employerName: "Global Finance Inc",
+      jobTitle: "Financial Analyst",
       annualIncome: 95000,
       creditScore: 720,
       hasPets: false,
       hasVehicle: true,
-      vehicleDescription: '2023 Honda Civic',
+      vehicleDescription: "2023 Honda Civic",
       budgetMin: 1200,
       budgetMax: 2200,
-      preferredPropertyTypes: ['APARTMENT'],
+      preferredPropertyTypes: ["APARTMENT"],
     },
   });
 
   await prisma.tenantProfile.create({
     data: {
       userId: tenant3.id,
-      employmentStatus: 'Full-time',
-      employerName: 'City General Hospital',
-      jobTitle: 'Registered Nurse',
+      employmentStatus: "Full-time",
+      employerName: "City General Hospital",
+      jobTitle: "Registered Nurse",
       annualIncome: 82000,
       creditScore: 750,
       hasPets: true,
-      petsDescription: 'One cat (indoor)',
+      petsDescription: "One cat (indoor)",
       hasVehicle: false,
       budgetMin: 1000,
       budgetMax: 1800,
-      preferredPropertyTypes: ['APARTMENT', 'STUDIO'],
+      preferredPropertyTypes: ["APARTMENT", "STUDIO"],
     },
   });
 
-  console.log('✅ Profiles created.');
+  await prisma.agentProfile.create({
+    data: {
+      userId: agent.id,
+      licenseNumber: "CA-DRE-12345678",
+      licenseState: "CA",
+      licenseExpiry: new Date("2027-12-31"),
+      brokerageName: "Premium Realty Group",
+      brokeragePhone: "+1-555-900-0000",
+      yearsOfExperience: 8,
+      specializations: ["Residential", "Luxury", "Waterfront"],
+      services: ["Buying", "Selling", "Renting", "Property Management"],
+      languages: ["English", "French"],
+      bio: "Award-winning real estate agent specializing in luxury properties across the Bay Area and Pacific Northwest.",
+      rating: 4.9,
+      reviewCount: 127,
+      propertiesListed: 45,
+      propertiesSold: 38,
+      verificationStatus: "verified",
+      isFeatured: true,
+      serviceAreas: ["San Francisco", "Seattle", "Portland"],
+    },
+  });
+
+  console.log("✅ Profiles created.");
 
   // =============================================
   // CREATE SUBSCRIPTIONS
   // =============================================
-  console.log('💳 Creating subscriptions...');
+  console.log("💳 Creating subscriptions...");
 
+  // Landlord 1 — Professional plan ($400/mo + $1.50/unit)
   await prisma.subscription.create({
     data: {
-      userId: landlord.id,
-      plan: 'PROFESSIONAL',
-      status: 'ACTIVE',
-      currentPeriodStart: new Date('2026-03-01'),
-      currentPeriodEnd: new Date('2026-04-01'),
+      userId: landlord1.id,
+      plan: "PROFESSIONAL",
+      status: "ACTIVE",
+      currentPeriodStart: new Date("2026-03-01"),
+      currentPeriodEnd: new Date("2026-04-01"),
     },
   });
 
+  // Landlord 2 — Starter plan (free tier, $0/mo)
+  await prisma.subscription.create({
+    data: {
+      userId: landlord2.id,
+      plan: "STARTER",
+      status: "ACTIVE",
+      currentPeriodStart: new Date("2026-03-01"),
+      currentPeriodEnd: new Date("2026-04-01"),
+    },
+  });
+
+  // Admin — Enterprise plan ($1264+/mo custom)
   await prisma.subscription.create({
     data: {
       userId: admin.id,
-      plan: 'ENTERPRISE',
-      status: 'ACTIVE',
-      currentPeriodStart: new Date('2026-03-01'),
-      currentPeriodEnd: new Date('2026-04-01'),
+      plan: "ENTERPRISE",
+      status: "ACTIVE",
+      currentPeriodStart: new Date("2026-01-01"),
+      currentPeriodEnd: new Date("2027-01-01"),
     },
   });
 
-  console.log('✅ Subscriptions created.');
+  // Agent — Business plan (Growth tier, $125/mo + $2/unit)
+  await prisma.subscription.create({
+    data: {
+      userId: agent.id,
+      plan: "BUSINESS",
+      status: "TRIALING",
+      trialStartDate: new Date("2026-03-01"),
+      trialEndDate: new Date("2026-03-31"),
+      currentPeriodStart: new Date("2026-03-01"),
+      currentPeriodEnd: new Date("2026-04-01"),
+    },
+  });
+
+  console.log("✅ Subscriptions created (4 total).");
 
   // =============================================
   // CREATE PROPERTIES
   // =============================================
-  console.log('🏠 Creating properties...');
+  console.log("🏠 Creating properties...");
 
   const properties = await Promise.all([
+    // Property 0: Modern Downtown Apartment
     prisma.property.create({
       data: {
-        ownerId: landlord.id,
-        title: 'Modern Downtown Apartment',
+        ownerId: landlord1.id,
+        title: "Modern Downtown Apartment",
         description:
-          'Stylish 2-bedroom apartment in the heart of downtown with panoramic city views, modern finishes, and access to premium amenities including a rooftop pool and fitness center.',
-        slug: 'modern-downtown-apartment',
-        propertyType: 'APARTMENT',
-        status: 'RENTED',
+          "Stylish 2-bedroom apartment in the heart of downtown with panoramic city views, modern finishes, and access to premium amenities including a rooftop pool and fitness center.",
+        slug: "modern-downtown-apartment",
+        propertyType: "APARTMENT",
+        status: "RENTED",
         address: {
-          street: '450 Market Street',
-          unit: 'Apt 1204',
-          city: 'San Francisco',
-          state: 'CA',
-          zip: '94105',
-          country: 'US',
+          street: "450 Market Street",
+          unit: "Apt 1204",
+          city: "San Francisco",
+          state: "CA",
+          zip: "94105",
+          country: "US",
           lat: 37.7911,
           lng: -122.3986,
         },
@@ -270,36 +390,37 @@ async function main() {
         price: 2200,
         deposit: 4400,
         amenities: [
-          'Rooftop Pool',
-          'Fitness Center',
-          'In-unit Laundry',
-          'Parking Garage',
-          'Doorman',
-          'EV Charging',
+          "Rooftop Pool",
+          "Fitness Center",
+          "In-unit Laundry",
+          "Parking Garage",
+          "Doorman",
+          "EV Charging",
         ],
-        availableFrom: new Date('2025-06-01'),
+        availableFrom: new Date("2025-06-01"),
         leaseTerm: 12,
         views: 342,
         featured: true,
         verified: true,
-        publishedAt: new Date('2025-04-15'),
+        publishedAt: new Date("2025-04-15"),
       },
     }),
+    // Property 1: Charming Victorian House
     prisma.property.create({
       data: {
-        ownerId: landlord.id,
-        title: 'Charming Victorian House',
+        ownerId: landlord1.id,
+        title: "Charming Victorian House",
         description:
-          'Beautifully restored 3-bedroom Victorian home with original hardwood floors, a private garden, and a detached garage. Located in a quiet, tree-lined neighborhood.',
-        slug: 'charming-victorian-house',
-        propertyType: 'HOUSE',
-        status: 'RENTED',
+          "Beautifully restored 3-bedroom Victorian home with original hardwood floors, a private garden, and a detached garage. Located in a quiet, tree-lined neighborhood.",
+        slug: "charming-victorian-house",
+        propertyType: "HOUSE",
+        status: "RENTED",
         address: {
-          street: '782 Oak Avenue',
-          city: 'Portland',
-          state: 'OR',
-          zip: '97205',
-          country: 'US',
+          street: "782 Oak Avenue",
+          city: "Portland",
+          state: "OR",
+          zip: "97205",
+          country: "US",
           lat: 45.5231,
           lng: -122.6765,
         },
@@ -310,36 +431,37 @@ async function main() {
         price: 3000,
         deposit: 6000,
         amenities: [
-          'Private Garden',
-          'Detached Garage',
-          'Hardwood Floors',
-          'Fireplace',
-          'Basement Storage',
+          "Private Garden",
+          "Detached Garage",
+          "Hardwood Floors",
+          "Fireplace",
+          "Basement Storage",
         ],
-        availableFrom: new Date('2025-05-01'),
+        availableFrom: new Date("2025-05-01"),
         leaseTerm: 12,
         views: 518,
         featured: true,
         verified: true,
-        publishedAt: new Date('2025-03-20'),
+        publishedAt: new Date("2025-03-20"),
       },
     }),
+    // Property 2: Luxury Waterfront Condo
     prisma.property.create({
       data: {
-        ownerId: landlord.id,
-        title: 'Luxury Waterfront Condo',
+        ownerId: landlord2.id,
+        title: "Luxury Waterfront Condo",
         description:
-          'Premium 2-bedroom waterfront condo with floor-to-ceiling windows, a chef-grade kitchen, and a private balcony overlooking the harbor. Building includes concierge service.',
-        slug: 'luxury-waterfront-condo',
-        propertyType: 'CONDO',
-        status: 'ACTIVE',
+          "Premium 2-bedroom waterfront condo with floor-to-ceiling windows, a chef-grade kitchen, and a private balcony overlooking the harbor. Building includes concierge service.",
+        slug: "luxury-waterfront-condo",
+        propertyType: "CONDO",
+        status: "ACTIVE",
         address: {
-          street: '100 Harbor Boulevard',
-          unit: 'Unit 3501',
-          city: 'Seattle',
-          state: 'WA',
-          zip: '98101',
-          country: 'US',
+          street: "100 Harbor Boulevard",
+          unit: "Unit 3501",
+          city: "Seattle",
+          state: "WA",
+          zip: "98101",
+          country: "US",
           lat: 47.6062,
           lng: -122.3321,
         },
@@ -350,37 +472,38 @@ async function main() {
         price: 3500,
         deposit: 7000,
         amenities: [
-          'Concierge',
-          'Private Balcony',
-          'Wine Cellar',
-          'Spa',
-          'Theater Room',
-          'Dog Park',
+          "Concierge",
+          "Private Balcony",
+          "Wine Cellar",
+          "Spa",
+          "Theater Room",
+          "Dog Park",
         ],
-        availableFrom: new Date('2026-04-01'),
+        availableFrom: new Date("2026-04-01"),
         leaseTerm: 12,
         views: 215,
         featured: false,
         verified: true,
-        publishedAt: new Date('2026-02-10'),
+        publishedAt: new Date("2026-02-10"),
       },
     }),
+    // Property 3: Cozy Studio Near University
     prisma.property.create({
       data: {
-        ownerId: landlord.id,
-        title: 'Cozy Studio Near University',
+        ownerId: landlord1.id,
+        title: "Cozy Studio Near University",
         description:
-          'Efficient and well-designed studio apartment steps from the university campus. Features built-in storage, a kitchenette, and high-speed internet included.',
-        slug: 'cozy-studio-near-university',
-        propertyType: 'STUDIO',
-        status: 'RENTED',
+          "Efficient and well-designed studio apartment steps from the university campus. Features built-in storage, a kitchenette, and high-speed internet included.",
+        slug: "cozy-studio-near-university",
+        propertyType: "STUDIO",
+        status: "RENTED",
         address: {
-          street: '55 College Road',
-          unit: 'Studio 8B',
-          city: 'Austin',
-          state: 'TX',
-          zip: '78705',
-          country: 'US',
+          street: "55 College Road",
+          unit: "Studio 8B",
+          city: "Austin",
+          state: "TX",
+          zip: "78705",
+          country: "US",
           lat: 30.2849,
           lng: -97.7341,
         },
@@ -391,35 +514,36 @@ async function main() {
         price: 1500,
         deposit: 1500,
         amenities: [
-          'High-speed Internet',
-          'Laundry Room',
-          'Bike Storage',
-          'Study Lounge',
-          'Package Lockers',
+          "High-speed Internet",
+          "Laundry Room",
+          "Bike Storage",
+          "Study Lounge",
+          "Package Lockers",
         ],
-        availableFrom: new Date('2025-08-01'),
+        availableFrom: new Date("2025-08-01"),
         leaseTerm: 12,
         views: 189,
         featured: false,
         verified: true,
-        publishedAt: new Date('2025-06-01'),
+        publishedAt: new Date("2025-06-01"),
       },
     }),
+    // Property 4: Spacious Family Townhouse
     prisma.property.create({
       data: {
-        ownerId: landlord.id,
-        title: 'Spacious Family Townhouse',
+        ownerId: landlord2.id,
+        title: "Spacious Family Townhouse",
         description:
-          'A 4-bedroom townhouse perfect for families, featuring an open-concept living area, a modern kitchen with stainless steel appliances, and a private backyard.',
-        slug: 'spacious-family-townhouse',
-        propertyType: 'TOWNHOUSE',
-        status: 'ACTIVE',
+          "A 4-bedroom townhouse perfect for families, featuring an open-concept living area, a modern kitchen with stainless steel appliances, and a private backyard.",
+        slug: "spacious-family-townhouse",
+        propertyType: "TOWNHOUSE",
+        status: "ACTIVE",
         address: {
-          street: '1220 Maple Drive',
-          city: 'Denver',
-          state: 'CO',
-          zip: '80220',
-          country: 'US',
+          street: "1220 Maple Drive",
+          city: "Denver",
+          state: "CO",
+          zip: "80220",
+          country: "US",
           lat: 39.7392,
           lng: -104.9903,
         },
@@ -430,67 +554,151 @@ async function main() {
         price: 2800,
         deposit: 5600,
         amenities: [
-          'Private Backyard',
-          'Attached Garage',
-          'Central Air',
-          'Stainless Steel Appliances',
-          'Walk-in Closets',
-          'Patio',
+          "Private Backyard",
+          "Attached Garage",
+          "Central Air",
+          "Stainless Steel Appliances",
+          "Walk-in Closets",
+          "Patio",
         ],
-        availableFrom: new Date('2026-05-01'),
+        availableFrom: new Date("2026-05-01"),
         leaseTerm: 12,
         views: 127,
         featured: true,
         verified: true,
-        publishedAt: new Date('2026-03-01'),
+        publishedAt: new Date("2026-03-01"),
+      },
+    }),
+    // Property 5: Industrial Loft
+    prisma.property.create({
+      data: {
+        ownerId: landlord1.id,
+        title: "Industrial Loft in Arts District",
+        description:
+          "Converted warehouse loft with exposed brick, soaring 14-foot ceilings, polished concrete floors, and oversized windows flooding the space with natural light.",
+        slug: "industrial-loft-arts-district",
+        propertyType: "LOFT",
+        status: "ACTIVE",
+        address: {
+          street: "310 Arts Boulevard",
+          unit: "Loft 4C",
+          city: "Los Angeles",
+          state: "CA",
+          zip: "90013",
+          country: "US",
+          lat: 34.0407,
+          lng: -118.2468,
+        },
+        bedrooms: 1,
+        bathrooms: 1,
+        sqft: 950,
+        yearBuilt: 2019,
+        price: 2600,
+        deposit: 2600,
+        amenities: [
+          "Exposed Brick",
+          "High Ceilings",
+          "Rooftop Access",
+          "Pet Friendly",
+          "In-unit Laundry",
+        ],
+        availableFrom: new Date("2026-04-15"),
+        leaseTerm: 12,
+        views: 98,
+        featured: false,
+        verified: true,
+        publishedAt: new Date("2026-03-10"),
+      },
+    }),
+    // Property 6: Commercial Space
+    prisma.property.create({
+      data: {
+        ownerId: landlord2.id,
+        title: "Prime Commercial Space",
+        description:
+          "Ground-floor commercial space with high foot traffic, floor-to-ceiling windows, and flexible layout suitable for retail, office, or dining.",
+        slug: "prime-commercial-space",
+        propertyType: "COMMERCIAL",
+        status: "ACTIVE",
+        address: {
+          street: "88 Main Street",
+          city: "San Francisco",
+          state: "CA",
+          zip: "94111",
+          country: "US",
+          lat: 37.7946,
+          lng: -122.3999,
+        },
+        bedrooms: 0,
+        bathrooms: 2,
+        sqft: 2800,
+        yearBuilt: 2010,
+        price: 8500,
+        deposit: 17000,
+        amenities: [
+          "Street Frontage",
+          "Loading Dock",
+          "ADA Compliant",
+          "HVAC",
+          "Security System",
+        ],
+        availableFrom: new Date("2026-06-01"),
+        leaseTerm: 36,
+        views: 64,
+        featured: false,
+        verified: true,
+        publishedAt: new Date("2026-03-15"),
       },
     }),
   ]);
 
-  console.log('✅ Properties created.');
+  console.log("✅ Properties created (7 total).");
 
   // =============================================
   // CREATE PROPERTY IMAGES
   // =============================================
-  console.log('📸 Creating property images...');
+  console.log("📸 Creating property images...");
+
+  const imageLabels = [
+    ["Main view", "Living area", "Kitchen", "Bedroom"],
+    ["Front exterior", "Living room", "Garden"],
+    ["Harbor view", "Open kitchen", "Balcony"],
+    ["Studio overview", "Kitchenette"],
+    ["Front view", "Living area", "Backyard"],
+    ["Loft interior", "Kitchen area"],
+    ["Storefront", "Interior layout"],
+  ];
 
   for (let i = 0; i < properties.length; i++) {
+    const labels = imageLabels[i];
     await prisma.propertyImage.createMany({
-      data: [
-        {
-          propertyId: properties[i].id,
-          url: `/assets/properties/property-${i + 1}-main.jpg`,
-          caption: 'Main view',
-          order: 0,
-          isPrimary: true,
-        },
-        {
-          propertyId: properties[i].id,
-          url: `/assets/properties/property-${i + 1}-interior.jpg`,
-          caption: 'Living area',
-          order: 1,
-          isPrimary: false,
-        },
-      ],
+      data: labels.map((caption, j) => ({
+        propertyId: properties[i].id,
+        url: `/assets/properties/property-${i + 1}-${j === 0 ? "main" : `interior-${j}`}.jpg`,
+        caption,
+        order: j,
+        isPrimary: j === 0,
+      })),
     });
   }
 
-  console.log('✅ Property images created.');
+  console.log("✅ Property images created.");
 
   // =============================================
   // CREATE LEASES
   // =============================================
-  console.log('📝 Creating leases...');
+  console.log("📝 Creating leases...");
 
   const leases = await Promise.all([
+    // Lease 0: tenant1 -> Downtown Apartment (ACTIVE)
     prisma.lease.create({
       data: {
         propertyId: properties[0].id,
-        tenantId: tenant.id,
-        landlordId: landlord.id,
-        status: 'ACTIVE',
-        startDate: new Date('2025-06-01'),
-        endDate: new Date('2026-06-01'),
+        tenantId: tenant1.id,
+        landlordId: landlord1.id,
+        status: "ACTIVE",
+        startDate: new Date("2025-06-01"),
+        endDate: new Date("2026-06-01"),
         monthlyRent: 2200,
         depositAmount: 4400,
         depositPaid: true,
@@ -498,17 +706,19 @@ async function main() {
         lateFeeGraceDays: 5,
         signedByTenant: true,
         signedByLandlord: true,
-        signedAt: new Date('2025-05-20'),
+        signedAt: new Date("2025-05-20"),
+        leaseDocumentUrl: "/documents/lease-downtown-apt.pdf",
       },
     }),
+    // Lease 1: tenant2 -> Victorian House (ACTIVE)
     prisma.lease.create({
       data: {
         propertyId: properties[1].id,
         tenantId: tenant2.id,
-        landlordId: landlord.id,
-        status: 'ACTIVE',
-        startDate: new Date('2025-07-01'),
-        endDate: new Date('2026-07-01'),
+        landlordId: landlord1.id,
+        status: "ACTIVE",
+        startDate: new Date("2025-07-01"),
+        endDate: new Date("2026-07-01"),
         monthlyRent: 3000,
         depositAmount: 6000,
         depositPaid: true,
@@ -516,17 +726,19 @@ async function main() {
         lateFeeGraceDays: 5,
         signedByTenant: true,
         signedByLandlord: true,
-        signedAt: new Date('2025-06-25'),
+        signedAt: new Date("2025-06-25"),
+        leaseDocumentUrl: "/documents/lease-victorian-house.pdf",
       },
     }),
+    // Lease 2: tenant3 -> Studio (ACTIVE)
     prisma.lease.create({
       data: {
         propertyId: properties[3].id,
         tenantId: tenant3.id,
-        landlordId: landlord.id,
-        status: 'ACTIVE',
-        startDate: new Date('2025-08-15'),
-        endDate: new Date('2026-08-15'),
+        landlordId: landlord1.id,
+        status: "ACTIVE",
+        startDate: new Date("2025-08-15"),
+        endDate: new Date("2026-08-15"),
         monthlyRent: 1500,
         depositAmount: 1500,
         depositPaid: true,
@@ -534,17 +746,19 @@ async function main() {
         lateFeeGraceDays: 5,
         signedByTenant: true,
         signedByLandlord: true,
-        signedAt: new Date('2025-08-10'),
+        signedAt: new Date("2025-08-10"),
+        leaseDocumentUrl: "/documents/lease-studio.pdf",
       },
     }),
+    // Lease 3: tenant1 -> Waterfront Condo (PENDING_SIGNATURES)
     prisma.lease.create({
       data: {
         propertyId: properties[2].id,
-        tenantId: tenant.id,
-        landlordId: landlord.id,
-        status: 'PENDING_SIGNATURES',
-        startDate: new Date('2026-04-01'),
-        endDate: new Date('2027-04-01'),
+        tenantId: tenant1.id,
+        landlordId: landlord2.id,
+        status: "PENDING_SIGNATURES",
+        startDate: new Date("2026-04-01"),
+        endDate: new Date("2027-04-01"),
         monthlyRent: 3500,
         depositAmount: 7000,
         depositPaid: false,
@@ -552,14 +766,15 @@ async function main() {
         lateFeeGraceDays: 5,
       },
     }),
+    // Lease 4: tenant2 -> Townhouse (DRAFT)
     prisma.lease.create({
       data: {
         propertyId: properties[4].id,
         tenantId: tenant2.id,
-        landlordId: landlord.id,
-        status: 'DRAFT',
-        startDate: new Date('2026-05-01'),
-        endDate: new Date('2027-05-01'),
+        landlordId: landlord2.id,
+        status: "DRAFT",
+        startDate: new Date("2026-05-01"),
+        endDate: new Date("2027-05-01"),
         monthlyRent: 2800,
         depositAmount: 5600,
         depositPaid: false,
@@ -569,541 +784,872 @@ async function main() {
     }),
   ]);
 
-  console.log('✅ Leases created.');
+  console.log("✅ Leases created (5 total).");
 
   // =============================================
   // CREATE PAYMENTS
   // =============================================
-  console.log('💰 Creating payments...');
+  console.log("💰 Creating payments...");
 
-  // Lease 1 — Downtown Apartment $2,200/mo
-  const lease1Payments: Parameters<typeof prisma.payment.createMany>[0]['data'] = [];
+  // Lease 0: Downtown Apartment $2,200/mo (Jun 2025 – Mar 2026)
+  const lease0Payments: Parameters<
+    typeof prisma.payment.createMany
+  >[0]["data"] = [];
   for (let month = 6; month <= 12; month++) {
-    const dueDate = new Date(`2025-${String(month).padStart(2, '0')}-01`);
-    lease1Payments.push({
+    const dueDate = new Date(`2025-${String(month).padStart(2, "0")}-01`);
+    lease0Payments.push({
       leaseId: leases[0].id,
-      payerId: tenant.id,
-      type: 'RENT',
-      status: 'PAID',
+      payerId: tenant1.id,
+      type: "RENT",
+      status: "PAID",
       amount: 2200,
       dueDate,
       paidAt: new Date(dueDate.getTime() + 2 * 86400000),
-      description: `Rent — ${dueDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`,
+      description: `Rent — ${dueDate.toLocaleString("en-US", { month: "long", year: "numeric" })}`,
     });
   }
   for (let month = 1; month <= 2; month++) {
-    const dueDate = new Date(`2026-${String(month).padStart(2, '0')}-01`);
-    lease1Payments.push({
+    const dueDate = new Date(`2026-${String(month).padStart(2, "0")}-01`);
+    lease0Payments.push({
       leaseId: leases[0].id,
-      payerId: tenant.id,
-      type: 'RENT',
-      status: 'PAID',
+      payerId: tenant1.id,
+      type: "RENT",
+      status: "PAID",
       amount: 2200,
       dueDate,
       paidAt: new Date(dueDate.getTime() + 86400000),
-      description: `Rent — ${dueDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`,
+      description: `Rent — ${dueDate.toLocaleString("en-US", { month: "long", year: "numeric" })}`,
     });
   }
-  // March 2026 — overdue
-  lease1Payments.push({
+  // March 2026 overdue
+  lease0Payments.push({
     leaseId: leases[0].id,
-    payerId: tenant.id,
-    type: 'RENT',
-    status: 'OVERDUE',
+    payerId: tenant1.id,
+    type: "RENT",
+    status: "OVERDUE",
     amount: 2200,
-    dueDate: new Date('2026-03-01'),
-    description: 'Rent — March 2026',
+    dueDate: new Date("2026-03-01"),
+    description: "Rent — March 2026",
   });
-  // Deposit
-  lease1Payments.push({
+  // Security deposit
+  lease0Payments.push({
     leaseId: leases[0].id,
-    payerId: tenant.id,
-    type: 'DEPOSIT',
-    status: 'PAID',
+    payerId: tenant1.id,
+    type: "DEPOSIT",
+    status: "PAID",
     amount: 4400,
-    dueDate: new Date('2025-05-25'),
-    paidAt: new Date('2025-05-25'),
-    description: 'Security deposit',
+    dueDate: new Date("2025-05-25"),
+    paidAt: new Date("2025-05-25"),
+    description: "Security deposit",
   });
-  await prisma.payment.createMany({ data: lease1Payments });
+  await prisma.payment.createMany({ data: lease0Payments });
 
-  // Lease 2 — Victorian House $3,000/mo
-  const lease2Payments: Parameters<typeof prisma.payment.createMany>[0]['data'] = [];
+  // Lease 1: Victorian House $3,000/mo (Jul 2025 – Mar 2026)
+  const lease1Payments: Parameters<
+    typeof prisma.payment.createMany
+  >[0]["data"] = [];
   for (let month = 7; month <= 12; month++) {
-    const dueDate = new Date(`2025-${String(month).padStart(2, '0')}-01`);
-    lease2Payments.push({
+    const dueDate = new Date(`2025-${String(month).padStart(2, "0")}-01`);
+    lease1Payments.push({
       leaseId: leases[1].id,
       payerId: tenant2.id,
-      type: 'RENT',
-      status: 'PAID',
+      type: "RENT",
+      status: "PAID",
       amount: 3000,
       dueDate,
       paidAt: new Date(dueDate.getTime() + 86400000),
-      description: `Rent — ${dueDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`,
+      description: `Rent — ${dueDate.toLocaleString("en-US", { month: "long", year: "numeric" })}`,
     });
   }
   for (let month = 1; month <= 3; month++) {
-    const dueDate = new Date(`2026-${String(month).padStart(2, '0')}-01`);
-    lease2Payments.push({
+    const dueDate = new Date(`2026-${String(month).padStart(2, "0")}-01`);
+    lease1Payments.push({
       leaseId: leases[1].id,
       payerId: tenant2.id,
-      type: 'RENT',
-      status: 'PAID',
+      type: "RENT",
+      status: "PAID",
       amount: 3000,
       dueDate,
       paidAt: new Date(dueDate.getTime() + 3 * 86400000),
-      description: `Rent — ${dueDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`,
+      description: `Rent — ${dueDate.toLocaleString("en-US", { month: "long", year: "numeric" })}`,
     });
   }
-  await prisma.payment.createMany({ data: lease2Payments });
+  // Late fee
+  lease1Payments.push({
+    leaseId: leases[1].id,
+    payerId: tenant2.id,
+    type: "LATE_FEE",
+    status: "PAID",
+    amount: 75,
+    dueDate: new Date("2025-10-10"),
+    paidAt: new Date("2025-10-12"),
+    description: "Late fee — October 2025",
+  });
+  await prisma.payment.createMany({ data: lease1Payments });
 
-  // Lease 3 — Studio $1,500/mo
-  const lease3Payments: Parameters<typeof prisma.payment.createMany>[0]['data'] = [];
+  // Lease 2: Studio $1,500/mo (Sep 2025 – Mar 2026)
+  const lease2Payments: Parameters<
+    typeof prisma.payment.createMany
+  >[0]["data"] = [];
   for (let month = 9; month <= 12; month++) {
-    const dueDate = new Date(`2025-${String(month).padStart(2, '0')}-01`);
-    lease3Payments.push({
+    const dueDate = new Date(`2025-${String(month).padStart(2, "0")}-01`);
+    lease2Payments.push({
       leaseId: leases[2].id,
       payerId: tenant3.id,
-      type: 'RENT',
-      status: 'PAID',
+      type: "RENT",
+      status: "PAID",
       amount: 1500,
       dueDate,
       paidAt: new Date(dueDate.getTime() + 86400000),
-      description: `Rent — ${dueDate.toLocaleString('en-US', { month: 'long', year: 'numeric' })}`,
+      description: `Rent — ${dueDate.toLocaleString("en-US", { month: "long", year: "numeric" })}`,
     });
   }
-  lease3Payments.push({
+  lease2Payments.push({
     leaseId: leases[2].id,
     payerId: tenant3.id,
-    type: 'RENT',
-    status: 'PAID',
+    type: "RENT",
+    status: "PAID",
     amount: 1500,
-    dueDate: new Date('2026-01-01'),
-    paidAt: new Date('2026-01-02'),
-    description: 'Rent — January 2026',
+    dueDate: new Date("2026-01-01"),
+    paidAt: new Date("2026-01-02"),
+    description: "Rent — January 2026",
   });
-  lease3Payments.push({
+  lease2Payments.push({
     leaseId: leases[2].id,
     payerId: tenant3.id,
-    type: 'RENT',
-    status: 'PAID',
+    type: "RENT",
+    status: "PAID",
     amount: 1500,
-    dueDate: new Date('2026-02-01'),
-    paidAt: new Date('2026-02-08'),
-    description: 'Rent — February 2026',
+    dueDate: new Date("2026-02-01"),
+    paidAt: new Date("2026-02-08"),
+    description: "Rent — February 2026",
   });
-  lease3Payments.push({
+  lease2Payments.push({
     leaseId: leases[2].id,
     payerId: tenant3.id,
-    type: 'RENT',
-    status: 'PAYMENT_PENDING',
+    type: "RENT",
+    status: "PAYMENT_PENDING",
     amount: 1500,
-    dueDate: new Date('2026-03-01'),
-    description: 'Rent — March 2026',
+    dueDate: new Date("2026-03-01"),
+    description: "Rent — March 2026",
   });
-  await prisma.payment.createMany({ data: lease3Payments });
+  await prisma.payment.createMany({ data: lease2Payments });
 
-  console.log('✅ Payments created.');
+  console.log("✅ Payments created (~30 total).");
 
   // =============================================
   // CREATE MAINTENANCE RECORDS
   // =============================================
-  console.log('🔧 Creating maintenance records...');
+  console.log("🔧 Creating maintenance records...");
 
   await prisma.maintenanceRecord.createMany({
     data: [
       {
         propertyId: properties[0].id,
-        systemType: 'PLUMBING',
-        description: 'Kitchen faucet leak repaired — replaced cartridge and seals.',
+        systemType: "PLUMBING",
+        description:
+          "Kitchen faucet leak repaired — replaced cartridge and seals.",
         cost: 250,
-        completedAt: new Date('2025-11-15'),
+        completedAt: new Date("2025-11-15"),
       },
       {
         propertyId: properties[0].id,
-        systemType: 'HVAC',
-        description: 'Annual HVAC inspection and filter replacement.',
+        systemType: "HVAC",
+        description: "Annual HVAC inspection and filter replacement.",
         cost: 180,
-        completedAt: new Date('2025-10-01'),
-        nextPredictedDate: new Date('2026-10-01'),
+        completedAt: new Date("2025-10-01"),
+        nextPredictedDate: new Date("2026-10-01"),
       },
       {
         propertyId: properties[1].id,
-        systemType: 'ELECTRICAL',
-        description: 'Replaced outdated wiring in the kitchen. Upgraded to meet current code.',
+        systemType: "ELECTRICAL",
+        description:
+          "Replaced outdated wiring in the kitchen. Upgraded to meet current code.",
         cost: 1200,
-        completedAt: new Date('2025-09-20'),
+        completedAt: new Date("2025-09-20"),
       },
       {
         propertyId: properties[1].id,
-        systemType: 'ROOFING',
-        description: 'Patched minor roof leak near chimney flashing.',
+        systemType: "ROOFING",
+        description: "Patched minor roof leak near chimney flashing.",
         cost: 650,
-        completedAt: new Date('2026-01-10'),
-        nextPredictedDate: new Date('2027-01-10'),
+        completedAt: new Date("2026-01-10"),
+        nextPredictedDate: new Date("2027-01-10"),
       },
       {
         propertyId: properties[3].id,
-        systemType: 'APPLIANCE',
-        description: 'Replaced dishwasher with energy-efficient model.',
+        systemType: "APPLIANCE",
+        description: "Replaced dishwasher with energy-efficient model.",
         cost: 800,
-        completedAt: new Date('2026-02-05'),
+        completedAt: new Date("2026-02-05"),
+      },
+      {
+        propertyId: properties[4].id,
+        systemType: "STRUCTURAL",
+        description: "Foundation crack inspection and minor sealant repair.",
+        cost: 450,
+        completedAt: new Date("2026-01-20"),
       },
     ],
   });
 
-  console.log('✅ Maintenance records created.');
+  console.log("✅ Maintenance records created (6 total).");
 
   // =============================================
   // CREATE MAINTENANCE PREDICTIONS
   // =============================================
-  console.log('🔮 Creating maintenance predictions...');
+  console.log("🔮 Creating maintenance predictions...");
 
   await prisma.maintenancePrediction.createMany({
     data: [
       {
         propertyId: properties[0].id,
-        systemType: 'HVAC',
-        predictedFailureDate: new Date('2026-09-15'),
+        systemType: "HVAC",
+        predictedFailureDate: new Date("2026-09-15"),
         confidence: 0.82,
       },
       {
         propertyId: properties[1].id,
-        systemType: 'PLUMBING',
-        predictedFailureDate: new Date('2026-07-20'),
+        systemType: "PLUMBING",
+        predictedFailureDate: new Date("2026-07-20"),
         confidence: 0.65,
       },
       {
         propertyId: properties[4].id,
-        systemType: 'STRUCTURAL',
-        predictedFailureDate: new Date('2027-01-10'),
+        systemType: "STRUCTURAL",
+        predictedFailureDate: new Date("2027-01-10"),
         confidence: 0.45,
       },
     ],
   });
 
-  console.log('✅ Maintenance predictions created.');
+  console.log("✅ Maintenance predictions created.");
 
   // =============================================
   // CREATE INSPECTIONS
   // =============================================
-  console.log('🔍 Creating inspections...');
+  console.log("🔍 Creating inspections...");
 
   await prisma.inspection.createMany({
     data: [
       {
         propertyId: properties[0].id,
-        userId: tenant.id,
-        type: 'IN_PERSON',
-        status: 'COMPLETED',
-        scheduledDate: new Date('2025-05-15'),
-        scheduledTime: '10:00',
+        userId: tenant1.id,
+        type: "IN_PERSON",
+        status: "COMPLETED",
+        scheduledDate: new Date("2025-05-15"),
+        scheduledTime: "10:00",
         duration: 30,
-        tenantNotes: 'Great condition, loved the views.',
-        confirmedAt: new Date('2025-05-14'),
-        completedAt: new Date('2025-05-15T10:35:00Z'),
+        tenantNotes: "Great condition, loved the views.",
+        confirmedAt: new Date("2025-05-14"),
+        completedAt: new Date("2025-05-15T10:35:00Z"),
         reminderSent: true,
-        reminderSentAt: new Date('2025-05-14T18:00:00Z'),
+        reminderSentAt: new Date("2025-05-14T18:00:00Z"),
       },
       {
         propertyId: properties[1].id,
         userId: tenant2.id,
-        type: 'VIRTUAL',
-        status: 'COMPLETED',
-        scheduledDate: new Date('2025-06-10'),
-        scheduledTime: '14:00',
+        type: "VIRTUAL",
+        status: "COMPLETED",
+        scheduledDate: new Date("2025-06-10"),
+        scheduledTime: "14:00",
         duration: 20,
-        meetingLink: 'https://meet.example.com/inspection-abc',
-        confirmedAt: new Date('2025-06-09'),
-        completedAt: new Date('2025-06-10T14:25:00Z'),
+        meetingLink: "https://meet.example.com/inspection-abc",
+        confirmedAt: new Date("2025-06-09"),
+        completedAt: new Date("2025-06-10T14:25:00Z"),
         reminderSent: true,
       },
       {
         propertyId: properties[2].id,
-        userId: tenant.id,
-        type: 'IN_PERSON',
-        status: 'SCHEDULED',
-        scheduledDate: new Date('2026-03-25'),
-        scheduledTime: '11:00',
+        userId: tenant1.id,
+        type: "IN_PERSON",
+        status: "SCHEDULED",
+        scheduledDate: new Date("2026-03-25"),
+        scheduledTime: "11:00",
         duration: 45,
-        tenantNotes: 'Interested in the harbor view unit.',
+        tenantNotes: "Interested in the harbor view unit.",
         reminderSent: false,
       },
       {
         propertyId: properties[4].id,
         userId: tenant2.id,
-        type: 'OPEN_HOUSE',
-        status: 'CONFIRMED',
-        scheduledDate: new Date('2026-04-05'),
-        scheduledTime: '13:00',
+        type: "OPEN_HOUSE",
+        status: "CONFIRMED",
+        scheduledDate: new Date("2026-04-05"),
+        scheduledTime: "13:00",
         duration: 60,
-        confirmedAt: new Date('2026-03-20'),
+        confirmedAt: new Date("2026-03-20"),
+        reminderSent: false,
+      },
+      {
+        propertyId: properties[5].id,
+        userId: tenant3.id,
+        type: "IN_PERSON",
+        status: "SCHEDULED",
+        scheduledDate: new Date("2026-04-10"),
+        scheduledTime: "15:00",
+        duration: 30,
+        tenantNotes: "Want to check natural lighting in the loft.",
         reminderSent: false,
       },
     ],
   });
 
-  console.log('✅ Inspections created.');
+  console.log("✅ Inspections created (5 total).");
 
   // =============================================
   // CREATE APPLICATIONS
   // =============================================
-  console.log('📄 Creating applications...');
+  console.log("📄 Creating applications...");
 
   await prisma.application.createMany({
     data: [
       {
         propertyId: properties[0].id,
-        primaryApplicantId: tenant.id,
-        status: 'APPROVED',
+        primaryApplicantId: tenant1.id,
+        status: "APPROVED",
         score: 92,
-        scoreBreakdown: { creditScore: 30, income: 25, rentalHistory: 20, employment: 17 },
+        scoreBreakdown: {
+          creditScore: 30,
+          income: 25,
+          rentalHistory: 20,
+          employment: 17,
+        },
         personalInfo: {
-          firstName: 'Sarah',
-          lastName: 'Chen',
-          email: 'tenant@example.com',
-          phone: '+1-555-200-3000',
-          dateOfBirth: '1992-08-15',
+          firstName: "Sarah",
+          lastName: "Chen",
+          email: "sarah.chen@example.com",
+          phone: "+1-555-300-1000",
+          dateOfBirth: "1992-08-15",
         },
         employment: [
-          { employer: 'Acme Corp', title: 'Senior Software Engineer', startDate: '2021-03-01', current: true, monthlyIncome: 10417 },
+          {
+            employer: "Acme Corp",
+            title: "Senior Software Engineer",
+            startDate: "2021-03-01",
+            current: true,
+            monthlyIncome: 10417,
+          },
         ],
-        income: [{ source: 'Employment', monthlyAmount: 10417, verified: true }],
+        income: [
+          { source: "Employment", monthlyAmount: 10417, verified: true },
+        ],
         rentalHistory: [
-          { address: '200 Pine St, San Francisco, CA', duration: '3 years', landlordName: 'Bay Area Rentals', reasonForLeaving: 'Seeking larger space' },
+          {
+            address: "200 Pine St, San Francisco, CA",
+            duration: "3 years",
+            landlordName: "Bay Area Rentals",
+            reasonForLeaving: "Seeking larger space",
+          },
         ],
-        references: [{ name: 'John Smith', relationship: 'Former Landlord', phone: '+1-555-999-0001' }],
-        moveInDate: new Date('2025-06-01'),
+        references: [
+          {
+            name: "John Smith",
+            relationship: "Former Landlord",
+            phone: "+1-555-999-0001",
+          },
+        ],
+        moveInDate: new Date("2025-06-01"),
         leaseTerm: 12,
-        pets: [{ type: 'Dog', breed: 'Corgi', weight: 25 }],
-        vehicles: [{ make: 'Toyota', model: 'Camry', year: 2024 }],
-        emergencyContact: { name: 'David Chen', relationship: 'Brother', phone: '+1-555-200-3001' },
+        pets: [{ type: "Dog", breed: "Corgi", weight: 25 }],
+        vehicles: [{ make: "Toyota", model: "Camry", year: 2024 }],
+        emergencyContact: {
+          name: "David Chen",
+          relationship: "Brother",
+          phone: "+1-555-200-3001",
+        },
         coApplicants: [],
-        submittedAt: new Date('2025-05-10'),
-        reviewedBy: landlord.id,
-        reviewedAt: new Date('2025-05-15'),
+        submittedAt: new Date("2025-05-10"),
+        reviewedBy: landlord1.id,
+        reviewedAt: new Date("2025-05-15"),
       },
       {
         propertyId: properties[1].id,
         primaryApplicantId: tenant2.id,
-        status: 'APPROVED',
+        status: "APPROVED",
         score: 85,
-        scoreBreakdown: { creditScore: 26, income: 22, rentalHistory: 20, employment: 17 },
+        scoreBreakdown: {
+          creditScore: 26,
+          income: 22,
+          rentalHistory: 20,
+          employment: 17,
+        },
         personalInfo: {
-          firstName: 'Marcus',
-          lastName: 'Johnson',
-          email: 'tenant2@example.com',
-          phone: '+1-555-400-5000',
+          firstName: "Marcus",
+          lastName: "Johnson",
+          email: "marcus.johnson@example.com",
+          phone: "+1-555-300-2000",
         },
         employment: [
-          { employer: 'Global Finance Inc', title: 'Financial Analyst', startDate: '2022-01-15', current: true, monthlyIncome: 7917 },
+          {
+            employer: "Global Finance Inc",
+            title: "Financial Analyst",
+            startDate: "2022-01-15",
+            current: true,
+            monthlyIncome: 7917,
+          },
         ],
-        income: [{ source: 'Employment', monthlyAmount: 7917, verified: true }],
+        income: [{ source: "Employment", monthlyAmount: 7917, verified: true }],
         rentalHistory: [
-          { address: '55 Elm St, Portland, OR', duration: '2 years', landlordName: 'Rose City Properties', reasonForLeaving: 'Relocating for work' },
+          {
+            address: "55 Elm St, Portland, OR",
+            duration: "2 years",
+            landlordName: "Rose City Properties",
+            reasonForLeaving: "Relocating for work",
+          },
         ],
-        references: [{ name: 'Lisa Wang', relationship: 'Employer', phone: '+1-555-999-0002' }],
-        moveInDate: new Date('2025-07-01'),
+        references: [
+          {
+            name: "Lisa Wang",
+            relationship: "Employer",
+            phone: "+1-555-999-0002",
+          },
+        ],
+        moveInDate: new Date("2025-07-01"),
         leaseTerm: 12,
         pets: [],
-        vehicles: [{ make: 'Honda', model: 'Civic', year: 2023 }],
+        vehicles: [{ make: "Honda", model: "Civic", year: 2023 }],
         coApplicants: [],
-        submittedAt: new Date('2025-06-05'),
-        reviewedBy: landlord.id,
-        reviewedAt: new Date('2025-06-12'),
+        submittedAt: new Date("2025-06-05"),
+        reviewedBy: landlord1.id,
+        reviewedAt: new Date("2025-06-12"),
       },
       {
         propertyId: properties[2].id,
-        primaryApplicantId: tenant.id,
-        status: 'UNDER_REVIEW',
+        primaryApplicantId: tenant1.id,
+        status: "UNDER_REVIEW",
         score: 0,
         personalInfo: {
-          firstName: 'Sarah',
-          lastName: 'Chen',
-          email: 'tenant@example.com',
-          phone: '+1-555-200-3000',
+          firstName: "Sarah",
+          lastName: "Chen",
+          email: "sarah.chen@example.com",
+          phone: "+1-555-300-1000",
         },
         employment: [
-          { employer: 'Acme Corp', title: 'Senior Software Engineer', startDate: '2021-03-01', current: true, monthlyIncome: 10417 },
+          {
+            employer: "Acme Corp",
+            title: "Senior Software Engineer",
+            startDate: "2021-03-01",
+            current: true,
+            monthlyIncome: 10417,
+          },
         ],
-        income: [{ source: 'Employment', monthlyAmount: 10417, verified: false }],
+        income: [
+          { source: "Employment", monthlyAmount: 10417, verified: false },
+        ],
         rentalHistory: [],
         references: [],
-        pets: [{ type: 'Dog', breed: 'Corgi', weight: 25 }],
+        pets: [{ type: "Dog", breed: "Corgi", weight: 25 }],
         vehicles: [],
         coApplicants: [],
-        submittedAt: new Date('2026-03-15'),
+        submittedAt: new Date("2026-03-15"),
+      },
+      {
+        propertyId: properties[5].id,
+        primaryApplicantId: tenant3.id,
+        status: "SUBMITTED",
+        score: 0,
+        personalInfo: {
+          firstName: "Emily",
+          lastName: "Park",
+          email: "emily.park@example.com",
+          phone: "+1-555-300-3000",
+        },
+        employment: [
+          {
+            employer: "City General Hospital",
+            title: "Registered Nurse",
+            startDate: "2020-06-01",
+            current: true,
+            monthlyIncome: 6833,
+          },
+        ],
+        income: [
+          { source: "Employment", monthlyAmount: 6833, verified: false },
+        ],
+        rentalHistory: [],
+        references: [],
+        pets: [{ type: "Cat", breed: "Indoor domestic", weight: 10 }],
+        vehicles: [],
+        coApplicants: [],
+        submittedAt: new Date("2026-03-18"),
       },
     ],
   });
 
-  console.log('✅ Applications created.');
+  console.log("✅ Applications created (4 total).");
+
+  // =============================================
+  // CREATE SCREENING REQUESTS
+  // =============================================
+  console.log("🔎 Creating screening requests...");
+
+  await prisma.screeningRequest.createMany({
+    data: [
+      {
+        tenantName: "Sarah Chen",
+        email: "sarah.chen@example.com",
+        phone: "+1-555-300-1000",
+        propertyId: properties[0].id,
+        status: "SCREENING_COMPLETED",
+        creditScore: 780,
+        backgroundCheck: true,
+        evictionHistory: false,
+        employmentVerification: true,
+      },
+      {
+        tenantName: "Marcus Johnson",
+        email: "marcus.johnson@example.com",
+        phone: "+1-555-300-2000",
+        propertyId: properties[1].id,
+        status: "SCREENING_COMPLETED",
+        creditScore: 720,
+        backgroundCheck: true,
+        evictionHistory: false,
+        employmentVerification: true,
+      },
+      {
+        tenantName: "Emily Park",
+        email: "emily.park@example.com",
+        phone: "+1-555-300-3000",
+        propertyId: properties[5].id,
+        status: "IN_PROGRESS",
+      },
+    ],
+  });
+
+  console.log("✅ Screening requests created (3 total).");
 
   // =============================================
   // CREATE NOTIFICATIONS
   // =============================================
-  console.log('🔔 Creating notifications...');
+  console.log("🔔 Creating notifications...");
 
   await prisma.notification.createMany({
     data: [
       {
-        userId: tenant.id,
-        type: 'INSPECTION_CONFIRMATION',
-        channel: 'EMAIL',
-        status: 'DELIVERED',
-        title: 'Inspection Confirmed',
-        message: 'Your inspection for Modern Downtown Apartment on May 15, 2025 at 10:00 AM has been confirmed.',
-        sentAt: new Date('2025-05-14T09:00:00Z'),
-        readAt: new Date('2025-05-14T09:15:00Z'),
+        userId: tenant1.id,
+        type: "INSPECTION_CONFIRMATION",
+        channel: "EMAIL",
+        status: "DELIVERED",
+        title: "Inspection Confirmed",
+        message:
+          "Your inspection for Modern Downtown Apartment on May 15, 2025 at 10:00 AM has been confirmed.",
+        sentAt: new Date("2025-05-14T09:00:00Z"),
+        readAt: new Date("2025-05-14T09:15:00Z"),
       },
       {
-        userId: tenant.id,
-        type: 'APPLICATION_STATUS',
-        channel: 'IN_APP',
-        status: 'READ',
-        title: 'Application Approved',
-        message: 'Your rental application for Modern Downtown Apartment has been approved. Congratulations!',
-        sentAt: new Date('2025-05-15T12:00:00Z'),
-        readAt: new Date('2025-05-15T12:30:00Z'),
+        userId: tenant1.id,
+        type: "APPLICATION_STATUS",
+        channel: "IN_APP",
+        status: "READ",
+        title: "Application Approved",
+        message:
+          "Your rental application for Modern Downtown Apartment has been approved. Congratulations!",
+        sentAt: new Date("2025-05-15T12:00:00Z"),
+        readAt: new Date("2025-05-15T12:30:00Z"),
       },
       {
         userId: tenant2.id,
-        type: 'INSPECTION_REMINDER',
-        channel: 'SMS',
-        status: 'DELIVERED',
-        title: 'Upcoming Open House',
-        message: 'Reminder: Open house for Spacious Family Townhouse is on April 5, 2026 at 1:00 PM.',
-        sentAt: new Date('2026-03-20T10:00:00Z'),
+        type: "INSPECTION_REMINDER",
+        channel: "SMS",
+        status: "DELIVERED",
+        title: "Upcoming Open House",
+        message:
+          "Reminder: Open house for Spacious Family Townhouse is on April 5, 2026 at 1:00 PM.",
+        sentAt: new Date("2026-03-20T10:00:00Z"),
       },
       {
-        userId: landlord.id,
-        type: 'SYSTEM',
-        channel: 'IN_APP',
-        status: 'SENT',
-        title: 'New Application Received',
-        message: 'A new rental application has been submitted for Luxury Waterfront Condo by Sarah Chen.',
-        sentAt: new Date('2026-03-15T08:00:00Z'),
+        userId: landlord1.id,
+        type: "SYSTEM",
+        channel: "IN_APP",
+        status: "SENT",
+        title: "New Application Received",
+        message:
+          "A new rental application has been submitted for Luxury Waterfront Condo by Sarah Chen.",
+        sentAt: new Date("2026-03-15T08:00:00Z"),
       },
       {
         userId: tenant3.id,
-        type: 'SYSTEM',
-        channel: 'IN_APP',
-        status: 'PENDING',
-        title: 'Rent Payment Due',
-        message: 'Your rent payment of $1,500 for March 2026 is due. Please submit payment at your earliest convenience.',
+        type: "SYSTEM",
+        channel: "IN_APP",
+        status: "PENDING",
+        title: "Rent Payment Due",
+        message:
+          "Your rent payment of $1,500 for March 2026 is due. Please submit payment at your earliest convenience.",
+      },
+      {
+        userId: landlord2.id,
+        type: "SYSTEM",
+        channel: "EMAIL",
+        status: "DELIVERED",
+        title: "Monthly Revenue Report",
+        message:
+          "Your February 2026 revenue report is ready. Total income: $11,500.",
+        sentAt: new Date("2026-03-01T07:00:00Z"),
+        readAt: new Date("2026-03-01T09:30:00Z"),
+      },
+      {
+        userId: tenant1.id,
+        type: "INSPECTION_RESCHEDULE",
+        channel: "PUSH",
+        status: "DELIVERED",
+        title: "Inspection Rescheduled",
+        message:
+          "Your inspection for Luxury Waterfront Condo has been rescheduled to March 25, 2026 at 11:00 AM.",
+        sentAt: new Date("2026-03-18T14:00:00Z"),
       },
     ],
   });
 
-  console.log('✅ Notifications created.');
+  console.log("✅ Notifications created (7 total).");
+
+  // =============================================
+  // CREATE NOTIFICATION PREFERENCES
+  // =============================================
+  console.log("⚙️  Creating notification preferences...");
+
+  await prisma.notificationPreference.createMany({
+    data: [
+      {
+        userId: tenant1.id,
+        email: true,
+        sms: true,
+        push: true,
+        inspectionReminders: true,
+        inspectionUpdates: true,
+        applicationUpdates: true,
+        marketingEmails: false,
+      },
+      {
+        userId: tenant2.id,
+        email: true,
+        sms: false,
+        push: true,
+        inspectionReminders: true,
+        inspectionUpdates: true,
+        applicationUpdates: true,
+        marketingEmails: true,
+      },
+      {
+        userId: landlord1.id,
+        email: true,
+        sms: true,
+        push: true,
+        inspectionReminders: true,
+        inspectionUpdates: true,
+        applicationUpdates: true,
+        marketingEmails: false,
+      },
+    ],
+  });
+
+  console.log("✅ Notification preferences created.");
 
   // =============================================
   // CREATE BOOKINGS
   // =============================================
-  console.log('📅 Creating bookings...');
+  console.log("📅 Creating bookings...");
 
   await prisma.booking.createMany({
     data: [
       {
         propertyId: properties[2].id,
-        tenantId: tenant.id,
-        type: 'VIEWING',
-        title: 'Property Viewing — Luxury Waterfront Condo',
-        startTime: new Date('2026-03-25T11:00:00Z'),
-        endTime: new Date('2026-03-25T11:45:00Z'),
-        status: 'CONFIRMED',
-        notes: 'Prospective tenant wants to see the harbor view.',
-        location: '100 Harbor Boulevard, Unit 3501, Seattle, WA',
+        tenantId: tenant1.id,
+        type: "VIEWING",
+        title: "Property Viewing — Luxury Waterfront Condo",
+        startTime: new Date("2026-03-25T11:00:00Z"),
+        endTime: new Date("2026-03-25T11:45:00Z"),
+        status: "CONFIRMED",
+        notes: "Prospective tenant wants to see the harbor view.",
+        location: "100 Harbor Boulevard, Unit 3501, Seattle, WA",
       },
       {
         propertyId: properties[4].id,
         tenantId: tenant2.id,
-        type: 'VIEWING',
-        title: 'Open House — Spacious Family Townhouse',
-        startTime: new Date('2026-04-05T13:00:00Z'),
-        endTime: new Date('2026-04-05T14:00:00Z'),
-        status: 'PENDING',
-        location: '1220 Maple Drive, Denver, CO',
+        type: "VIEWING",
+        title: "Open House — Spacious Family Townhouse",
+        startTime: new Date("2026-04-05T13:00:00Z"),
+        endTime: new Date("2026-04-05T14:00:00Z"),
+        status: "PENDING",
+        location: "1220 Maple Drive, Denver, CO",
+      },
+      {
+        propertyId: properties[0].id,
+        tenantId: tenant1.id,
+        type: "MAINTENANCE",
+        title: "Scheduled HVAC Maintenance",
+        startTime: new Date("2026-04-15T09:00:00Z"),
+        endTime: new Date("2026-04-15T11:00:00Z"),
+        status: "CONFIRMED",
+        notes: "Annual HVAC system check-up.",
+        location: "450 Market Street, Apt 1204, San Francisco, CA",
       },
     ],
   });
 
-  console.log('✅ Bookings created.');
+  console.log("✅ Bookings created (3 total).");
 
   // =============================================
   // CREATE WORKFLOWS
   // =============================================
-  console.log('⚙️ Creating workflows...');
+  console.log("⚙️ Creating workflows...");
 
   await prisma.workflow.createMany({
     data: [
       {
-        userId: landlord.id,
-        name: 'New Tenant Welcome',
-        description: 'Automated welcome sequence for new tenants after lease signing.',
-        triggerType: 'NEW_TENANT',
+        userId: landlord1.id,
+        name: "New Tenant Welcome",
+        description:
+          "Automated welcome sequence for new tenants after lease signing.",
+        triggerType: "NEW_TENANT",
         steps: [
-          { order: 1, action: 'send_email', template: 'welcome_email' },
-          { order: 2, action: 'create_checklist', template: 'move_in_checklist' },
-          { order: 3, action: 'schedule_inspection', type: 'move_in', daysAfter: 3 },
+          {
+            order: 1,
+            action: "send_email",
+            template: "welcome_email",
+            delay: "0d",
+          },
+          {
+            order: 2,
+            action: "create_checklist",
+            template: "move_in_checklist",
+            delay: "1d",
+          },
+          {
+            order: 3,
+            action: "schedule_inspection",
+            type: "move_in",
+            daysAfter: 3,
+          },
+          {
+            order: 4,
+            action: "send_email",
+            template: "building_rules",
+            delay: "7d",
+          },
         ],
         isActive: true,
       },
       {
-        userId: landlord.id,
-        name: 'Lease Expiry Reminder',
-        description: 'Sends reminders 90, 60, and 30 days before lease expiry.',
-        triggerType: 'LEASE_EXPIRY',
+        userId: landlord1.id,
+        name: "Lease Expiry Reminder",
+        description:
+          "Sends reminders 90, 60, and 30 days before lease expiry to both tenant and landlord.",
+        triggerType: "LEASE_EXPIRY",
         steps: [
-          { order: 1, action: 'send_email', daysBefore: 90, template: 'lease_expiry_90' },
-          { order: 2, action: 'send_email', daysBefore: 60, template: 'lease_expiry_60' },
-          { order: 3, action: 'send_email', daysBefore: 30, template: 'lease_expiry_30' },
+          {
+            order: 1,
+            action: "send_email",
+            daysBefore: 90,
+            template: "lease_expiry_90",
+            recipients: ["tenant", "landlord"],
+          },
+          {
+            order: 2,
+            action: "send_email",
+            daysBefore: 60,
+            template: "lease_expiry_60",
+            recipients: ["tenant"],
+          },
+          {
+            order: 3,
+            action: "send_email",
+            daysBefore: 30,
+            template: "lease_expiry_30",
+            recipients: ["tenant", "landlord"],
+          },
+          {
+            order: 4,
+            action: "create_task",
+            daysBefore: 30,
+            template: "renewal_decision",
+            assignTo: "landlord",
+          },
+        ],
+        isActive: true,
+      },
+      {
+        userId: landlord2.id,
+        name: "Maintenance Follow-up",
+        description:
+          "Sends satisfaction survey after maintenance work is completed.",
+        triggerType: "MAINTENANCE_REQUEST",
+        steps: [
+          {
+            order: 1,
+            action: "send_email",
+            template: "maintenance_completed",
+            delay: "0d",
+          },
+          {
+            order: 2,
+            action: "send_email",
+            template: "satisfaction_survey",
+            delay: "3d",
+          },
         ],
         isActive: true,
       },
     ],
   });
 
-  console.log('✅ Workflows created.');
+  console.log("✅ Workflows created (3 total).");
 
   // =============================================
   // CREATE TRANSACTIONS & FINANCIAL REPORTS
   // =============================================
-  console.log('📊 Creating financial data...');
+  console.log("📊 Creating financial data...");
 
   await prisma.transaction.createMany({
     data: [
       {
         propertyId: properties[0].id,
-        type: 'INCOME',
-        category: 'Rent',
+        type: "INCOME",
+        category: "Rent",
         amount: 2200,
-        date: new Date('2026-02-01'),
-        description: 'February 2026 rent — Modern Downtown Apartment',
+        date: new Date("2026-02-01"),
+        description: "February 2026 rent — Modern Downtown Apartment",
       },
       {
         propertyId: properties[0].id,
-        type: 'EXPENSE',
-        category: 'Maintenance',
+        type: "EXPENSE",
+        category: "Maintenance",
         amount: 250,
-        date: new Date('2025-11-15'),
-        description: 'Kitchen faucet repair',
+        date: new Date("2025-11-15"),
+        description: "Kitchen faucet repair",
+      },
+      {
+        propertyId: properties[0].id,
+        type: "EXPENSE",
+        category: "Insurance",
+        amount: 180,
+        date: new Date("2026-01-15"),
+        description: "Monthly property insurance premium",
       },
       {
         propertyId: properties[1].id,
-        type: 'INCOME',
-        category: 'Rent',
+        type: "INCOME",
+        category: "Rent",
         amount: 3000,
-        date: new Date('2026-03-01'),
-        description: 'March 2026 rent — Charming Victorian House',
+        date: new Date("2026-03-01"),
+        description: "March 2026 rent — Charming Victorian House",
       },
       {
         propertyId: properties[1].id,
-        type: 'EXPENSE',
-        category: 'Repairs',
+        type: "EXPENSE",
+        category: "Repairs",
         amount: 650,
-        date: new Date('2026-01-10'),
-        description: 'Roof leak patch near chimney',
+        date: new Date("2026-01-10"),
+        description: "Roof leak patch near chimney",
+      },
+      {
+        propertyId: properties[3].id,
+        type: "INCOME",
+        category: "Rent",
+        amount: 1500,
+        date: new Date("2026-02-01"),
+        description: "February 2026 rent — Cozy Studio",
       },
     ],
   });
@@ -1112,16 +1658,24 @@ async function main() {
     data: [
       {
         propertyId: properties[0].id,
-        startDate: new Date('2026-01-01'),
-        endDate: new Date('2026-01-31'),
+        startDate: new Date("2026-01-01"),
+        endDate: new Date("2026-01-31"),
         netIncome: 2020,
         grossIncome: 2200,
         expenses: 180,
       },
       {
+        propertyId: properties[0].id,
+        startDate: new Date("2026-02-01"),
+        endDate: new Date("2026-02-28"),
+        netIncome: 2200,
+        grossIncome: 2200,
+        expenses: 0,
+      },
+      {
         propertyId: properties[1].id,
-        startDate: new Date('2026-01-01'),
-        endDate: new Date('2026-01-31'),
+        startDate: new Date("2026-01-01"),
+        endDate: new Date("2026-01-31"),
         netIncome: 2350,
         grossIncome: 3000,
         expenses: 650,
@@ -1129,29 +1683,145 @@ async function main() {
     ],
   });
 
-  console.log('✅ Financial data created.');
+  console.log("✅ Financial data created.");
+
+  // =============================================
+  // CREATE AVAILABILITIES
+  // =============================================
+  console.log("📆 Creating availabilities...");
+
+  await prisma.availability.createMany({
+    data: [
+      {
+        propertyId: properties[2].id,
+        userId: landlord2.id,
+        dayOfWeek: 1, // Monday
+        startTime: new Date("2026-01-01T09:00:00Z"),
+        endTime: new Date("2026-01-01T17:00:00Z"),
+      },
+      {
+        propertyId: properties[2].id,
+        userId: landlord2.id,
+        dayOfWeek: 3, // Wednesday
+        startTime: new Date("2026-01-01T10:00:00Z"),
+        endTime: new Date("2026-01-01T16:00:00Z"),
+      },
+      {
+        propertyId: properties[4].id,
+        userId: landlord2.id,
+        dayOfWeek: 6, // Saturday
+        startTime: new Date("2026-01-01T11:00:00Z"),
+        endTime: new Date("2026-01-01T15:00:00Z"),
+      },
+    ],
+  });
+
+  console.log("✅ Availabilities created.");
+
+  // =============================================
+  // CREATE FEATURE USAGE & TIPS
+  // =============================================
+  console.log("📈 Creating feature usage data...");
+
+  await prisma.userFeatureUsage.createMany({
+    data: [
+      {
+        userId: tenant1.id,
+        feature: "property_search",
+        lastUsed: new Date("2026-03-18"),
+        usageCount: 45,
+      },
+      {
+        userId: tenant1.id,
+        feature: "application_submit",
+        lastUsed: new Date("2026-03-15"),
+        usageCount: 3,
+      },
+      {
+        userId: landlord1.id,
+        feature: "dashboard",
+        lastUsed: new Date("2026-03-19"),
+        usageCount: 120,
+      },
+      {
+        userId: landlord1.id,
+        feature: "payment_tracking",
+        lastUsed: new Date("2026-03-19"),
+        usageCount: 85,
+      },
+      {
+        userId: tenant2.id,
+        feature: "property_search",
+        lastUsed: new Date("2026-03-17"),
+        usageCount: 22,
+      },
+    ],
+  });
+
+  await prisma.tipDismissal.createMany({
+    data: [
+      { userId: tenant1.id, tipId: "welcome_tour", reason: "completed" },
+      { userId: landlord1.id, tipId: "welcome_tour", reason: "completed" },
+      {
+        userId: landlord1.id,
+        tipId: "add_first_property",
+        reason: "completed",
+      },
+    ],
+  });
+
+  console.log("✅ Feature usage data created.");
 
   // =============================================
   // DONE
   // =============================================
-  console.log('');
-  console.log('🎉 Database seed completed successfully!');
-  console.log('');
-  console.log('   Users:          5 (1 landlord, 3 tenants, 1 admin)');
-  console.log('   Properties:     5');
-  console.log('   Leases:         5');
-  console.log('   Payments:       ~30');
-  console.log('   Inspections:    4');
-  console.log('   Applications:   3');
-  console.log('   Notifications:  5');
-  console.log('   Bookings:       2');
-  console.log('   Workflows:      2');
-  console.log('');
+  console.log("");
+  console.log("🎉 Database seed completed successfully!");
+  console.log("");
+  console.log(
+    "   Users:                 8 (1 super admin, 1 admin, 2 landlords, 3 tenants, 1 agent)",
+  );
+  console.log("   Profiles:              6 (2 landlord, 3 tenant, 1 agent)");
+  console.log(
+    "   Subscriptions:         4 (STARTER, PROFESSIONAL, ENTERPRISE, BUSINESS)",
+  );
+  console.log("   Properties:            7");
+  console.log("   Property Images:       18");
+  console.log("   Leases:                5");
+  console.log("   Payments:              ~30");
+  console.log("   Maintenance Records:   6");
+  console.log("   Maintenance Preds:     3");
+  console.log("   Inspections:           5");
+  console.log("   Applications:          4");
+  console.log("   Screening Requests:    3");
+  console.log("   Notifications:         7");
+  console.log("   Notification Prefs:    3");
+  console.log("   Bookings:              3");
+  console.log("   Workflows:             3");
+  console.log("   Transactions:          6");
+  console.log("   Financial Reports:     3");
+  console.log("   Availabilities:        3");
+  console.log("   Feature Usages:        5");
+  console.log("   Tip Dismissals:        3");
+  console.log("");
+  console.log("🔑 Test Credentials (all use password123 unless noted):");
+  console.log("");
+  console.log(
+    "   🔐 SUPER ADMIN: superadmin@propmanage.com  (password: SuperAdmin@2024)",
+  );
+  console.log("   🔐 ADMIN:       admin@realestateai.com");
+  console.log("   🏠 LANDLORD 1:  james.mitchell@example.com");
+  console.log("   🏠 LANDLORD 2:  diana.wells@example.com");
+  console.log("   👤 TENANT 1:    sarah.chen@example.com");
+  console.log("   👤 TENANT 2:    marcus.johnson@example.com");
+  console.log("   👤 TENANT 3:    emily.park@example.com");
+  console.log("   🏢 AGENT:       lisa.anderson@example.com");
+  console.log("");
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Seed failed:', e);
+    console.error("❌ Seed failed:", e);
     process.exit(1);
   })
   .finally(async () => {

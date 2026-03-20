@@ -5,7 +5,7 @@ import { getInvoices, formatPrice } from "@/services/billingService";
 import type { Invoice } from "@/types/billing";
 
 const STATUS_STYLES: Record<Invoice["status"], string> = {
-  paid: "bg-green-100 text-green-700",
+  paid: "bg-realestate-success/10 text-realestate-success",
   unpaid: "bg-yellow-100 text-yellow-700",
   past_due: "bg-red-100 text-red-700",
 };

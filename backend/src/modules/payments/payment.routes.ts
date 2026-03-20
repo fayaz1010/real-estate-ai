@@ -1,5 +1,5 @@
 // Payment Routes
-import { Router } from "express";
+import express, { Router } from "express";
 
 import { authenticate } from "../../middleware/auth";
 
@@ -7,8 +7,13 @@ import paymentController from "./payment.controller";
 
 const router = Router();
 
-// Stripe webhook (no auth - verified by Stripe signature)
-router.post("/webhook", paymentController.stripeWebhook);
+// Stripe webhook — no auth, verified by Stripe signature.
+// Must use express.raw() so the body is a Buffer for signature verification.
+router.post(
+  "/webhook",
+  express.raw({ type: "application/json" }),
+  paymentController.stripeWebhook,
+);
 
 // Protected routes
 router.post("/", authenticate, paymentController.create);

@@ -241,7 +241,7 @@ function BillingToggle({
         Annual
       </span>
       {isAnnual && (
-        <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-0.5 text-xs font-semibold text-green-700 animate-scale-up">
+        <span className="inline-flex items-center rounded-full bg-realestate-success/10 px-3 py-0.5 text-xs font-semibold text-realestate-success animate-scale-up">
           Save 20%
         </span>
       )}
@@ -335,7 +335,7 @@ function PricingCard({
         {plan.features.map((feature) => (
           <li key={feature} className="flex items-start gap-3">
             <Check
-              className={`w-5 h-5 flex-shrink-0 mt-0.5 ${plan.highlighted ? "text-realestate-accent" : "text-green-500"}`}
+              className={`w-5 h-5 flex-shrink-0 mt-0.5 ${plan.highlighted ? "text-realestate-accent" : "text-realestate-success"}`}
               aria-hidden="true"
             />
             <span className="font-body text-sm text-gray-600">{feature}</span>
@@ -355,7 +355,10 @@ function FeatureCell({ value }: { value: boolean | string }) {
     );
   }
   return value ? (
-    <Check className="w-5 h-5 text-green-500 mx-auto" aria-label="Included" />
+    <Check
+      className="w-5 h-5 text-realestate-success mx-auto"
+      aria-label="Included"
+    />
   ) : (
     <X className="w-5 h-5 text-gray-300 mx-auto" aria-label="Not included" />
   );

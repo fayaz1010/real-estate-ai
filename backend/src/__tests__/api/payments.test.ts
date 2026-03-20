@@ -4,41 +4,41 @@ import request from "supertest";
 
 const mockPrisma = {
   payment: {
-    create: vi.fn(),
-    findMany: vi.fn(),
-    findFirst: vi.fn(),
-    findUnique: vi.fn(),
-    update: vi.fn(),
-    createMany: vi.fn(),
-    count: vi.fn(),
+    create: jest.fn(),
+    findMany: jest.fn(),
+    findFirst: jest.fn(),
+    findUnique: jest.fn(),
+    update: jest.fn(),
+    createMany: jest.fn(),
+    count: jest.fn(),
   },
   lease: {
-    findFirst: vi.fn(),
+    findFirst: jest.fn(),
   },
   property: {
-    findFirst: vi.fn(),
+    findFirst: jest.fn(),
   },
   user: {
-    findUnique: vi.fn(),
+    findUnique: jest.fn(),
   },
-  $connect: vi.fn().mockResolvedValue(undefined),
-  $disconnect: vi.fn().mockResolvedValue(undefined),
+  $connect: jest.fn().mockResolvedValue(undefined),
+  $disconnect: jest.fn().mockResolvedValue(undefined),
 };
 
-vi.mock("../../config/database", () => mockPrisma);
+jest.mock("../../config/database", () => mockPrisma);
 
 // ─── Mock Stripe ────────────────────────────────────────────────────────────
 
-vi.mock("stripe", () => {
-  return vi.fn().mockImplementation(() => ({
+jest.mock("stripe", () => {
+  return jest.fn().mockImplementation(() => ({
     paymentIntents: {
-      create: vi.fn().mockResolvedValue({
+      create: jest.fn().mockResolvedValue({
         id: "pi_test_123",
         client_secret: "pi_test_123_secret",
       }),
     },
     webhooks: {
-      constructEvent: vi.fn().mockReturnValue({
+      constructEvent: jest.fn().mockReturnValue({
         type: "payment_intent.succeeded",
         data: {
           object: {
@@ -60,7 +60,7 @@ const TEST_USER = {
   id: "user-1",
 };
 
-vi.mock("../../middleware/auth", () => ({
+jest.mock("../../middleware/auth", () => ({
   authenticate: (
     req: Record<string, unknown>,
     _res: unknown,
@@ -92,7 +92,7 @@ vi.mock("../../middleware/auth", () => ({
       next(),
 }));
 
-vi.mock("../../middleware/rateLimiter", () => ({
+jest.mock("../../middleware/rateLimiter", () => ({
   rateLimiter: (
     _req: Record<string, unknown>,
     _res: unknown,
@@ -100,7 +100,7 @@ vi.mock("../../middleware/rateLimiter", () => ({
   ) => next(),
 }));
 
-vi.mock("../../middleware/validation", () => ({
+jest.mock("../../middleware/validation", () => ({
   validate:
     () => (_req: Record<string, unknown>, _res: unknown, next: () => void) =>
       next(),
@@ -155,7 +155,7 @@ const mockConfig = {
   cacheTtl: 3600,
 };
 
-vi.mock("../../config/env", () => ({
+jest.mock("../../config/env", () => ({
   __esModule: true,
   config: mockConfig,
   default: mockConfig,
@@ -222,7 +222,7 @@ const createPaymentPayload = {
 
 describe("Payments API", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
   });
 
   // ── GET /api/payments/my-payments ───────────────────────────────────────

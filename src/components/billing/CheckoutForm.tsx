@@ -119,7 +119,7 @@ export default function CheckoutForm({ plan, interval }: CheckoutFormProps) {
           {interval === "yearly" && (
             <div className="flex justify-between font-body text-sm">
               <span className="text-gray-600">Annual savings</span>
-              <span className="text-green-600 font-medium">
+              <span className="text-realestate-success font-medium">
                 -{formatPrice(plan.monthlyPrice * 12 - plan.yearlyPrice)}
               </span>
             </div>

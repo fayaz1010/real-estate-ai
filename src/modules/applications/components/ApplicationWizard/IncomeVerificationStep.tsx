@@ -62,18 +62,18 @@ const IncomeVerificationStep: React.FC = () => {
 
       {/* Total Monthly Income */}
       {income.length > 0 && (
-        <div className="bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg p-6">
+        <div className="bg-gradient-to-r from-realestate-success/5 to-primary/5 border border-realestate-success/20 rounded-lg p-6">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm text-gray-600 mb-1">Total Monthly Income</p>
-              <p className="text-3xl font-bold text-green-700">
+              <p className="text-3xl font-bold text-realestate-success">
                 {formatCurrency(getTotalMonthlyIncome())}
               </p>
               <p className="text-sm text-gray-500 mt-1">
                 Annual: {formatCurrency(getTotalMonthlyIncome() * 12)}
               </p>
             </div>
-            <TrendingUp className="w-12 h-12 text-green-600" />
+            <TrendingUp className="w-12 h-12 text-realestate-success" />
           </div>
         </div>
       )}
@@ -83,11 +83,11 @@ const IncomeVerificationStep: React.FC = () => {
         {income.map((inc: Partial<IncomeInfo>, index: number) => (
           <div
             key={index}
-            className="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors"
+            className="border border-gray-200 rounded-lg p-6 hover:border-primary/30 transition-colors"
           >
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center">
-                <DollarSign className="w-5 h-5 text-green-600 mr-2" />
+                <DollarSign className="w-5 h-5 text-realestate-success mr-2" />
                 <h3 className="font-semibold text-gray-900">
                   Income Source #{index + 1}
                 </h3>
@@ -115,7 +115,7 @@ const IncomeVerificationStep: React.FC = () => {
                       e.target.value as IncomeSource,
                     )
                   }
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
                 >
                   <option value="employment">Employment</option>
                   <option value="self_employment">Self Employment</option>
@@ -148,7 +148,7 @@ const IncomeVerificationStep: React.FC = () => {
                           parseFloat(e.target.value) || 0,
                         )
                       }
-                      className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                      className="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
                       placeholder="0.00"
                       min="0"
                       step="0.01"
@@ -165,7 +165,7 @@ const IncomeVerificationStep: React.FC = () => {
                     onChange={(e) =>
                       handleUpdate(index, "frequency", e.target.value)
                     }
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
                   >
                     <option value="hourly">Hourly</option>
                     <option value="weekly">Weekly</option>
@@ -197,7 +197,7 @@ const IncomeVerificationStep: React.FC = () => {
       {/* Add Income Button */}
       <button
         onClick={handleAdd}
-        className="w-full py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-blue-500 hover:text-blue-600 transition-colors flex items-center justify-center"
+        className="w-full py-3 border-2 border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-primary hover:text-primary transition-colors flex items-center justify-center"
       >
         <Plus className="w-5 h-5 mr-2" />
         Add Income Source
@@ -211,11 +211,11 @@ const IncomeVerificationStep: React.FC = () => {
       )}
 
       {/* Income Tips */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h4 className="font-semibold text-blue-900 mb-2">
+      <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+        <h4 className="font-semibold text-realestate-primary mb-2">
           Income Verification Tips
         </h4>
-        <ul className="text-sm text-blue-800 space-y-1">
+        <ul className="text-sm text-realestate-primary/80 space-y-1">
           <li>• Include all regular sources of income</li>
           <li>
             • You&apos;ll need to upload supporting documents (paystubs, bank

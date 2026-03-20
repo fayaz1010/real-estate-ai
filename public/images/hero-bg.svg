@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" fill="none" preserveAspectRatio="xMidYMid slice">
+  <!-- Background base -->
+  <rect width="1920" height="1080" fill="#008080"/>
+
+  <!-- Gradient overlay -->
+  <defs>
+    <linearGradient id="heroGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#006666"/>
+      <stop offset="50%" stop-color="#008080"/>
+      <stop offset="100%" stop-color="#007070"/>
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#heroGrad)"/>
+
+  <!-- Accent glow top-left -->
+  <ellipse cx="200" cy="100" rx="500" ry="400" fill="#FF6B35" opacity="0.06"/>
+  <!-- Soft light bottom-right -->
+  <ellipse cx="1600" cy="900" rx="600" ry="450" fill="#E0E0E0" opacity="0.04"/>
+  <!-- Center glow -->
+  <ellipse cx="960" cy="540" rx="700" ry="500" fill="#009090" opacity="0.15"/>
+
+  <!-- Subtle grid pattern -->
+  <g stroke="#ffffff" stroke-opacity="0.03" stroke-width="1">
+    <line x1="0" y1="180" x2="1920" y2="180"/>
+    <line x1="0" y1="360" x2="1920" y2="360"/>
+    <line x1="0" y1="540" x2="1920" y2="540"/>
+    <line x1="0" y1="720" x2="1920" y2="720"/>
+    <line x1="0" y1="900" x2="1920" y2="900"/>
+    <line x1="320" y1="0" x2="320" y2="1080"/>
+    <line x1="640" y1="0" x2="640" y2="1080"/>
+    <line x1="960" y1="0" x2="960" y2="1080"/>
+    <line x1="1280" y1="0" x2="1280" y2="1080"/>
+    <line x1="1600" y1="0" x2="1600" y2="1080"/>
+  </g>
+
+  <!-- AI Neural network nodes - top area -->
+  <g>
+    <!-- Connections -->
+    <line x1="300" y1="150" x2="480" y2="220" stroke="#ffffff" stroke-opacity="0.06" stroke-width="1.5"/>
+    <line x1="480" y1="220" x2="650" y2="170" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1.5"/>
+    <line x1="480" y1="220" x2="580" y2="340" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+    <line x1="650" y1="170" x2="820" y2="250" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+    <line x1="300" y1="150" x2="200" y2="280" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1"/>
+    <line x1="200" y1="280" x2="350" y2="370" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+    <line x1="350" y1="370" x2="580" y2="340" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+    <!-- Nodes -->
+    <circle cx="300" cy="150" r="4" fill="#ffffff" opacity="0.12"/>
+    <circle cx="480" cy="220" r="5" fill="#ffffff" opacity="0.15"/>
+    <circle cx="650" cy="170" r="3.5" fill="#ffffff" opacity="0.10"/>
+    <circle cx="820" cy="250" r="4" fill="#ffffff" opacity="0.08"/>
+    <circle cx="200" cy="280" r="3.5" fill="#ffffff" opacity="0.10"/>
+    <circle cx="350" cy="370" r="4" fill="#ffffff" opacity="0.10"/>
+    <circle cx="580" cy="340" r="4.5" fill="#ffffff" opacity="0.12"/>
+  </g>
+
+  <!-- AI Neural network - right area -->
+  <g>
+    <line x1="1400" y1="200" x2="1550" y2="280" stroke="#ffffff" stroke-opacity="0.05" stroke-width="1.5"/>
+    <line x1="1550" y1="280" x2="1700" y2="230" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+    <line x1="1550" y1="280" x2="1620" y2="420" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+    <line x1="1700" y1="230" x2="1800" y2="350" stroke="#ffffff" stroke-opacity="0.03" stroke-width="1"/>
+    <line x1="1620" y1="420" x2="1800" y2="350" stroke="#ffffff" stroke-opacity="0.03" stroke-width="1"/>
+    <circle cx="1400" cy="200" r="4" fill="#ffffff" opacity="0.08"/>
+    <circle cx="1550" cy="280" r="5" fill="#ffffff" opacity="0.10"/>
+    <circle cx="1700" cy="230" r="3.5" fill="#ffffff" opacity="0.07"/>
+    <circle cx="1620" cy="420" r="4" fill="#ffffff" opacity="0.08"/>
+    <circle cx="1800" cy="350" r="3" fill="#ffffff" opacity="0.06"/>
+  </g>
+
+  <!-- Bottom neural network -->
+  <g>
+    <line x1="100" y1="750" x2="280" y2="820" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+    <line x1="280" y1="820" x2="450" y2="780" stroke="#ffffff" stroke-opacity="0.04" stroke-width="1"/>
+    <line x1="450" y1="780" x2="600" y2="870" stroke="#ffffff" stroke-opacity="0.03" stroke-width="1"/>
+    <circle cx="100" cy="750" r="3" fill="#ffffff" opacity="0.06"/>
+    <circle cx="280" cy="820" r="4" fill="#ffffff" opacity="0.08"/>
+    <circle cx="450" cy="780" r="3.5" fill="#ffffff" opacity="0.07"/>
+    <circle cx="600" cy="870" r="3" fill="#ffffff" opacity="0.06"/>
+  </g>
+
+  <!-- Stylized building silhouettes - bottom right -->
+  <g transform="translate(1300, 600)" opacity="0.06">
+    <!-- Tall tower -->
+    <rect x="0" y="0" width="80" height="380" rx="4" fill="#ffffff"/>
+    <g fill="#008080" opacity="0.4">
+      <rect x="12" y="20" width="18" height="12" rx="2"/>
+      <rect x="50" y="20" width="18" height="12" rx="2"/>
+      <rect x="12" y="50" width="18" height="12" rx="2"/>
+      <rect x="50" y="50" width="18" height="12" rx="2"/>
+      <rect x="12" y="80" width="18" height="12" rx="2"/>
+      <rect x="50" y="80" width="18" height="12" rx="2"/>
+      <rect x="12" y="110" width="18" height="12" rx="2"/>
+      <rect x="50" y="110" width="18" height="12" rx="2"/>
+      <rect x="12" y="140" width="18" height="12" rx="2"/>
+      <rect x="50" y="140" width="18" height="12" rx="2"/>
+      <rect x="12" y="170" width="18" height="12" rx="2"/>
+      <rect x="50" y="170" width="18" height="12" rx="2"/>
+      <rect x="12" y="200" width="18" height="12" rx="2"/>
+      <rect x="50" y="200" width="18" height="12" rx="2"/>
+      <rect x="12" y="230" width="18" height="12" rx="2"/>
+      <rect x="50" y="230" width="18" height="12" rx="2"/>
+    </g>
+    <!-- Medium building -->
+    <rect x="95" y="100" width="65" height="280" rx="4" fill="#ffffff"/>
+    <g fill="#008080" opacity="0.35">
+      <rect x="107" y="120" width="14" height="10" rx="1.5"/>
+      <rect x="134" y="120" width="14" height="10" rx="1.5"/>
+      <rect x="107" y="148" width="14" height="10" rx="1.5"/>
+      <rect x="134" y="148" width="14" height="10" rx="1.5"/>
+      <rect x="107" y="176" width="14" height="10" rx="1.5"/>
+      <rect x="134" y="176" width="14" height="10" rx="1.5"/>
+      <rect x="107" y="204" width="14" height="10" rx="1.5"/>
+      <rect x="134" y="204" width="14" height="10" rx="1.5"/>
+      <rect x="107" y="232" width="14" height="10" rx="1.5"/>
+      <rect x="134" y="232" width="14" height="10" rx="1.5"/>
+    </g>
+    <!-- Short building -->
+    <rect x="175" y="200" width="55" height="180" rx="4" fill="#ffffff"/>
+    <g fill="#008080" opacity="0.3">
+      <rect x="185" y="220" width="12" height="9" rx="1.5"/>
+      <rect x="208" y="220" width="12" height="9" rx="1.5"/>
+      <rect x="185" y="248" width="12" height="9" rx="1.5"/>
+      <rect x="208" y="248" width="12" height="9" rx="1.5"/>
+      <rect x="185" y="276" width="12" height="9" rx="1.5"/>
+      <rect x="208" y="276" width="12" height="9" rx="1.5"/>
+    </g>
+    <!-- Small house -->
+    <g transform="translate(245, 280)">
+      <polygon points="30,0 60,25 0,25" fill="#ffffff"/>
+      <rect x="5" y="25" width="50" height="35" rx="2" fill="#ffffff"/>
+    </g>
+  </g>
+
+  <!-- Decorative geometric shapes -->
+  <g opacity="0.05">
+    <rect x="1750" y="700" width="40" height="40" rx="8" stroke="#ffffff" stroke-width="2" fill="none" transform="rotate(15,1770,720)"/>
+    <rect x="1800" y="780" width="25" height="25" rx="5" stroke="#ffffff" stroke-width="1.5" fill="none" transform="rotate(-10,1812,792)"/>
+    <circle cx="1720" cy="790" r="12" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+    <rect x="80" y="850" width="30" height="30" rx="6" stroke="#ffffff" stroke-width="1.5" fill="none" transform="rotate(20,95,865)"/>
+    <circle cx="150" cy="920" r="10" stroke="#ffffff" stroke-width="1.5" fill="none"/>
+  </g>
+
+  <!-- Data flow lines -->
+  <g stroke="#FF6B35" stroke-opacity="0.06" stroke-width="1" fill="none" stroke-dasharray="8,6">
+    <path d="M0,540 Q480,480 960,540 T1920,540"/>
+    <path d="M0,600 Q480,550 960,600 T1920,600"/>
+  </g>
+</svg>

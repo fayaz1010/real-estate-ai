@@ -65,7 +65,7 @@ export const BrowsingHistory: React.FC<BrowsingHistoryProps> = ({
         <div>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Clock size={18} className="text-blue-600" />
+              <Clock size={18} className="text-realestate-primary" />
               <h3 className="font-semibold text-gray-900">Recent Searches</h3>
             </div>
             <button
@@ -85,7 +85,7 @@ export const BrowsingHistory: React.FC<BrowsingHistoryProps> = ({
               >
                 <Search
                   size={16}
-                  className="text-gray-400 group-hover:text-blue-600 flex-shrink-0"
+                  className="text-gray-400 group-hover:text-realestate-primary flex-shrink-0"
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-gray-900 font-medium truncate">
@@ -112,7 +112,7 @@ export const BrowsingHistory: React.FC<BrowsingHistoryProps> = ({
         <div>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Eye size={18} className="text-green-600" />
+              <Eye size={18} className="text-realestate-success" />
               <h3 className="font-semibold text-gray-900">Recently Viewed</h3>
             </div>
             <button
@@ -137,11 +137,11 @@ export const BrowsingHistory: React.FC<BrowsingHistoryProps> = ({
                     className="w-16 h-12 object-cover rounded flex-shrink-0"
                   />
                   <div className="flex-1 min-w-0">
-                    <p className="text-gray-900 font-medium text-sm line-clamp-2 group-hover:text-blue-600">
+                    <p className="text-gray-900 font-medium text-sm line-clamp-2 group-hover:text-realestate-primary">
                       {property.title}
                     </p>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-blue-600 font-bold text-sm">
+                      <span className="text-realestate-primary font-bold text-sm">
                         {formatCurrency(property.price)}
                         {property.listingType === "rent" && "/mo"}
                       </span>
@@ -149,7 +149,7 @@ export const BrowsingHistory: React.FC<BrowsingHistoryProps> = ({
                         className={`px-2 py-0.5 rounded-full text-xs ${
                           property.listingType === "rent"
                             ? "bg-blue-100 text-blue-800"
-                            : "bg-green-100 text-green-800"
+                            : "bg-realestate-success/10 text-realestate-success"
                         }`}
                       >
                         {property.listingType === "rent" ? "Rent" : "Sale"}

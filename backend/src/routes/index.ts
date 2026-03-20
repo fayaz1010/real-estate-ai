@@ -14,6 +14,7 @@ import paymentRoutes from "../modules/payments/payment.routes";
 import propertyRoutes from "../modules/properties/property.routes";
 import uploadRoutes from "../modules/properties/upload.routes";
 import bookingRoutes from "../modules/scheduling/booking.routes";
+import stripeRoutes from "../modules/stripe/stripe.routes";
 import trialRoutes from "../modules/trial/trial.routes";
 import workflowRoutes from "../modules/workflows/workflow.routes";
 
@@ -34,6 +35,7 @@ router.use("/notifications", notificationRoutes);
 router.use("/leases", leaseRoutes);
 router.use("/payments", paymentRoutes);
 router.use("/billing", billingRoutes);
+router.use("/stripe", stripeRoutes);
 router.use("/accounting", accountingRoutes);
 router.use("/bookings", bookingRoutes);
 router.use("/trial", trialRoutes);
@@ -66,6 +68,7 @@ router.get("/", (req, res) => {
       admin: "/api/admin",
       tenants: "/api/tenants",
       billing: "/api/billing",
+      stripe: "/api/stripe",
     },
   });
 });

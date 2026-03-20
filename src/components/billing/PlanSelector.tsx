@@ -51,7 +51,7 @@ export default function PlanSelector({
           Annual
         </span>
         {isAnnual && (
-          <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-0.5 text-xs font-semibold text-green-700">
+          <span className="inline-flex items-center rounded-full bg-realestate-success/10 px-3 py-0.5 text-xs font-semibold text-realestate-success">
             Save 20%
           </span>
         )}
@@ -121,7 +121,7 @@ export default function PlanSelector({
                     key={f}
                     className="flex items-center gap-2 font-body text-xs text-gray-600"
                   >
-                    <Check className="w-3.5 h-3.5 text-green-500 flex-shrink-0" />
+                    <Check className="w-3.5 h-3.5 text-realestate-success flex-shrink-0" />
                     {f}
                   </li>
                 ))}

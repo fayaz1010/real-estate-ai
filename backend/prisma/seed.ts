@@ -11,6 +11,8 @@ async function main() {
 
   // Clear existing data
   console.log("🗑️  Clearing existing data...");
+  await prisma.payment.deleteMany();
+  await prisma.lease.deleteMany();
   await prisma.applicationDocument.deleteMany();
   await prisma.application.deleteMany();
   await prisma.inspection.deleteMany();
@@ -19,6 +21,8 @@ async function main() {
   await prisma.refreshToken.deleteMany();
   await prisma.passwordResetToken.deleteMany();
   await prisma.emailVerificationToken.deleteMany();
+  await prisma.notification.deleteMany();
+  await prisma.notificationPreference.deleteMany();
   await prisma.landlordProfile.deleteMany();
   await prisma.tenantProfile.deleteMany();
   await prisma.agentProfile.deleteMany();
@@ -29,6 +33,9 @@ async function main() {
 
   const hashedPassword = await bcrypt.hash("password123", 10);
   const adminPassword = await bcrypt.hash("SuperAdmin@2024", 10);
+  const demoAdminPassword = await bcrypt.hash("SecurePassword1!", 10);
+  const demoLandlordPassword = await bcrypt.hash("PropertyOwner1!", 10);
+  const demoTenantPassword = await bcrypt.hash("HappyTenant1!", 10);
 
   // Super Admin
   await prisma.user.create({
@@ -42,6 +49,79 @@ async function main() {
       status: "ACTIVE",
       emailVerified: true,
       profileCompletion: 100,
+    },
+  });
+
+  // Demo Admin
+  await prisma.user.create({
+    data: {
+      email: "admin@realestateai.com",
+      passwordHash: demoAdminPassword,
+      firstName: "Alice",
+      lastName: "Admin",
+      phone: "+1-555-0001",
+      role: "ADMIN",
+      status: "ACTIVE",
+      emailVerified: true,
+      profileCompletion: 100,
+    },
+  });
+
+  // Demo Landlord
+  const demoLandlord = await prisma.user.create({
+    data: {
+      email: "landlord@realestateai.com",
+      passwordHash: demoLandlordPassword,
+      firstName: "Bob",
+      lastName: "Landlord",
+      phone: "+1-555-0002",
+      role: "LANDLORD",
+      status: "ACTIVE",
+      emailVerified: true,
+      profileCompletion: 100,
+      landlordProfile: {
+        create: {
+          businessName: "RealEstateAI Demo Properties",
+          propertiesCount: 2,
+          rating: 4.7,
+          verificationStatus: "verified",
+          bio: "Demo landlord account for RealEstateAI platform",
+          languages: ["English"],
+        },
+      },
+    },
+  });
+
+  // Demo Tenant
+  const demoTenant = await prisma.user.create({
+    data: {
+      email: "tenant@realestateai.com",
+      passwordHash: demoTenantPassword,
+      firstName: "Carol",
+      lastName: "Tenant",
+      phone: "+1-555-0003",
+      role: "TENANT",
+      status: "ACTIVE",
+      emailVerified: true,
+      profileCompletion: 80,
+      tenantProfile: {
+        create: {
+          employmentStatus: "employed",
+          employerName: "RealEstateAI Inc",
+          jobTitle: "Product Manager",
+          annualIncome: 90000,
+          creditScore: 740,
+          hasPets: false,
+          hasVehicle: true,
+          vehicleDescription: "2022 Tesla Model 3",
+          smoking: false,
+          moveInDate: new Date("2024-12-01"),
+          leaseTerm: 12,
+          budgetMin: 1500,
+          budgetMax: 3000,
+          preferredPropertyTypes: ["APARTMENT", "CONDO"],
+        },
+      },
     },
   });
 
@@ -847,20 +927,254 @@ async function main() {
 
   console.log("✅ Created 4 applications");
 
+  // Create Leases
+  console.log("📄 Creating leases...");
+
+  const lease1 = await prisma.lease.create({
+    data: {
+      propertyId: prop1.id,
+      tenantId: tenant1.id,
+      landlordId: landlord1.id,
+      status: "ACTIVE",
+      startDate: new Date("2024-01-01"),
+      endDate: new Date("2024-12-31"),
+      monthlyRent: 3500,
+      depositAmount: 3500,
+      depositPaid: true,
+      lateFeeAmount: 100,
+      lateFeeGraceDays: 5,
+      signedByTenant: true,
+      signedByLandlord: true,
+      signedAt: new Date("2023-12-15"),
+    },
+  });
+
+  const lease2 = await prisma.lease.create({
+    data: {
+      propertyId: prop2.id,
+      tenantId: tenant2.id,
+      landlordId: landlord1.id,
+      status: "ACTIVE",
+      startDate: new Date("2024-03-01"),
+      endDate: new Date("2025-02-28"),
+      monthlyRent: 1850,
+      depositAmount: 1850,
+      depositPaid: true,
+      lateFeeAmount: 75,
+      lateFeeGraceDays: 5,
+      signedByTenant: true,
+      signedByLandlord: true,
+      signedAt: new Date("2024-02-20"),
+    },
+  });
+
+  const lease3 = await prisma.lease.create({
+    data: {
+      propertyId: prop3.id,
+      tenantId: tenant3.id,
+      landlordId: landlord2.id,
+      status: "ACTIVE",
+      startDate: new Date("2024-06-01"),
+      endDate: new Date("2025-05-31"),
+      monthlyRent: 4200,
+      depositAmount: 4200,
+      depositPaid: true,
+      lateFeeAmount: 150,
+      lateFeeGraceDays: 5,
+      signedByTenant: true,
+      signedByLandlord: true,
+      signedAt: new Date("2024-05-20"),
+    },
+  });
+
+  const lease4 = await prisma.lease.create({
+    data: {
+      propertyId: properties[3].id,
+      tenantId: demoTenant.id,
+      landlordId: demoLandlord.id,
+      status: "ACTIVE",
+      startDate: new Date("2024-04-01"),
+      endDate: new Date("2025-03-31"),
+      monthlyRent: 2100,
+      depositAmount: 2100,
+      depositPaid: true,
+      lateFeeAmount: 80,
+      lateFeeGraceDays: 5,
+      signedByTenant: true,
+      signedByLandlord: true,
+      signedAt: new Date("2024-03-25"),
+    },
+  });
+
+  console.log("✅ Created 4 leases");
+
+  // Create Payments
+  console.log("💳 Creating payments...");
+
+  // Lease 1 payments (tenant1 - Mike Davis)
+  await prisma.payment.create({
+    data: {
+      leaseId: lease1.id,
+      payerId: tenant1.id,
+      type: "RENT",
+      status: "PAID",
+      amount: 3500,
+      dueDate: new Date("2024-01-01"),
+      paidAt: new Date("2024-01-01"),
+      description: "January 2024 rent",
+    },
+  });
+
+  await prisma.payment.create({
+    data: {
+      leaseId: lease1.id,
+      payerId: tenant1.id,
+      type: "RENT",
+      status: "PAID",
+      amount: 3500,
+      dueDate: new Date("2024-02-01"),
+      paidAt: new Date("2024-02-01"),
+      description: "February 2024 rent",
+    },
+  });
+
+  await prisma.payment.create({
+    data: {
+      leaseId: lease1.id,
+      payerId: tenant1.id,
+      type: "RENT",
+      status: "PAID",
+      amount: 3500,
+      dueDate: new Date("2024-03-01"),
+      paidAt: new Date("2024-03-03"),
+      description: "March 2024 rent",
+    },
+  });
+
+  await prisma.payment.create({
+    data: {
+      leaseId: lease1.id,
+      payerId: tenant1.id,
+      type: "DEPOSIT",
+      status: "PAID",
+      amount: 3500,
+      dueDate: new Date("2024-01-01"),
+      paidAt: new Date("2023-12-28"),
+      description: "Security deposit",
+    },
+  });
+
+  // Lease 2 payments (tenant2 - Emma Wilson)
+  await prisma.payment.create({
+    data: {
+      leaseId: lease2.id,
+      payerId: tenant2.id,
+      type: "RENT",
+      status: "PAID",
+      amount: 1850,
+      dueDate: new Date("2024-03-01"),
+      paidAt: new Date("2024-03-01"),
+      description: "March 2024 rent",
+    },
+  });
+
+  await prisma.payment.create({
+    data: {
+      leaseId: lease2.id,
+      payerId: tenant2.id,
+      type: "RENT",
+      status: "PAID",
+      amount: 1850,
+      dueDate: new Date("2024-04-01"),
+      paidAt: new Date("2024-04-02"),
+      description: "April 2024 rent",
+    },
+  });
+
+  // Lease 3 payments (tenant3 - Alex Martinez)
+  await prisma.payment.create({
+    data: {
+      leaseId: lease3.id,
+      payerId: tenant3.id,
+      type: "RENT",
+      status: "PAID",
+      amount: 4200,
+      dueDate: new Date("2024-06-01"),
+      paidAt: new Date("2024-05-30"),
+      description: "June 2024 rent",
+    },
+  });
+
+  await prisma.payment.create({
+    data: {
+      leaseId: lease3.id,
+      payerId: tenant3.id,
+      type: "RENT",
+      status: "OVERDUE",
+      amount: 4200,
+      dueDate: new Date("2024-07-01"),
+      description: "July 2024 rent - overdue",
+    },
+  });
+
+  // Lease 4 payments (demoTenant - Carol Tenant)
+  await prisma.payment.create({
+    data: {
+      leaseId: lease4.id,
+      payerId: demoTenant.id,
+      type: "RENT",
+      status: "PAID",
+      amount: 2100,
+      dueDate: new Date("2024-04-01"),
+      paidAt: new Date("2024-04-01"),
+      description: "April 2024 rent",
+    },
+  });
+
+  await prisma.payment.create({
+    data: {
+      leaseId: lease4.id,
+      payerId: demoTenant.id,
+      type: "RENT",
+      status: "PAYMENT_PENDING",
+      amount: 2100,
+      dueDate: new Date("2024-05-01"),
+      description: "May 2024 rent - pending",
+    },
+  });
+
+  console.log("✅ Created 10 payments");
+
   console.log("");
   console.log("🎉 Database seeding completed successfully!");
   console.log("");
   console.log("📊 Summary:");
-  console.log("  - Users: 7 (1 super admin, 2 landlords, 3 tenants, 1 agent)");
+  console.log(
+    "  - Users: 11 (1 super admin, 1 admin, 3 landlords, 4 tenants, 1 agent, 1 demo landlord)",
+  );
   console.log("  - Properties: 10");
   console.log("  - Inspections: 5");
   console.log("  - Applications: 4");
+  console.log("  - Leases: 4");
+  console.log("  - Payments: 10");
   console.log("");
   console.log("🔑 Test Credentials:");
   console.log("  ");
   console.log("  🔐 SUPER ADMIN:");
   console.log("     Email: admin@propmanage.com");
   console.log("     Password: SuperAdmin@2024");
+  console.log("  ");
+  console.log("  🔐 ADMIN (Demo):");
+  console.log("     Email: admin@realestateai.com");
+  console.log("     Password: SecurePassword1!");
+  console.log("  ");
+  console.log("  🏠 LANDLORD (Demo):");
+  console.log("     Email: landlord@realestateai.com");
+  console.log("     Password: PropertyOwner1!");
+  console.log("  ");
+  console.log("  👤 TENANT (Demo):");
+  console.log("     Email: tenant@realestateai.com");
+  console.log("     Password: HappyTenant1!");
   console.log("  ");
   console.log("  👤 Tenant:");
   console.log("     Email: mike.tenant@example.com");
@@ -872,10 +1186,11 @@ async function main() {
 }
 
 main()
-  .catch((e) => {
-    console.error("❌ Error seeding database:", e);
-    process.exit(1);
-  })
-  .finally(async () => {
+  .then(async () => {
     await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+    process.exit(1);
   });

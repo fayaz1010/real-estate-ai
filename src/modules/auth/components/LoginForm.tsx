@@ -67,15 +67,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({
     <div className="w-full max-w-md mx-auto px-4">
       {/* Logo & Branding */}
       <div className="text-center mb-8 animate-fade-in">
-        <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 rounded-3xl mb-6 shadow-2xl transform hover:scale-105 transition-transform duration-300">
+        <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-realestate-primary via-realestate-primary/80 to-realestate-accent rounded-3xl mb-6 shadow-2xl transform hover:scale-105 transition-transform duration-300">
           <Home className="w-11 h-11 text-white" strokeWidth={2.5} />
         </div>
         <h1 className="text-4xl font-bold mb-2">
-          <span className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-realestate-primary via-realestate-primary/80 to-realestate-accent bg-clip-text text-transparent">
             PropManage
           </span>
         </h1>
-        <p className="text-gray-500 text-lg">
+        <p className="text-realestate-text-muted text-lg">
           Your Premium Real Estate Platform
         </p>
       </div>
@@ -83,15 +83,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       {/* Main Card */}
       <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-10 border border-gray-100 backdrop-blur-sm">
         <div className="mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">
+          <h2 className="text-3xl font-bold text-realestate-text mb-2">
             Welcome Back
           </h2>
-          <p className="text-gray-500">Sign in to continue to your dashboard</p>
+          <p className="text-realestate-text-muted">
+            Sign in to continue to your dashboard
+          </p>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg flex items-start gap-3 animate-shake">
-            <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+          <div className="mb-6 p-4 bg-red-50 border-l-4 border-realestate-error rounded-lg flex items-start gap-3 animate-shake">
+            <AlertCircle className="w-5 h-5 text-realestate-error flex-shrink-0 mt-0.5" />
             <span className="text-sm text-red-700">{error}</span>
           </div>
         )}
@@ -99,21 +101,21 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Email Field */}
           <div className="group">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-realestate-text mb-2">
               Email Address
             </label>
             <div className="relative">
               <Mail
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-realestate-text-muted group-focus-within:text-realestate-primary transition-colors"
                 size={20}
               />
               <input
                 type="email"
                 value={formData.email}
                 onChange={(e) => handleInputChange("email", e.target.value)}
-                className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 ${
+                className={`w-full pl-12 pr-4 py-3.5 border-2 rounded-xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-200 ${
                   validationErrors.email
-                    ? "border-red-300 focus:border-red-500 focus:ring-red-100"
+                    ? "border-red-300 focus:border-realestate-error focus:ring-realestate-error/10"
                     : "border-gray-200"
                 }`}
                 placeholder="you@example.com"
@@ -121,7 +123,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               />
             </div>
             {validationErrors.email && (
-              <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
+              <p className="mt-2 text-sm text-realestate-error flex items-center gap-1">
                 <AlertCircle size={14} />
                 {validationErrors.email}
               </p>
@@ -130,21 +132,21 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
           {/* Password Field */}
           <div className="group">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-realestate-text mb-2">
               Password
             </label>
             <div className="relative">
               <Lock
-                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 transition-colors"
+                className="absolute left-4 top-1/2 transform -translate-y-1/2 text-realestate-text-muted group-focus-within:text-realestate-primary transition-colors"
                 size={20}
               />
               <input
                 type={showPassword ? "text" : "password"}
                 value={formData.password}
                 onChange={(e) => handleInputChange("password", e.target.value)}
-                className={`w-full pl-12 pr-12 py-3.5 border-2 rounded-xl focus:ring-4 focus:ring-blue-100 focus:border-blue-500 transition-all duration-200 ${
+                className={`w-full pl-12 pr-12 py-3.5 border-2 rounded-xl focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-200 ${
                   validationErrors.password
-                    ? "border-red-300 focus:border-red-500 focus:ring-red-100"
+                    ? "border-red-300 focus:border-realestate-error focus:ring-realestate-error/10"
                     : "border-gray-200"
                 }`}
                 placeholder="••••••••"
@@ -153,13 +155,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-realestate-text-muted hover:text-realestate-text transition-colors"
               >
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
             {validationErrors.password && (
-              <p className="mt-2 text-sm text-red-600 flex items-center gap-1">
+              <p className="mt-2 text-sm text-realestate-error flex items-center gap-1">
                 <AlertCircle size={14} />
                 {validationErrors.password}
               </p>
@@ -175,16 +177,16 @@ export const LoginForm: React.FC<LoginFormProps> = ({
                 onChange={(e) =>
                   handleInputChange("rememberMe", e.target.checked)
                 }
-                className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 cursor-pointer"
+                className="w-5 h-5 text-realestate-primary border-gray-300 rounded focus:ring-2 focus:ring-primary cursor-pointer"
               />
-              <span className="ml-3 text-sm font-medium text-gray-700 group-hover:text-gray-900">
+              <span className="ml-3 text-sm font-medium text-realestate-text group-hover:text-realestate-text">
                 Remember me
               </span>
             </label>
             <button
               type="button"
               onClick={onForgotPassword}
-              className="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors"
+              className="text-sm font-semibold text-realestate-primary hover:text-realestate-primary/80 transition-colors"
             >
               Forgot password?
             </button>
@@ -194,7 +196,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 rounded-xl hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            className="w-full bg-gradient-to-r from-realestate-primary to-realestate-primary/80 text-white py-4 rounded-xl hover:from-realestate-primary/90 hover:to-realestate-primary/70 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
           >
             {isLoading ? (
               <span className="flex items-center justify-center gap-2">
@@ -225,7 +227,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         {/* Divider */}
         <div className="my-8 flex items-center">
           <div className="flex-1 border-t border-gray-200"></div>
-          <span className="px-4 text-sm text-gray-400 font-medium">
+          <span className="px-4 text-sm text-realestate-text-muted font-medium">
             OR CONTINUE WITH
           </span>
           <div className="flex-1 border-t border-gray-200"></div>
@@ -247,7 +249,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
               );
             }
           }}
-          className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-200 text-gray-700 py-3.5 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 font-semibold shadow-sm hover:shadow"
+          className="w-full flex items-center justify-center gap-3 bg-white border-2 border-gray-200 text-realestate-text py-3.5 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 font-semibold shadow-sm hover:shadow"
         >
           <svg className="w-6 h-6" viewBox="0 0 24 24">
             <path
@@ -272,11 +274,13 @@ export const LoginForm: React.FC<LoginFormProps> = ({
 
         {/* Register Link */}
         <div className="mt-8 text-center">
-          <span className="text-gray-600">Don&apos;t have an account? </span>
+          <span className="text-realestate-text-secondary">
+            Don&apos;t have an account?{" "}
+          </span>
           <button
             type="button"
             onClick={onRegister}
-            className="text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+            className="text-realestate-primary hover:text-realestate-primary/80 font-semibold transition-colors"
           >
             Sign up free
           </button>
@@ -284,7 +288,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       </div>
 
       {/* Trust Indicators */}
-      <div className="mt-8 text-center text-sm text-gray-500">
+      <div className="mt-8 text-center text-sm text-realestate-text-muted">
         <p>🔒 Secure & encrypted • Trusted by 10,000+ users</p>
       </div>
     </div>

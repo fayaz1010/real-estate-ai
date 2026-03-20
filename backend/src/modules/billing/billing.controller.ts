@@ -94,7 +94,12 @@ export class BillingController {
       currency || "usd",
       metadata || {},
     );
-    return successResponse(res, { clientSecret }, "Payment intent created", 201);
+    return successResponse(
+      res,
+      { clientSecret },
+      "Payment intent created",
+      201,
+    );
   });
 
   getPaymentIntent = asyncHandler(async (req: Request, res: Response) => {

@@ -50,7 +50,7 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
         {/* Default Buffer Time */}
         <div className="p-6 bg-white border border-gray-200 rounded-lg">
           <div className="flex items-start gap-3 mb-4">
-            <Clock className="w-5 h-5 text-blue-600 mt-0.5" />
+            <Clock className="w-5 h-5 text-primary mt-0.5" />
             <div className="flex-1">
               <h4 className="font-semibold text-gray-900 mb-1">
                 Default Buffer Time
@@ -73,7 +73,7 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                   px-4 py-3 rounded-lg border-2 font-medium transition-colors
                   ${
                     settings.defaultBuffer === minutes
-                      ? "border-blue-600 bg-blue-50 text-blue-700"
+                      ? "border-primary bg-primary/5 text-primary"
                       : "border-gray-200 hover:border-gray-300"
                   }
                 `}
@@ -83,7 +83,7 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
             ))}
           </div>
 
-          <div className="mt-3 p-3 bg-blue-50 rounded-lg text-sm text-blue-800">
+          <div className="mt-3 p-3 bg-primary/5 rounded-lg text-sm text-primary">
             <Info className="w-4 h-4 inline mr-2" />
             Recommended: 15-30 minutes for local properties, 30-45 minutes if
             traveling between locations
@@ -110,7 +110,7 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                   px-4 py-3 rounded-lg border-2 font-medium transition-colors
                   ${
                     settings.minAdvanceNotice === hours
-                      ? "border-blue-600 bg-blue-50 text-blue-700"
+                      ? "border-primary bg-primary/5 text-primary"
                       : "border-gray-200 hover:border-gray-300"
                   }
                 `}
@@ -143,7 +143,7 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                   px-4 py-3 rounded-lg border-2 font-medium transition-colors
                   ${
                     settings.maxAdvanceBooking === days
-                      ? "border-blue-600 bg-blue-50 text-blue-700"
+                      ? "border-primary bg-primary/5 text-primary"
                       : "border-gray-200 hover:border-gray-300"
                   }
                 `}
@@ -173,11 +173,11 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                       instantBooking: e.target.checked,
                     })
                   }
-                  className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-5 h-5 text-primary rounded focus:ring-2 focus:ring-primary/50"
                 />
               </div>
               <div className="flex-1">
-                <span className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                <span className="font-medium text-gray-900 group-hover:text-primary transition-colors">
                   Instant Booking
                 </span>
                 <p className="text-sm text-gray-600 mt-1">
@@ -196,11 +196,11 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
                   onChange={(e) =>
                     setSettings({ ...settings, autoConfirm: e.target.checked })
                   }
-                  className="w-5 h-5 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                  className="w-5 h-5 text-primary rounded focus:ring-2 focus:ring-primary/50"
                 />
               </div>
               <div className="flex-1">
-                <span className="font-medium text-gray-900 group-hover:text-blue-600 transition-colors">
+                <span className="font-medium text-gray-900 group-hover:text-primary transition-colors">
                   Auto-Confirm After 24 Hours
                 </span>
                 <p className="text-sm text-gray-600 mt-1">
@@ -213,7 +213,7 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
         </div>
 
         {/* Summary */}
-        <div className="p-6 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
+        <div className="p-6 bg-gradient-to-r from-primary/5 to-primary/10 border border-primary/20 rounded-lg">
           <h4 className="font-semibold text-gray-900 mb-3">
             Current Settings Summary
           </h4>
@@ -256,7 +256,7 @@ export const BufferTimeSettings: React.FC<BufferTimeSettingsProps> = ({
           <button
             onClick={handleSave}
             disabled={isSaving}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
+            className="flex items-center gap-2 px-6 py-3 bg-realestate-primary text-white rounded-lg hover:bg-realestate-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors font-medium"
           >
             {isSaving ? (
               <>

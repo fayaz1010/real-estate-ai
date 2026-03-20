@@ -134,7 +134,9 @@ export class BillingService {
         customer: customerId,
         limit: 100,
       });
-      logger.info(`Fetched ${invoices.data.length} invoices for customer ${customerId}`);
+      logger.info(
+        `Fetched ${invoices.data.length} invoices for customer ${customerId}`,
+      );
       return invoices.data.map((inv) => ({
         id: inv.id,
         created: inv.created,
@@ -202,7 +204,9 @@ export class BillingService {
       const invoice = await s.invoices.createPreview({
         subscription: subscriptionId,
       });
-      logger.info(`Retrieved upcoming invoice for subscription ${subscriptionId}`);
+      logger.info(
+        `Retrieved upcoming invoice for subscription ${subscriptionId}`,
+      );
       return {
         amount_due: invoice.amount_due,
         currency: invoice.currency,

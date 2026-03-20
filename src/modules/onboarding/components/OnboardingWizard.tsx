@@ -68,9 +68,9 @@ const ProgressBar: React.FC<{ currentStep: number; totalSteps: number }> = ({
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${
                   isCompleted
-                    ? "bg-[#091a2b] text-white"
+                    ? "bg-realestate-primary text-white"
                     : isActive
-                      ? "bg-[#091a2b] text-white ring-4 ring-[#091a2b]/20"
+                      ? "bg-realestate-primary text-white ring-4 ring-realestate-primary/20"
                       : "bg-gray-200 text-gray-500"
                 }`}
               >
@@ -83,7 +83,7 @@ const ProgressBar: React.FC<{ currentStep: number; totalSteps: number }> = ({
               <span
                 className={`text-xs font-open-sans ${
                   isActive || isCompleted
-                    ? "text-[#091a2b] font-semibold"
+                    ? "text-realestate-primary font-semibold"
                     : "text-gray-400"
                 }`}
               >
@@ -97,7 +97,7 @@ const ProgressBar: React.FC<{ currentStep: number; totalSteps: number }> = ({
       {/* Progress bar */}
       <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
         <div
-          className="h-full bg-[#091a2b] rounded-full transition-all duration-500 ease-out"
+          className="h-full bg-realestate-primary rounded-full transition-all duration-500 ease-out"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -145,7 +145,7 @@ const RoleStep: React.FC<{
 
   return (
     <div>
-      <h2 className="text-2xl font-montserrat font-bold text-[#091a2b] mb-2">
+      <h2 className="text-2xl font-montserrat font-bold text-realestate-primary mb-2">
         What best describes you?
       </h2>
       <p className="text-gray-600 font-open-sans mb-6">
@@ -164,22 +164,22 @@ const RoleStep: React.FC<{
               onClick={() => onSelect(role.value)}
               className={`p-5 border-2 rounded-xl text-left transition-all duration-200 ${
                 isSelected
-                  ? "border-[#091a2b] bg-[#091a2b]/5 shadow-md"
-                  : "border-gray-200 hover:border-[#005163]/40 hover:shadow-sm"
+                  ? "border-realestate-primary bg-realestate-primary/5 shadow-md"
+                  : "border-gray-200 hover:border-realestate-primary/40 hover:shadow-sm"
               }`}
             >
               <div className="flex items-center gap-4">
                 <div
                   className={`p-3 rounded-lg ${
                     isSelected
-                      ? "bg-[#091a2b] text-white"
+                      ? "bg-realestate-primary text-white"
                       : "bg-gray-100 text-gray-600"
                   }`}
                 >
                   <Icon className="w-6 h-6" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-montserrat font-semibold text-[#091a2b]">
+                  <h4 className="font-montserrat font-semibold text-realestate-primary">
                     {role.label}
                   </h4>
                   <p className="text-sm text-gray-500 font-open-sans">
@@ -187,7 +187,7 @@ const RoleStep: React.FC<{
                   </p>
                 </div>
                 {isSelected && (
-                  <div className="w-6 h-6 rounded-full bg-[#091a2b] flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-full bg-realestate-primary flex items-center justify-center">
                     <Check className="w-4 h-4 text-white" />
                   </div>
                 )}
@@ -214,7 +214,7 @@ const ProfileStep: React.FC<{
 
   return (
     <div>
-      <h2 className="text-2xl font-montserrat font-bold text-[#091a2b] mb-2">
+      <h2 className="text-2xl font-montserrat font-bold text-realestate-primary mb-2">
         Set up your profile
       </h2>
       <p className="text-gray-600 font-open-sans mb-6">
@@ -223,18 +223,18 @@ const ProfileStep: React.FC<{
 
       <div className="space-y-4">
         <div>
-          <label className="block text-sm font-semibold text-[#091a2b] font-open-sans mb-1.5">
+          <label className="block text-sm font-semibold text-realestate-primary font-open-sans mb-1.5">
             Full Name
           </label>
           <Input
             placeholder="John Doe"
             value={profile.name}
             onChange={(e) => handleChange("name", e.target.value)}
-            className="border-gray-300 focus-visible:ring-[#091a2b]"
+            className="border-gray-300 focus-visible:ring-realestate-primary"
           />
         </div>
         <div>
-          <label className="block text-sm font-semibold text-[#091a2b] font-open-sans mb-1.5">
+          <label className="block text-sm font-semibold text-realestate-primary font-open-sans mb-1.5">
             Email Address
           </label>
           <Input
@@ -242,11 +242,11 @@ const ProfileStep: React.FC<{
             placeholder="john@example.com"
             value={profile.email}
             onChange={(e) => handleChange("email", e.target.value)}
-            className="border-gray-300 focus-visible:ring-[#091a2b]"
+            className="border-gray-300 focus-visible:ring-realestate-primary"
           />
         </div>
         <div>
-          <label className="block text-sm font-semibold text-[#091a2b] font-open-sans mb-1.5">
+          <label className="block text-sm font-semibold text-realestate-primary font-open-sans mb-1.5">
             Phone Number
           </label>
           <Input
@@ -254,18 +254,18 @@ const ProfileStep: React.FC<{
             placeholder="+1 (555) 000-0000"
             value={profile.phone}
             onChange={(e) => handleChange("phone", e.target.value)}
-            className="border-gray-300 focus-visible:ring-[#091a2b]"
+            className="border-gray-300 focus-visible:ring-realestate-primary"
           />
         </div>
         <div>
-          <label className="block text-sm font-semibold text-[#091a2b] font-open-sans mb-1.5">
+          <label className="block text-sm font-semibold text-realestate-primary font-open-sans mb-1.5">
             Address
           </label>
           <Input
             placeholder="123 Main St, City, State"
             value={profile.address}
             onChange={(e) => handleChange("address", e.target.value)}
-            className="border-gray-300 focus-visible:ring-[#091a2b]"
+            className="border-gray-300 focus-visible:ring-realestate-primary"
           />
         </div>
       </div>
@@ -289,7 +289,7 @@ const PropertyStep: React.FC<{
 
   return (
     <div>
-      <h2 className="text-2xl font-montserrat font-bold text-[#091a2b] mb-2">
+      <h2 className="text-2xl font-montserrat font-bold text-realestate-primary mb-2">
         Add your first property
       </h2>
       <p className="text-gray-600 font-open-sans mb-6">
@@ -298,7 +298,7 @@ const PropertyStep: React.FC<{
 
       <div className="space-y-4">
         <div className="relative">
-          <label className="block text-sm font-semibold text-[#091a2b] font-open-sans mb-1.5">
+          <label className="block text-sm font-semibold text-realestate-primary font-open-sans mb-1.5">
             Property Address
           </label>
           <div className="relative">
@@ -309,7 +309,7 @@ const PropertyStep: React.FC<{
               onChange={(e) =>
                 onChange({ ...property, address: e.target.value, added: false })
               }
-              className="pl-10 border-gray-300 focus-visible:ring-[#091a2b]"
+              className="pl-10 border-gray-300 focus-visible:ring-realestate-primary"
             />
           </div>
         </div>
@@ -317,15 +317,15 @@ const PropertyStep: React.FC<{
         {/* AI Photo Enhancement placeholder */}
         <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center">
           <Camera className="w-10 h-10 text-gray-400 mx-auto mb-3" />
-          <p className="text-sm font-semibold text-[#091a2b] font-open-sans">
+          <p className="text-sm font-semibold text-realestate-primary font-open-sans">
             Upload property photos
           </p>
           <p className="text-xs text-gray-500 font-open-sans mt-1">
             AI will automatically enhance your photos for listings
           </p>
-          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#005163]/10 rounded-full">
-            <Sparkles className="w-3.5 h-3.5 text-[#005163]" />
-            <span className="text-xs font-semibold text-[#005163]">
+          <div className="mt-3 inline-flex items-center gap-1.5 px-3 py-1.5 bg-realestate-primary/10 rounded-full">
+            <Sparkles className="w-3.5 h-3.5 text-realestate-primary/80" />
+            <span className="text-xs font-semibold text-realestate-primary/80">
               AI Enhancement Available
             </span>
           </div>
@@ -335,7 +335,7 @@ const PropertyStep: React.FC<{
           <Button
             onClick={handleAddProperty}
             disabled={!property.address.trim()}
-            className="w-full bg-[#091a2b] hover:bg-[#091a2b]/90 text-white"
+            className="w-full bg-realestate-primary hover:bg-realestate-primary/90 text-white"
           >
             Add Property
           </Button>
@@ -344,7 +344,7 @@ const PropertyStep: React.FC<{
         {/* Aha moment - AI insights */}
         {showAhaInsights && (
           <div className="animate-fade-in space-y-3 mt-4">
-            <div className="bg-gradient-to-r from-[#091a2b] to-[#005163] rounded-xl p-5 text-white">
+            <div className="bg-gradient-to-r from-realestate-primary to-realestate-primary/80 rounded-xl p-5 text-white">
               <div className="flex items-center gap-2 mb-3">
                 <Sparkles className="w-5 h-5" />
                 <h3 className="font-montserrat font-bold">
@@ -369,8 +369,8 @@ const PropertyStep: React.FC<{
 
             <div className="bg-white border border-gray-200 rounded-xl p-4">
               <div className="flex items-center gap-2 mb-3">
-                <TrendingUp className="w-5 h-5 text-[#005163]" />
-                <h4 className="font-montserrat font-semibold text-[#091a2b]">
+                <TrendingUp className="w-5 h-5 text-realestate-primary/80" />
+                <h4 className="font-montserrat font-semibold text-realestate-primary">
                   Optimization Suggestions
                 </h4>
               </div>
@@ -384,7 +384,7 @@ const PropertyStep: React.FC<{
                     key={tip}
                     className="flex items-start gap-2 text-sm text-gray-600 font-open-sans"
                   >
-                    <Check className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
+                    <Check className="w-4 h-4 text-realestate-success mt-0.5 shrink-0" />
                     {tip}
                   </li>
                 ))}
@@ -404,7 +404,7 @@ const BankStep: React.FC<{
 }> = ({ connected, onConnect }) => {
   return (
     <div>
-      <h2 className="text-2xl font-montserrat font-bold text-[#091a2b] mb-2">
+      <h2 className="text-2xl font-montserrat font-bold text-realestate-primary mb-2">
         Connect your bank account
       </h2>
       <p className="text-gray-600 font-open-sans mb-6">
@@ -415,21 +415,23 @@ const BankStep: React.FC<{
         {/* Placeholder bank connection UI */}
         <div
           className={`border-2 rounded-xl p-6 transition-all ${
-            connected ? "border-green-500 bg-green-50" : "border-gray-200"
+            connected
+              ? "border-realestate-success bg-realestate-success/10"
+              : "border-gray-200"
           }`}
         >
           <div className="flex items-center gap-4">
             <div
               className={`p-3 rounded-lg ${
                 connected
-                  ? "bg-green-500 text-white"
+                  ? "bg-realestate-success text-white"
                   : "bg-gray-100 text-gray-600"
               }`}
             >
               <CreditCard className="w-6 h-6" />
             </div>
             <div className="flex-1">
-              <h4 className="font-montserrat font-semibold text-[#091a2b]">
+              <h4 className="font-montserrat font-semibold text-realestate-primary">
                 {connected ? "Bank Account Connected" : "Bank Account"}
               </h4>
               <p className="text-sm text-gray-500 font-open-sans">
@@ -438,14 +440,14 @@ const BankStep: React.FC<{
                   : "Securely link your bank for rent collection"}
               </p>
             </div>
-            {connected && <Check className="w-6 h-6 text-green-500" />}
+            {connected && <Check className="w-6 h-6 text-realestate-success" />}
           </div>
         </div>
 
         {!connected && (
           <Button
             onClick={() => onConnect(true)}
-            className="w-full bg-[#091a2b] hover:bg-[#091a2b]/90 text-white"
+            className="w-full bg-realestate-primary hover:bg-realestate-primary/90 text-white"
           >
             <CreditCard className="w-4 h-4 mr-2" />
             Connect Bank Account
@@ -460,7 +462,7 @@ const BankStep: React.FC<{
         <button
           type="button"
           onClick={() => onConnect(false)}
-          className="text-sm text-[#005163] underline font-open-sans hover:text-[#005163]/80"
+          className="text-sm text-realestate-primary/80 underline font-open-sans hover:text-realestate-primary/60"
         >
           Skip for now
         </button>
@@ -503,7 +505,7 @@ const NotificationStep: React.FC<{
 
   return (
     <div>
-      <h2 className="text-2xl font-montserrat font-bold text-[#091a2b] mb-2">
+      <h2 className="text-2xl font-montserrat font-bold text-realestate-primary mb-2">
         Notification preferences
       </h2>
       <p className="text-gray-600 font-open-sans mb-6">
@@ -518,13 +520,13 @@ const NotificationStep: React.FC<{
             onClick={() => toggle(option.key)}
             className={`w-full p-4 border-2 rounded-xl text-left transition-all ${
               preferences[option.key]
-                ? "border-[#091a2b] bg-[#091a2b]/5"
+                ? "border-realestate-primary bg-realestate-primary/5"
                 : "border-gray-200 hover:border-gray-300"
             }`}
           >
             <div className="flex items-center justify-between">
               <div>
-                <h4 className="font-open-sans font-semibold text-[#091a2b] text-sm">
+                <h4 className="font-open-sans font-semibold text-realestate-primary text-sm">
                   {option.label}
                 </h4>
                 <p className="text-xs text-gray-500 font-open-sans mt-0.5">
@@ -533,7 +535,9 @@ const NotificationStep: React.FC<{
               </div>
               <div
                 className={`w-11 h-6 rounded-full transition-all relative ${
-                  preferences[option.key] ? "bg-[#091a2b]" : "bg-gray-300"
+                  preferences[option.key]
+                    ? "bg-realestate-primary"
+                    : "bg-gray-300"
                 }`}
               >
                 <div
@@ -548,7 +552,7 @@ const NotificationStep: React.FC<{
       </div>
 
       {/* Final CTA */}
-      <div className="mt-8 p-5 bg-gradient-to-r from-[#091a2b] to-[#005163] rounded-xl text-white text-center">
+      <div className="mt-8 p-5 bg-gradient-to-r from-realestate-primary to-realestate-primary/80 rounded-xl text-white text-center">
         <h3 className="font-montserrat font-bold text-lg mb-1">
           You&apos;re all set!
         </h3>
@@ -665,7 +669,7 @@ export const OnboardingWizard: React.FC = () => {
             variant="ghost"
             onClick={handleBack}
             disabled={currentStep === 0}
-            className="text-[#091a2b]"
+            className="text-realestate-primary"
           >
             <ChevronLeft className="w-4 h-4 mr-1" />
             Back
@@ -674,7 +678,7 @@ export const OnboardingWizard: React.FC = () => {
           <Button
             onClick={handleNext}
             disabled={!canProceed()}
-            className="bg-[#091a2b] hover:bg-[#091a2b]/90 text-white px-8"
+            className="bg-realestate-primary hover:bg-realestate-primary/90 text-white px-8"
           >
             {currentStep === totalSteps - 1 ? (
               "Complete Setup"

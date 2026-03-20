@@ -76,24 +76,25 @@ export class PaymentController {
     const sig = req.headers["stripe-signature"] as string;
     const webhookSecret = config.stripe.webhookSecret;
 
-    if (webhookSecret && sig) {
-      try {
-        const stripe = new Stripe(config.stripe.secretKey, {
-          apiVersion: "2024-06-20" as Stripe.LatestApiVersion,
-        });
-        const event = stripe.webhooks.constructEvent(
-          req.body,
-          sig,
-          webhookSecret,
-        );
-        await paymentService.handleStripeWebhook(event);
-      } catch (err) {
-        logger.error("[Stripe Webhook] Signature verification failed", { error: err });
-        throw new AppError("Webhook signature verification failed", 400);
-      }
-    } else {
-      // Dev mode: accept raw body without signature verification
-      await paymentService.handleStripeWebhook(req.body);
+    if (!webhookSecret || !sig) {
+      throw new AppError("Missing webhook secret or signature", 400);
+    }
+
+    try {
+      const stripe = new Stripe(config.stripe.secretKey, {
+        apiVersion: "2024-06-20" as Stripe.LatestApiVersion,
+      });
+      const event = stripe.webhooks.constructEvent(
+        req.body,
+        sig,
+        webhookSecret,
+      );
+      await paymentService.handleStripeWebhook(event);
+    } catch (err) {
+      logger.error("[Stripe Webhook] Signature verification failed", {
+        error: err,
+      });
+      throw new AppError("Webhook signature verification failed", 400);
     }
 
     return successResponse(res, null, "Webhook processed");

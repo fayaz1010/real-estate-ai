@@ -22,7 +22,16 @@
     "expo-camera": "~14.0.4",
     "expo-image-picker": "~14.7.1",
     "expo-constants": "~15.4.5",
-    "expo-linking": "~6.2.2"
+    "expo-linking": "~6.2.2",
+    "expo-device": "~5.9.3",
+    "expo-notifications": "~0.27.6",
+    "expo-secure-store": "~12.8.1",
+    "axios": "^1.6.5",
+    "redux": "^5.0.1",
+    "react-redux": "^9.1.0",
+    "@reduxjs/toolkit": "^2.1.0",
+    "react-native-gesture-handler": "~2.14.1",
+    "react-native-reanimated": "~3.6.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

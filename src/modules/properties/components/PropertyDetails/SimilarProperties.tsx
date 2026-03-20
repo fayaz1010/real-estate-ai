@@ -109,7 +109,7 @@ export const SimilarProperties: React.FC<SimilarPropertiesProps> = ({
         <h2 className="text-2xl font-bold text-gray-900">Similar Properties</h2>
         <Button
           variant="ghost"
-          className="text-blue-600 hover:bg-blue-50 flex items-center gap-1"
+          className="text-realestate-primary hover:bg-primary/5 flex items-center gap-1"
           onClick={handleViewAll}
         >
           View all <ArrowRight size={16} />
@@ -127,9 +127,9 @@ export const SimilarProperties: React.FC<SimilarPropertiesProps> = ({
       </div>
 
       {/* View More CTA */}
-      <div className="mt-10 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl text-center">
+      <div className="mt-10 p-6 bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl text-center">
         <div className="max-w-2xl mx-auto">
-          <Home className="w-10 h-10 mx-auto text-blue-600 mb-3" />
+          <Home className="w-10 h-10 mx-auto text-realestate-primary mb-3" />
           <h3 className="text-xl font-bold text-gray-900 mb-2">
             Looking for more options?
           </h3>
@@ -140,14 +140,14 @@ export const SimilarProperties: React.FC<SimilarPropertiesProps> = ({
           <div className="flex flex-col sm:flex-row justify-center gap-3">
             <Button
               variant="default"
-              className="bg-blue-600 hover:bg-blue-700"
+              className="bg-realestate-primary hover:bg-realestate-primary/90"
               onClick={handleViewAll}
             >
               Browse All Properties
             </Button>
             <Button
               variant="outline"
-              className="border-blue-600 text-blue-600 hover:bg-blue-50"
+              className="border-realestate-primary text-realestate-primary hover:bg-primary/5"
               onClick={() => {
                 // This would typically open a contact form or modal
                 document

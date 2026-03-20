@@ -97,7 +97,7 @@ export const MortgageCalculator: React.FC<MortgageCalculatorProps> = ({
   return (
     <div className={`bg-white rounded-lg shadow-lg border p-6 ${className}`}>
       <div className="flex items-center gap-2 mb-6">
-        <DollarSign className="text-blue-600" size={24} />
+        <DollarSign className="text-realestate-primary" size={24} />
         <h3 className="text-xl font-bold text-gray-900">Mortgage Calculator</h3>
       </div>
 
@@ -195,21 +195,21 @@ export const MortgageCalculator: React.FC<MortgageCalculatorProps> = ({
       {/* Results */}
       <div className="space-y-4 mb-6">
         <h4 className="font-semibold text-gray-900 flex items-center gap-2">
-          <TrendingUp size={18} className="text-green-600" />
+          <TrendingUp size={18} className="text-realestate-success" />
           Monthly Payment Estimate
         </h4>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="p-4 bg-blue-50 rounded-lg">
             <p className="text-sm text-gray-600 mb-1">Monthly Payment</p>
-            <p className="text-2xl font-bold text-blue-600">
+            <p className="text-2xl font-bold text-realestate-primary">
               {formatCurrency(results.monthlyPayment)}
             </p>
           </div>
 
-          <div className="p-4 bg-green-50 rounded-lg">
+          <div className="p-4 bg-realestate-success/5 rounded-lg">
             <p className="text-sm text-gray-600 mb-1">Loan Amount</p>
-            <p className="text-2xl font-bold text-green-600">
+            <p className="text-2xl font-bold text-realestate-success">
               {formatCurrency(inputs.loanAmount)}
             </p>
           </div>

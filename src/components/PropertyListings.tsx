@@ -14,11 +14,11 @@ const FilterChip: React.FC<{ label: string; onRemove: () => void }> = ({
   label,
   onRemove,
 }) => (
-  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full border border-blue-200">
+  <span className="inline-flex items-center gap-1 px-2.5 py-1 bg-primary/10 text-realestate-primary text-xs font-medium rounded-full border border-primary/20">
     {label}
     <button
       onClick={onRemove}
-      className="ml-0.5 hover:bg-blue-200 rounded-full p-0.5 transition"
+      className="ml-0.5 hover:bg-primary/20 rounded-full p-0.5 transition"
       aria-label={`Remove ${label} filter`}
     >
       <X size={12} />
@@ -74,7 +74,7 @@ export const PropertyListings: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero with Search */}
-      <div className="relative bg-gradient-to-br from-blue-600 via-indigo-600 to-purple-600 text-white">
+      <div className="relative bg-gradient-to-br from-realestate-primary via-realestate-primary/90 to-realestate-primary/70 text-white">
         <div className="absolute inset-0 bg-black/20" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
           <h1 className="text-5xl font-bold mb-4 text-center">
@@ -96,19 +96,19 @@ export const PropertyListings: React.FC = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setListingType("rent")}
-                className={`px-4 py-2 rounded-lg font-semibold ${filters.listingType === "rent" ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-gray-100"}`}
+                className={`px-4 py-2 rounded-lg font-semibold ${filters.listingType === "rent" ? "bg-realestate-primary text-white" : "text-gray-700 hover:bg-gray-100"}`}
               >
                 Rent
               </button>
               <button
                 onClick={() => setListingType("sale")}
-                className={`px-4 py-2 rounded-lg font-semibold ${filters.listingType === "sale" ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-gray-100"}`}
+                className={`px-4 py-2 rounded-lg font-semibold ${filters.listingType === "sale" ? "bg-realestate-primary text-white" : "text-gray-700 hover:bg-gray-100"}`}
               >
                 Buy
               </button>
               <button
                 onClick={() => setListingType("sold")}
-                className={`px-4 py-2 rounded-lg font-semibold ${(filters.status as string[] | undefined)?.includes("sold") ? "bg-blue-600 text-white" : "text-gray-700 hover:bg-gray-100"}`}
+                className={`px-4 py-2 rounded-lg font-semibold ${(filters.status as string[] | undefined)?.includes("sold") ? "bg-realestate-primary text-white" : "text-gray-700 hover:bg-gray-100"}`}
               >
                 Sold
               </button>
@@ -117,16 +117,16 @@ export const PropertyListings: React.FC = () => {
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-2 px-4 py-2 border rounded-lg transition font-medium ${
                 showFilters
-                  ? "bg-blue-600 text-white border-blue-600"
+                  ? "bg-realestate-primary text-white border-realestate-primary"
                   : activeFilterCount > 0
-                    ? "bg-blue-50 text-blue-700 border-blue-300 hover:bg-blue-100"
+                    ? "bg-primary/10 text-realestate-primary border-primary/30 hover:bg-primary/20"
                     : "border-gray-300 text-gray-700 hover:bg-gray-50"
               }`}
             >
               <SlidersHorizontal size={18} />
               Filters
               {activeFilterCount > 0 && (
-                <span className="px-1.5 py-0.5 bg-blue-600 text-white text-xs rounded-full min-w-[20px] text-center">
+                <span className="px-1.5 py-0.5 bg-realestate-primary text-white text-xs rounded-full min-w-[20px] text-center">
                   {activeFilterCount}
                 </span>
               )}
@@ -212,7 +212,7 @@ export const PropertyListings: React.FC = () => {
                   updateFilters({});
                   performSearch();
                 }}
-                className="text-xs text-red-600 hover:text-red-700 font-medium ml-1"
+                className="text-xs text-realestate-error hover:text-realestate-error/80 font-medium ml-1"
               >
                 Clear all
               </button>
@@ -224,7 +224,7 @@ export const PropertyListings: React.FC = () => {
       {/* Featured */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-realestate-text">
             Featured Properties
           </h2>
           {/* could link to all featured */}

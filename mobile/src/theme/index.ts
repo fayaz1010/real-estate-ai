@@ -1,33 +1,52 @@
-import React, { createContext, useContext } from 'react';
-import { useColorScheme } from 'react-native';
+import React, { createContext, useContext } from "react";
+import { useColorScheme } from "react-native";
+
+export const theme = {
+  primaryColor: "#008080",
+  secondaryColor: "#E0E0E0",
+  accentColor: "#FF6B35",
+  backgroundColor: "#FFFFFF",
+  textColor: "#1A1A2E",
+  fontFamily: "Inter",
+  fontSize: 16,
+  spacing: 8,
+  borderRadius: 4,
+};
 
 const ThemeContext = createContext({
   isDark: false,
   colors: {
-    primary: '#008080',
-    background: '#FFFFFF',
-    text: '#1A1A2E',
-    secondary: '#E0E0E0',
-    accent: '#FF6B35',
+    primary: theme.primaryColor,
+    background: theme.backgroundColor,
+    text: theme.textColor,
+    secondary: theme.secondaryColor,
+    accent: theme.accentColor,
   },
+  fontFamily: theme.fontFamily,
+  fontSize: theme.fontSize,
+  spacing: theme.spacing,
+  borderRadius: theme.borderRadius,
 });
 
 export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
-  const isDark = useColorScheme() === 'dark';
+  const isDark = useColorScheme() === "dark";
 
-  const colors = {
-    primary: '#008080',
-    background: isDark ? '#000000' : '#FFFFFF',
-    text: isDark ? '#FFFFFF' : '#1A1A2E',
-    secondary: '#E0E0E0',
-    accent: '#FF6B35',
+  const value = {
+    isDark,
+    colors: {
+      primary: theme.primaryColor,
+      background: isDark ? "#000000" : theme.backgroundColor,
+      text: isDark ? "#FFFFFF" : theme.textColor,
+      secondary: theme.secondaryColor,
+      accent: theme.accentColor,
+    },
+    fontFamily: theme.fontFamily,
+    fontSize: theme.fontSize,
+    spacing: theme.spacing,
+    borderRadius: theme.borderRadius,
   };
 
-  return (
-    <ThemeContext.Provider value={{ isDark, colors }}>
-      {children}
-    </ThemeContext.Provider>
-  );
+  return React.createElement(ThemeContext.Provider, { value }, children);
 };

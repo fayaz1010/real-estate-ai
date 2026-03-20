@@ -25,7 +25,7 @@ import {
   FolderOpen,
   Target,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { PageMeta } from "../components/seo";
@@ -40,92 +40,205 @@ export const TAGLINES = [
 ] as const;
 
 /* ------------------------------------------------------------------ */
-/*  1. HERO SECTION                                                    */
+/*  1. HERO SECTION — Split-screen with parallax                       */
 /* ------------------------------------------------------------------ */
-const HeroSection: React.FC = () => (
-  <section
-    className="relative bg-realestate-primary overflow-hidden pt-20 pb-20 md:pt-32 md:pb-28"
-    aria-label="Hero"
-  >
-    {/* Decorative gradient blobs */}
-    <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
-      <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-realestate-accent/10 blur-3xl" />
-      <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-realestate-secondary/15 blur-3xl" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-realestate-accent/5 blur-3xl" />
-    </div>
+const HeroSection: React.FC = () => {
+  const bgRef = useRef<HTMLDivElement>(null);
 
-    <div className="section-container relative z-10">
-      <div className="max-w-3xl mx-auto text-center animate-fade-in">
-        <h1 className="text-display text-4xl sm:text-5xl md:text-6xl lg:text-[72px] text-white leading-tight mb-6">
-          Property Management{" "}
-          <span className="text-realestate-accent">That Thinks Ahead</span>
-        </h1>
+  useEffect(() => {
+    const handleScroll = () => {
+      if (bgRef.current) {
+        const scrollY = window.scrollY;
+        bgRef.current.style.transform = `translateY(${scrollY * 0.35}px)`;
+      }
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-        <p className="font-inter text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
-          AI-powered property management that automates rent collection, tenant
-          screening, and maintenance — so you can grow your portfolio without
-          growing your workload.
-        </p>
+  return (
+    <section
+      className="relative bg-realestate-primary overflow-hidden min-h-[90vh] flex items-center"
+      aria-label="Hero"
+    >
+      {/* Parallax SVG background */}
+      <div
+        ref={bgRef}
+        className="absolute inset-0 pointer-events-none will-change-transform"
+        aria-hidden="true"
+      >
+        <img
+          src="/images/hero-bg.svg"
+          alt=""
+          className="w-full h-full object-cover"
+        />
+      </div>
 
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-          <Link
-            to="/auth/register"
-            className="btn-accent text-base md:text-lg px-8 py-4 rounded-lg shadow-realestate-lg inline-flex items-center gap-2 w-full sm:w-auto justify-center"
-          >
-            Start Free Trial - No Credit Card Required
-            <ArrowRight className="w-5 h-5" aria-hidden="true" />
-          </Link>
+      {/* Decorative gradient blobs */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
+        <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-realestate-accent/10 blur-3xl" />
+        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full bg-realestate-secondary/15 blur-3xl" />
+      </div>
 
-          <Link
-            to="#how-it-works"
-            className="border border-white/30 text-white font-inter font-medium px-8 py-4 rounded-lg hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-realestate-primary inline-flex items-center gap-2 w-full sm:w-auto justify-center"
-          >
-            See How It Works
-          </Link>
-        </div>
+      <div className="section-container relative z-10 py-20 md:py-28">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+          {/* Left — Value proposition */}
+          <div className="animate-fade-in text-center lg:text-left">
+            <h1 className="text-display text-4xl sm:text-5xl md:text-6xl lg:text-[72px] xl:text-[80px] text-white leading-[1.1] mb-6">
+              Property Management{" "}
+              <span className="text-realestate-accent">That Thinks Ahead</span>
+            </h1>
 
-        {/* Trust indicators */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up">
-          <div className="flex -space-x-2" aria-hidden="true">
-            {[
-              "from-realestate-accent to-yellow-600",
-              "from-realestate-secondary to-emerald-700",
-              "from-blue-500 to-indigo-600",
-              "from-purple-500 to-pink-500",
-              "from-orange-400 to-red-500",
-            ].map((gradient, i) => (
-              <div
-                key={i}
-                className={`w-9 h-9 rounded-full bg-gradient-to-br ${gradient} border-2 border-realestate-primary flex items-center justify-center`}
+            <p className="font-inter text-lg md:text-xl text-gray-300 max-w-xl mb-10 leading-relaxed mx-auto lg:mx-0">
+              RealEstate AI cuts your property management workload in half with
+              AI that predicts problems, automates tenant communication, and
+              maximizes your rental income.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4 mb-12">
+              <Link
+                to="/auth/register"
+                className="btn-accent text-base md:text-lg px-8 py-4 rounded-lg shadow-realestate-lg inline-flex items-center gap-2 w-full sm:w-auto justify-center"
               >
-                <span className="text-white text-xs font-bold">
-                  {["JD", "SM", "AK", "RB", "TL"][i]}
-                </span>
+                Start Free Trial - No Credit Card Required
+                <ArrowRight className="w-5 h-5" aria-hidden="true" />
+              </Link>
+
+              <Link
+                to="#how-it-works"
+                className="border border-white/30 text-white font-inter font-medium px-8 py-4 rounded-lg hover:bg-white/10 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-realestate-primary inline-flex items-center gap-2 w-full sm:w-auto justify-center"
+              >
+                Watch 2-Min Demo
+              </Link>
+            </div>
+
+            {/* Trust indicators */}
+            <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4 animate-slide-up">
+              <div className="flex -space-x-2" aria-hidden="true">
+                {[
+                  "from-realestate-accent to-yellow-600",
+                  "from-realestate-success to-realestate-primary",
+                  "from-realestate-primary to-realestate-primary/70",
+                  "from-realestate-accent/80 to-realestate-accent",
+                  "from-realestate-primary/80 to-realestate-accent/70",
+                ].map((gradient, i) => (
+                  <div
+                    key={i}
+                    className={`w-9 h-9 rounded-full bg-gradient-to-br ${gradient} border-2 border-realestate-primary flex items-center justify-center`}
+                  >
+                    <span className="text-white text-xs font-bold">
+                      {["JD", "SM", "AK", "RB", "TL"][i]}
+                    </span>
+                  </div>
+                ))}
               </div>
-            ))}
+
+              <div className="text-center sm:text-left">
+                <div className="flex items-center justify-center sm:justify-start gap-0.5 mb-0.5">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-4 h-4 text-realestate-accent fill-realestate-accent"
+                      aria-hidden="true"
+                    />
+                  ))}
+                  <span className="text-white/70 text-sm ml-1">4.9/5</span>
+                </div>
+                <p className="text-gray-400 text-sm font-inter">
+                  Trusted by <strong className="text-white">2,500+</strong>{" "}
+                  Property Managers
+                </p>
+              </div>
+            </div>
           </div>
 
-          <div className="text-center sm:text-left">
-            <div className="flex items-center justify-center sm:justify-start gap-0.5 mb-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star
-                  key={i}
-                  className="w-4 h-4 text-realestate-accent fill-realestate-accent"
-                  aria-hidden="true"
-                />
-              ))}
-              <span className="text-white/70 text-sm ml-1">4.9/5</span>
+          {/* Right — Property preview / Dashboard demo */}
+          <div className="animate-slide-up hidden lg:block">
+            <div className="relative">
+              {/* Dashboard mockup card */}
+              <div className="bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 p-6 shadow-2xl">
+                {/* Hero image */}
+                <div className="rounded-xl overflow-hidden mb-4">
+                  <img
+                    src="/assets/generated/hero-home.png"
+                    alt="AI-powered property management dashboard showing analytics, tenant insights, and maintenance predictions"
+                    className="w-full h-auto object-cover rounded-xl"
+                  />
+                </div>
+
+                {/* Mini dashboard stats */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="flex items-center justify-center mb-1">
+                      <TrendingDown
+                        className="w-4 h-4 text-realestate-success"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <p className="text-white text-lg font-bold font-display">
+                      52%
+                    </p>
+                    <p className="text-gray-400 text-xs font-inter">
+                      Less Workload
+                    </p>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="flex items-center justify-center mb-1">
+                      <Activity
+                        className="w-4 h-4 text-realestate-accent"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <p className="text-white text-lg font-bold font-display">
+                      98%
+                    </p>
+                    <p className="text-gray-400 text-xs font-inter">
+                      Rent On-Time
+                    </p>
+                  </div>
+                  <div className="bg-white/10 rounded-lg p-3 text-center">
+                    <div className="flex items-center justify-center mb-1">
+                      <BarChart
+                        className="w-4 h-4 text-realestate-accent"
+                        aria-hidden="true"
+                      />
+                    </div>
+                    <p className="text-white text-lg font-bold font-display">
+                      $2.4M
+                    </p>
+                    <p className="text-gray-400 text-xs font-inter">
+                      Revenue Managed
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating notification card */}
+              <div className="absolute -bottom-4 -left-6 bg-white rounded-xl shadow-realestate-lg p-4 max-w-[220px] animate-fade-in border border-gray-100">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-full bg-realestate-success/20 flex items-center justify-center flex-shrink-0">
+                    <CheckCircle
+                      className="w-4 h-4 text-realestate-success"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-realestate-text text-sm font-semibold font-display">
+                      AI Prediction
+                    </p>
+                    <p className="text-gray-500 text-xs font-inter">
+                      Unit 4B HVAC needs service in 2 weeks
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <p className="text-gray-400 text-sm font-inter">
-              Trusted by <strong className="text-white">2,500+</strong> Property
-              Managers
-            </p>
           </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 /* ------------------------------------------------------------------ */
 /*  2. SOCIAL PROOF BAR                                                */
@@ -289,13 +402,13 @@ const stats = [
     value: "98%",
     label: "Tenant Satisfaction",
     icon: Users,
-    color: "text-emerald-500",
+    color: "text-realestate-success",
   },
   {
     value: "40%",
     label: "Fewer Vacancies",
     icon: TrendingDown,
-    color: "text-blue-500",
+    color: "text-realestate-primary",
   },
 ];
 
@@ -434,9 +547,9 @@ const AIShowcase: React.FC = () => (
                   </div>
                 </div>
                 <div className="rounded-xl bg-realestate-primary/5 p-4 flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-emerald-100 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-realestate-success/10 flex items-center justify-center">
                     <BarChart
-                      className="w-5 h-5 text-emerald-600"
+                      className="w-5 h-5 text-realestate-success"
                       aria-hidden="true"
                     />
                   </div>
@@ -510,7 +623,7 @@ const HowItWorks: React.FC = () => (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
         {/* Connecting line (desktop) */}
         <div
-          className="hidden md:block absolute top-24 left-[16.66%] right-[16.66%] h-0.5 bg-gradient-to-r from-realestate-accent via-realestate-secondary to-blue-500"
+          className="hidden md:block absolute top-24 left-[16.66%] right-[16.66%] h-0.5 bg-gradient-to-r from-realestate-accent via-realestate-secondary to-realestate-primary"
           aria-hidden="true"
         />
 
@@ -558,7 +671,7 @@ const testimonials = [
     role: "Property Owner, 18 Units",
     rating: 5,
     initials: "DC",
-    gradient: "from-realestate-secondary to-emerald-700",
+    gradient: "from-realestate-success to-realestate-primary",
   },
   {
     quote:
@@ -567,7 +680,7 @@ const testimonials = [
     role: "Independent Landlord, 120 Units",
     rating: 5,
     initials: "MR",
-    gradient: "from-blue-500 to-indigo-600",
+    gradient: "from-realestate-primary to-realestate-primary/70",
   },
 ];
 

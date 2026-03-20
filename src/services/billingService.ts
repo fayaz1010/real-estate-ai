@@ -137,7 +137,7 @@ export async function createPaymentIntent(
 ): Promise<{ clientSecret: string; paymentIntentId: string }> {
   const { data } = await apiClient.post<{
     data: { clientSecret: string };
-  }>("/billing/create-payment-intent", {
+  }>("/stripe/create-payment-intent", {
     amount: params.amount,
     currency: "usd",
     metadata: {
@@ -186,7 +186,7 @@ export async function updateSubscription(
 }
 
 export async function cancelSubscription(): Promise<void> {
-  await apiClient.post("/billing/cancel");
+  await apiClient.post("/stripe/cancel-subscription");
 }
 
 export async function resumeSubscription(
