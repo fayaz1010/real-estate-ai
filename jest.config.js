@@ -20,6 +20,22 @@ module.exports = {
           paths: { "@/*": ["./src/*"] },
         },
         diagnostics: false,
+        astTransformers: {
+          before: [
+            {
+              path: "ts-jest-mock-import-meta",
+              options: {
+                metaObjectReplacement: {
+                  env: {
+                    VITE_API_URL: "http://localhost:4041/api",
+                    VITE_GOOGLE_MAPS_API_KEY: "",
+                    VITE_STRIPE_PUBLISHABLE_KEY: "",
+                  },
+                },
+              },
+            },
+          ],
+        },
       },
     ],
   },

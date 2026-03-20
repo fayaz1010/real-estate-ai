@@ -146,10 +146,7 @@ const SocialProofBar: React.FC = () => {
               key={company}
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white shadow-realestate-sm border border-gray-100"
             >
-              <Building
-                className="w-5 h-5 text-gray-500"
-                aria-hidden="true"
-              />
+              <Building className="w-5 h-5 text-gray-500" aria-hidden="true" />
               <span className="font-space-grotesk font-semibold text-sm text-realestate-primary whitespace-nowrap">
                 {company}
               </span>

@@ -514,4 +514,8 @@ describe("PaymentCollectionPage", () => {
       render(<PaymentCollectionPage />);
 
       await waitFor(() => {
-        expect(screen.getByLabelText("Add payment method")).toBeInTheDocument()
+        expect(screen.getByLabelText("Add payment method")).toBeInTheDocument();
+      });
+    });
+  });
+});
