@@ -111,10 +111,13 @@ const mockDispatch = jest.fn(() => ({
 }));
 const mockUseAppSelector = jest.fn();
 
-jest.mock("@/store", () => ({
-  useAppDispatch: () => mockDispatch,
-  useAppSelector: mockUseAppSelector,
-}));
+jest.mock("@/store", () => {
+  return {
+    __esModule: true,
+    useAppDispatch: () => mockDispatch,
+    useAppSelector: (...args: unknown[]) => mockUseAppSelector(...args),
+  };
+});
 
 // ─── Test Data ──────────────────────────────────────────────────────────────
 
