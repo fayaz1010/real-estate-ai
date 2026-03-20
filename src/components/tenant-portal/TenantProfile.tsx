@@ -64,7 +64,7 @@ export const TenantProfile: React.FC = () => {
         role="status"
       >
         <div
-          className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#091a2b]"
+          className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#1A1A2E]"
           aria-hidden="true"
         />
         <span className="sr-only">Loading profile...</span>
@@ -73,10 +73,10 @@ export const TenantProfile: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] font-[Open_Sans]">
+    <div className="min-h-screen bg-[#f8f9fa] font-[Inter]">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <header className="mb-8">
-          <h1 className="font-montserrat text-2xl sm:text-3xl font-bold text-[#091a2b]">
+          <h1 className="font-manrope text-2xl sm:text-3xl font-bold text-[#1A1A2E]">
             My Profile
           </h1>
           <p className="text-gray-500 mt-1 text-sm">
@@ -117,8 +117,8 @@ export const TenantProfile: React.FC = () => {
           className="bg-white rounded-2xl shadow-sm p-6"
         >
           <div className="flex items-center gap-2 mb-6">
-            <User className="w-5 h-5 text-[#091a2b]" aria-hidden="true" />
-            <h2 className="font-montserrat text-lg font-semibold text-[#091a2b]">
+            <User className="w-5 h-5 text-[#1A1A2E]" aria-hidden="true" />
+            <h2 className="font-manrope text-lg font-semibold text-[#1A1A2E]">
               Personal Information
             </h2>
           </div>
@@ -142,7 +142,7 @@ export const TenantProfile: React.FC = () => {
                   value={profile.name}
                   onChange={(e) => handleChange("name", e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#091a2b]/20 focus:border-[#091a2b] transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A1A2E]/20 focus:border-[#1A1A2E] transition-colors"
                 />
               </div>
             </div>
@@ -165,7 +165,7 @@ export const TenantProfile: React.FC = () => {
                   value={profile.email}
                   onChange={(e) => handleChange("email", e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#091a2b]/20 focus:border-[#091a2b] transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A1A2E]/20 focus:border-[#1A1A2E] transition-colors"
                 />
               </div>
             </div>
@@ -188,7 +188,7 @@ export const TenantProfile: React.FC = () => {
                   value={profile.phone}
                   onChange={(e) => handleChange("phone", e.target.value)}
                   required
-                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#091a2b]/20 focus:border-[#091a2b] transition-colors"
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A1A2E]/20 focus:border-[#1A1A2E] transition-colors"
                 />
               </div>
             </div>
@@ -196,7 +196,7 @@ export const TenantProfile: React.FC = () => {
 
           {/* Emergency Contact */}
           <div className="mt-8">
-            <h3 className="font-montserrat text-base font-semibold text-[#091a2b] mb-4">
+            <h3 className="font-manrope text-base font-semibold text-[#1A1A2E] mb-4">
               Emergency Contact
             </h3>
             <div className="space-y-5">
@@ -215,7 +215,7 @@ export const TenantProfile: React.FC = () => {
                     handleChange("emergencyContactName", e.target.value)
                   }
                   required
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#091a2b]/20 focus:border-[#091a2b] transition-colors"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A1A2E]/20 focus:border-[#1A1A2E] transition-colors"
                 />
               </div>
 
@@ -239,7 +239,7 @@ export const TenantProfile: React.FC = () => {
                       handleChange("emergencyContactPhone", e.target.value)
                     }
                     required
-                    className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#091a2b]/20 focus:border-[#091a2b] transition-colors"
+                    className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A1A2E]/20 focus:border-[#1A1A2E] transition-colors"
                   />
                 </div>
               </div>
@@ -249,7 +249,7 @@ export const TenantProfile: React.FC = () => {
           <button
             type="submit"
             disabled={saving}
-            className="mt-6 w-full bg-[#091a2b] text-white py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="mt-6 w-full bg-[#1A1A2E] text-white py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             <Save className="w-4 h-4" aria-hidden="true" />
             {saving ? "Saving..." : "Save Changes"}

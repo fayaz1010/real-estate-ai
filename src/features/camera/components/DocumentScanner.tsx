@@ -143,7 +143,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
       ctx.restore();
 
       // Draw border
-      ctx.strokeStyle = "#005163";
+      ctx.strokeStyle = "#008080";
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(pts[0].x, pts[0].y);
@@ -155,7 +155,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
 
       // Draw corner handles
       for (const pt of pts) {
-        ctx.fillStyle = "#005163";
+        ctx.fillStyle = "#008080";
         ctx.beginPath();
         ctx.arc(pt.x, pt.y, 12, 0, Math.PI * 2);
         ctx.fill();
@@ -260,11 +260,11 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
       {/* Header */}
       <div
         className="flex items-center justify-between p-4 border-b border-gray-700"
-        style={{ backgroundColor: "#091a2b" }}
+        style={{ backgroundColor: "#1A1A2E" }}
       >
         <h3
           className="text-white font-semibold"
-          style={{ fontFamily: "Montserrat, sans-serif" }}
+          style={{ fontFamily: "Manrope, sans-serif" }}
         >
           <Scan className="w-5 h-5 inline-block mr-2 -mt-0.5" />
           Document Scanner
@@ -303,12 +303,12 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                   ? "text-white bg-white/15"
                   : "text-gray-500"
               }`}
-              style={{ fontFamily: "Open Sans, sans-serif" }}
+              style={{ fontFamily: "Inter, sans-serif" }}
             >
               <span
                 className="w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold"
                 style={{
-                  backgroundColor: step === s ? "#005163" : "transparent",
+                  backgroundColor: step === s ? "#008080" : "transparent",
                   border: step !== s ? "1px solid currentColor" : "none",
                   color: step === s ? "white" : undefined,
                 }}
@@ -347,8 +347,8 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                     onClick={handleCapture}
                     className="px-6 py-3 rounded-xl text-white font-medium flex items-center gap-2 shadow-lg"
                     style={{
-                      backgroundColor: "#005163",
-                      fontFamily: "Open Sans, sans-serif",
+                      backgroundColor: "#008080",
+                      fontFamily: "Inter, sans-serif",
                     }}
                   >
                     <Scan className="w-5 h-5" />
@@ -361,7 +361,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                 <Scan className="w-16 h-16 text-gray-500 mb-4" />
                 <p
                   className="text-gray-400 mb-4"
-                  style={{ fontFamily: "Open Sans, sans-serif" }}
+                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   Position the document within the frame
                 </p>
@@ -369,8 +369,8 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                   onClick={startCamera}
                   className="px-6 py-3 rounded-lg text-white font-medium"
                   style={{
-                    backgroundColor: "#005163",
-                    fontFamily: "Open Sans, sans-serif",
+                    backgroundColor: "#008080",
+                    fontFamily: "Inter, sans-serif",
                   }}
                 >
                   Start Camera
@@ -406,7 +406,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
             <div className="p-4 flex justify-between items-center bg-gray-800">
               <p
                 className="text-gray-400 text-sm"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 Drag corners to adjust document edges
               </p>
@@ -415,8 +415,8 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                 disabled={isProcessing}
                 className="px-5 py-2 rounded-lg text-white font-medium flex items-center gap-2 disabled:opacity-50"
                 style={{
-                  backgroundColor: "#005163",
-                  fontFamily: "Open Sans, sans-serif",
+                  backgroundColor: "#008080",
+                  fontFamily: "Inter, sans-serif",
                 }}
               >
                 {isProcessing ? (
@@ -447,7 +447,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                 <ZoomIn className="w-4 h-4 text-gray-400 flex-shrink-0" />
                 <span
                   className="text-gray-400 text-xs w-16 flex-shrink-0"
-                  style={{ fontFamily: "Open Sans, sans-serif" }}
+                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   Brightness
                 </span>
@@ -462,14 +462,14 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                       brightness: Number(e.target.value),
                     }))
                   }
-                  className="flex-1 accent-[#005163]"
+                  className="flex-1 accent-[#008080]"
                 />
               </div>
               <div className="flex items-center gap-3">
                 <Contrast className="w-4 h-4 text-gray-400 flex-shrink-0" />
                 <span
                   className="text-gray-400 text-xs w-16 flex-shrink-0"
-                  style={{ fontFamily: "Open Sans, sans-serif" }}
+                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   Contrast
                 </span>
@@ -484,7 +484,7 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                       contrast: Number(e.target.value),
                     }))
                   }
-                  className="flex-1 accent-[#005163]"
+                  className="flex-1 accent-[#008080]"
                 />
               </div>
               <div className="flex items-center gap-3">
@@ -498,11 +498,11 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                         grayscale: e.target.checked,
                       }))
                     }
-                    className="accent-[#005163]"
+                    className="accent-[#008080]"
                   />
                   <span
                     className="text-gray-400 text-xs"
-                    style={{ fontFamily: "Open Sans, sans-serif" }}
+                    style={{ fontFamily: "Inter, sans-serif" }}
                   >
                     Black & White
                   </span>
@@ -513,8 +513,8 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                   disabled={isProcessing}
                   className="text-xs px-3 py-1 rounded-lg text-white disabled:opacity-50"
                   style={{
-                    backgroundColor: "#3b4876",
-                    fontFamily: "Open Sans, sans-serif",
+                    backgroundColor: "#FF6B35",
+                    fontFamily: "Inter, sans-serif",
                   }}
                 >
                   {isProcessing ? "Processing..." : "Apply"}
@@ -526,8 +526,8 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                   onClick={handleDownload}
                   className="flex-1 px-4 py-2 rounded-lg text-white font-medium flex items-center justify-center gap-2"
                   style={{
-                    backgroundColor: "#3b4876",
-                    fontFamily: "Open Sans, sans-serif",
+                    backgroundColor: "#FF6B35",
+                    fontFamily: "Inter, sans-serif",
                   }}
                 >
                   <Download className="w-4 h-4" />
@@ -537,8 +537,8 @@ export const DocumentScanner: React.FC<DocumentScannerProps> = ({
                   onClick={handleSave}
                   className="flex-1 px-4 py-2 rounded-lg text-white font-medium flex items-center justify-center gap-2"
                   style={{
-                    backgroundColor: "#005163",
-                    fontFamily: "Open Sans, sans-serif",
+                    backgroundColor: "#008080",
+                    fontFamily: "Inter, sans-serif",
                   }}
                 >
                   <Check className="w-4 h-4" />

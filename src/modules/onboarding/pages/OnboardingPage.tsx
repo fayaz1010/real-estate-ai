@@ -13,9 +13,9 @@ const OnboardingPage: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#f1f3f4]">
+    <div className="min-h-screen bg-[#FFFFFF]">
       {/* Header */}
-      <div className="bg-[#091a2b] text-white py-6">
+      <div className="bg-[#1A1A2E] text-white py-6">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
             <Building2 className="w-7 h-7" />
@@ -33,16 +33,16 @@ const OnboardingPage: React.FC = () => {
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-center gap-6 text-sm font-open-sans text-gray-600">
           <div className="flex items-center gap-1.5">
-            <Users className="w-4 h-4 text-[#005163]" />
+            <Users className="w-4 h-4 text-[#008080]" />
             <span>
-              <strong className="text-[#091a2b]">50,000+</strong> units managed
+              <strong className="text-[#1A1A2E]">50,000+</strong> units managed
             </span>
           </div>
           <div className="hidden sm:block w-px h-4 bg-gray-300" />
           <div className="hidden sm:flex items-center gap-1.5">
-            <Shield className="w-4 h-4 text-[#005163]" />
+            <Shield className="w-4 h-4 text-[#008080]" />
             <span>
-              <strong className="text-[#091a2b]">99.9%</strong> uptime
+              <strong className="text-[#1A1A2E]">99.9%</strong> uptime
             </span>
           </div>
         </div>

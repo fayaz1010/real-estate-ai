@@ -117,7 +117,7 @@ export const PushNotificationSubscription: React.FC = () => {
     return (
       <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white p-4">
         <Loader className="h-5 w-5 animate-spin text-gray-400" />
-        <span className="text-sm text-gray-500 font-['Open_Sans']">
+        <span className="text-sm text-gray-500 font-['Inter']">
           Checking notification status...
         </span>
       </div>
@@ -129,10 +129,10 @@ export const PushNotificationSubscription: React.FC = () => {
       <div className="flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4">
         <BellOff className="h-5 w-5 text-gray-400" />
         <div>
-          <p className="text-sm font-medium text-[#091a2b] font-['Montserrat']">
+          <p className="text-sm font-medium text-[#1A1A2E] font-['Manrope']">
             Push Notifications
           </p>
-          <p className="text-xs text-gray-500 font-['Open_Sans']">
+          <p className="text-xs text-gray-500 font-['Inter']">
             Your browser does not support push notifications.
           </p>
         </div>
@@ -145,10 +145,10 @@ export const PushNotificationSubscription: React.FC = () => {
       <div className="flex items-center gap-3 rounded-lg border border-orange-200 bg-orange-50 p-4">
         <BellOff className="h-5 w-5 text-orange-500" />
         <div>
-          <p className="text-sm font-medium text-[#091a2b] font-['Montserrat']">
+          <p className="text-sm font-medium text-[#1A1A2E] font-['Manrope']">
             Push Notifications Blocked
           </p>
-          <p className="text-xs text-gray-600 font-['Open_Sans']">
+          <p className="text-xs text-gray-600 font-['Inter']">
             Notifications are blocked. Please enable them in your browser
             settings.
           </p>
@@ -163,10 +163,10 @@ export const PushNotificationSubscription: React.FC = () => {
         <div className="flex items-center gap-3">
           <Bell className="h-5 w-5 text-green-600" />
           <div>
-            <p className="text-sm font-medium text-[#091a2b] font-['Montserrat']">
+            <p className="text-sm font-medium text-[#1A1A2E] font-['Manrope']">
               Push Notifications Active
             </p>
-            <p className="text-xs text-gray-600 font-['Open_Sans']">
+            <p className="text-xs text-gray-600 font-['Inter']">
               You will receive push notifications for important updates.
             </p>
           </div>
@@ -186,12 +186,12 @@ export const PushNotificationSubscription: React.FC = () => {
   return (
     <div className="flex items-center justify-between gap-3 rounded-lg border border-gray-200 bg-white p-4">
       <div className="flex items-center gap-3">
-        <Bell className="h-5 w-5 text-[#005163]" />
+        <Bell className="h-5 w-5 text-[#008080]" />
         <div>
-          <p className="text-sm font-medium text-[#091a2b] font-['Montserrat']">
+          <p className="text-sm font-medium text-[#1A1A2E] font-['Manrope']">
             Push Notifications
           </p>
-          <p className="text-xs text-gray-500 font-['Open_Sans']">
+          <p className="text-xs text-gray-500 font-['Inter']">
             {state === "error"
               ? "Something went wrong. Try again."
               : "Get notified about inspections, applications, and more."}

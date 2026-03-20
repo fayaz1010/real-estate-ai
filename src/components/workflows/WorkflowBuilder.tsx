@@ -80,8 +80,8 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
         <button
           type="button"
           onClick={onCancel}
-          className="flex items-center gap-2 text-sm text-gray-500 hover:text-[#091a2b] transition-colors"
-          style={{ fontFamily: "Open Sans, sans-serif" }}
+          className="flex items-center gap-2 text-sm text-gray-500 hover:text-[#1A1A2E] transition-colors"
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Workflows
@@ -89,21 +89,21 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
         <div className="flex items-center gap-3">
           <label
             className="flex items-center gap-2 text-sm"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             <input
               type="checkbox"
               checked={enabled}
               onChange={(e) => setEnabled(e.target.checked)}
-              className="w-4 h-4 rounded border-gray-300 text-[#3b4876] focus:ring-[#3b4876]"
+              className="w-4 h-4 rounded border-gray-300 text-[#FF6B35] focus:ring-[#FF6B35]"
             />
             <span className="text-gray-600">Enabled</span>
           </label>
           <button
             type="submit"
             disabled={!name.trim() || saving}
-            className="flex items-center gap-2 px-5 py-2.5 bg-[#091a2b] text-white rounded-lg text-sm font-semibold hover:bg-[#091a2b]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            className="flex items-center gap-2 px-5 py-2.5 bg-[#1A1A2E] text-white rounded-lg text-sm font-semibold hover:bg-[#1A1A2E]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             <Save className="w-4 h-4" />
             {saving ? "Saving..." : "Save Workflow"}
@@ -114,15 +114,15 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
       {/* Name & Description */}
       <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-4">
         <h2
-          className="text-lg font-bold text-[#091a2b]"
-          style={{ fontFamily: "Montserrat, sans-serif" }}
+          className="text-lg font-bold text-[#1A1A2E]"
+          style={{ fontFamily: "Manrope, sans-serif" }}
         >
           Workflow Details
         </h2>
         <div>
           <label
-            className="block text-sm font-semibold text-[#091a2b] mb-1.5"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            className="block text-sm font-semibold text-[#1A1A2E] mb-1.5"
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             Name
           </label>
@@ -131,15 +131,15 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder="e.g. Late Rent Reminder"
-            className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-[#091a2b] focus:border-[#3b4876] focus:ring-1 focus:ring-[#3b4876] outline-none"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-[#1A1A2E] focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] outline-none"
+            style={{ fontFamily: "Inter, sans-serif" }}
             required
           />
         </div>
         <div>
           <label
-            className="block text-sm font-semibold text-[#091a2b] mb-1.5"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            className="block text-sm font-semibold text-[#1A1A2E] mb-1.5"
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             Description
           </label>
@@ -148,8 +148,8 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
             onChange={(e) => setDescription(e.target.value)}
             placeholder="What does this workflow do?"
             rows={2}
-            className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-[#091a2b] focus:border-[#3b4876] focus:ring-1 focus:ring-[#3b4876] outline-none resize-none"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-[#1A1A2E] focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] outline-none resize-none"
+            style={{ fontFamily: "Inter, sans-serif" }}
           />
         </div>
       </div>
@@ -157,8 +157,8 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
       {/* Trigger */}
       <div className="bg-white border border-gray-200 rounded-lg p-6">
         <h2
-          className="text-lg font-bold text-[#091a2b] mb-4"
-          style={{ fontFamily: "Montserrat, sans-serif" }}
+          className="text-lg font-bold text-[#1A1A2E] mb-4"
+          style={{ fontFamily: "Manrope, sans-serif" }}
         >
           Trigger
         </h2>
@@ -176,16 +176,16 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
       <div className="bg-white border border-gray-200 rounded-lg p-6">
         <div className="flex items-center justify-between mb-4">
           <h2
-            className="text-lg font-bold text-[#091a2b]"
-            style={{ fontFamily: "Montserrat, sans-serif" }}
+            className="text-lg font-bold text-[#1A1A2E]"
+            style={{ fontFamily: "Manrope, sans-serif" }}
           >
             Steps ({steps.length})
           </h2>
           <button
             type="button"
             onClick={handleAddStep}
-            className="flex items-center gap-2 px-4 py-2 bg-[#3b4876]/10 text-[#3b4876] rounded-lg text-sm font-semibold hover:bg-[#3b4876]/20 transition-colors"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            className="flex items-center gap-2 px-4 py-2 bg-[#FF6B35]/10 text-[#FF6B35] rounded-lg text-sm font-semibold hover:bg-[#FF6B35]/20 transition-colors"
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             <Plus className="w-4 h-4" />
             Add Step
@@ -196,7 +196,7 @@ export const WorkflowBuilder: React.FC<WorkflowBuilderProps> = ({
           <div className="text-center py-10 border-2 border-dashed border-gray-200 rounded-lg">
             <p
               className="text-sm text-gray-400"
-              style={{ fontFamily: "Open Sans, sans-serif" }}
+              style={{ fontFamily: "Inter, sans-serif" }}
             >
               No steps yet. Add a step to define what this workflow does.
             </p>

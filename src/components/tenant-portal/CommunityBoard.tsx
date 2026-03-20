@@ -70,7 +70,7 @@ export const CommunityBoard: React.FC = () => {
         role="status"
       >
         <div
-          className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#091a2b]"
+          className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#1A1A2E]"
           aria-hidden="true"
         />
         <span className="sr-only">Loading community board...</span>
@@ -79,10 +79,10 @@ export const CommunityBoard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] font-[Open_Sans]">
+    <div className="min-h-screen bg-[#f8f9fa] font-[Inter]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <header className="mb-8">
-          <h1 className="font-montserrat text-2xl sm:text-3xl font-bold text-[#091a2b]">
+          <h1 className="font-manrope text-2xl sm:text-3xl font-bold text-[#1A1A2E]">
             Community Board
           </h1>
           <p className="text-gray-500 mt-1 text-sm">
@@ -116,7 +116,7 @@ export const CommunityBoard: React.FC = () => {
             <button
               type="button"
               onClick={() => setShowForm(true)}
-              className="flex items-center gap-2 bg-[#091a2b] text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
+              className="flex items-center gap-2 bg-[#1A1A2E] text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
             >
               <Plus className="w-4 h-4" aria-hidden="true" />
               New Post
@@ -126,7 +126,7 @@ export const CommunityBoard: React.FC = () => {
               onSubmit={handleCreatePost}
               className="bg-white rounded-2xl shadow-sm p-6"
             >
-              <h2 className="font-montserrat text-lg font-semibold text-[#091a2b] mb-4">
+              <h2 className="font-manrope text-lg font-semibold text-[#1A1A2E] mb-4">
                 Create a Post
               </h2>
               <div className="space-y-4">
@@ -144,7 +144,7 @@ export const CommunityBoard: React.FC = () => {
                     onChange={(e) => setNewAuthor(e.target.value)}
                     placeholder="Enter your name"
                     required
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#091a2b]/20 focus:border-[#091a2b] transition-colors"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A1A2E]/20 focus:border-[#1A1A2E] transition-colors"
                   />
                 </div>
                 <div>
@@ -161,7 +161,7 @@ export const CommunityBoard: React.FC = () => {
                     placeholder="Share something with the community..."
                     required
                     rows={3}
-                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#091a2b]/20 focus:border-[#091a2b] transition-colors resize-none"
+                    className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A1A2E]/20 focus:border-[#1A1A2E] transition-colors resize-none"
                   />
                 </div>
               </div>
@@ -171,7 +171,7 @@ export const CommunityBoard: React.FC = () => {
                   disabled={
                     submitting || !newContent.trim() || !newAuthor.trim()
                   }
-                  className="flex items-center gap-2 bg-[#091a2b] text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="flex items-center gap-2 bg-[#1A1A2E] text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   <Send className="w-4 h-4" aria-hidden="true" />
                   {submitting ? "Posting..." : "Post"}
@@ -203,7 +203,7 @@ export const CommunityBoard: React.FC = () => {
               >
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 bg-[#091a2b] text-white rounded-full flex items-center justify-center text-xs font-bold">
+                    <div className="w-8 h-8 bg-[#1A1A2E] text-white rounded-full flex items-center justify-center text-xs font-bold">
                       {post.author
                         .split(" ")
                         .map((n) => n[0])
@@ -212,7 +212,7 @@ export const CommunityBoard: React.FC = () => {
                         .slice(0, 2)}
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-[#091a2b]">
+                      <p className="text-sm font-medium text-[#1A1A2E]">
                         {post.author}
                       </p>
                       <p className="text-xs text-gray-400">

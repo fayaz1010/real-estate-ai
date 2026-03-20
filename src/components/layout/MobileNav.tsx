@@ -22,8 +22,8 @@ const styles: Record<string, React.CSSProperties> = {
     left: 0,
     right: 0,
     zIndex: 50,
-    backgroundColor: "#091a2b",
-    fontFamily: "'Open Sans', sans-serif",
+    backgroundColor: "#1A1A2E",
+    fontFamily: "'Inter', sans-serif",
   },
   container: {
     display: "flex",
@@ -43,11 +43,11 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     background: "transparent",
     transition: "color 0.2s ease",
-    fontFamily: "'Open Sans', sans-serif",
+    fontFamily: "'Inter', sans-serif",
   },
   label: {
     fontSize: 11,
-    fontFamily: "'Open Sans', sans-serif",
+    fontFamily: "'Inter', sans-serif",
   },
 };
 
@@ -61,7 +61,7 @@ export function MobileNav() {
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           const Icon = item.icon;
-          const color = isActive ? "#ffffff" : "#f1f3f4";
+          const color = isActive ? "#ffffff" : "#FFFFFF";
           const opacity = isActive ? 1 : 0.6;
 
           return (

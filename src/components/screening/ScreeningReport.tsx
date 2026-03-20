@@ -61,7 +61,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
       >
         <p
           className="text-red-700 font-medium"
-          style={{ fontFamily: "'Open Sans', sans-serif" }}
+          style={{ fontFamily: "'Inter', sans-serif" }}
         >
           {error ?? "Screening request not found."}
         </p>
@@ -78,11 +78,11 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
     <div className="bg-white border border-gray-200 rounded-lg p-5">
       <div className="flex items-center gap-3 mb-3">
         <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center">
-          <Icon className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
+          <Icon className="w-4 h-4 text-[#1A1A2E]" aria-hidden="true" />
         </div>
         <h3
           className="text-sm font-semibold"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
+          style={{ fontFamily: "'Manrope', sans-serif", color: "#1A1A2E" }}
         >
           {label}
         </h3>
@@ -90,14 +90,14 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
       {available ? (
         <div
           className="text-sm"
-          style={{ fontFamily: "'Open Sans', sans-serif", color: "#091a2b" }}
+          style={{ fontFamily: "'Inter', sans-serif", color: "#1A1A2E" }}
         >
           {value}
         </div>
       ) : (
         <p
           className="text-sm text-gray-400 italic"
-          style={{ fontFamily: "'Open Sans', sans-serif" }}
+          style={{ fontFamily: "'Inter', sans-serif" }}
         >
           No data available
         </p>
@@ -111,7 +111,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <h2
           className="text-2xl font-bold"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
+          style={{ fontFamily: "'Manrope', sans-serif", color: "#1A1A2E" }}
         >
           Screening Report
         </h2>
@@ -122,7 +122,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
       <div className="bg-white border border-gray-200 rounded-lg p-6">
         <h3
           className="text-lg font-semibold mb-4"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
+          style={{ fontFamily: "'Manrope', sans-serif", color: "#1A1A2E" }}
         >
           Tenant Information
         </h3>
@@ -135,15 +135,15 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
             <div>
               <p
                 className="text-xs text-gray-500"
-                style={{ fontFamily: "'Open Sans', sans-serif" }}
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Name
               </p>
               <p
                 className="text-sm font-medium"
                 style={{
-                  fontFamily: "'Open Sans', sans-serif",
-                  color: "#091a2b",
+                  fontFamily: "'Inter', sans-serif",
+                  color: "#1A1A2E",
                 }}
               >
                 {request.tenantName}
@@ -158,15 +158,15 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
             <div>
               <p
                 className="text-xs text-gray-500"
-                style={{ fontFamily: "'Open Sans', sans-serif" }}
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Email
               </p>
               <p
                 className="text-sm font-medium"
                 style={{
-                  fontFamily: "'Open Sans', sans-serif",
-                  color: "#091a2b",
+                  fontFamily: "'Inter', sans-serif",
+                  color: "#1A1A2E",
                 }}
               >
                 {request.email}
@@ -181,15 +181,15 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
             <div>
               <p
                 className="text-xs text-gray-500"
-                style={{ fontFamily: "'Open Sans', sans-serif" }}
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Phone
               </p>
               <p
                 className="text-sm font-medium"
                 style={{
-                  fontFamily: "'Open Sans', sans-serif",
-                  color: "#091a2b",
+                  fontFamily: "'Inter', sans-serif",
+                  color: "#1A1A2E",
                 }}
               >
                 {request.phone}
@@ -204,15 +204,15 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
             <div>
               <p
                 className="text-xs text-gray-500"
-                style={{ fontFamily: "'Open Sans', sans-serif" }}
+                style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 Property ID
               </p>
               <p
                 className="text-sm font-medium"
                 style={{
-                  fontFamily: "'Open Sans', sans-serif",
-                  color: "#091a2b",
+                  fontFamily: "'Inter', sans-serif",
+                  color: "#1A1A2E",
                 }}
               >
                 {request.propertyId}
@@ -226,7 +226,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
       <div>
         <h3
           className="text-lg font-semibold mb-4"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
+          style={{ fontFamily: "'Manrope', sans-serif", color: "#1A1A2E" }}
         >
           Screening Results
         </h3>
@@ -283,7 +283,7 @@ export const ScreeningReport: React.FC<ScreeningReportProps> = ({
       {/* Timestamps */}
       <div
         className="text-xs text-gray-400 flex gap-6"
-        style={{ fontFamily: "'Open Sans', sans-serif" }}
+        style={{ fontFamily: "'Inter', sans-serif" }}
       >
         <span>
           Created:{" "}

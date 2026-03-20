@@ -12,6 +12,8 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { PageMeta } from "../../components/seo";
+
 const timeSavings = [
   {
     task: "Tenant Screening & Background Checks",
@@ -127,6 +129,12 @@ const testimonials = [
 export const AIPropertyManagementPage: React.FC = () => {
   return (
     <main className="min-h-screen bg-white" role="main">
+      <PageMeta
+        title="AI Property Management Software | RealEstate AI"
+        description="Harness AI to automate tenant screening, predict maintenance issues, and optimize rental income. RealEstate AI saves property managers 15+ hours per week."
+        keywords="AI property management, artificial intelligence property management, smart property management, automated property management, AI landlord software"
+        canonicalUrl="https://realestate-ai.com/landing/ai-property-management"
+      />
       {/* Hero Section */}
       <section
         className="relative pt-24 pb-20 bg-realestate-primary overflow-hidden"

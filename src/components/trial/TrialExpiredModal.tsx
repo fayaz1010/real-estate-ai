@@ -39,7 +39,7 @@ export const TrialExpiredModal: React.FC<TrialExpiredModalProps> = ({
         <div className="text-center">
           <div
             className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full"
-            style={{ backgroundColor: "#091a2b" }}
+            style={{ backgroundColor: "#1A1A2E" }}
           >
             <AlertTriangle className="w-7 h-7 text-amber-400" />
           </div>
@@ -48,8 +48,8 @@ export const TrialExpiredModal: React.FC<TrialExpiredModalProps> = ({
             id="trial-expired-title"
             className="mb-2 text-2xl font-bold"
             style={{
-              fontFamily: "'Montserrat', sans-serif",
-              color: "#091a2b",
+              fontFamily: "'Manrope', sans-serif",
+              color: "#1A1A2E",
             }}
           >
             Your Free Trial Has Ended
@@ -57,7 +57,7 @@ export const TrialExpiredModal: React.FC<TrialExpiredModalProps> = ({
 
           <p
             className="mb-6 text-gray-600 leading-relaxed"
-            style={{ fontFamily: "'Open Sans', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             Your AI Property Manager — Never Miss a Beat. Upgrade now to keep
             managing smarter with AI-powered insights, automated workflows, and
@@ -66,7 +66,7 @@ export const TrialExpiredModal: React.FC<TrialExpiredModalProps> = ({
 
           <p
             className="mb-8 text-sm text-gray-500"
-            style={{ fontFamily: "'Open Sans', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             Your data is preserved for 30 days. Choose a plan to continue where
             you left off.
@@ -76,8 +76,8 @@ export const TrialExpiredModal: React.FC<TrialExpiredModalProps> = ({
             to="/pricing"
             className="inline-flex items-center justify-center gap-2 w-full rounded-lg px-6 py-3.5 text-base font-semibold text-white transition-opacity hover:opacity-90"
             style={{
-              backgroundColor: "#3b4876",
-              fontFamily: "'Montserrat', sans-serif",
+              backgroundColor: "#FF6B35",
+              fontFamily: "'Manrope', sans-serif",
             }}
           >
             Choose a Plan
@@ -86,7 +86,7 @@ export const TrialExpiredModal: React.FC<TrialExpiredModalProps> = ({
 
           <p
             className="mt-4 text-xs text-gray-400"
-            style={{ fontFamily: "'Open Sans', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             Need help deciding?{" "}
             <Link to="/contact" className="underline hover:text-gray-600">

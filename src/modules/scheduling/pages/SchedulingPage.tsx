@@ -241,29 +241,29 @@ const SchedulingPage: React.FC = () => {
   // ─── Field styles ────────────────────────────────────────────────────────
 
   const fieldClasses =
-    "w-full px-3 py-2.5 border border-[#091a2b]/20 rounded-lg text-sm text-[#091a2b] font-['Open_Sans'] focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent transition-colors bg-white";
+    "w-full px-3 py-2.5 border border-[#1A1A2E]/20 rounded-lg text-sm text-[#1A1A2E] font-['Inter'] focus:outline-none focus:ring-2 focus:ring-[#008080] focus:border-transparent transition-colors bg-white";
 
   const labelClasses =
-    "block text-sm font-semibold text-[#091a2b] font-['Open_Sans'] mb-1.5";
+    "block text-sm font-semibold text-[#1A1A2E] font-['Inter'] mb-1.5";
 
   // ─── Render ──────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-[#f1f3f4]">
+    <div className="min-h-screen bg-[#FFFFFF]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-2xl font-bold text-[#091a2b] font-['Montserrat']">
+            <h1 className="text-2xl font-bold text-[#1A1A2E] font-['Manrope']">
               Smart Scheduling
             </h1>
-            <p className="text-sm text-gray-600 font-['Open_Sans'] mt-1">
+            <p className="text-sm text-gray-600 font-['Inter'] mt-1">
               Manage property viewings, inspections, and meetings
             </p>
           </div>
           <button
             onClick={() => openCreateForm()}
-            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#091a2b] text-white text-sm font-semibold rounded-lg hover:bg-[#005163] transition-colors font-['Open_Sans']"
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1A1A2E] text-white text-sm font-semibold rounded-lg hover:bg-[#008080] transition-colors font-['Inter']"
           >
             <Plus className="w-4 h-4" />
             New Booking
@@ -285,7 +285,7 @@ const SchedulingPage: React.FC = () => {
           {/* Sidebar: Upcoming Bookings */}
           <div className="lg:col-span-1">
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
-              <h2 className="text-lg font-bold text-[#091a2b] font-['Montserrat'] mb-4">
+              <h2 className="text-lg font-bold text-[#1A1A2E] font-['Manrope'] mb-4">
                 Upcoming Events
               </h2>
 
@@ -301,12 +301,12 @@ const SchedulingPage: React.FC = () => {
               ) : upcomingBookings.length === 0 ? (
                 <div className="text-center py-8">
                   <Calendar className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                  <p className="text-sm text-gray-500 font-['Open_Sans']">
+                  <p className="text-sm text-gray-500 font-['Inter']">
                     No upcoming bookings
                   </p>
                   <button
                     onClick={() => openCreateForm()}
-                    className="mt-3 text-sm text-[#005163] font-semibold hover:underline font-['Open_Sans']"
+                    className="mt-3 text-sm text-[#008080] font-semibold hover:underline font-['Inter']"
                   >
                     Create one now
                   </button>
@@ -316,7 +316,7 @@ const SchedulingPage: React.FC = () => {
                   {upcomingBookings.map((booking) => (
                     <div
                       key={booking.id}
-                      className="group relative p-3 rounded-lg border border-gray-100 hover:border-[#005163]/30 hover:bg-gray-50 transition-all cursor-pointer"
+                      className="group relative p-3 rounded-lg border border-gray-100 hover:border-[#008080]/30 hover:bg-gray-50 transition-all cursor-pointer"
                       onClick={() => openEditForm(booking)}
                     >
                       <div className="flex items-start justify-between">
@@ -326,20 +326,20 @@ const SchedulingPage: React.FC = () => {
                               className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${
                                 STATUS_COLORS[booking.status] ||
                                 STATUS_COLORS.pending
-                              } font-['Open_Sans']`}
+                              } font-['Inter']`}
                             >
                               {booking.status.charAt(0).toUpperCase() +
                                 booking.status.slice(1)}
                             </span>
-                            <span className="text-[10px] text-gray-400 font-['Open_Sans']">
+                            <span className="text-[10px] text-gray-400 font-['Inter']">
                               {booking.type.charAt(0).toUpperCase() +
                                 booking.type.slice(1)}
                             </span>
                           </div>
-                          <p className="text-sm font-semibold text-[#091a2b] truncate font-['Open_Sans']">
+                          <p className="text-sm font-semibold text-[#1A1A2E] truncate font-['Inter']">
                             {booking.title || `${booking.type} booking`}
                           </p>
-                          <div className="flex items-center gap-1 mt-1 text-xs text-gray-500 font-['Open_Sans']">
+                          <div className="flex items-center gap-1 mt-1 text-xs text-gray-500 font-['Inter']">
                             <Clock className="w-3 h-3" />
                             {new Date(booking.startTime).toLocaleDateString(
                               "en-US",
@@ -363,7 +363,7 @@ const SchedulingPage: React.FC = () => {
                               e.stopPropagation();
                               openEditForm(booking);
                             }}
-                            className="p-1 rounded hover:bg-gray-200 text-gray-400 hover:text-[#005163]"
+                            className="p-1 rounded hover:bg-gray-200 text-gray-400 hover:text-[#008080]"
                             aria-label="Edit booking"
                           >
                             <Edit3 className="w-3.5 h-3.5" />
@@ -384,7 +384,7 @@ const SchedulingPage: React.FC = () => {
                   ))}
 
                   {upcomingBookings.length >= 10 && (
-                    <button className="w-full flex items-center justify-center gap-1 py-2 text-xs text-[#005163] font-semibold hover:underline font-['Open_Sans']">
+                    <button className="w-full flex items-center justify-center gap-1 py-2 text-xs text-[#008080] font-semibold hover:underline font-['Inter']">
                       View all <ChevronRight className="w-3 h-3" />
                     </button>
                   )}
@@ -409,7 +409,7 @@ const SchedulingPage: React.FC = () => {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-5">
-              <h3 className="text-lg font-bold text-[#091a2b] font-['Montserrat']">
+              <h3 className="text-lg font-bold text-[#1A1A2E] font-['Manrope']">
                 {editingBooking ? "Edit Booking" : "New Booking"}
               </h3>
               <button
@@ -425,7 +425,7 @@ const SchedulingPage: React.FC = () => {
             </div>
 
             {submitError && (
-              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-center gap-2 font-['Open_Sans']">
+              <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 flex items-center gap-2 font-['Inter']">
                 <AlertCircle className="w-4 h-4 flex-shrink-0" />
                 {submitError}
               </div>
@@ -454,7 +454,7 @@ const SchedulingPage: React.FC = () => {
                   ))}
                 </select>
                 {formErrors.type && (
-                  <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Open_Sans']">
+                  <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Inter']">
                     <AlertCircle className="w-3 h-3" /> {formErrors.type}
                   </p>
                 )}
@@ -479,7 +479,7 @@ const SchedulingPage: React.FC = () => {
                   disabled={!!editingBooking}
                 />
                 {formErrors.propertyId && (
-                  <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Open_Sans']">
+                  <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Inter']">
                     <AlertCircle className="w-3 h-3" /> {formErrors.propertyId}
                   </p>
                 )}
@@ -499,7 +499,7 @@ const SchedulingPage: React.FC = () => {
                   className={fieldClasses}
                 />
                 {formErrors.title && (
-                  <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Open_Sans']">
+                  <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Inter']">
                     <AlertCircle className="w-3 h-3" /> {formErrors.title}
                   </p>
                 )}
@@ -542,7 +542,7 @@ const SchedulingPage: React.FC = () => {
                     className={fieldClasses}
                   />
                   {formErrors.startTime && (
-                    <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Open_Sans']">
+                    <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Inter']">
                       <AlertCircle className="w-3 h-3" /> {formErrors.startTime}
                     </p>
                   )}
@@ -559,7 +559,7 @@ const SchedulingPage: React.FC = () => {
                     className={fieldClasses}
                   />
                   {formErrors.endTime && (
-                    <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Open_Sans']">
+                    <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Inter']">
                       <AlertCircle className="w-3 h-3" /> {formErrors.endTime}
                     </p>
                   )}
@@ -586,7 +586,7 @@ const SchedulingPage: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#091a2b] text-white text-sm font-semibold rounded-lg hover:bg-[#005163] disabled:opacity-50 transition-colors font-['Open_Sans']"
+                  className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1A1A2E] text-white text-sm font-semibold rounded-lg hover:bg-[#008080] disabled:opacity-50 transition-colors font-['Inter']"
                 >
                   {isSubmitting ? (
                     <Loader className="w-4 h-4 animate-spin" />
@@ -607,7 +607,7 @@ const SchedulingPage: React.FC = () => {
                     setShowForm(false);
                     resetForm();
                   }}
-                  className="px-5 py-2.5 text-sm font-semibold text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-['Open_Sans']"
+                  className="px-5 py-2.5 text-sm font-semibold text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-['Inter']"
                 >
                   Cancel
                 </button>
@@ -627,10 +627,10 @@ const SchedulingPage: React.FC = () => {
             className="bg-white rounded-xl shadow-xl max-w-sm w-full p-6"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-lg font-bold text-[#091a2b] font-['Montserrat'] mb-2">
+            <h3 className="text-lg font-bold text-[#1A1A2E] font-['Manrope'] mb-2">
               Delete Booking
             </h3>
-            <p className="text-sm text-gray-600 font-['Open_Sans'] mb-5">
+            <p className="text-sm text-gray-600 font-['Inter'] mb-5">
               Are you sure you want to delete this booking? This action cannot
               be undone.
             </p>
@@ -638,14 +638,14 @@ const SchedulingPage: React.FC = () => {
               <button
                 onClick={() => handleDelete(deleteConfirmId)}
                 disabled={isDeleting}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors font-['Open_Sans']"
+                className="inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 disabled:opacity-50 transition-colors font-['Inter']"
               >
                 {isDeleting && <Loader className="w-4 h-4 animate-spin" />}
                 {isDeleting ? "Deleting..." : "Delete"}
               </button>
               <button
                 onClick={() => setDeleteConfirmId(null)}
-                className="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-['Open_Sans']"
+                className="px-4 py-2 text-sm font-semibold text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-['Inter']"
               >
                 Cancel
               </button>

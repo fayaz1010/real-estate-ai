@@ -82,11 +82,11 @@ function computePosition(
 
 const arrowClasses: Record<Placement, string> = {
   bottom:
-    "bottom-full left-1/2 -translate-x-1/2 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-[#FAF6F1]",
-  top: "top-full left-1/2 -translate-x-1/2 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FAF6F1]",
+    "bottom-full left-1/2 -translate-x-1/2 border-l-8 border-r-8 border-b-8 border-l-transparent border-r-transparent border-b-[#FFFFFF]",
+  top: "top-full left-1/2 -translate-x-1/2 border-l-8 border-r-8 border-t-8 border-l-transparent border-r-transparent border-t-[#FFFFFF]",
   right:
-    "right-full top-1/2 -translate-y-1/2 border-t-8 border-b-8 border-r-8 border-t-transparent border-b-transparent border-r-[#FAF6F1]",
-  left: "left-full top-1/2 -translate-y-1/2 border-t-8 border-b-8 border-l-8 border-t-transparent border-b-transparent border-l-[#FAF6F1]",
+    "right-full top-1/2 -translate-y-1/2 border-t-8 border-b-8 border-r-8 border-t-transparent border-b-transparent border-r-[#FFFFFF]",
+  left: "left-full top-1/2 -translate-y-1/2 border-t-8 border-b-8 border-l-8 border-t-transparent border-b-transparent border-l-[#FFFFFF]",
 };
 
 export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
@@ -161,7 +161,7 @@ export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
       role="tooltip"
       aria-label={tip.title}
       className={cn(
-        "absolute z-50 w-80 rounded-xl border border-[#8B7355]/15 shadow-lg transition-opacity duration-200",
+        "absolute z-50 w-80 rounded-xl border border-[#008080]/15 shadow-lg transition-opacity duration-200",
         position ? "opacity-100" : "opacity-0",
         className,
       )}
@@ -170,9 +170,9 @@ export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
           ? {
               top: position.top,
               left: position.left,
-              backgroundColor: "#FAF6F1",
+              backgroundColor: "#FFFFFF",
             }
-          : { top: -9999, left: -9999, backgroundColor: "#FAF6F1" }
+          : { top: -9999, left: -9999, backgroundColor: "#FFFFFF" }
       }
     >
       {/* Arrow */}
@@ -187,14 +187,14 @@ export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
       <div className="flex items-start justify-between gap-2 px-4 pt-4 pb-2">
         <h4
           className="font-display text-sm font-semibold"
-          style={{ color: "#2D2A26" }}
+          style={{ color: "#1A1A2E" }}
         >
           {tip.title}
         </h4>
         <button
           onClick={dismissPermanently}
-          className="shrink-0 rounded-md p-1 transition-colors hover:bg-[#8B7355]/10"
-          style={{ color: "#8B7355" }}
+          className="shrink-0 rounded-md p-1 transition-colors hover:bg-[#008080]/10"
+          style={{ color: "#008080" }}
           aria-label="Dismiss tip"
         >
           <X className="h-4 w-4" />
@@ -204,13 +204,13 @@ export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
       {/* Body */}
       <p
         className="px-4 pb-3 font-body text-sm leading-relaxed"
-        style={{ color: "#2D2A26", opacity: 0.75 }}
+        style={{ color: "#1A1A2E", opacity: 0.75 }}
       >
         {tip.description}
       </p>
 
       {/* Footer */}
-      <div className="flex items-center justify-between border-t border-[#8B7355]/10 px-4 py-3">
+      <div className="flex items-center justify-between border-t border-[#008080]/10 px-4 py-3">
         <label className="flex cursor-pointer items-center gap-2">
           <input
             type="checkbox"
@@ -220,7 +220,7 @@ export const FeatureTooltip: React.FC<FeatureTooltipProps> = ({
           />
           <span
             className="font-body text-xs"
-            style={{ color: "#2D2A26", opacity: 0.6 }}
+            style={{ color: "#1A1A2E", opacity: 0.6 }}
           >
             Don&apos;t show again
           </span>

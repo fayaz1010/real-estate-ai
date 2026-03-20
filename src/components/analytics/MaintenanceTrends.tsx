@@ -45,13 +45,13 @@ export const MaintenanceTrendsChart: React.FC<MaintenanceTrendsProps> = ({
         <div>
           <h3
             className="text-lg font-bold mb-1"
-            style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
+            style={{ color: "#1A1A2E", fontFamily: "Manrope, sans-serif" }}
           >
             Maintenance Trends
           </h3>
           <p
             className="text-sm"
-            style={{ color: "#5a6a7a", fontFamily: "Open Sans, sans-serif" }}
+            style={{ color: "#5a6a7a", fontFamily: "Inter, sans-serif" }}
           >
             Request volume and resolution performance
           </p>
@@ -59,9 +59,9 @@ export const MaintenanceTrendsChart: React.FC<MaintenanceTrendsProps> = ({
         <div
           className="px-3 py-1.5 rounded-lg text-sm font-semibold"
           style={{
-            backgroundColor: "#005163",
+            backgroundColor: "#008080",
             color: "#ffffff",
-            fontFamily: "Montserrat, sans-serif",
+            fontFamily: "Manrope, sans-serif",
           }}
         >
           Avg Resolution: {avgResolution} days
@@ -95,14 +95,14 @@ export const MaintenanceTrendsChart: React.FC<MaintenanceTrendsProps> = ({
               contentStyle={{
                 borderRadius: 8,
                 border: "1px solid #e5e7eb",
-                fontFamily: "Open Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: 13,
               }}
             />
             <Legend
               wrapperStyle={{
                 fontSize: 13,
-                fontFamily: "Open Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
               }}
             />
             <Bar
@@ -128,9 +128,9 @@ export const MaintenanceTrendsChart: React.FC<MaintenanceTrendsProps> = ({
               type="monotone"
               dataKey="avgResolutionTime"
               name="Avg Resolution (days)"
-              stroke="#3b4876"
+              stroke="#FF6B35"
               strokeWidth={2}
-              dot={{ r: 3, fill: "#3b4876" }}
+              dot={{ r: 3, fill: "#FF6B35" }}
             />
           </ComposedChart>
         </ResponsiveContainer>

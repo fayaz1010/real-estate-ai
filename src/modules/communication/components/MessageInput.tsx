@@ -75,13 +75,13 @@ export const MessageInput: React.FC<MessageInputProps> = ({
           placeholder="Type a message..."
           disabled={disabled || isSending}
           rows={1}
-          className="flex-1 resize-none rounded-xl border border-[#C4A882]/30 bg-[#FAF6F1] px-4 py-2.5 text-sm text-[#2D2A26] placeholder-[#2D2A26]/40 focus:border-[#8B7355] focus:outline-none focus:ring-1 focus:ring-[#8B7355] disabled:opacity-50 transition-colors duration-200"
+          className="flex-1 resize-none rounded-xl border border-[#C4A882]/30 bg-[#FFFFFF] px-4 py-2.5 text-sm text-[#1A1A2E] placeholder-[#1A1A2E]/40 focus:border-[#008080] focus:outline-none focus:ring-1 focus:ring-[#008080] disabled:opacity-50 transition-colors duration-200"
           style={{ fontFamily: "'Inter', sans-serif" }}
         />
         <button
           type="submit"
           disabled={!content.trim() || isSending || disabled}
-          className="flex-shrink-0 rounded-xl bg-[#8B7355] px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#A0926B] disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-shrink-0 rounded-xl bg-[#008080] px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-[#A0926B] disabled:opacity-50 disabled:cursor-not-allowed"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           {isSending ? (

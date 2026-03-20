@@ -72,10 +72,10 @@ const MetricCard: React.FC<MetricCardProps> = ({
         </span>
       )}
     </div>
-    <p className="text-2xl font-bold text-[#091a2b] font-['Montserrat']">
+    <p className="text-2xl font-bold text-[#1A1A2E] font-['Manrope']">
       {value}
     </p>
-    <p className="text-sm text-gray-500 mt-1 font-['Open_Sans']">{label}</p>
+    <p className="text-sm text-gray-500 mt-1 font-['Inter']">{label}</p>
   </div>
 );
 
@@ -114,14 +114,14 @@ export const AccountingDashboard: React.FC = () => {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#f1f3f4]">
-        <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-[#3b4876]" />
+      <div className="min-h-screen flex items-center justify-center bg-[#FFFFFF]">
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-[#FF6B35]" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#f1f3f4]">
+    <div className="min-h-screen bg-[#FFFFFF]">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 sticky top-0 z-10 print:static">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -135,10 +135,10 @@ export const AccountingDashboard: React.FC = () => {
                 <ChevronLeft className="w-5 h-5 text-gray-600" />
               </button>
               <div>
-                <h1 className="text-lg font-bold text-[#091a2b] font-['Montserrat']">
+                <h1 className="text-lg font-bold text-[#1A1A2E] font-['Manrope']">
                   Accounting & Financial Reporting
                 </h1>
-                <p className="text-xs text-gray-500 font-['Open_Sans'] hidden sm:block">
+                <p className="text-xs text-gray-500 font-['Inter'] hidden sm:block">
                   Property management financial overview
                 </p>
               </div>
@@ -147,7 +147,7 @@ export const AccountingDashboard: React.FC = () => {
               onClick={() => setShowFilters(!showFilters)}
               className={`flex items-center gap-1.5 px-3 py-2 text-sm rounded-lg border transition-colors print:hidden ${
                 showFilters || Object.values(localFilters).some(Boolean)
-                  ? "bg-[#091a2b] text-white border-[#091a2b]"
+                  ? "bg-[#1A1A2E] text-white border-[#1A1A2E]"
                   : "bg-white text-gray-600 border-gray-200 hover:bg-gray-50"
               }`}
             >
@@ -175,7 +175,7 @@ export const AccountingDashboard: React.FC = () => {
                       propertyId: e.target.value || undefined,
                     }))
                   }
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white text-[#091a2b] focus:outline-none focus:ring-2 focus:ring-[#005163]/20 focus:border-[#005163]"
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white text-[#1A1A2E] focus:outline-none focus:ring-2 focus:ring-[#008080]/20 focus:border-[#008080]"
                 >
                   <option value="">All Properties</option>
                   {properties.map((p) => (
@@ -198,7 +198,7 @@ export const AccountingDashboard: React.FC = () => {
                       startDate: e.target.value || undefined,
                     }))
                   }
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 text-[#091a2b] focus:outline-none focus:ring-2 focus:ring-[#005163]/20 focus:border-[#005163]"
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 text-[#1A1A2E] focus:outline-none focus:ring-2 focus:ring-[#008080]/20 focus:border-[#008080]"
                 />
               </div>
               <div className="flex-1 min-w-0">
@@ -214,13 +214,13 @@ export const AccountingDashboard: React.FC = () => {
                       endDate: e.target.value || undefined,
                     }))
                   }
-                  className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 text-[#091a2b] focus:outline-none focus:ring-2 focus:ring-[#005163]/20 focus:border-[#005163]"
+                  className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 text-[#1A1A2E] focus:outline-none focus:ring-2 focus:ring-[#008080]/20 focus:border-[#008080]"
                 />
               </div>
               <div className="flex gap-2">
                 <button
                   onClick={applyFilters}
-                  className="px-4 py-2 text-sm font-medium bg-[#091a2b] text-white rounded-lg hover:bg-[#091a2b]/90 transition-colors"
+                  className="px-4 py-2 text-sm font-medium bg-[#1A1A2E] text-white rounded-lg hover:bg-[#1A1A2E]/90 transition-colors"
                 >
                   Apply
                 </button>
@@ -281,16 +281,16 @@ export const AccountingDashboard: React.FC = () => {
               <MetricCard
                 label="Net Profit"
                 value={formatCurrency(summary.netProfit)}
-                icon={<BarChart3 className="w-5 h-5 text-[#3b4876]" />}
+                icon={<BarChart3 className="w-5 h-5 text-[#FF6B35]" />}
                 trend={summary.netProfit >= 0 ? "up" : "down"}
-                color="bg-[#3b4876]/10"
+                color="bg-[#FF6B35]/10"
               />
               <MetricCard
                 label="Occupancy Rate"
                 value={`${summary.occupancyRate}%`}
-                icon={<Building2 className="w-5 h-5 text-[#005163]" />}
+                icon={<Building2 className="w-5 h-5 text-[#008080]" />}
                 trend={summary.occupancyRate >= 50 ? "up" : "down"}
-                color="bg-[#005163]/10"
+                color="bg-[#008080]/10"
               />
             </div>
           ) : null}
@@ -301,14 +301,14 @@ export const AccountingDashboard: React.FC = () => {
           <section className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div className="bg-white rounded-lg border border-gray-200 p-4 text-center">
               <Building2 className="w-5 h-5 text-gray-400 mx-auto mb-1.5" />
-              <p className="text-xl font-bold text-[#091a2b]">
+              <p className="text-xl font-bold text-[#1A1A2E]">
                 {summary.totalProperties}
               </p>
               <p className="text-xs text-gray-500">Properties</p>
             </div>
             <div className="bg-white rounded-lg border border-gray-200 p-4 text-center">
               <FileText className="w-5 h-5 text-gray-400 mx-auto mb-1.5" />
-              <p className="text-xl font-bold text-[#091a2b]">
+              <p className="text-xl font-bold text-[#1A1A2E]">
                 {summary.activeLeases}
               </p>
               <p className="text-xs text-gray-500">Active Leases</p>
@@ -332,7 +332,7 @@ export const AccountingDashboard: React.FC = () => {
 
         {/* Financial Reports */}
         <section>
-          <h2 className="text-lg font-bold text-[#091a2b] font-['Montserrat'] mb-4">
+          <h2 className="text-lg font-bold text-[#1A1A2E] font-['Manrope'] mb-4">
             Financial Reports
           </h2>
           <FinancialReport filters={filters} />

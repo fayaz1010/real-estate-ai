@@ -62,7 +62,7 @@ export const TenantDashboard: React.FC = () => {
         role="status"
       >
         <div
-          className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#091a2b]"
+          className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#1A1A2E]"
           aria-hidden="true"
         />
         <span className="sr-only">Loading dashboard...</span>
@@ -81,7 +81,7 @@ export const TenantDashboard: React.FC = () => {
             className="w-12 h-12 text-amber-500 mx-auto mb-4"
             aria-hidden="true"
           />
-          <h2 className="font-montserrat text-xl font-bold text-[#091a2b] mb-2">
+          <h2 className="font-manrope text-xl font-bold text-[#1A1A2E] mb-2">
             Unable to load dashboard
           </h2>
           <p className="text-gray-500 text-sm">
@@ -96,11 +96,11 @@ export const TenantDashboard: React.FC = () => {
   const recentPosts = communityPosts.slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] font-[Open_Sans]">
+    <div className="min-h-screen bg-[#f8f9fa] font-[Inter]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <header className="mb-8">
-          <h1 className="font-montserrat text-2xl sm:text-3xl font-bold text-[#091a2b]">
+          <h1 className="font-manrope text-2xl sm:text-3xl font-bold text-[#1A1A2E]">
             Welcome Home
           </h1>
           <p className="text-gray-500 mt-1 text-sm">
@@ -112,10 +112,10 @@ export const TenantDashboard: React.FC = () => {
         <section className="mb-6" aria-labelledby="unit-heading">
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <div className="flex items-center gap-2 mb-4">
-              <Home className="w-5 h-5 text-[#091a2b]" aria-hidden="true" />
+              <Home className="w-5 h-5 text-[#1A1A2E]" aria-hidden="true" />
               <h2
                 id="unit-heading"
-                className="font-montserrat text-lg font-semibold text-[#091a2b]"
+                className="font-manrope text-lg font-semibold text-[#1A1A2E]"
               >
                 Your Unit
               </h2>
@@ -133,20 +133,20 @@ export const TenantDashboard: React.FC = () => {
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <DollarSign
-                  className="w-4 h-4 text-[#091a2b]"
+                  className="w-4 h-4 text-[#1A1A2E]"
                   aria-hidden="true"
                 />
                 <span>{formatCurrency(unitInfo.rent)}/mo</span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
-                <Home className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
+                <Home className="w-4 h-4 text-[#1A1A2E]" aria-hidden="true" />
                 <span>
                   {unitInfo.bedrooms} bed{unitInfo.bedrooms !== 1 ? "s" : ""}
                 </span>
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <Droplets
-                  className="w-4 h-4 text-[#091a2b]"
+                  className="w-4 h-4 text-[#1A1A2E]"
                   aria-hidden="true"
                 />
                 <span>
@@ -155,7 +155,7 @@ export const TenantDashboard: React.FC = () => {
               </div>
               <div className="flex items-center gap-2 text-sm text-gray-600">
                 <Maximize
-                  className="w-4 h-4 text-[#091a2b]"
+                  className="w-4 h-4 text-[#1A1A2E]"
                   aria-hidden="true"
                 />
                 <span>{unitInfo.squareFootage.toLocaleString()} sqft</span>
@@ -174,26 +174,26 @@ export const TenantDashboard: React.FC = () => {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <DollarSign
-                    className="w-5 h-5 text-[#091a2b]"
+                    className="w-5 h-5 text-[#1A1A2E]"
                     aria-hidden="true"
                   />
                   <h2
                     id="payment-heading"
-                    className="font-montserrat text-lg font-semibold text-[#091a2b]"
+                    className="font-manrope text-lg font-semibold text-[#1A1A2E]"
                   >
                     Upcoming Payment
                   </h2>
                 </div>
                 <Link
                   to="/tenant/payments"
-                  className="text-sm text-[#091a2b] hover:underline flex items-center gap-1"
+                  className="text-sm text-[#1A1A2E] hover:underline flex items-center gap-1"
                 >
                   View all{" "}
                   <ChevronRight className="w-4 h-4" aria-hidden="true" />
                 </Link>
               </div>
               <div className="bg-[#f8f9fa] rounded-xl p-4">
-                <p className="text-2xl font-bold text-[#091a2b]">
+                <p className="text-2xl font-bold text-[#1A1A2E]">
                   {formatCurrency(upcomingPayment.amount)}
                 </p>
                 <p className="text-sm text-gray-500 mt-1">
@@ -206,7 +206,7 @@ export const TenantDashboard: React.FC = () => {
               </div>
               <Link
                 to="/tenant/payments"
-                className="mt-4 block w-full text-center bg-[#091a2b] text-white py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
+                className="mt-4 block w-full text-center bg-[#1A1A2E] text-white py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
               >
                 Pay Now
               </Link>
@@ -219,19 +219,19 @@ export const TenantDashboard: React.FC = () => {
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-2">
                   <Wrench
-                    className="w-5 h-5 text-[#091a2b]"
+                    className="w-5 h-5 text-[#1A1A2E]"
                     aria-hidden="true"
                   />
                   <h2
                     id="maintenance-heading"
-                    className="font-montserrat text-lg font-semibold text-[#091a2b]"
+                    className="font-manrope text-lg font-semibold text-[#1A1A2E]"
                   >
                     Maintenance
                   </h2>
                 </div>
                 <Link
                   to="/tenant/maintenance"
-                  className="text-sm text-[#091a2b] hover:underline flex items-center gap-1"
+                  className="text-sm text-[#1A1A2E] hover:underline flex items-center gap-1"
                 >
                   New request{" "}
                   <ChevronRight className="w-4 h-4" aria-hidden="true" />
@@ -276,10 +276,10 @@ export const TenantDashboard: React.FC = () => {
           <div className="bg-white rounded-2xl shadow-sm p-6">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <Users className="w-5 h-5 text-[#091a2b]" aria-hidden="true" />
+                <Users className="w-5 h-5 text-[#1A1A2E]" aria-hidden="true" />
                 <h2
                   id="community-heading"
-                  className="font-montserrat text-lg font-semibold text-[#091a2b]"
+                  className="font-manrope text-lg font-semibold text-[#1A1A2E]"
                 >
                   Community Board
                 </h2>
@@ -290,7 +290,7 @@ export const TenantDashboard: React.FC = () => {
                 {recentPosts.map((post) => (
                   <li key={post.id} className="bg-[#f8f9fa] rounded-xl p-4">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-sm font-medium text-[#091a2b]">
+                      <span className="text-sm font-medium text-[#1A1A2E]">
                         {post.author}
                       </span>
                       <span className="text-xs text-gray-400">

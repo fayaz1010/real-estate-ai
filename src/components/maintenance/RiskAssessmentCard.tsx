@@ -27,7 +27,7 @@ const RiskAssessmentCard: React.FC<RiskAssessmentCardProps> = ({
 
   return (
     <div className="bg-white shadow-realestate-md rounded-lg p-6 mb-6 border border-gray-100">
-      <h3 className="text-lg font-display font-semibold text-[#091a2b] mb-4">
+      <h3 className="text-lg font-display font-semibold text-[#1A1A2E] mb-4">
         Property Risk Assessment
       </h3>
       <div className="flex items-center gap-6">
@@ -42,7 +42,7 @@ const RiskAssessmentCard: React.FC<RiskAssessmentCardProps> = ({
           </div>
         </div>
         <div className="flex-1">
-          <p className="text-sm text-[#005163] mb-2">Overall Risk Score</p>
+          <p className="text-sm text-[#008080] mb-2">Overall Risk Score</p>
           <div className="w-full bg-gray-200 rounded-full h-3">
             <div
               className={`h-3 rounded-full transition-all duration-500 ${progressColor}`}

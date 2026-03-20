@@ -44,13 +44,13 @@ export const RevenueAnalytics: React.FC<RevenueAnalyticsProps> = ({ data }) => {
         <div>
           <h3
             className="text-lg font-bold mb-1"
-            style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
+            style={{ color: "#1A1A2E", fontFamily: "Manrope, sans-serif" }}
           >
             Revenue Analytics
           </h3>
           <p
             className="text-sm"
-            style={{ color: "#5a6a7a", fontFamily: "Open Sans, sans-serif" }}
+            style={{ color: "#5a6a7a", fontFamily: "Inter, sans-serif" }}
           >
             Rental income and other revenue sources
           </p>
@@ -64,7 +64,7 @@ export const RevenueAnalytics: React.FC<RevenueAnalyticsProps> = ({ data }) => {
           </p>
           <p
             className="text-xl font-bold"
-            style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
+            style={{ color: "#1A1A2E", fontFamily: "Manrope, sans-serif" }}
           >
             ${totalRevenue.toLocaleString()}
           </p>
@@ -74,7 +74,7 @@ export const RevenueAnalytics: React.FC<RevenueAnalyticsProps> = ({ data }) => {
         <div className="flex items-center gap-2">
           <div
             className="w-3 h-3 rounded"
-            style={{ backgroundColor: "#005163" }}
+            style={{ backgroundColor: "#008080" }}
           />
           <span className="text-xs" style={{ color: "#5a6a7a" }}>
             Rental: ${totalRental.toLocaleString()}
@@ -83,7 +83,7 @@ export const RevenueAnalytics: React.FC<RevenueAnalyticsProps> = ({ data }) => {
         <div className="flex items-center gap-2">
           <div
             className="w-3 h-3 rounded"
-            style={{ backgroundColor: "#3b4876" }}
+            style={{ backgroundColor: "#FF6B35" }}
           />
           <span className="text-xs" style={{ color: "#5a6a7a" }}>
             Other: ${totalOther.toLocaleString()}
@@ -115,27 +115,27 @@ export const RevenueAnalytics: React.FC<RevenueAnalyticsProps> = ({ data }) => {
               contentStyle={{
                 borderRadius: 8,
                 border: "1px solid #e5e7eb",
-                fontFamily: "Open Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: 13,
               }}
             />
             <Legend
               wrapperStyle={{
                 fontSize: 13,
-                fontFamily: "Open Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
               }}
             />
             <Bar
               dataKey="rental"
               name="Rental Income"
-              fill="#005163"
+              fill="#008080"
               radius={[4, 4, 0, 0]}
               barSize={20}
             />
             <Bar
               dataKey="other"
               name="Other Revenue"
-              fill="#3b4876"
+              fill="#FF6B35"
               radius={[4, 4, 0, 0]}
               barSize={20}
             />
@@ -143,7 +143,7 @@ export const RevenueAnalytics: React.FC<RevenueAnalyticsProps> = ({ data }) => {
               type="monotone"
               dataKey="total"
               name="Total Revenue"
-              stroke="#091a2b"
+              stroke="#1A1A2E"
               strokeWidth={2}
               dot={{ r: 3 }}
             />

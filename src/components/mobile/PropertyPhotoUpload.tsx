@@ -42,7 +42,7 @@ export function PropertyPhotoUpload() {
         <button
           onClick={() => setShowCamera(true)}
           className="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition-colors"
-          style={{ backgroundColor: "#091a2b" }}
+          style={{ backgroundColor: "#1A1A2E" }}
         >
           <Camera size={20} />
           Camera
@@ -50,7 +50,7 @@ export function PropertyPhotoUpload() {
         <button
           onClick={() => fileInputRef.current?.click()}
           className="flex-1 flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition-colors"
-          style={{ backgroundColor: "#005163" }}
+          style={{ backgroundColor: "#008080" }}
         >
           <Image size={20} />
           Gallery
@@ -68,7 +68,7 @@ export function PropertyPhotoUpload() {
       {showCamera && (
         <div
           className="border rounded-lg p-3"
-          style={{ borderColor: "#091a2b" }}
+          style={{ borderColor: "#1A1A2E" }}
         >
           <CameraCapture onCapture={handleCapture} />
         </div>

@@ -61,7 +61,7 @@ export const MaintenancePredictionCard: React.FC<
         <div>
           <span
             className="font-body text-xs font-semibold uppercase tracking-wide"
-            style={{ color: "#3b4876" }}
+            style={{ color: "#FF6B35" }}
           >
             {getSystemLabel(prediction.systemType)}
           </span>
@@ -84,7 +84,7 @@ export const MaintenancePredictionCard: React.FC<
         </p>
         <p
           className="mt-0.5 font-display text-lg font-semibold"
-          style={{ color: "#091a2b" }}
+          style={{ color: "#1A1A2E" }}
         >
           {formatDate(prediction.predictedFailureDate)}
         </p>

@@ -15,6 +15,8 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { PageMeta } from "../../components/seo";
+
 const painPoints = [
   {
     icon: Clock,
@@ -109,6 +111,12 @@ const testimonials = [
 export const SmallLandlordsPage: React.FC = () => {
   return (
     <main className="min-h-screen bg-white" role="main">
+      <PageMeta
+        title="Best Property Management Software for Small Landlords 2026 | RealEstate AI"
+        description="Free property management software designed for small landlords managing 1-50 units. AI-powered tools without enterprise pricing. Start free today."
+        keywords="property management software small landlords, free landlord software, small portfolio management, rental property software free, best software for small landlords"
+        canonicalUrl="https://realestate-ai.com/landing/small-landlords"
+      />
       {/* Hero Section */}
       <section
         className="relative pt-24 pb-20 bg-realestate-primary overflow-hidden"

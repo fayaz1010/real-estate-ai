@@ -62,11 +62,11 @@ export function FeatureHighlight({
       <span className="absolute -translate-x-1/2 -translate-y-1/2">
         <span
           className="absolute inline-flex h-4 w-4 -translate-x-1/2 -translate-y-1/2 animate-ping rounded-full opacity-60"
-          style={{ backgroundColor: "#005163" }}
+          style={{ backgroundColor: "#008080" }}
         />
         <span
           className="relative inline-flex h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full"
-          style={{ backgroundColor: "#005163" }}
+          style={{ backgroundColor: "#008080" }}
         />
       </span>
 
@@ -74,9 +74,9 @@ export function FeatureHighlight({
       <div
         className="absolute left-4 top-4 w-56 rounded-lg p-3 shadow-lg"
         style={{
-          backgroundColor: "#f1f3f4",
-          fontFamily: "'Open Sans', sans-serif",
-          color: "#091a2b",
+          backgroundColor: "#FFFFFF",
+          fontFamily: "'Inter', sans-serif",
+          color: "#1A1A2E",
         }}
       >
         <div className="flex items-start justify-between gap-2">

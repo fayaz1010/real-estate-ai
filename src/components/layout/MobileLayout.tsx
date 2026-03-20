@@ -16,7 +16,7 @@ export function MobileLayout({ children }: MobileLayoutProps) {
   return (
     <div
       className="min-h-screen flex flex-col"
-      style={{ backgroundColor: "#f1f3f4", color: "#091a2b" }}
+      style={{ backgroundColor: "#FFFFFF", color: "#1A1A2E" }}
     >
       <main className="flex-1 pb-16 overflow-y-auto">{children}</main>
       <MobileBottomNav />

@@ -66,7 +66,7 @@ export const RentPayment: React.FC = () => {
         role="status"
       >
         <div
-          className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#091a2b]"
+          className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#1A1A2E]"
           aria-hidden="true"
         />
         <span className="sr-only">Loading payments...</span>
@@ -85,7 +85,7 @@ export const RentPayment: React.FC = () => {
             className="w-12 h-12 text-amber-500 mx-auto mb-4"
             aria-hidden="true"
           />
-          <h2 className="font-montserrat text-xl font-bold text-[#091a2b] mb-2">
+          <h2 className="font-manrope text-xl font-bold text-[#1A1A2E] mb-2">
             Error
           </h2>
           <p className="text-gray-500 text-sm">{error}</p>
@@ -95,10 +95,10 @@ export const RentPayment: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] font-[Open_Sans]">
+    <div className="min-h-screen bg-[#f8f9fa] font-[Inter]">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <header className="mb-8">
-          <h1 className="font-montserrat text-2xl sm:text-3xl font-bold text-[#091a2b]">
+          <h1 className="font-manrope text-2xl sm:text-3xl font-bold text-[#1A1A2E]">
             Rent Payment
           </h1>
           <p className="text-gray-500 mt-1 text-sm">
@@ -117,7 +117,7 @@ export const RentPayment: React.FC = () => {
               aria-hidden="true"
             />
             <div>
-              <h3 className="font-montserrat font-semibold text-emerald-800">
+              <h3 className="font-manrope font-semibold text-emerald-800">
                 Payment Successful
               </h3>
               <p className="text-sm text-emerald-600">
@@ -135,17 +135,17 @@ export const RentPayment: React.FC = () => {
           >
             <h2
               id="amount-due-heading"
-              className="font-montserrat text-lg font-semibold text-[#091a2b] mb-4"
+              className="font-manrope text-lg font-semibold text-[#1A1A2E] mb-4"
             >
               Amount Due
             </h2>
             <div className="bg-[#f8f9fa] rounded-xl p-6 text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <DollarSign
-                  className="w-8 h-8 text-[#091a2b]"
+                  className="w-8 h-8 text-[#1A1A2E]"
                   aria-hidden="true"
                 />
-                <span className="text-4xl font-bold text-[#091a2b]">
+                <span className="text-4xl font-bold text-[#1A1A2E]">
                   {formatCurrency(paymentDue.amount)}
                 </span>
               </div>
@@ -159,7 +159,7 @@ export const RentPayment: React.FC = () => {
               type="button"
               onClick={handlePayNow}
               disabled={paying || paymentSuccess}
-              className="mt-4 w-full bg-[#091a2b] text-white py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="mt-4 w-full bg-[#1A1A2E] text-white py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               <CreditCard className="w-4 h-4" aria-hidden="true" />
               {paying ? "Processing..." : "Pay Now"}
@@ -173,7 +173,7 @@ export const RentPayment: React.FC = () => {
             <div className="p-6 pb-0">
               <h2
                 id="history-heading"
-                className="font-montserrat text-lg font-semibold text-[#091a2b]"
+                className="font-manrope text-lg font-semibold text-[#1A1A2E]"
               >
                 Payment History
               </h2>

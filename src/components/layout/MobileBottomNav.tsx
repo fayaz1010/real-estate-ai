@@ -35,7 +35,7 @@ export function MobileBottomNav() {
               onClick={() => navigate(item.path)}
               className="flex flex-col items-center justify-center flex-1 h-full gap-1 transition-colors"
               style={{
-                color: isActive ? "#005163" : "#6B7280",
+                color: isActive ? "#008080" : "#6B7280",
               }}
             >
               <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
@@ -43,7 +43,7 @@ export function MobileBottomNav() {
                 className="text-xs"
                 style={{
                   fontWeight: isActive ? 600 : 400,
-                  color: isActive ? "#091a2b" : "#6B7280",
+                  color: isActive ? "#1A1A2E" : "#6B7280",
                 }}
               >
                 {item.label}

@@ -100,10 +100,10 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
   // ─── Styles ──────────────────────────────────────────────────────────────
 
   const fieldClasses =
-    "px-3 py-2 border border-[#091a2b]/20 rounded-lg text-sm text-[#091a2b] font-['Open_Sans'] focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent bg-white";
+    "px-3 py-2 border border-[#1A1A2E]/20 rounded-lg text-sm text-[#1A1A2E] font-['Inter'] focus:outline-none focus:ring-2 focus:ring-[#008080] focus:border-transparent bg-white";
 
   const labelClasses =
-    "block text-sm font-semibold text-[#091a2b] font-['Open_Sans'] mb-1.5";
+    "block text-sm font-semibold text-[#1A1A2E] font-['Inter'] mb-1.5";
 
   // ─── Weekly Availability Grid ────────────────────────────────────────────
 
@@ -123,19 +123,19 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
           return (
             <div
               key={day.value}
-              className={`text-center p-2 rounded-lg text-xs font-['Open_Sans'] ${
+              className={`text-center p-2 rounded-lg text-xs font-['Inter'] ${
                 hasAvailability
-                  ? "bg-[#091a2b]/5 border border-[#091a2b]/20"
+                  ? "bg-[#1A1A2E]/5 border border-[#1A1A2E]/20"
                   : "bg-gray-50 border border-gray-200"
               }`}
             >
               <span
-                className={`font-semibold ${hasAvailability ? "text-[#091a2b]" : "text-gray-400"}`}
+                className={`font-semibold ${hasAvailability ? "text-[#1A1A2E]" : "text-gray-400"}`}
               >
                 {day.label.slice(0, 3)}
               </span>
               {slots.map((s) => (
-                <div key={s.id} className="text-[10px] text-[#005163] mt-1">
+                <div key={s.id} className="text-[10px] text-[#008080] mt-1">
                   {s.startTime}–{s.endTime}
                 </div>
               ))}
@@ -158,14 +158,14 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
       {/* Recurring Availability */}
       <div>
         <div className="flex items-center justify-between mb-3">
-          <h4 className="text-base font-bold text-[#091a2b] font-['Montserrat'] flex items-center gap-2">
-            <RotateCcw className="w-4 h-4 text-[#005163]" aria-hidden="true" />
+          <h4 className="text-base font-bold text-[#1A1A2E] font-['Manrope'] flex items-center gap-2">
+            <RotateCcw className="w-4 h-4 text-[#008080]" aria-hidden="true" />
             Recurring Availability
           </h4>
           <button
             type="button"
             onClick={addRecurring}
-            className="inline-flex items-center gap-1 text-xs font-semibold text-[#005163] hover:text-[#091a2b] transition-colors font-['Open_Sans']"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-[#008080] hover:text-[#1A1A2E] transition-colors font-['Inter']"
           >
             <Plus className="w-3.5 h-3.5" /> Add Slot
           </button>
@@ -230,11 +230,11 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
 
       {/* Blackout Dates */}
       <div>
-        <h4 className="text-base font-bold text-[#091a2b] font-['Montserrat'] flex items-center gap-2 mb-3">
+        <h4 className="text-base font-bold text-[#1A1A2E] font-['Manrope'] flex items-center gap-2 mb-3">
           <Calendar className="w-4 h-4 text-red-500" aria-hidden="true" />
           Blackout Dates
         </h4>
-        <p className="text-xs text-gray-500 font-['Open_Sans'] mb-3">
+        <p className="text-xs text-gray-500 font-['Inter'] mb-3">
           Block off specific dates when you are unavailable for bookings.
         </p>
 
@@ -268,7 +268,7 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
             type="button"
             onClick={addBlackout}
             disabled={!newBlackoutDate}
-            className="inline-flex items-center gap-1.5 px-3 py-2 bg-red-50 text-red-700 text-xs font-semibold rounded-lg border border-red-200 hover:bg-red-100 disabled:opacity-40 transition-colors font-['Open_Sans']"
+            className="inline-flex items-center gap-1.5 px-3 py-2 bg-red-50 text-red-700 text-xs font-semibold rounded-lg border border-red-200 hover:bg-red-100 disabled:opacity-40 transition-colors font-['Inter']"
           >
             <Plus className="w-3.5 h-3.5" /> Add Blackout
           </button>
@@ -286,7 +286,7 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
                   key={b.id}
                   className="flex items-center justify-between px-3 py-2 bg-red-50 rounded-lg border border-red-200"
                 >
-                  <div className="flex items-center gap-2 text-sm font-['Open_Sans']">
+                  <div className="flex items-center gap-2 text-sm font-['Inter']">
                     <Calendar
                       className="w-3.5 h-3.5 text-red-500"
                       aria-hidden="true"
@@ -316,7 +316,7 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
           </div>
         )}
         {blackouts.length === 0 && (
-          <p className="text-xs text-gray-400 font-['Open_Sans'] italic">
+          <p className="text-xs text-gray-400 font-['Inter'] italic">
             No blackout dates set.
           </p>
         )}
@@ -327,7 +327,7 @@ const AvailabilityManager: React.FC<AvailabilityManagerProps> = ({
         <button
           type="button"
           onClick={handleSave}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#091a2b] text-white text-sm font-semibold rounded-lg hover:bg-[#005163] transition-colors font-['Open_Sans']"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1A1A2E] text-white text-sm font-semibold rounded-lg hover:bg-[#008080] transition-colors font-['Inter']"
         >
           {saved ? <Check className="w-4 h-4" /> : null}
           {saved ? "Saved!" : "Save Availability"}

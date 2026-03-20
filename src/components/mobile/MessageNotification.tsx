@@ -31,8 +31,8 @@ const MessageNotification: React.FC<MessageNotificationProps> = ({
       onKeyDown={(e) => e.key === "Enter" && onPress()}
       className="mx-3 mt-2 flex cursor-pointer items-center gap-3 rounded-xl p-3 text-white shadow-lg transition-transform active:scale-[0.98]"
       style={{
-        backgroundColor: "#091a2b",
-        fontFamily: "'Open Sans', sans-serif",
+        backgroundColor: "#1A1A2E",
+        fontFamily: "'Inter', sans-serif",
       }}
     >
       {senderAvatar ? (

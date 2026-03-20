@@ -45,7 +45,7 @@ export const LeaseViewer: React.FC = () => {
         role="status"
       >
         <div
-          className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#091a2b]"
+          className="animate-spin rounded-full h-12 w-12 border-4 border-gray-200 border-t-[#1A1A2E]"
           aria-hidden="true"
         />
         <span className="sr-only">Loading lease details...</span>
@@ -64,7 +64,7 @@ export const LeaseViewer: React.FC = () => {
             className="w-12 h-12 text-amber-500 mx-auto mb-4"
             aria-hidden="true"
           />
-          <h2 className="font-montserrat text-xl font-bold text-[#091a2b] mb-2">
+          <h2 className="font-manrope text-xl font-bold text-[#1A1A2E] mb-2">
             Unable to load lease
           </h2>
           <p className="text-gray-500 text-sm">
@@ -76,10 +76,10 @@ export const LeaseViewer: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] font-[Open_Sans]">
+    <div className="min-h-screen bg-[#f8f9fa] font-[Inter]">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <header className="mb-8">
-          <h1 className="font-montserrat text-2xl sm:text-3xl font-bold text-[#091a2b]">
+          <h1 className="font-manrope text-2xl sm:text-3xl font-bold text-[#1A1A2E]">
             Lease Details
           </h1>
           <p className="text-gray-500 mt-1 text-sm">
@@ -89,8 +89,8 @@ export const LeaseViewer: React.FC = () => {
 
         <div className="bg-white rounded-2xl shadow-sm p-6">
           <div className="flex items-center gap-2 mb-6">
-            <FileText className="w-5 h-5 text-[#091a2b]" aria-hidden="true" />
-            <h2 className="font-montserrat text-lg font-semibold text-[#091a2b]">
+            <FileText className="w-5 h-5 text-[#1A1A2E]" aria-hidden="true" />
+            <h2 className="font-manrope text-lg font-semibold text-[#1A1A2E]">
               Lease Agreement
             </h2>
           </div>
@@ -100,7 +100,7 @@ export const LeaseViewer: React.FC = () => {
             <div className="bg-[#f8f9fa] rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Calendar
-                  className="w-4 h-4 text-[#091a2b]"
+                  className="w-4 h-4 text-[#1A1A2E]"
                   aria-hidden="true"
                 />
                 <h3 className="text-sm font-medium text-gray-700">
@@ -116,7 +116,7 @@ export const LeaseViewer: React.FC = () => {
             <div className="bg-[#f8f9fa] rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
                 <DollarSign
-                  className="w-4 h-4 text-[#091a2b]"
+                  className="w-4 h-4 text-[#1A1A2E]"
                   aria-hidden="true"
                 />
                 <h3 className="text-sm font-medium text-gray-700">
@@ -131,7 +131,7 @@ export const LeaseViewer: React.FC = () => {
             {/* Security Deposit */}
             <div className="bg-[#f8f9fa] rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
-                <Shield className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
+                <Shield className="w-4 h-4 text-[#1A1A2E]" aria-hidden="true" />
                 <h3 className="text-sm font-medium text-gray-700">
                   Security Deposit
                 </h3>
@@ -144,7 +144,7 @@ export const LeaseViewer: React.FC = () => {
             {/* Pet Policy */}
             <div className="bg-[#f8f9fa] rounded-xl p-4">
               <div className="flex items-center gap-2 mb-2">
-                <Heart className="w-4 h-4 text-[#091a2b]" aria-hidden="true" />
+                <Heart className="w-4 h-4 text-[#1A1A2E]" aria-hidden="true" />
                 <h3 className="text-sm font-medium text-gray-700">
                   Pet Policy
                 </h3>
@@ -172,7 +172,7 @@ export const LeaseViewer: React.FC = () => {
             <a
               href={lease.documentUrl}
               download
-              className="inline-flex items-center gap-2 bg-[#091a2b] text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 bg-[#1A1A2E] text-white px-6 py-2.5 rounded-xl text-sm font-medium hover:opacity-90 transition-opacity"
             >
               <Download className="w-4 h-4" aria-hidden="true" />
               Download Lease Document

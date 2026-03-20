@@ -55,14 +55,14 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({
       <div className="text-center py-16">
         <Zap className="w-12 h-12 text-gray-300 mx-auto mb-4" />
         <h3
-          className="text-lg font-semibold text-[#091a2b] mb-2"
-          style={{ fontFamily: "Montserrat, sans-serif" }}
+          className="text-lg font-semibold text-[#1A1A2E] mb-2"
+          style={{ fontFamily: "Manrope, sans-serif" }}
         >
           No workflows yet
         </h3>
         <p
           className="text-sm text-gray-500"
-          style={{ fontFamily: "Open Sans, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           Create your first workflow to automate your property management tasks.
         </p>
@@ -81,8 +81,8 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-3 mb-1">
                 <h3
-                  className="text-base font-bold text-[#091a2b] truncate"
-                  style={{ fontFamily: "Montserrat, sans-serif" }}
+                  className="text-base font-bold text-[#1A1A2E] truncate"
+                  style={{ fontFamily: "Manrope, sans-serif" }}
                 >
                   {workflow.name}
                 </h3>
@@ -92,7 +92,7 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({
                       ? "bg-green-100 text-green-700"
                       : "bg-gray-100 text-gray-500"
                   }`}
-                  style={{ fontFamily: "Open Sans, sans-serif" }}
+                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   {workflow.enabled ? "Active" : "Disabled"}
                 </span>
@@ -100,14 +100,14 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({
               {workflow.description && (
                 <p
                   className="text-sm text-gray-500 mb-3 line-clamp-1"
-                  style={{ fontFamily: "Open Sans, sans-serif" }}
+                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   {workflow.description}
                 </p>
               )}
               <div
                 className="flex flex-wrap items-center gap-4 text-xs text-gray-400"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 <span className="flex items-center gap-1">
                   <Zap className="w-3.5 h-3.5" />
@@ -132,7 +132,7 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({
               <button
                 type="button"
                 onClick={() => onToggle(workflow.id, !workflow.enabled)}
-                className="p-2 rounded-md text-gray-400 hover:text-[#3b4876] hover:bg-gray-50 transition-colors"
+                className="p-2 rounded-md text-gray-400 hover:text-[#FF6B35] hover:bg-gray-50 transition-colors"
                 title={workflow.enabled ? "Disable" : "Enable"}
               >
                 {workflow.enabled ? (
@@ -145,7 +145,7 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({
                 <button
                   type="button"
                   onClick={() => onExecute(workflow.id)}
-                  className="p-2 rounded-md text-gray-400 hover:text-[#091a2b] hover:bg-[#091a2b]/5 transition-colors"
+                  className="p-2 rounded-md text-gray-400 hover:text-[#1A1A2E] hover:bg-[#1A1A2E]/5 transition-colors"
                   title="Execute workflow"
                 >
                   <Play className="w-4 h-4" />
@@ -154,7 +154,7 @@ export const WorkflowList: React.FC<WorkflowListProps> = ({
               <button
                 type="button"
                 onClick={() => onEdit(workflow.id)}
-                className="p-2 rounded-md text-gray-400 hover:text-[#3b4876] hover:bg-[#3b4876]/5 transition-colors"
+                className="p-2 rounded-md text-gray-400 hover:text-[#FF6B35] hover:bg-[#FF6B35]/5 transition-colors"
                 title="Edit workflow"
               >
                 <Edit className="w-4 h-4" />

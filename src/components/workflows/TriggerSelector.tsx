@@ -65,8 +65,8 @@ export const TriggerSelector: React.FC<TriggerSelectorProps> = ({
   return (
     <div className="space-y-4">
       <label
-        className="block text-sm font-semibold text-[#091a2b]"
-        style={{ fontFamily: "Open Sans, sans-serif" }}
+        className="block text-sm font-semibold text-[#1A1A2E]"
+        style={{ fontFamily: "Inter, sans-serif" }}
       >
         Trigger Type
       </label>
@@ -78,25 +78,25 @@ export const TriggerSelector: React.FC<TriggerSelectorProps> = ({
             onClick={() => onTriggerTypeChange(trigger.value)}
             className={`flex items-center gap-3 p-4 rounded-lg border-2 transition-all text-left ${
               triggerType === trigger.value
-                ? "border-[#3b4876] bg-[#3b4876]/5"
+                ? "border-[#FF6B35] bg-[#FF6B35]/5"
                 : "border-gray-200 hover:border-gray-300"
             }`}
           >
             <div
-              className={`p-2 rounded-md ${triggerType === trigger.value ? "bg-[#3b4876] text-white" : "bg-gray-100 text-gray-500"}`}
+              className={`p-2 rounded-md ${triggerType === trigger.value ? "bg-[#FF6B35] text-white" : "bg-gray-100 text-gray-500"}`}
             >
               {trigger.icon}
             </div>
             <div>
               <p
-                className="font-semibold text-sm text-[#091a2b]"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                className="font-semibold text-sm text-[#1A1A2E]"
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 {trigger.label}
               </p>
               <p
                 className="text-xs text-gray-500"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 {trigger.description}
               </p>
@@ -108,8 +108,8 @@ export const TriggerSelector: React.FC<TriggerSelectorProps> = ({
       {triggerType === "event" && (
         <div className="mt-4">
           <label
-            className="block text-sm font-semibold text-[#091a2b] mb-2"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            className="block text-sm font-semibold text-[#1A1A2E] mb-2"
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             Event
           </label>
@@ -118,8 +118,8 @@ export const TriggerSelector: React.FC<TriggerSelectorProps> = ({
             onChange={(e) =>
               onTriggerEventChange(e.target.value as WorkflowTriggerEvent)
             }
-            className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-[#091a2b] focus:border-[#3b4876] focus:ring-1 focus:ring-[#3b4876] outline-none"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-[#1A1A2E] focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] outline-none"
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             <option value="">Select an event...</option>
             {TRIGGER_EVENTS.map((event) => (
@@ -134,8 +134,8 @@ export const TriggerSelector: React.FC<TriggerSelectorProps> = ({
       {triggerType === "schedule" && (
         <div className="mt-4">
           <label
-            className="block text-sm font-semibold text-[#091a2b] mb-2"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            className="block text-sm font-semibold text-[#1A1A2E] mb-2"
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             Cron Expression
           </label>
@@ -144,12 +144,12 @@ export const TriggerSelector: React.FC<TriggerSelectorProps> = ({
             value={triggerSchedule || ""}
             onChange={(e) => onTriggerScheduleChange(e.target.value)}
             placeholder="e.g. 0 9 * * 1 (every Monday at 9am)"
-            className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-[#091a2b] focus:border-[#3b4876] focus:ring-1 focus:ring-[#3b4876] outline-none"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-[#1A1A2E] focus:border-[#FF6B35] focus:ring-1 focus:ring-[#FF6B35] outline-none"
+            style={{ fontFamily: "Inter, sans-serif" }}
           />
           <p
             className="mt-1 text-xs text-gray-400"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             Standard cron format: minute hour day month weekday
           </p>

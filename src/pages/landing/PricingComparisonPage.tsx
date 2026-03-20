@@ -13,6 +13,8 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { PageMeta } from "../../components/seo";
+
 interface PricingPlatform {
   name: string;
   startingPrice: string;
@@ -166,6 +168,12 @@ const renderBoolCell = (value: boolean) =>
 export const PricingComparisonPage: React.FC = () => {
   return (
     <main className="min-h-screen bg-white" role="main">
+      <PageMeta
+        title="Property Management Software Pricing Comparison 2026 | RealEstate AI"
+        description="Compare property management software pricing side-by-side. See how RealEstate AI stacks up against AppFolio, Buildium, Rent Manager, and more."
+        keywords="property management software pricing, property management software comparison, AppFolio pricing, Buildium pricing, best property management software pricing"
+        canonicalUrl="https://realestate-ai.com/landing/pricing-comparison"
+      />
       {/* Hero Section */}
       <section
         className="relative pt-24 pb-20 bg-realestate-primary overflow-hidden"

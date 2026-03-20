@@ -222,27 +222,27 @@ export const WorkflowsPage: React.FC = () => {
 
   if (viewMode === "templates") {
     return (
-      <div className="min-h-screen bg-[#f1f3f4]">
+      <div className="min-h-screen bg-[#FFFFFF]">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex items-center justify-between mb-8">
             <div>
               <h1
-                className="text-2xl font-bold text-[#091a2b]"
-                style={{ fontFamily: "Montserrat, sans-serif" }}
+                className="text-2xl font-bold text-[#1A1A2E]"
+                style={{ fontFamily: "Manrope, sans-serif" }}
               >
                 Workflow Templates
               </h1>
               <p
                 className="text-sm text-gray-500 mt-1"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 Start with a pre-built template and customize it
               </p>
             </div>
             <button
               onClick={() => setViewMode("list")}
-              className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#091a2b] transition-colors"
-              style={{ fontFamily: "Open Sans, sans-serif" }}
+              className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-[#1A1A2E] transition-colors"
+              style={{ fontFamily: "Inter, sans-serif" }}
             >
               Back to Workflows
             </button>
@@ -252,25 +252,25 @@ export const WorkflowsPage: React.FC = () => {
             {defaultWorkflows.map((template, i) => (
               <div
                 key={i}
-                className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md hover:border-[#005163]/30 transition-all group"
+                className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md hover:border-[#008080]/30 transition-all group"
               >
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-[#3b4876]/10 flex items-center justify-center text-[#3b4876]">
+                    <div className="w-8 h-8 rounded-lg bg-[#FF6B35]/10 flex items-center justify-center text-[#FF6B35]">
                       {TRIGGER_ICONS[template.triggerType] || (
                         <Zap className="w-4 h-4" />
                       )}
                     </div>
                     <div>
                       <h3
-                        className="font-bold text-[#091a2b] text-sm"
-                        style={{ fontFamily: "Montserrat, sans-serif" }}
+                        className="font-bold text-[#1A1A2E] text-sm"
+                        style={{ fontFamily: "Manrope, sans-serif" }}
                       >
                         {template.name}
                       </h3>
                       <span
-                        className="text-xs text-[#005163] font-medium"
-                        style={{ fontFamily: "Open Sans, sans-serif" }}
+                        className="text-xs text-[#008080] font-medium"
+                        style={{ fontFamily: "Inter, sans-serif" }}
                       >
                         {template.category}
                       </span>
@@ -282,18 +282,18 @@ export const WorkflowsPage: React.FC = () => {
                 </div>
                 <p
                   className="text-sm text-gray-500 mb-4 line-clamp-2"
-                  style={{ fontFamily: "Open Sans, sans-serif" }}
+                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   {template.description}
                 </p>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs bg-[#091a2b]/5 text-[#091a2b] px-2 py-1 rounded font-medium">
+                  <span className="text-xs bg-[#1A1A2E]/5 text-[#1A1A2E] px-2 py-1 rounded font-medium">
                     {TRIGGER_TYPE_LABELS[template.triggerType]}
                   </span>
                   <button
                     onClick={() => handleUseTemplate(template)}
-                    className="flex items-center gap-1 text-sm font-semibold text-[#005163] hover:text-[#091a2b] transition-colors group-hover:underline"
-                    style={{ fontFamily: "Open Sans, sans-serif" }}
+                    className="flex items-center gap-1 text-sm font-semibold text-[#008080] hover:text-[#1A1A2E] transition-colors group-hover:underline"
+                    style={{ fontFamily: "Inter, sans-serif" }}
                   >
                     Use Template
                     <ChevronRight className="w-4 h-4" />
@@ -309,20 +309,20 @@ export const WorkflowsPage: React.FC = () => {
 
   // List View
   return (
-    <div className="min-h-screen bg-[#f1f3f4]">
+    <div className="min-h-screen bg-[#FFFFFF]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1
-              className="text-2xl font-bold text-[#091a2b]"
-              style={{ fontFamily: "Montserrat, sans-serif" }}
+              className="text-2xl font-bold text-[#1A1A2E]"
+              style={{ fontFamily: "Manrope, sans-serif" }}
             >
               Workflows
             </h1>
             <p
               className="text-sm text-gray-500 mt-1"
-              style={{ fontFamily: "Open Sans, sans-serif" }}
+              style={{ fontFamily: "Inter, sans-serif" }}
             >
               Automate property management tasks with custom workflows
             </p>
@@ -330,8 +330,8 @@ export const WorkflowsPage: React.FC = () => {
           <div className="flex items-center gap-3">
             <button
               onClick={() => setViewMode("templates")}
-              className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:bg-white hover:border-[#005163] hover:text-[#005163] transition-all"
-              style={{ fontFamily: "Open Sans, sans-serif" }}
+              className="flex items-center gap-2 px-4 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:bg-white hover:border-[#008080] hover:text-[#008080] transition-all"
+              style={{ fontFamily: "Inter, sans-serif" }}
             >
               <Layout className="w-4 h-4" />
               Templates
@@ -341,8 +341,8 @@ export const WorkflowsPage: React.FC = () => {
                 setEditingWorkflow(null);
                 setViewMode("create");
               }}
-              className="flex items-center gap-2 bg-[#091a2b] text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#091a2b]/90 transition-colors"
-              style={{ fontFamily: "Open Sans, sans-serif" }}
+              className="flex items-center gap-2 bg-[#1A1A2E] text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#1A1A2E]/90 transition-colors"
+              style={{ fontFamily: "Inter, sans-serif" }}
             >
               <Plus className="w-4 h-4" />
               New Workflow
@@ -370,10 +370,10 @@ export const WorkflowsPage: React.FC = () => {
         {isLoading ? (
           <div className="flex items-center justify-center py-20">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-[#3b4876] mx-auto mb-3" />
+              <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-200 border-t-[#FF6B35] mx-auto mb-3" />
               <p
                 className="text-gray-500 text-sm"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 Loading workflows...
               </p>
@@ -382,18 +382,18 @@ export const WorkflowsPage: React.FC = () => {
         ) : workflows.length === 0 ? (
           /* Empty State */
           <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-            <div className="w-16 h-16 bg-[#3b4876]/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Zap className="w-8 h-8 text-[#3b4876]" />
+            <div className="w-16 h-16 bg-[#FF6B35]/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
+              <Zap className="w-8 h-8 text-[#FF6B35]" />
             </div>
             <h2
-              className="text-xl font-bold text-[#091a2b] mb-2"
-              style={{ fontFamily: "Montserrat, sans-serif" }}
+              className="text-xl font-bold text-[#1A1A2E] mb-2"
+              style={{ fontFamily: "Manrope, sans-serif" }}
             >
               No Workflows Yet
             </h2>
             <p
               className="text-gray-500 text-sm max-w-md mx-auto mb-6"
-              style={{ fontFamily: "Open Sans, sans-serif" }}
+              style={{ fontFamily: "Inter, sans-serif" }}
             >
               Create automated workflows to streamline your property management.
               Send emails, create tasks, and update properties automatically.
@@ -402,7 +402,7 @@ export const WorkflowsPage: React.FC = () => {
               <button
                 onClick={() => setViewMode("templates")}
                 className="flex items-center gap-2 px-5 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 <Layout className="w-4 h-4" />
                 Browse Templates
@@ -412,8 +412,8 @@ export const WorkflowsPage: React.FC = () => {
                   setEditingWorkflow(null);
                   setViewMode("create");
                 }}
-                className="flex items-center gap-2 bg-[#091a2b] text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#091a2b]/90 transition-colors"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                className="flex items-center gap-2 bg-[#1A1A2E] text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#1A1A2E]/90 transition-colors"
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 <Plus className="w-4 h-4" />
                 Create from Scratch
@@ -437,7 +437,7 @@ export const WorkflowsPage: React.FC = () => {
                       <div
                         className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${
                           workflow.isActive
-                            ? "bg-[#005163]/10 text-[#005163]"
+                            ? "bg-[#008080]/10 text-[#008080]"
                             : "bg-gray-100 text-gray-400"
                         }`}
                       >
@@ -446,8 +446,8 @@ export const WorkflowsPage: React.FC = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-1">
                           <h3
-                            className="font-bold text-[#091a2b] text-base"
-                            style={{ fontFamily: "Montserrat, sans-serif" }}
+                            className="font-bold text-[#1A1A2E] text-base"
+                            style={{ fontFamily: "Manrope, sans-serif" }}
                           >
                             {workflow.name}
                           </h3>
@@ -464,7 +464,7 @@ export const WorkflowsPage: React.FC = () => {
                         {workflow.description && (
                           <p
                             className="text-sm text-gray-500 mb-3 line-clamp-1"
-                            style={{ fontFamily: "Open Sans, sans-serif" }}
+                            style={{ fontFamily: "Inter, sans-serif" }}
                           >
                             {workflow.description}
                           </p>

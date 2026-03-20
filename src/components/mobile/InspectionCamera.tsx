@@ -61,16 +61,16 @@ export function InspectionCamera({ onPhotoSaved }: InspectionCameraProps) {
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Add a description for this photo..."
             className="w-full px-3 py-2 border rounded-lg text-sm"
-            style={{ borderColor: "#091a2b", color: "#091a2b" }}
+            style={{ borderColor: "#1A1A2E", color: "#1A1A2E" }}
           />
 
           <button
             onClick={() => setImportant(!important)}
             className="flex items-center gap-2 px-3 py-2 border rounded-lg text-sm transition-colors"
             style={{
-              borderColor: important ? "#3b4876" : "#d1d5db",
-              backgroundColor: important ? "#3b4876" : "transparent",
-              color: important ? "#ffffff" : "#091a2b",
+              borderColor: important ? "#FF6B35" : "#d1d5db",
+              backgroundColor: important ? "#FF6B35" : "transparent",
+              color: important ? "#ffffff" : "#1A1A2E",
             }}
           >
             {important ? <Star size={16} /> : <Star size={16} />}
@@ -81,14 +81,14 @@ export function InspectionCamera({ onPhotoSaved }: InspectionCameraProps) {
             <button
               onClick={handleDiscard}
               className="flex-1 px-4 py-2 border rounded-lg text-sm transition-colors"
-              style={{ borderColor: "#091a2b", color: "#091a2b" }}
+              style={{ borderColor: "#1A1A2E", color: "#1A1A2E" }}
             >
               Discard
             </button>
             <button
               onClick={handleSave}
               className="flex-1 px-4 py-2 text-white rounded-lg text-sm transition-colors"
-              style={{ backgroundColor: "#091a2b" }}
+              style={{ backgroundColor: "#1A1A2E" }}
             >
               Save Photo
             </button>
@@ -98,7 +98,7 @@ export function InspectionCamera({ onPhotoSaved }: InspectionCameraProps) {
 
       {savedPhotos.length > 0 && (
         <div className="flex flex-col gap-2 mt-4">
-          <h3 className="text-sm font-semibold" style={{ color: "#091a2b" }}>
+          <h3 className="text-sm font-semibold" style={{ color: "#1A1A2E" }}>
             Saved Photos ({savedPhotos.length})
           </h3>
           <div className="grid grid-cols-3 gap-2">
@@ -112,7 +112,7 @@ export function InspectionCamera({ onPhotoSaved }: InspectionCameraProps) {
                 {photo.important && (
                   <div
                     className="absolute top-1 right-1 p-1 rounded-full"
-                    style={{ backgroundColor: "#3b4876" }}
+                    style={{ backgroundColor: "#FF6B35" }}
                   >
                     <Star size={10} className="text-white" />
                   </div>

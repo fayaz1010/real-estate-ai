@@ -199,19 +199,19 @@ export function TenantScreeningForm({
   }
 
   const labelClass =
-    "block text-sm font-semibold text-[#091a2b] font-[Montserrat] mb-1";
-  const inputClass = "font-[Open_Sans]";
+    "block text-sm font-semibold text-[#1A1A2E] font-[Manrope] mb-1";
+  const inputClass = "font-[Inter]";
   const errorClass = "text-red-600 text-xs mt-1";
-  const sectionClass = "space-y-4 rounded-lg border border-[#091a2b]/10 p-5";
+  const sectionClass = "space-y-4 rounded-lg border border-[#1A1A2E]/10 p-5";
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="space-y-8 bg-[#f1f3f4] p-6 rounded-xl"
+      className="space-y-8 bg-[#FFFFFF] p-6 rounded-xl"
     >
       {/* Personal Information */}
       <fieldset className={sectionClass}>
-        <legend className="text-lg font-bold text-[#091a2b] font-[Montserrat] px-2">
+        <legend className="text-lg font-bold text-[#1A1A2E] font-[Manrope] px-2">
           Personal Information
         </legend>
 
@@ -288,7 +288,7 @@ export function TenantScreeningForm({
 
       {/* Employment History */}
       <fieldset className={sectionClass}>
-        <legend className="text-lg font-bold text-[#091a2b] font-[Montserrat] px-2">
+        <legend className="text-lg font-bold text-[#1A1A2E] font-[Manrope] px-2">
           Employment History
         </legend>
         {errors.employmentHistory && (
@@ -393,7 +393,7 @@ export function TenantScreeningForm({
 
       {/* Rental History */}
       <fieldset className={sectionClass}>
-        <legend className="text-lg font-bold text-[#091a2b] font-[Montserrat] px-2">
+        <legend className="text-lg font-bold text-[#1A1A2E] font-[Manrope] px-2">
           Rental History
         </legend>
         {errors.rentalHistory && (
@@ -497,7 +497,7 @@ export function TenantScreeningForm({
 
       {/* References */}
       <fieldset className={sectionClass}>
-        <legend className="text-lg font-bold text-[#091a2b] font-[Montserrat] px-2">
+        <legend className="text-lg font-bold text-[#1A1A2E] font-[Manrope] px-2">
           References
         </legend>
         {errors.references && <p className={errorClass}>{errors.references}</p>}
@@ -585,39 +585,39 @@ export function TenantScreeningForm({
       </fieldset>
 
       {/* Screening Services Info */}
-      <div className={cn(sectionClass, "bg-[#005163]/5")}>
-        <h3 className="text-lg font-bold text-[#091a2b] font-[Montserrat]">
+      <div className={cn(sectionClass, "bg-[#008080]/5")}>
+        <h3 className="text-lg font-bold text-[#1A1A2E] font-[Manrope]">
           Screening Checks Included
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm font-[Open_Sans]">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm font-[Inter]">
           <div className="flex items-start gap-2">
-            <span className="mt-0.5 h-5 w-5 rounded-full bg-[#005163] text-white flex items-center justify-center text-xs flex-shrink-0">
+            <span className="mt-0.5 h-5 w-5 rounded-full bg-[#008080] text-white flex items-center justify-center text-xs flex-shrink-0">
               1
             </span>
             <div>
-              <p className="font-semibold text-[#091a2b]">Credit Check</p>
+              <p className="font-semibold text-[#1A1A2E]">Credit Check</p>
               <p className="text-gray-500">
                 via TransUnion / Experian / Equifax
               </p>
             </div>
           </div>
           <div className="flex items-start gap-2">
-            <span className="mt-0.5 h-5 w-5 rounded-full bg-[#005163] text-white flex items-center justify-center text-xs flex-shrink-0">
+            <span className="mt-0.5 h-5 w-5 rounded-full bg-[#008080] text-white flex items-center justify-center text-xs flex-shrink-0">
               2
             </span>
             <div>
-              <p className="font-semibold text-[#091a2b]">
+              <p className="font-semibold text-[#1A1A2E]">
                 Criminal Background
               </p>
               <p className="text-gray-500">National & county records</p>
             </div>
           </div>
           <div className="flex items-start gap-2">
-            <span className="mt-0.5 h-5 w-5 rounded-full bg-[#005163] text-white flex items-center justify-center text-xs flex-shrink-0">
+            <span className="mt-0.5 h-5 w-5 rounded-full bg-[#008080] text-white flex items-center justify-center text-xs flex-shrink-0">
               3
             </span>
             <div>
-              <p className="font-semibold text-[#091a2b]">Eviction History</p>
+              <p className="font-semibold text-[#1A1A2E]">Eviction History</p>
               <p className="text-gray-500">Nationwide eviction records</p>
             </div>
           </div>
@@ -631,9 +631,9 @@ export function TenantScreeningForm({
             type="checkbox"
             checked={consentBackgroundCheck}
             onChange={(e) => setConsentBackgroundCheck(e.target.checked)}
-            className="mt-1 h-4 w-4 rounded border-gray-300 text-[#091a2b] focus:ring-[#091a2b]"
+            className="mt-1 h-4 w-4 rounded border-gray-300 text-[#1A1A2E] focus:ring-[#1A1A2E]"
           />
-          <span className="text-sm font-[Open_Sans] text-[#091a2b]">
+          <span className="text-sm font-[Inter] text-[#1A1A2E]">
             I consent to a background check, including credit check, criminal
             background check, and eviction history verification. I understand
             that this information will be used solely for tenant screening
@@ -650,7 +650,7 @@ export function TenantScreeningForm({
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="bg-[#091a2b] hover:bg-[#091a2b]/90 text-white px-8 py-3 font-[Montserrat] font-semibold"
+          className="bg-[#1A1A2E] hover:bg-[#1A1A2E]/90 text-white px-8 py-3 font-[Manrope] font-semibold"
           size="lg"
         >
           {isSubmitting ? "Submitting..." : "Submit Screening Request"}

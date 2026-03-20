@@ -67,13 +67,13 @@ export const CameraViewfinder: React.FC<CameraViewfinderProps> = ({
         <CameraOff className="w-16 h-16 text-gray-400 mb-4" />
         <h3
           className="text-xl font-semibold text-white mb-2"
-          style={{ fontFamily: "Montserrat, sans-serif" }}
+          style={{ fontFamily: "Manrope, sans-serif" }}
         >
           Camera Access Denied
         </h3>
         <p
           className="text-gray-400 mb-6"
-          style={{ fontFamily: "Open Sans, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           Please enable camera permissions in your browser settings to use this
           feature.
@@ -88,13 +88,13 @@ export const CameraViewfinder: React.FC<CameraViewfinderProps> = ({
         <Camera className="w-16 h-16 text-gray-400 mb-4" />
         <h3
           className="text-xl font-semibold text-white mb-2"
-          style={{ fontFamily: "Montserrat, sans-serif" }}
+          style={{ fontFamily: "Manrope, sans-serif" }}
         >
           Property Camera
         </h3>
         <p
           className="text-gray-400 mb-6"
-          style={{ fontFamily: "Open Sans, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           Capture photos for property documentation
         </p>
@@ -102,14 +102,14 @@ export const CameraViewfinder: React.FC<CameraViewfinderProps> = ({
           onClick={startCamera}
           className="px-6 py-3 rounded-lg text-white font-medium transition-colors"
           style={{
-            backgroundColor: "#005163",
-            fontFamily: "Open Sans, sans-serif",
+            backgroundColor: "#008080",
+            fontFamily: "Inter, sans-serif",
           }}
           onMouseOver={(e) =>
             (e.currentTarget.style.backgroundColor = "#003d4a")
           }
           onMouseOut={(e) =>
-            (e.currentTarget.style.backgroundColor = "#005163")
+            (e.currentTarget.style.backgroundColor = "#008080")
           }
         >
           Start Camera
@@ -160,7 +160,7 @@ export const CameraViewfinder: React.FC<CameraViewfinderProps> = ({
           className="absolute top-4 left-1/2 -translate-x-1/2 z-20 px-3 py-1 rounded-full text-sm text-white/90"
           style={{
             backgroundColor: "rgba(9, 26, 43, 0.7)",
-            fontFamily: "Open Sans, sans-serif",
+            fontFamily: "Inter, sans-serif",
           }}
         >
           {roomLabel}

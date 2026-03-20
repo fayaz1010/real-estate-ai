@@ -193,16 +193,16 @@ const BookingForm: React.FC<BookingFormProps> = ({
   // ─── Field Wrapper ───────────────────────────────────────────────────────
 
   const fieldClasses =
-    "w-full px-3 py-2.5 border border-[#091a2b]/20 rounded-lg text-sm text-[#091a2b] font-['Open_Sans'] focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent transition-colors bg-white";
+    "w-full px-3 py-2.5 border border-[#1A1A2E]/20 rounded-lg text-sm text-[#1A1A2E] font-['Inter'] focus:outline-none focus:ring-2 focus:ring-[#008080] focus:border-transparent transition-colors bg-white";
 
   const labelClasses =
-    "block text-sm font-semibold text-[#091a2b] font-['Open_Sans'] mb-1.5";
+    "block text-sm font-semibold text-[#1A1A2E] font-['Inter'] mb-1.5";
 
   // ─── Render ──────────────────────────────────────────────────────────────
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <h3 className="text-lg font-bold text-[#091a2b] font-['Montserrat']">
+      <h3 className="text-lg font-bold text-[#1A1A2E] font-['Manrope']">
         {isEditing ? "Edit Booking" : "New Booking"}
       </h3>
 
@@ -228,7 +228,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
           ))}
         </select>
         {errors.type && (
-          <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Open_Sans']">
+          <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Inter']">
             <AlertCircle className="w-3 h-3" /> {errors.type}
           </p>
         )}
@@ -258,7 +258,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             ))}
           </select>
           {errors.propertyId && (
-            <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Open_Sans']">
+            <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Inter']">
               <AlertCircle className="w-3 h-3" /> {errors.propertyId}
             </p>
           )}
@@ -332,7 +332,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             className={fieldClasses}
           />
           {errors.startTime && (
-            <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Open_Sans']">
+            <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Inter']">
               <AlertCircle className="w-3 h-3" /> {errors.startTime}
             </p>
           )}
@@ -349,7 +349,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
             className={fieldClasses}
           />
           {errors.endTime && (
-            <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Open_Sans']">
+            <p className="mt-1 text-xs text-red-600 flex items-center gap-1 font-['Inter']">
               <AlertCircle className="w-3 h-3" /> {errors.endTime}
             </p>
           )}
@@ -366,13 +366,13 @@ const BookingForm: React.FC<BookingFormProps> = ({
           <button
             type="button"
             onClick={addAttendee}
-            className="inline-flex items-center gap-1 text-xs font-semibold text-[#005163] hover:text-[#091a2b] transition-colors font-['Open_Sans']"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-[#008080] hover:text-[#1A1A2E] transition-colors font-['Inter']"
           >
             <Plus className="w-3.5 h-3.5" /> Add
           </button>
         </div>
         {errors.attendees && (
-          <p className="mb-2 text-xs text-red-600 flex items-center gap-1 font-['Open_Sans']">
+          <p className="mb-2 text-xs text-red-600 flex items-center gap-1 font-['Inter']">
             <AlertCircle className="w-3 h-3" /> {errors.attendees}
           </p>
         )}
@@ -442,7 +442,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#091a2b] text-white text-sm font-semibold rounded-lg hover:bg-[#005163] disabled:opacity-50 transition-colors font-['Open_Sans']"
+          className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#1A1A2E] text-white text-sm font-semibold rounded-lg hover:bg-[#008080] disabled:opacity-50 transition-colors font-['Inter']"
         >
           {isSubmitting ? (
             <Loader className="w-4 h-4 animate-spin" />
@@ -461,7 +461,7 @@ const BookingForm: React.FC<BookingFormProps> = ({
           <button
             type="button"
             onClick={onCancel}
-            className="px-5 py-2.5 text-sm font-semibold text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-['Open_Sans']"
+            className="px-5 py-2.5 text-sm font-semibold text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors font-['Inter']"
           >
             Cancel
           </button>

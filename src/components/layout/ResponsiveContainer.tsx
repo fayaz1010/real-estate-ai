@@ -9,8 +9,8 @@ const containerStyle: React.CSSProperties = {
   width: "100%",
   marginLeft: "auto",
   marginRight: "auto",
-  backgroundColor: "#f1f3f4",
-  fontFamily: "'Open Sans', sans-serif",
+  backgroundColor: "#FFFFFF",
+  fontFamily: "'Inter', sans-serif",
   minHeight: "100vh",
   boxSizing: "border-box",
 };

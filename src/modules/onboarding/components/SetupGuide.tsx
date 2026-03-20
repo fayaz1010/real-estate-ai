@@ -102,7 +102,7 @@ export const SetupGuide: React.FC<SetupGuideProps> = ({ role }) => {
     <div className="w-full max-w-2xl mx-auto mt-8">
       <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
         {/* Header */}
-        <div className="bg-[#005163] px-6 py-5">
+        <div className="bg-[#008080] px-6 py-5">
           <h2 className="text-xl font-montserrat font-bold text-white">
             {guide.headline}
           </h2>
@@ -124,15 +124,15 @@ export const SetupGuide: React.FC<SetupGuideProps> = ({ role }) => {
                 <Link
                   key={link.label}
                   to={link.href}
-                  className="flex items-center gap-4 p-4 rounded-xl border border-gray-200 hover:border-[#005163]/40 hover:bg-[#005163]/5 transition-all group"
+                  className="flex items-center gap-4 p-4 rounded-xl border border-gray-200 hover:border-[#008080]/40 hover:bg-[#008080]/5 transition-all group"
                 >
-                  <div className="p-2.5 rounded-lg bg-[#005163]/10 text-[#005163] group-hover:bg-[#005163] group-hover:text-white transition-all">
+                  <div className="p-2.5 rounded-lg bg-[#008080]/10 text-[#008080] group-hover:bg-[#008080] group-hover:text-white transition-all">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <span className="flex-1 font-open-sans font-semibold text-[#091a2b] text-sm">
+                  <span className="flex-1 font-open-sans font-semibold text-[#1A1A2E] text-sm">
                     {link.label}
                   </span>
-                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#005163] transition-colors" />
+                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#008080] transition-colors" />
                 </Link>
               );
             })}

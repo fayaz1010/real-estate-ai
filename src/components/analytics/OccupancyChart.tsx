@@ -32,13 +32,13 @@ export const OccupancyChart: React.FC<OccupancyChartProps> = ({ data }) => {
     <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
       <h3
         className="text-lg font-bold mb-1"
-        style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
+        style={{ color: "#1A1A2E", fontFamily: "Manrope, sans-serif" }}
       >
         Occupancy Trends
       </h3>
       <p
         className="text-sm mb-4"
-        style={{ color: "#5a6a7a", fontFamily: "Open Sans, sans-serif" }}
+        style={{ color: "#5a6a7a", fontFamily: "Inter, sans-serif" }}
       >
         Unit occupancy and vacancy over time
       </p>
@@ -50,8 +50,8 @@ export const OccupancyChart: React.FC<OccupancyChartProps> = ({ data }) => {
           >
             <defs>
               <linearGradient id="occupiedGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#005163" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#005163" stopOpacity={0} />
+                <stop offset="5%" stopColor="#008080" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#008080" stopOpacity={0} />
               </linearGradient>
               <linearGradient id="vacantGrad" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#b91c1c" stopOpacity={0.2} />
@@ -72,21 +72,21 @@ export const OccupancyChart: React.FC<OccupancyChartProps> = ({ data }) => {
               contentStyle={{
                 borderRadius: 8,
                 border: "1px solid #e5e7eb",
-                fontFamily: "Open Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
                 fontSize: 13,
               }}
             />
             <Legend
               wrapperStyle={{
                 fontSize: 13,
-                fontFamily: "Open Sans, sans-serif",
+                fontFamily: "Inter, sans-serif",
               }}
             />
             <Area
               type="monotone"
               dataKey="occupied"
               name="Occupied Units"
-              stroke="#005163"
+              stroke="#008080"
               fill="url(#occupiedGrad)"
               strokeWidth={2}
             />

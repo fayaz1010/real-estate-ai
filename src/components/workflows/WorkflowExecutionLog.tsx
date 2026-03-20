@@ -45,7 +45,7 @@ export const WorkflowExecutionLog: React.FC<WorkflowExecutionLogProps> = ({
         <Clock className="w-10 h-10 text-gray-300 mx-auto mb-3" />
         <p
           className="text-sm text-gray-400"
-          style={{ fontFamily: "Open Sans, sans-serif" }}
+          style={{ fontFamily: "Inter, sans-serif" }}
         >
           No execution history yet.
         </p>
@@ -61,15 +61,15 @@ export const WorkflowExecutionLog: React.FC<WorkflowExecutionLogProps> = ({
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2">
               <span
-                className="text-sm font-medium text-[#091a2b]"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                className="text-sm font-medium text-[#1A1A2E]"
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 {getStatusLabel(log.status)}
               </span>
               {log.duration !== undefined && (
                 <span
                   className="text-xs text-gray-400"
-                  style={{ fontFamily: "Open Sans, sans-serif" }}
+                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   {log.duration}ms
                 </span>
@@ -78,7 +78,7 @@ export const WorkflowExecutionLog: React.FC<WorkflowExecutionLogProps> = ({
             {log.details && (
               <p
                 className="text-xs text-gray-500 truncate"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 {log.details}
               </p>
@@ -86,7 +86,7 @@ export const WorkflowExecutionLog: React.FC<WorkflowExecutionLogProps> = ({
           </div>
           <span
             className="text-xs text-gray-400 flex-shrink-0"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             {new Date(log.executedAt).toLocaleDateString("en-AU", {
               day: "numeric",

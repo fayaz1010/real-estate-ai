@@ -58,7 +58,7 @@ export const BackgroundCheckStatus: React.FC<BackgroundCheckStatusProps> = ({
       />
       <span
         className={`text-sm font-medium ${config.textColor}`}
-        style={{ fontFamily: "'Open Sans', sans-serif" }}
+        style={{ fontFamily: "'Inter', sans-serif" }}
       >
         {config.label}
       </span>

@@ -56,7 +56,7 @@ export function CameraCapture({ onCapture }: CameraCaptureProps) {
         <button
           onClick={startCamera}
           className="flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition-colors"
-          style={{ backgroundColor: "#091a2b" }}
+          style={{ backgroundColor: "#1A1A2E" }}
         >
           <Camera size={20} />
           Open Camera
@@ -77,7 +77,7 @@ export function CameraCapture({ onCapture }: CameraCaptureProps) {
           <button
             onClick={takePhoto}
             className="flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition-colors"
-            style={{ backgroundColor: "#3b4876" }}
+            style={{ backgroundColor: "#FF6B35" }}
           >
             <Camera size={20} />
             Take Photo
@@ -93,7 +93,7 @@ export function CameraCapture({ onCapture }: CameraCaptureProps) {
           <button
             onClick={retry}
             className="flex items-center justify-center gap-2 px-4 py-3 text-white rounded-lg transition-colors"
-            style={{ backgroundColor: "#3b4876" }}
+            style={{ backgroundColor: "#FF6B35" }}
           >
             <RotateCcw size={20} />
             Retry

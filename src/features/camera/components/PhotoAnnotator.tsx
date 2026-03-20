@@ -251,7 +251,7 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
       switch (ann.type) {
         case "TEXT": {
           const fontSize = (ann.size || 24) * (canvas.width / 800);
-          ctx.font = `bold ${fontSize}px "Open Sans", sans-serif`;
+          ctx.font = `bold ${fontSize}px "Inter", sans-serif`;
           ctx.fillStyle = ann.color;
           // Text shadow for readability
           ctx.shadowColor = "rgba(0,0,0,0.7)";
@@ -338,7 +338,7 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
       {/* Toolbar */}
       <div
         className="flex items-center gap-2 p-3 border-b border-gray-700 overflow-x-auto"
-        style={{ backgroundColor: "#091a2b" }}
+        style={{ backgroundColor: "#1A1A2E" }}
       >
         {/* Drawing tools */}
         {tools.map((tool) => (
@@ -442,7 +442,7 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
           <button
             onClick={onCancel}
             className="px-3 py-1.5 rounded-lg text-gray-300 hover:bg-white/10 text-sm flex-shrink-0"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             Cancel
           </button>
@@ -451,8 +451,8 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
           onClick={handleSave}
           className="px-4 py-1.5 rounded-lg text-white text-sm font-medium flex items-center gap-1.5 flex-shrink-0"
           style={{
-            backgroundColor: "#005163",
-            fontFamily: "Open Sans, sans-serif",
+            backgroundColor: "#008080",
+            fontFamily: "Inter, sans-serif",
           }}
         >
           <Check className="w-4 h-4" />
@@ -488,7 +488,7 @@ export const PhotoAnnotator: React.FC<PhotoAnnotatorProps> = ({
               placeholder="Enter text..."
               autoFocus
               className="bg-gray-700 text-white text-sm px-2 py-1 rounded outline-none w-40"
-              style={{ fontFamily: "Open Sans, sans-serif" }}
+              style={{ fontFamily: "Inter, sans-serif" }}
             />
             <button
               onClick={handleTextSubmit}

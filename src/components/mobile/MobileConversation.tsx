@@ -73,14 +73,14 @@ const MobileConversation: React.FC<MobileConversationProps> = ({
   return (
     <div
       className="flex h-full flex-col"
-      style={{ backgroundColor: "#f1f3f4" }}
+      style={{ backgroundColor: "#FFFFFF" }}
     >
       {/* Header */}
       <div
         className="flex items-center gap-3 px-4 py-3 text-white shadow-sm"
         style={{
-          backgroundColor: "#091a2b",
-          fontFamily: "'Montserrat', sans-serif",
+          backgroundColor: "#1A1A2E",
+          fontFamily: "'Manrope', sans-serif",
         }}
       >
         <button onClick={onBack} className="p-1" aria-label="Go back">
@@ -103,7 +103,7 @@ const MobileConversation: React.FC<MobileConversationProps> = ({
       {/* Messages */}
       <div
         className="flex-1 overflow-y-auto px-4 py-3"
-        style={{ fontFamily: "'Open Sans', sans-serif" }}
+        style={{ fontFamily: "'Inter', sans-serif" }}
       >
         {messages.map((msg) => {
           const isMine = msg.senderId === CURRENT_USER;
@@ -115,7 +115,7 @@ const MobileConversation: React.FC<MobileConversationProps> = ({
               <div
                 className={`max-w-[75%] rounded-2xl px-4 py-2 ${
                   isMine
-                    ? "rounded-br-md bg-[#3b4876] text-white"
+                    ? "rounded-br-md bg-[#FF6B35] text-white"
                     : "rounded-bl-md bg-white text-gray-900 shadow-sm"
                 }`}
               >
@@ -154,14 +154,14 @@ const MobileConversation: React.FC<MobileConversationProps> = ({
           onChange={(e) => setInputText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleSend()}
           placeholder="Type a message..."
-          className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-sm outline-none focus:border-[#3b4876]"
-          style={{ fontFamily: "'Open Sans', sans-serif" }}
+          className="flex-1 rounded-full border border-gray-200 px-4 py-2 text-sm outline-none focus:border-[#FF6B35]"
+          style={{ fontFamily: "'Inter', sans-serif" }}
         />
         <button
           onClick={handleSend}
           disabled={!inputText.trim()}
           className="flex h-10 w-10 items-center justify-center rounded-full text-white transition-opacity disabled:opacity-40"
-          style={{ backgroundColor: "#091a2b" }}
+          style={{ backgroundColor: "#1A1A2E" }}
           aria-label="Send message"
         >
           <Send size={18} />

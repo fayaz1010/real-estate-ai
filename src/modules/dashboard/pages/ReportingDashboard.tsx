@@ -168,19 +168,19 @@ export const ReportingDashboard: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen bg-[#f1f3f4]"
-      style={{ fontFamily: "'Open Sans', sans-serif" }}
+      className="min-h-screen bg-[#FFFFFF]"
+      style={{ fontFamily: "'Inter', sans-serif" }}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
           <h1
-            className="text-3xl font-bold text-[#091a2b] mb-2"
-            style={{ fontFamily: "'Montserrat', sans-serif" }}
+            className="text-3xl font-bold text-[#1A1A2E] mb-2"
+            style={{ fontFamily: "'Manrope', sans-serif" }}
           >
             Reporting &amp; Analytics
           </h1>
-          <p className="text-[#091a2b]/60 max-w-2xl">
+          <p className="text-[#1A1A2E]/60 max-w-2xl">
             Gain insights into your property performance with our comprehensive
             reporting dashboard.
           </p>
@@ -189,19 +189,19 @@ export const ReportingDashboard: React.FC = () => {
         {/* Filters */}
         <div className="bg-white rounded-lg shadow-realestate-sm p-4 mb-8">
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 flex-wrap">
-            <div className="flex items-center gap-2 text-[#3b4876]">
+            <div className="flex items-center gap-2 text-[#FF6B35]">
               <Filter className="w-4 h-4" />
               <span
                 className="text-sm font-semibold uppercase tracking-wide"
-                style={{ fontFamily: "'Montserrat', sans-serif" }}
+                style={{ fontFamily: "'Manrope', sans-serif" }}
               >
                 Filters
               </span>
             </div>
 
             <div className="flex items-center gap-2">
-              <CalendarDays className="w-4 h-4 text-[#005163]" />
-              <label className="text-sm text-[#091a2b]/70" htmlFor="start-date">
+              <CalendarDays className="w-4 h-4 text-[#008080]" />
+              <label className="text-sm text-[#1A1A2E]/70" htmlFor="start-date">
                 From
               </label>
               <input
@@ -209,12 +209,12 @@ export const ReportingDashboard: React.FC = () => {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-1.5 text-sm text-[#091a2b] focus:outline-none focus:ring-2 focus:ring-[#005163]/30 focus:border-[#005163]"
+                className="border border-gray-300 rounded-md px-3 py-1.5 text-sm text-[#1A1A2E] focus:outline-none focus:ring-2 focus:ring-[#008080]/30 focus:border-[#008080]"
               />
             </div>
 
             <div className="flex items-center gap-2">
-              <label className="text-sm text-[#091a2b]/70" htmlFor="end-date">
+              <label className="text-sm text-[#1A1A2E]/70" htmlFor="end-date">
                 To
               </label>
               <input
@@ -222,14 +222,14 @@ export const ReportingDashboard: React.FC = () => {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-1.5 text-sm text-[#091a2b] focus:outline-none focus:ring-2 focus:ring-[#005163]/30 focus:border-[#005163]"
+                className="border border-gray-300 rounded-md px-3 py-1.5 text-sm text-[#1A1A2E] focus:outline-none focus:ring-2 focus:ring-[#008080]/30 focus:border-[#008080]"
               />
             </div>
 
             <div className="flex items-center gap-2">
-              <Building className="w-4 h-4 text-[#005163]" />
+              <Building className="w-4 h-4 text-[#008080]" />
               <label
-                className="text-sm text-[#091a2b]/70"
+                className="text-sm text-[#1A1A2E]/70"
                 htmlFor="property-select"
               >
                 Property
@@ -238,7 +238,7 @@ export const ReportingDashboard: React.FC = () => {
                 id="property-select"
                 value={propertyId}
                 onChange={(e) => setPropertyId(e.target.value)}
-                className="border border-gray-300 rounded-md px-3 py-1.5 text-sm text-[#091a2b] focus:outline-none focus:ring-2 focus:ring-[#005163]/30 focus:border-[#005163] min-w-[180px]"
+                className="border border-gray-300 rounded-md px-3 py-1.5 text-sm text-[#1A1A2E] focus:outline-none focus:ring-2 focus:ring-[#008080]/30 focus:border-[#008080] min-w-[180px]"
               >
                 {MOCK_PROPERTIES.map((p) => (
                   <option key={p.id} value={p.id}>

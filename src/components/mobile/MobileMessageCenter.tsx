@@ -50,16 +50,16 @@ const MobileMessageCenter: React.FC = () => {
   return (
     <div
       className="flex h-full flex-col"
-      style={{ backgroundColor: "#f1f3f4" }}
+      style={{ backgroundColor: "#FFFFFF" }}
     >
       {/* Header */}
       <div
         className="px-4 pb-3 pt-4 text-white"
-        style={{ backgroundColor: "#091a2b" }}
+        style={{ backgroundColor: "#1A1A2E" }}
       >
         <h1
           className="mb-3 text-xl font-bold"
-          style={{ fontFamily: "'Montserrat', sans-serif" }}
+          style={{ fontFamily: "'Manrope', sans-serif" }}
         >
           Messages
         </h1>
@@ -74,7 +74,7 @@ const MobileMessageCenter: React.FC = () => {
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search conversations..."
             className="w-full rounded-full bg-white/10 py-2 pl-9 pr-4 text-sm text-white placeholder-white/50 outline-none focus:bg-white/20"
-            style={{ fontFamily: "'Open Sans', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           />
         </div>
       </div>
@@ -86,7 +86,7 @@ const MobileMessageCenter: React.FC = () => {
             <MessageCircle size={40} />
             <p
               className="mt-2 text-sm"
-              style={{ fontFamily: "'Open Sans', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               {search ? "No conversations found" : "No messages yet"}
             </p>
@@ -115,7 +115,7 @@ const MobileMessageCenter: React.FC = () => {
                 ) : (
                   <div
                     className="flex h-12 w-12 items-center justify-center rounded-full text-white"
-                    style={{ backgroundColor: "#3b4876" }}
+                    style={{ backgroundColor: "#FF6B35" }}
                   >
                     {otherName.charAt(0)}
                   </div>
@@ -124,7 +124,7 @@ const MobileMessageCenter: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <span
                       className="font-semibold text-gray-900"
-                      style={{ fontFamily: "'Open Sans', sans-serif" }}
+                      style={{ fontFamily: "'Inter', sans-serif" }}
                     >
                       {otherName}
                     </span>
@@ -134,7 +134,7 @@ const MobileMessageCenter: React.FC = () => {
                   </div>
                   <p
                     className="mt-0.5 truncate text-sm text-gray-500"
-                    style={{ fontFamily: "'Open Sans', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     {preview}
                   </p>
@@ -142,7 +142,7 @@ const MobileMessageCenter: React.FC = () => {
                 {conv.unreadCount > 0 && (
                   <span
                     className="flex h-5 min-w-[20px] items-center justify-center rounded-full px-1.5 text-xs font-bold text-white"
-                    style={{ backgroundColor: "#3b4876" }}
+                    style={{ backgroundColor: "#FF6B35" }}
                   >
                     {conv.unreadCount}
                   </span>

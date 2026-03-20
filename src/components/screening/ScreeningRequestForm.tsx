@@ -108,7 +108,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
         >
           <p
             className="text-red-700 text-sm"
-            style={{ fontFamily: "'Open Sans', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {submitError}
           </p>
@@ -120,7 +120,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
         <label
           htmlFor="tenantName"
           className="block text-sm font-semibold mb-1.5"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
+          style={{ fontFamily: "'Manrope', sans-serif", color: "#1A1A2E" }}
         >
           Tenant Name
         </label>
@@ -132,13 +132,13 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
           placeholder="Enter tenant's full name"
           aria-invalid={!!errors.tenantName}
           aria-describedby={errors.tenantName ? "tenantName-error" : undefined}
-          style={{ fontFamily: "'Open Sans', sans-serif" }}
+          style={{ fontFamily: "'Inter', sans-serif" }}
         />
         {errors.tenantName && (
           <p
             id="tenantName-error"
             className="text-red-600 text-xs mt-1"
-            style={{ fontFamily: "'Open Sans', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {errors.tenantName}
           </p>
@@ -150,7 +150,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
         <label
           htmlFor="email"
           className="block text-sm font-semibold mb-1.5"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
+          style={{ fontFamily: "'Manrope', sans-serif", color: "#1A1A2E" }}
         >
           Email Address
         </label>
@@ -163,13 +163,13 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
           placeholder="tenant@example.com"
           aria-invalid={!!errors.email}
           aria-describedby={errors.email ? "email-error" : undefined}
-          style={{ fontFamily: "'Open Sans', sans-serif" }}
+          style={{ fontFamily: "'Inter', sans-serif" }}
         />
         {errors.email && (
           <p
             id="email-error"
             className="text-red-600 text-xs mt-1"
-            style={{ fontFamily: "'Open Sans', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {errors.email}
           </p>
@@ -181,7 +181,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
         <label
           htmlFor="phone"
           className="block text-sm font-semibold mb-1.5"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
+          style={{ fontFamily: "'Manrope', sans-serif", color: "#1A1A2E" }}
         >
           Phone Number
         </label>
@@ -194,13 +194,13 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
           placeholder="(555) 123-4567"
           aria-invalid={!!errors.phone}
           aria-describedby={errors.phone ? "phone-error" : undefined}
-          style={{ fontFamily: "'Open Sans', sans-serif" }}
+          style={{ fontFamily: "'Inter', sans-serif" }}
         />
         {errors.phone && (
           <p
             id="phone-error"
             className="text-red-600 text-xs mt-1"
-            style={{ fontFamily: "'Open Sans', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {errors.phone}
           </p>
@@ -212,7 +212,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
         <label
           htmlFor="propertyId"
           className="block text-sm font-semibold mb-1.5"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
+          style={{ fontFamily: "'Manrope', sans-serif", color: "#1A1A2E" }}
         >
           Property
         </label>
@@ -224,7 +224,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
           className="flex h-10 w-full rounded-md border border-primary/30 bg-background px-3 py-2 text-sm text-text_primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           aria-invalid={!!errors.propertyId}
           aria-describedby={errors.propertyId ? "propertyId-error" : undefined}
-          style={{ fontFamily: "'Open Sans', sans-serif" }}
+          style={{ fontFamily: "'Inter', sans-serif" }}
         >
           <option value="">Select a property</option>
           {properties.map((property) => (
@@ -237,7 +237,7 @@ export const ScreeningRequestForm: React.FC<ScreeningRequestFormProps> = ({
           <p
             id="propertyId-error"
             className="text-red-600 text-xs mt-1"
-            style={{ fontFamily: "'Open Sans', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             {errors.propertyId}
           </p>

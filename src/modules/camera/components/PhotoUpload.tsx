@@ -19,11 +19,11 @@ const primaryButton: React.CSSProperties = {
   gap: 8,
   padding: "12px 20px",
   color: "#ffffff",
-  backgroundColor: "#091a2b",
+  backgroundColor: "#1A1A2E",
   border: "none",
   borderRadius: 8,
   cursor: "pointer",
-  fontFamily: "'Open Sans', sans-serif",
+  fontFamily: "'Inter', sans-serif",
   fontSize: 14,
   fontWeight: 600,
   width: "100%",
@@ -106,7 +106,7 @@ export function PhotoUpload({ onUpload, maxFiles = 10 }: PhotoUploadProps) {
   return (
     <div
       style={{
-        fontFamily: "'Open Sans', sans-serif",
+        fontFamily: "'Inter', sans-serif",
         display: "flex",
         flexDirection: "column",
         gap: 16,
@@ -212,7 +212,7 @@ export function PhotoUpload({ onUpload, maxFiles = 10 }: PhotoUploadProps) {
                   style={{
                     height: "100%",
                     width: `${uploadProgress}%`,
-                    backgroundColor: "#091a2b",
+                    backgroundColor: "#1A1A2E",
                     borderRadius: 4,
                     transition: "width 0.3s ease",
                   }}

@@ -9,17 +9,17 @@ interface AIInsightsPanelProps {
 const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({ insights }) => {
   return (
     <div className="bg-white shadow-realestate-md rounded-lg p-6 mb-6 border border-gray-100">
-      <h3 className="text-lg font-display font-semibold text-[#091a2b] mb-4">
+      <h3 className="text-lg font-display font-semibold text-[#1A1A2E] mb-4">
         AI Insights & Recommendations
       </h3>
       <div className="space-y-4">
         {insights.map((insight) => (
           <div
             key={insight.unitId || "common"}
-            className="bg-[#f1f3f4] rounded-lg p-4 border-l-4 border-[#005163]"
+            className="bg-[#FFFFFF] rounded-lg p-4 border-l-4 border-[#008080]"
           >
             <div className="flex justify-between items-start mb-2">
-              <p className="font-body font-semibold text-[#091a2b]">
+              <p className="font-body font-semibold text-[#1A1A2E]">
                 {insight.unitId ? `Unit ${insight.unitId}: ` : "Common Area: "}
                 {insight.predictedIssue}
               </p>
@@ -36,11 +36,11 @@ const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({ insights }) => {
               </span>
             </div>
             <div className="space-y-1 text-sm">
-              <p className="text-[#3b4876]">
+              <p className="text-[#FF6B35]">
                 <span className="font-medium">Risk Factors:</span>{" "}
                 {insight.riskFactors.join(", ")}
               </p>
-              <p className="text-[#005163]">
+              <p className="text-[#008080]">
                 <span className="font-medium">Recommendation:</span>{" "}
                 {insight.recommendedAction}
               </p>

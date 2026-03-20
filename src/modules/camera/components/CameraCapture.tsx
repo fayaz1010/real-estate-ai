@@ -17,7 +17,7 @@ const buttonBase: React.CSSProperties = {
   border: "none",
   borderRadius: 8,
   cursor: "pointer",
-  fontFamily: "'Open Sans', sans-serif",
+  fontFamily: "'Inter', sans-serif",
   fontSize: 14,
   fontWeight: 600,
   transition: "opacity 0.2s ease",
@@ -26,12 +26,12 @@ const buttonBase: React.CSSProperties = {
 
 const primaryButton: React.CSSProperties = {
   ...buttonBase,
-  backgroundColor: "#091a2b",
+  backgroundColor: "#1A1A2E",
 };
 
 const secondaryButton: React.CSSProperties = {
   ...buttonBase,
-  backgroundColor: "#005163",
+  backgroundColor: "#008080",
 };
 
 export function CameraCapture({ onCapture, onUpload }: CameraCaptureProps) {
@@ -81,7 +81,7 @@ export function CameraCapture({ onCapture, onUpload }: CameraCaptureProps) {
   return (
     <div
       style={{
-        fontFamily: "'Open Sans', sans-serif",
+        fontFamily: "'Inter', sans-serif",
         display: "flex",
         flexDirection: "column",
         gap: 16,
@@ -95,7 +95,7 @@ export function CameraCapture({ onCapture, onUpload }: CameraCaptureProps) {
             color: "#991b1b",
             backgroundColor: "#fef2f2",
             borderRadius: 8,
-            fontFamily: "'Open Sans', sans-serif",
+            fontFamily: "'Inter', sans-serif",
           }}
         >
           {cameraError}

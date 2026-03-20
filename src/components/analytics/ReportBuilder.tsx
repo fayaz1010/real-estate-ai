@@ -73,20 +73,20 @@ export const ReportBuilder: React.FC = () => {
       <div className="flex items-center gap-3 mb-5">
         <div
           className="w-10 h-10 rounded-lg flex items-center justify-center"
-          style={{ backgroundColor: "#091a2b" }}
+          style={{ backgroundColor: "#1A1A2E" }}
         >
           <FileText size={20} className="text-white" />
         </div>
         <div>
           <h3
             className="text-lg font-bold"
-            style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
+            style={{ color: "#1A1A2E", fontFamily: "Manrope, sans-serif" }}
           >
             Custom Report Builder
           </h3>
           <p
             className="text-sm"
-            style={{ color: "#5a6a7a", fontFamily: "Open Sans, sans-serif" }}
+            style={{ color: "#5a6a7a", fontFamily: "Inter, sans-serif" }}
           >
             Select metrics and parameters to generate a custom report
           </p>
@@ -98,7 +98,7 @@ export const ReportBuilder: React.FC = () => {
         <div>
           <label
             className="block text-sm font-semibold mb-2"
-            style={{ color: "#091a2b", fontFamily: "Open Sans, sans-serif" }}
+            style={{ color: "#1A1A2E", fontFamily: "Inter, sans-serif" }}
           >
             Metrics
           </label>
@@ -110,15 +110,15 @@ export const ReportBuilder: React.FC = () => {
                 className="text-left px-3 py-2 rounded-lg border text-sm transition-colors"
                 style={{
                   borderColor: selectedMetrics.includes(metric.id)
-                    ? "#005163"
+                    ? "#008080"
                     : "#e5e7eb",
                   backgroundColor: selectedMetrics.includes(metric.id)
-                    ? "#00516310"
+                    ? "#00808010"
                     : "white",
                   color: selectedMetrics.includes(metric.id)
-                    ? "#005163"
+                    ? "#008080"
                     : "#5a6a7a",
-                  fontFamily: "Open Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                 }}
               >
                 {metric.label}
@@ -132,7 +132,7 @@ export const ReportBuilder: React.FC = () => {
           <div>
             <label
               className="block text-sm font-semibold mb-2"
-              style={{ color: "#091a2b", fontFamily: "Open Sans, sans-serif" }}
+              style={{ color: "#1A1A2E", fontFamily: "Inter, sans-serif" }}
             >
               Date Range
             </label>
@@ -141,15 +141,15 @@ export const ReportBuilder: React.FC = () => {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-[#005163]"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-[#008080]"
+                style={{ fontFamily: "Inter, sans-serif" }}
               />
               <input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-[#005163]"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                className="flex-1 px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:border-[#008080]"
+                style={{ fontFamily: "Inter, sans-serif" }}
               />
             </div>
           </div>
@@ -157,7 +157,7 @@ export const ReportBuilder: React.FC = () => {
           <div>
             <label
               className="block text-sm font-semibold mb-2"
-              style={{ color: "#091a2b", fontFamily: "Open Sans, sans-serif" }}
+              style={{ color: "#1A1A2E", fontFamily: "Inter, sans-serif" }}
             >
               Group By
             </label>
@@ -168,11 +168,11 @@ export const ReportBuilder: React.FC = () => {
                   onClick={() => setGroupBy(opt.value)}
                   className="px-3 py-2 rounded-lg border text-sm transition-colors"
                   style={{
-                    borderColor: groupBy === opt.value ? "#005163" : "#e5e7eb",
+                    borderColor: groupBy === opt.value ? "#008080" : "#e5e7eb",
                     backgroundColor:
-                      groupBy === opt.value ? "#005163" : "white",
+                      groupBy === opt.value ? "#008080" : "white",
                     color: groupBy === opt.value ? "#ffffff" : "#5a6a7a",
-                    fontFamily: "Open Sans, sans-serif",
+                    fontFamily: "Inter, sans-serif",
                   }}
                 >
                   {opt.label}
@@ -187,8 +187,8 @@ export const ReportBuilder: React.FC = () => {
               disabled={loading || selectedMetrics.length === 0}
               className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-white transition-opacity disabled:opacity-50"
               style={{
-                backgroundColor: "#091a2b",
-                fontFamily: "Open Sans, sans-serif",
+                backgroundColor: "#1A1A2E",
+                fontFamily: "Inter, sans-serif",
               }}
             >
               {loading ? (
@@ -203,9 +203,9 @@ export const ReportBuilder: React.FC = () => {
                 onClick={handleExport}
                 className="flex items-center gap-2 px-4 py-2.5 rounded-lg border text-sm font-semibold transition-colors"
                 style={{
-                  borderColor: "#005163",
-                  color: "#005163",
-                  fontFamily: "Open Sans, sans-serif",
+                  borderColor: "#008080",
+                  color: "#008080",
+                  fontFamily: "Inter, sans-serif",
                 }}
               >
                 <Download size={16} />
@@ -220,31 +220,31 @@ export const ReportBuilder: React.FC = () => {
       {report && (
         <div
           className="mt-6 p-4 rounded-lg"
-          style={{ backgroundColor: "#f1f3f4" }}
+          style={{ backgroundColor: "#FFFFFF" }}
         >
           <h4
             className="text-sm font-semibold mb-3"
-            style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
+            style={{ color: "#1A1A2E", fontFamily: "Manrope, sans-serif" }}
           >
             Generated Report
           </h4>
           <div className="overflow-x-auto">
             <table
               className="w-full text-sm"
-              style={{ fontFamily: "Open Sans, sans-serif" }}
+              style={{ fontFamily: "Inter, sans-serif" }}
             >
               <thead>
                 <tr className="border-b border-gray-300">
                   <th
                     className="text-left py-2 px-3 font-semibold"
-                    style={{ color: "#091a2b" }}
+                    style={{ color: "#1A1A2E" }}
                   >
                     Period
                   </th>
                   {selectedMetrics.includes("revenue") && (
                     <th
                       className="text-right py-2 px-3 font-semibold"
-                      style={{ color: "#091a2b" }}
+                      style={{ color: "#1A1A2E" }}
                     >
                       Revenue
                     </th>
@@ -252,7 +252,7 @@ export const ReportBuilder: React.FC = () => {
                   {selectedMetrics.includes("occupancy") && (
                     <th
                       className="text-right py-2 px-3 font-semibold"
-                      style={{ color: "#091a2b" }}
+                      style={{ color: "#1A1A2E" }}
                     >
                       Occupancy
                     </th>
@@ -260,7 +260,7 @@ export const ReportBuilder: React.FC = () => {
                   {selectedMetrics.includes("expenses") && (
                     <th
                       className="text-right py-2 px-3 font-semibold"
-                      style={{ color: "#091a2b" }}
+                      style={{ color: "#1A1A2E" }}
                     >
                       Expenses
                     </th>
@@ -268,7 +268,7 @@ export const ReportBuilder: React.FC = () => {
                   {selectedMetrics.includes("noi") && (
                     <th
                       className="text-right py-2 px-3 font-semibold"
-                      style={{ color: "#091a2b" }}
+                      style={{ color: "#1A1A2E" }}
                     >
                       NOI
                     </th>
@@ -289,7 +289,7 @@ export const ReportBuilder: React.FC = () => {
                         {selectedMetrics.includes("revenue") && (
                           <td
                             className="text-right py-2 px-3"
-                            style={{ color: "#091a2b" }}
+                            style={{ color: "#1A1A2E" }}
                           >
                             ${Number(row.total || 0).toLocaleString()}
                           </td>
@@ -297,7 +297,7 @@ export const ReportBuilder: React.FC = () => {
                         {selectedMetrics.includes("occupancy") && (
                           <td
                             className="text-right py-2 px-3"
-                            style={{ color: "#091a2b" }}
+                            style={{ color: "#1A1A2E" }}
                           >
                             —
                           </td>
@@ -305,7 +305,7 @@ export const ReportBuilder: React.FC = () => {
                         {selectedMetrics.includes("expenses") && (
                           <td
                             className="text-right py-2 px-3"
-                            style={{ color: "#091a2b" }}
+                            style={{ color: "#1A1A2E" }}
                           >
                             —
                           </td>
@@ -313,7 +313,7 @@ export const ReportBuilder: React.FC = () => {
                         {selectedMetrics.includes("noi") && (
                           <td
                             className="text-right py-2 px-3"
-                            style={{ color: "#091a2b" }}
+                            style={{ color: "#1A1A2E" }}
                           >
                             —
                           </td>

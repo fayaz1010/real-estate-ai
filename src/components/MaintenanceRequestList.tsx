@@ -135,7 +135,7 @@ export const MaintenanceRequestList: React.FC<MaintenanceRequestListProps> = ({
       <div className="flex items-center justify-center py-16">
         <Loader2
           className="w-8 h-8 animate-spin"
-          style={{ color: "#8B7355" }}
+          style={{ color: "#008080" }}
         />
       </div>
     );
@@ -148,7 +148,7 @@ export const MaintenanceRequestList: React.FC<MaintenanceRequestListProps> = ({
         <button
           onClick={onRefresh}
           className="text-sm font-medium px-4 py-2 rounded-lg hover:opacity-80 transition-opacity"
-          style={{ color: "#8B7355", border: "1px solid #C4A882" }}
+          style={{ color: "#008080", border: "1px solid #C4A882" }}
         >
           Try Again
         </button>
@@ -170,7 +170,7 @@ export const MaintenanceRequestList: React.FC<MaintenanceRequestListProps> = ({
           style={{
             fontFamily: "Inter, sans-serif",
             borderColor: "#C4A882",
-            color: "#2D2A26",
+            color: "#1A1A2E",
           }}
           aria-label="Filter by status"
         >
@@ -249,8 +249,8 @@ export const MaintenanceRequestList: React.FC<MaintenanceRequestListProps> = ({
                     <h3
                       className="text-sm font-semibold mb-1"
                       style={{
-                        fontFamily: "DM Serif Display, serif",
-                        color: "#2D2A26",
+                        fontFamily: "Manrope, sans-serif",
+                        color: "#1A1A2E",
                       }}
                     >
                       {SYSTEM_TYPE_LABELS[req.systemType] || req.systemType}
@@ -261,7 +261,7 @@ export const MaintenanceRequestList: React.FC<MaintenanceRequestListProps> = ({
                       className="text-sm line-clamp-2 mb-2"
                       style={{
                         fontFamily: "Inter, sans-serif",
-                        color: "#2D2A26",
+                        color: "#1A1A2E",
                         opacity: 0.8,
                       }}
                     >
@@ -287,7 +287,7 @@ export const MaintenanceRequestList: React.FC<MaintenanceRequestListProps> = ({
                       onClick={() => handleStatusUpdate(req.id, nextStatus)}
                       disabled={updatingId === req.id}
                       className="self-start shrink-0 text-xs font-medium px-3 py-1.5 rounded-lg text-white hover:opacity-90 transition-opacity disabled:opacity-50 flex items-center gap-1"
-                      style={{ backgroundColor: "#8B7355" }}
+                      style={{ backgroundColor: "#008080" }}
                       aria-label={`Move to ${STATUS_CONFIG[nextStatus].label}`}
                     >
                       {updatingId === req.id && (
@@ -313,14 +313,14 @@ export const MaintenanceRequestList: React.FC<MaintenanceRequestListProps> = ({
             onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
             disabled={currentPage === 1}
             className="p-2 rounded-lg border hover:opacity-80 transition-opacity disabled:opacity-30"
-            style={{ borderColor: "#C4A882", color: "#8B7355" }}
+            style={{ borderColor: "#C4A882", color: "#008080" }}
             aria-label="Previous page"
           >
             <ChevronLeft className="w-4 h-4" />
           </button>
           <span
             className="text-sm px-3"
-            style={{ fontFamily: "Inter, sans-serif", color: "#2D2A26" }}
+            style={{ fontFamily: "Inter, sans-serif", color: "#1A1A2E" }}
           >
             Page {currentPage} of {totalPages}
           </span>
@@ -328,7 +328,7 @@ export const MaintenanceRequestList: React.FC<MaintenanceRequestListProps> = ({
             onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
             disabled={currentPage === totalPages}
             className="p-2 rounded-lg border hover:opacity-80 transition-opacity disabled:opacity-30"
-            style={{ borderColor: "#C4A882", color: "#8B7355" }}
+            style={{ borderColor: "#C4A882", color: "#008080" }}
             aria-label="Next page"
           >
             <ChevronRight className="w-4 h-4" />

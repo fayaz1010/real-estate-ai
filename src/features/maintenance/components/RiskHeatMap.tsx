@@ -68,7 +68,7 @@ export const RiskHeatMap: React.FC<RiskHeatMapProps> = ({ risks }) => {
     <div className="rounded-lg border border-gray-200 bg-white p-6">
       <h3
         className="font-display text-lg font-semibold"
-        style={{ color: "#091a2b" }}
+        style={{ color: "#1A1A2E" }}
       >
         System Risk Overview
       </h3>

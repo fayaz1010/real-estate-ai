@@ -196,8 +196,8 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
             onClick={() => setActiveTab(tab.key)}
             className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
               activeTab === tab.key
-                ? "bg-[#091a2b] text-white shadow-md"
-                : "bg-white text-[#091a2b] hover:bg-gray-50 border border-gray-200"
+                ? "bg-[#1A1A2E] text-white shadow-md"
+                : "bg-white text-[#1A1A2E] hover:bg-gray-50 border border-gray-200"
             }`}
           >
             {tab.icon}
@@ -210,14 +210,14 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
       <div className="flex justify-end gap-2 print:hidden">
         <button
           onClick={handlePrint}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-[#005163] border border-[#005163] rounded-lg hover:bg-[#005163]/5 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-[#008080] border border-[#008080] rounded-lg hover:bg-[#008080]/5 transition-colors"
         >
           <Printer className="w-4 h-4" />
           Print
         </button>
         <button
           onClick={handleExportCSV}
-          className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-[#005163] border border-[#005163] rounded-lg hover:bg-[#005163]/5 transition-colors"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-[#008080] border border-[#008080] rounded-lg hover:bg-[#008080]/5 transition-colors"
         >
           <Download className="w-4 h-4" />
           Export CSV
@@ -243,7 +243,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                   >
                     <div className="flex items-center gap-2">
                       <ArrowUpRight className="w-5 h-5 text-emerald-500" />
-                      <span className="font-semibold text-[#091a2b] font-['Montserrat']">
+                      <span className="font-semibold text-[#1A1A2E] font-['Manrope']">
                         Revenue
                       </span>
                     </div>
@@ -279,7 +279,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                                 key={idx}
                                 className="border-b border-gray-50 last:border-0"
                               >
-                                <td className="py-2.5 text-[#091a2b]">
+                                <td className="py-2.5 text-[#1A1A2E]">
                                   {item.category}
                                 </td>
                                 <td className="py-2.5 text-right text-emerald-600 font-medium">
@@ -309,7 +309,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                   >
                     <div className="flex items-center gap-2">
                       <ArrowDownRight className="w-5 h-5 text-red-500" />
-                      <span className="font-semibold text-[#091a2b] font-['Montserrat']">
+                      <span className="font-semibold text-[#1A1A2E] font-['Manrope']">
                         Expenses
                       </span>
                     </div>
@@ -345,7 +345,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                                 key={idx}
                                 className="border-b border-gray-50 last:border-0"
                               >
-                                <td className="py-2.5 text-[#091a2b]">
+                                <td className="py-2.5 text-[#1A1A2E]">
                                   {item.category}
                                 </td>
                                 <td className="py-2.5 text-right text-red-600 font-medium">
@@ -368,9 +368,9 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                 </div>
 
                 {/* Net Income */}
-                <div className="p-4 bg-[#f1f3f4]">
+                <div className="p-4 bg-[#FFFFFF]">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-[#091a2b] font-['Montserrat']">
+                    <span className="font-bold text-[#1A1A2E] font-['Manrope']">
                       Net Income
                     </span>
                     <span
@@ -391,7 +391,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
             {activeTab === "balance" && balanceSheet && (
               <div className="divide-y divide-gray-100">
                 <div className="p-4">
-                  <h3 className="font-semibold text-[#091a2b] font-['Montserrat'] mb-3">
+                  <h3 className="font-semibold text-[#1A1A2E] font-['Manrope'] mb-3">
                     Assets
                   </h3>
                   {balanceSheet.assets.length > 0 ? (
@@ -402,7 +402,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                             key={idx}
                             className="border-b border-gray-50 last:border-0"
                           >
-                            <td className="py-2.5 text-[#091a2b]">
+                            <td className="py-2.5 text-[#1A1A2E]">
                               {item.name}
                             </td>
                             <td className="py-2.5 text-right font-medium">
@@ -421,7 +421,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                   </div>
                 </div>
                 <div className="p-4">
-                  <h3 className="font-semibold text-[#091a2b] font-['Montserrat'] mb-3">
+                  <h3 className="font-semibold text-[#1A1A2E] font-['Manrope'] mb-3">
                     Liabilities
                   </h3>
                   {balanceSheet.liabilities.length > 0 ? (
@@ -432,7 +432,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                             key={idx}
                             className="border-b border-gray-50 last:border-0"
                           >
-                            <td className="py-2.5 text-[#091a2b]">
+                            <td className="py-2.5 text-[#1A1A2E]">
                               {item.name}
                             </td>
                             <td className="py-2.5 text-right font-medium">
@@ -452,9 +452,9 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                     <span>{formatCurrency(balanceSheet.totalLiabilities)}</span>
                   </div>
                 </div>
-                <div className="p-4 bg-[#f1f3f4]">
+                <div className="p-4 bg-[#FFFFFF]">
                   <div className="flex items-center justify-between">
-                    <span className="font-bold text-[#091a2b] font-['Montserrat']">
+                    <span className="font-bold text-[#1A1A2E] font-['Manrope']">
                       Owner&apos;s Equity
                     </span>
                     <span
@@ -475,7 +475,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
             {activeTab === "cashflow" && cashFlow && (
               <div className="divide-y divide-gray-100">
                 <div className="p-4">
-                  <h3 className="font-semibold text-[#091a2b] font-['Montserrat'] mb-3">
+                  <h3 className="font-semibold text-[#1A1A2E] font-['Manrope'] mb-3">
                     Operating Activities
                   </h3>
                   <div className="grid grid-cols-3 gap-4 text-sm">
@@ -508,7 +508,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
 
                 {cashFlow.months.length > 0 && (
                   <div className="p-4">
-                    <h3 className="font-semibold text-[#091a2b] font-['Montserrat'] mb-3">
+                    <h3 className="font-semibold text-[#1A1A2E] font-['Manrope'] mb-3">
                       Monthly Breakdown
                     </h3>
                     <div className="space-y-3">
@@ -573,7 +573,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
                     <div className="bg-blue-50 rounded-lg p-3 text-center">
                       <p className="text-gray-500 text-xs mb-1">Total Due</p>
-                      <p className="font-semibold text-[#091a2b] text-sm">
+                      <p className="font-semibold text-[#1A1A2E] text-sm">
                         {formatCurrency(rentCollection.totalDue)}
                       </p>
                     </div>
@@ -601,7 +601,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                   <div className="mb-4">
                     <div className="flex justify-between text-sm mb-1">
                       <span className="text-gray-500">Collection Rate</span>
-                      <span className="font-medium text-[#091a2b]">
+                      <span className="font-medium text-[#1A1A2E]">
                         {rentCollection.collectionRate}%
                       </span>
                     </div>
@@ -634,7 +634,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                             key={p.id}
                             className="border-b border-gray-50 hover:bg-gray-50/50 transition-colors"
                           >
-                            <td className="px-4 py-3 text-[#091a2b] font-medium max-w-[200px] truncate">
+                            <td className="px-4 py-3 text-[#1A1A2E] font-medium max-w-[200px] truncate">
                               {p.propertyTitle}
                             </td>
                             <td className="px-4 py-3 text-gray-600">
@@ -679,7 +679,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
               <div className="divide-y divide-gray-100">
                 {expenseReport.categories.length > 0 && (
                   <div className="p-4">
-                    <h3 className="font-semibold text-[#091a2b] font-['Montserrat'] mb-3">
+                    <h3 className="font-semibold text-[#1A1A2E] font-['Manrope'] mb-3">
                       By Category
                     </h3>
                     <div className="space-y-3">
@@ -694,7 +694,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                               <span className="text-gray-600">
                                 {cat.category}
                               </span>
-                              <span className="font-medium text-[#091a2b]">
+                              <span className="font-medium text-[#1A1A2E]">
                                 {formatCurrency(cat.amount)}{" "}
                                 <span className="text-gray-400 text-xs">
                                   ({Math.round(pct)}%)
@@ -703,7 +703,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                             </div>
                             <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-[#3b4876] rounded-full transition-all duration-500"
+                                className="h-full bg-[#FF6B35] rounded-full transition-all duration-500"
                                 style={{ width: `${pct}%` }}
                               />
                             </div>
@@ -743,7 +743,7 @@ export const FinancialReport: React.FC<FinancialReportProps> = ({
                             <td className="px-4 py-3 text-gray-500">
                               {formatDate(tx.date)}
                             </td>
-                            <td className="px-4 py-3 text-[#091a2b] font-medium max-w-[160px] truncate">
+                            <td className="px-4 py-3 text-[#1A1A2E] font-medium max-w-[160px] truncate">
                               {tx.propertyTitle}
                             </td>
                             <td className="px-4 py-3 text-gray-600">

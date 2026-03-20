@@ -69,9 +69,9 @@ export function Tooltip({
       style={{
         top: position.top,
         left: position.left,
-        backgroundColor: "#f1f3f4",
-        fontFamily: "'Open Sans', sans-serif",
-        color: "#091a2b",
+        backgroundColor: "#FFFFFF",
+        fontFamily: "'Inter', sans-serif",
+        color: "#1A1A2E",
       }}
     >
       <p className="text-sm font-semibold">{title}</p>

@@ -98,8 +98,8 @@ export const MobileNav: React.FC = () => {
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between lg:hidden"
         style={{
           height: 56,
-          backgroundColor: "#FAF6F1",
-          borderBottom: "1px solid #C4A882",
+          backgroundColor: "#FFFFFF",
+          borderBottom: "1px solid #E0E0E0",
           padding: "0 16px",
         }}
       >
@@ -111,7 +111,7 @@ export const MobileNav: React.FC = () => {
           style={{
             width: 44,
             height: 44,
-            color: "#2D2A26",
+            color: "#1A1A2E",
             background: "transparent",
             border: "none",
             cursor: "pointer",
@@ -122,9 +122,9 @@ export const MobileNav: React.FC = () => {
 
         <span
           style={{
-            fontFamily: "'DM Serif Display', serif",
+            fontFamily: "'Manrope', sans-serif",
             fontSize: 18,
-            color: "#2D2A26",
+            color: "#1A1A2E",
           }}
         >
           RealEstate AI
@@ -138,7 +138,7 @@ export const MobileNav: React.FC = () => {
       {sidebarOpen && (
         <div
           className="fixed inset-0 z-40 lg:hidden"
-          style={{ backgroundColor: "rgba(45, 42, 38, 0.5)" }}
+          style={{ backgroundColor: "rgba(26, 26, 46, 0.5)" }}
           onClick={closeSidebar}
           aria-hidden="true"
         />
@@ -149,12 +149,12 @@ export const MobileNav: React.FC = () => {
         className="fixed top-0 left-0 bottom-0 z-50 lg:hidden"
         style={{
           width: 280,
-          backgroundColor: "#FAF6F1",
+          backgroundColor: "#FFFFFF",
           transform: sidebarOpen ? "translateX(0)" : "translateX(-100%)",
           transition: "transform 300ms ease-in-out",
           overflowY: "auto",
           paddingTop: 56,
-          borderRight: "1px solid #C4A882",
+          borderRight: "1px solid #E0E0E0",
         }}
         aria-label="Main navigation"
       >
@@ -178,12 +178,12 @@ export const MobileNav: React.FC = () => {
                     fontFamily: "'Inter', sans-serif",
                     fontSize: 15,
                     fontWeight: active ? 600 : 400,
-                    color: active ? "#8B7355" : "#2D2A26",
+                    color: active ? "#008080" : "#1A1A2E",
                     backgroundColor: active
-                      ? "rgba(139, 115, 85, 0.1)"
+                      ? "rgba(0, 128, 128, 0.1)"
                       : "transparent",
                     borderLeft: active
-                      ? "3px solid #8B7355"
+                      ? "3px solid #008080"
                       : "3px solid transparent",
                     transition: "background-color 200ms ease, color 200ms ease",
                     minHeight: 44,
@@ -202,8 +202,8 @@ export const MobileNav: React.FC = () => {
       <nav
         className="fixed bottom-0 left-0 right-0 z-50 lg:hidden"
         style={{
-          backgroundColor: "#FAF6F1",
-          borderTop: "1px solid #C4A882",
+          backgroundColor: "#FFFFFF",
+          borderTop: "1px solid #E0E0E0",
         }}
         aria-label="Quick navigation"
       >
@@ -233,7 +233,7 @@ export const MobileNav: React.FC = () => {
                   background: "transparent",
                   transition: "color 200ms ease",
                   fontFamily: "'Inter', sans-serif",
-                  color: active ? "#8B7355" : "#A0926B",
+                  color: active ? "#008080" : "#94a3b8",
                   minWidth: 44,
                   minHeight: 44,
                 }}

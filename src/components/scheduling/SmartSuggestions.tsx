@@ -111,14 +111,14 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
     <div>
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-[#3b4876]/10 flex items-center justify-center">
-            <Sparkles className="w-4 h-4 text-[#3b4876]" aria-hidden="true" />
+          <div className="w-8 h-8 rounded-lg bg-[#FF6B35]/10 flex items-center justify-center">
+            <Sparkles className="w-4 h-4 text-[#FF6B35]" aria-hidden="true" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-[#091a2b] font-['Montserrat']">
+            <h3 className="text-base font-bold text-[#1A1A2E] font-['Manrope']">
               Smart Suggestions
             </h3>
-            <p className="text-[10px] text-gray-500 font-['Open_Sans']">
+            <p className="text-[10px] text-gray-500 font-['Inter']">
               AI-powered optimal scheduling times
             </p>
           </div>
@@ -126,7 +126,7 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
         <button
           onClick={loadSuggestions}
           disabled={loading}
-          className="inline-flex items-center gap-1 text-xs font-semibold text-[#3b4876] hover:text-[#091a2b] disabled:opacity-40 transition-colors font-['Open_Sans']"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-[#FF6B35] hover:text-[#1A1A2E] disabled:opacity-40 transition-colors font-['Inter']"
         >
           <RefreshCw
             className={`w-3.5 h-3.5 ${loading ? "animate-spin" : ""}`}
@@ -138,8 +138,8 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
       {loading ? (
         <div className="flex items-center justify-center py-8">
           <div className="text-center">
-            <Loader className="w-8 h-8 text-[#3b4876] animate-spin mx-auto mb-2" />
-            <p className="text-xs text-gray-500 font-['Open_Sans']">
+            <Loader className="w-8 h-8 text-[#FF6B35] animate-spin mx-auto mb-2" />
+            <p className="text-xs text-gray-500 font-['Inter']">
               Analyzing schedules and availability...
             </p>
           </div>
@@ -156,12 +156,12 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
                 key={s.id}
                 className={`relative rounded-xl border p-4 transition-all ${
                   index === 0
-                    ? "border-[#3b4876]/30 bg-[#3b4876]/5 shadow-sm"
-                    : "border-gray-200 bg-white hover:border-[#3b4876]/20"
+                    ? "border-[#FF6B35]/30 bg-[#FF6B35]/5 shadow-sm"
+                    : "border-gray-200 bg-white hover:border-[#FF6B35]/20"
                 }`}
               >
                 {index === 0 && (
-                  <span className="absolute -top-2.5 left-3 inline-flex items-center gap-1 px-2 py-0.5 bg-[#3b4876] text-white text-[10px] font-bold rounded-full font-['Open_Sans']">
+                  <span className="absolute -top-2.5 left-3 inline-flex items-center gap-1 px-2 py-0.5 bg-[#FF6B35] text-white text-[10px] font-bold rounded-full font-['Inter']">
                     <Zap className="w-3 h-3" /> Top Pick
                   </span>
                 )}
@@ -170,19 +170,19 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1.5">
                       <span
-                        className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-full border ${getScoreColor(s.score)} font-['Open_Sans']`}
+                        className={`inline-flex items-center gap-1 px-2 py-0.5 text-[10px] font-bold rounded-full border ${getScoreColor(s.score)} font-['Inter']`}
                       >
                         <TrendingUp className="w-3 h-3" />
                         {s.score}% match
                       </span>
-                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 font-semibold font-['Open_Sans']">
+                      <span className="text-[10px] px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 font-semibold font-['Inter']">
                         {s.type.charAt(0).toUpperCase() + s.type.slice(1)}
                       </span>
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-sm text-[#091a2b] font-semibold font-['Open_Sans'] mb-1">
+                    <div className="flex items-center gap-1.5 text-sm text-[#1A1A2E] font-semibold font-['Inter'] mb-1">
                       <Calendar
-                        className="w-3.5 h-3.5 text-[#3b4876]"
+                        className="w-3.5 h-3.5 text-[#FF6B35]"
                         aria-hidden="true"
                       />
                       {start.toLocaleDateString("en-US", {
@@ -192,7 +192,7 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
                       })}
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-xs text-gray-500 font-['Open_Sans'] mb-2">
+                    <div className="flex items-center gap-1.5 text-xs text-gray-500 font-['Inter'] mb-2">
                       <Clock className="w-3 h-3" aria-hidden="true" />
                       {start.toLocaleTimeString("en-US", {
                         hour: "numeric",
@@ -205,17 +205,17 @@ const SmartSuggestions: React.FC<SmartSuggestionsProps> = ({
                       })}
                     </div>
 
-                    <p className="text-xs text-gray-600 font-['Open_Sans'] leading-relaxed">
+                    <p className="text-xs text-gray-600 font-['Inter'] leading-relaxed">
                       {s.reason}
                     </p>
                   </div>
 
                   <button
                     onClick={() => handleAccept(s)}
-                    className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg transition-all font-['Open_Sans'] ${
+                    className={`flex-shrink-0 inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold rounded-lg transition-all font-['Inter'] ${
                       isAccepted
                         ? "bg-green-100 text-green-700 border border-green-200"
-                        : "bg-[#3b4876] text-white hover:bg-[#091a2b]"
+                        : "bg-[#FF6B35] text-white hover:bg-[#1A1A2E]"
                     }`}
                   >
                     {isAccepted ? (

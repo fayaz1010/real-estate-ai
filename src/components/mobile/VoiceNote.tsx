@@ -96,7 +96,7 @@ const VoiceNote: React.FC<VoiceNoteProps> = ({
         <button
           onClick={togglePlayback}
           className="flex h-8 w-8 items-center justify-center rounded-full text-white"
-          style={{ backgroundColor: "#3b4876" }}
+          style={{ backgroundColor: "#FF6B35" }}
           aria-label={isPlaying ? "Pause voice note" : "Play voice note"}
         >
           {isPlaying ? <Pause size={14} /> : <Play size={14} />}
@@ -105,13 +105,13 @@ const VoiceNote: React.FC<VoiceNoteProps> = ({
           <div className="h-1 overflow-hidden rounded-full bg-gray-300">
             <div
               className="h-full rounded-full transition-all"
-              style={{ width: `${progress}%`, backgroundColor: "#3b4876" }}
+              style={{ width: `${progress}%`, backgroundColor: "#FF6B35" }}
             />
           </div>
         </div>
         <span
           className="text-xs text-gray-600"
-          style={{ fontFamily: "'Open Sans', sans-serif" }}
+          style={{ fontFamily: "'Inter', sans-serif" }}
         >
           {formatTime(isPlaying ? playbackTime : duration)}
         </span>
@@ -135,7 +135,7 @@ const VoiceNote: React.FC<VoiceNoteProps> = ({
             <span className="h-2 w-2 animate-pulse rounded-full bg-red-500" />
             <span
               className="text-sm text-gray-700"
-              style={{ fontFamily: "'Open Sans', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               {formatTime(recordingTime)}
             </span>
@@ -145,7 +145,7 @@ const VoiceNote: React.FC<VoiceNoteProps> = ({
         <button
           onClick={startRecording}
           className="flex h-10 w-10 items-center justify-center rounded-full text-white transition-opacity hover:opacity-90"
-          style={{ backgroundColor: "#091a2b" }}
+          style={{ backgroundColor: "#1A1A2E" }}
           aria-label="Start recording"
         >
           <Mic size={18} />

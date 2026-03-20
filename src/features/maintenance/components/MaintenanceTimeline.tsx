@@ -73,7 +73,7 @@ export const MaintenanceTimeline: React.FC<MaintenanceTimelineProps> = ({
     <div className="rounded-lg border border-gray-200 bg-white p-6">
       <h3
         className="font-display text-lg font-semibold"
-        style={{ color: "#091a2b" }}
+        style={{ color: "#1A1A2E" }}
       >
         Maintenance Timeline
       </h3>
@@ -95,7 +95,7 @@ export const MaintenanceTimeline: React.FC<MaintenanceTimelineProps> = ({
                 <div
                   className={`absolute left-2.5 top-1 h-3 w-3 rounded-full border-2 ${
                     isRecord
-                      ? "border-[#005163] bg-[#005163]"
+                      ? "border-[#008080] bg-[#008080]"
                       : "border-orange-400 bg-orange-400"
                   }`}
                 />
@@ -113,7 +113,7 @@ export const MaintenanceTimeline: React.FC<MaintenanceTimelineProps> = ({
                         <span
                           className={`inline-flex rounded-full px-2 py-0.5 font-body text-xs font-medium ${
                             isRecord
-                              ? "bg-[#005163]/10 text-[#005163]"
+                              ? "bg-[#008080]/10 text-[#008080]"
                               : "bg-orange-100 text-orange-700"
                           }`}
                         >
@@ -121,7 +121,7 @@ export const MaintenanceTimeline: React.FC<MaintenanceTimelineProps> = ({
                         </span>
                         <span
                           className="font-body text-xs font-medium"
-                          style={{ color: "#3b4876" }}
+                          style={{ color: "#FF6B35" }}
                         >
                           {getSystemLabel(item.systemType)}
                         </span>

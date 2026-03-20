@@ -16,6 +16,8 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { PageMeta } from "../../components/seo";
+
 const steps = [
   {
     number: "01",
@@ -118,6 +120,12 @@ const testimonials = [
 export const AutomateManagementPage: React.FC = () => {
   return (
     <main className="min-h-screen bg-white" role="main">
+      <PageMeta
+        title="How to Automate Property Management | RealEstate AI"
+        description="Automate rent collection, maintenance scheduling, tenant communication, and more. Learn how RealEstate AI eliminates repetitive property management tasks."
+        keywords="automate property management, property management automation, automated rent collection, automated maintenance scheduling, property management workflows"
+        canonicalUrl="https://realestate-ai.com/landing/automate-management"
+      />
       {/* Hero Section */}
       <section
         className="relative pt-24 pb-20 bg-realestate-primary overflow-hidden"

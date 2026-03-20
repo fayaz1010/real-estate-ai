@@ -290,7 +290,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
         {DAYS_OF_WEEK.map((d) => (
           <div
             key={d}
-            className="bg-gray-50 px-2 py-2 text-center text-xs font-semibold text-[#091a2b] font-['Open_Sans']"
+            className="bg-gray-50 px-2 py-2 text-center text-xs font-semibold text-[#1A1A2E] font-['Inter']"
           >
             {d}
           </div>
@@ -306,13 +306,13 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
             <div
               key={date.toISOString()}
               className={`bg-white min-h-[100px] p-1.5 cursor-pointer hover:bg-gray-50 transition-colors ${
-                isToday ? "ring-2 ring-inset ring-[#005163]" : ""
+                isToday ? "ring-2 ring-inset ring-[#008080]" : ""
               }`}
               onClick={() => onDateClick?.(date)}
             >
               <span
-                className={`inline-flex items-center justify-center w-6 h-6 text-xs font-medium rounded-full font-['Open_Sans'] ${
-                  isToday ? "bg-[#091a2b] text-white" : "text-[#091a2b]"
+                className={`inline-flex items-center justify-center w-6 h-6 text-xs font-medium rounded-full font-['Inter'] ${
+                  isToday ? "bg-[#1A1A2E] text-white" : "text-[#1A1A2E]"
                 }`}
               >
                 {date.getDate()}
@@ -328,14 +328,14 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
                         setSelectedBooking(b);
                         onBookingClick?.(b);
                       }}
-                      className={`w-full text-left px-1.5 py-0.5 rounded text-[10px] truncate ${colors.bg} ${colors.text} border ${colors.border} hover:opacity-80 transition-opacity font-['Open_Sans']`}
+                      className={`w-full text-left px-1.5 py-0.5 rounded text-[10px] truncate ${colors.bg} ${colors.text} border ${colors.border} hover:opacity-80 transition-opacity font-['Inter']`}
                     >
                       {formatTime(new Date(b.startTime))} {b.title || b.type}
                     </button>
                   );
                 })}
                 {dayBookings.length > 3 && (
-                  <span className="text-[10px] text-gray-500 font-['Open_Sans'] pl-1">
+                  <span className="text-[10px] text-gray-500 font-['Inter'] pl-1">
                     +{dayBookings.length - 3} more
                   </span>
                 )}
@@ -361,15 +361,15 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
             <div
               key={d.toISOString()}
               className={`bg-gray-50 border-b border-r border-gray-200 p-2 text-center ${
-                isSameDay(d, today) ? "bg-[#005163]/5" : ""
+                isSameDay(d, today) ? "bg-[#008080]/5" : ""
               }`}
             >
-              <div className="text-xs font-semibold text-[#091a2b] font-['Open_Sans']">
+              <div className="text-xs font-semibold text-[#1A1A2E] font-['Inter']">
                 {d.toLocaleDateString("en-US", { weekday: "short" })}
               </div>
               <div
-                className={`text-lg font-bold font-['Montserrat'] ${
-                  isSameDay(d, today) ? "text-[#005163]" : "text-[#091a2b]"
+                className={`text-lg font-bold font-['Manrope'] ${
+                  isSameDay(d, today) ? "text-[#008080]" : "text-[#1A1A2E]"
                 }`}
               >
                 {d.getDate()}
@@ -380,7 +380,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
           {hours.map((hour) => (
             <React.Fragment key={hour}>
               <div className="border-r border-b border-gray-200 p-1 text-right">
-                <span className="text-[10px] text-gray-500 font-['Open_Sans']">
+                <span className="text-[10px] text-gray-500 font-['Inter']">
                   {hour > 12
                     ? `${hour - 12}PM`
                     : hour === 12
@@ -413,7 +413,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
                             setSelectedBooking(b);
                             onBookingClick?.(b);
                           }}
-                          className={`w-full text-left px-1 py-0.5 rounded text-[10px] truncate ${colors.bg} ${colors.text} border ${colors.border} font-['Open_Sans']`}
+                          className={`w-full text-left px-1 py-0.5 rounded text-[10px] truncate ${colors.bg} ${colors.text} border ${colors.border} font-['Inter']`}
                         >
                           {b.title || b.type}
                         </button>
@@ -447,7 +447,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
               className="flex border-b border-gray-200 last:border-b-0"
             >
               <div className="w-20 flex-shrink-0 p-2 text-right border-r border-gray-200 bg-gray-50">
-                <span className="text-xs text-gray-500 font-['Open_Sans']">
+                <span className="text-xs text-gray-500 font-['Inter']">
                   {hour > 12
                     ? `${hour - 12}:00 PM`
                     : hour === 12
@@ -473,7 +473,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
                         setSelectedBooking(b);
                         onBookingClick?.(b);
                       }}
-                      className={`w-full text-left px-3 py-2 rounded-md mb-1 ${colors.bg} ${colors.text} border ${colors.border} font-['Open_Sans']`}
+                      className={`w-full text-left px-3 py-2 rounded-md mb-1 ${colors.bg} ${colors.text} border ${colors.border} font-['Inter']`}
                     >
                       <div className="flex items-center gap-1.5 text-xs font-semibold">
                         {BOOKING_TYPE_ICONS[b.type]}
@@ -513,13 +513,13 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
           <div className="flex items-start justify-between mb-4">
             <div className="flex items-center gap-2">
               <span
-                className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${colors.bg} ${colors.text} font-['Open_Sans']`}
+                className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold ${colors.bg} ${colors.text} font-['Inter']`}
               >
                 {BOOKING_TYPE_ICONS[b.type]}
                 {b.type.charAt(0).toUpperCase() + b.type.slice(1)}
               </span>
               <span
-                className={`px-2 py-1 rounded-full text-xs font-semibold font-['Open_Sans'] ${
+                className={`px-2 py-1 rounded-full text-xs font-semibold font-['Inter'] ${
                   b.status === "confirmed"
                     ? "bg-green-100 text-green-700"
                     : b.status === "cancelled"
@@ -541,20 +541,20 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
             </button>
           </div>
 
-          <h3 className="text-lg font-bold text-[#091a2b] font-['Montserrat'] mb-3">
+          <h3 className="text-lg font-bold text-[#1A1A2E] font-['Manrope'] mb-3">
             {b.title ||
               `${b.type.charAt(0).toUpperCase() + b.type.slice(1)} Booking`}
           </h3>
 
           {b.description && (
-            <p className="text-sm text-gray-600 font-['Open_Sans'] mb-4">
+            <p className="text-sm text-gray-600 font-['Inter'] mb-4">
               {b.description}
             </p>
           )}
 
-          <div className="space-y-3 text-sm font-['Open_Sans']">
+          <div className="space-y-3 text-sm font-['Inter']">
             <div className="flex items-center gap-2 text-gray-700">
-              <Clock className="w-4 h-4 text-[#005163]" aria-hidden="true" />
+              <Clock className="w-4 h-4 text-[#008080]" aria-hidden="true" />
               <span>
                 {new Date(b.startTime).toLocaleDateString("en-US", {
                   weekday: "short",
@@ -567,14 +567,14 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
             </div>
 
             <div className="flex items-center gap-2 text-gray-700">
-              <MapPin className="w-4 h-4 text-[#005163]" aria-hidden="true" />
+              <MapPin className="w-4 h-4 text-[#008080]" aria-hidden="true" />
               <span>Property: {b.propertyId}</span>
             </div>
 
             {b.attendees.length > 0 && (
               <div className="flex items-start gap-2 text-gray-700">
                 <Users
-                  className="w-4 h-4 text-[#005163] mt-0.5"
+                  className="w-4 h-4 text-[#008080] mt-0.5"
                   aria-hidden="true"
                 />
                 <div>
@@ -611,24 +611,24 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
         <div className="flex items-center gap-2">
           <button
             onClick={() => navigate(-1)}
-            className="p-2 rounded-lg hover:bg-gray-100 text-[#091a2b] transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-100 text-[#1A1A2E] transition-colors"
             aria-label="Previous"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
-          <h2 className="text-lg font-bold text-[#091a2b] font-['Montserrat'] min-w-[200px] text-center">
+          <h2 className="text-lg font-bold text-[#1A1A2E] font-['Manrope'] min-w-[200px] text-center">
             {title}
           </h2>
           <button
             onClick={() => navigate(1)}
-            className="p-2 rounded-lg hover:bg-gray-100 text-[#091a2b] transition-colors"
+            className="p-2 rounded-lg hover:bg-gray-100 text-[#1A1A2E] transition-colors"
             aria-label="Next"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
           <button
             onClick={goToToday}
-            className="ml-2 px-3 py-1.5 text-xs font-semibold rounded-lg border border-[#091a2b] text-[#091a2b] hover:bg-[#091a2b] hover:text-white transition-colors font-['Open_Sans']"
+            className="ml-2 px-3 py-1.5 text-xs font-semibold rounded-lg border border-[#1A1A2E] text-[#1A1A2E] hover:bg-[#1A1A2E] hover:text-white transition-colors font-['Inter']"
           >
             Today
           </button>
@@ -639,10 +639,10 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
             <button
               key={v}
               onClick={() => setView(v)}
-              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors font-['Open_Sans'] ${
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors font-['Inter'] ${
                 view === v
-                  ? "bg-[#091a2b] text-white"
-                  : "text-gray-600 hover:text-[#091a2b]"
+                  ? "bg-[#1A1A2E] text-white"
+                  : "text-gray-600 hover:text-[#1A1A2E]"
               }`}
             >
               {v.charAt(0).toUpperCase() + v.slice(1)}
@@ -658,7 +658,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
           return (
             <span
               key={type}
-              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${c.bg} ${c.text} font-['Open_Sans']`}
+              className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold ${c.bg} ${c.text} font-['Inter']`}
             >
               {BOOKING_TYPE_ICONS[type]}
               {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -669,7 +669,7 @@ const BookingCalendar: React.FC<BookingCalendarProps> = ({
 
       {/* Error */}
       {error && (
-        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 font-['Open_Sans']">
+        <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg text-sm text-red-700 font-['Inter']">
           {error}
           <button
             onClick={fetchBookings}

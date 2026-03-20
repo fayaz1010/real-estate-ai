@@ -40,7 +40,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   if (isLoading) {
     return (
       <div className="flex-1 flex items-center justify-center p-8">
-        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#8B7355] border-t-transparent" />
+        <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#008080] border-t-transparent" />
       </div>
     );
   }
@@ -49,7 +49,7 @@ export const MessageList: React.FC<MessageListProps> = ({
     return (
       <div className="flex-1 flex items-center justify-center p-8">
         <p
-          className="text-[#2D2A26]/60"
+          className="text-[#1A1A2E]/60"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
           No messages yet. Start the conversation!
@@ -59,7 +59,7 @@ export const MessageList: React.FC<MessageListProps> = ({
   }
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#FAF6F1]">
+    <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-[#FFFFFF]">
       {messages.map((message) => {
         const isSent = message.senderId === currentUserId;
 
@@ -71,8 +71,8 @@ export const MessageList: React.FC<MessageListProps> = ({
             <div
               className={`max-w-[75%] rounded-2xl px-4 py-2.5 transition-all duration-200 ${
                 isSent
-                  ? "bg-[#8B7355] text-white rounded-br-md"
-                  : "bg-white text-[#2D2A26] rounded-bl-md shadow-sm border border-[#C4A882]/20"
+                  ? "bg-[#008080] text-white rounded-br-md"
+                  : "bg-white text-[#1A1A2E] rounded-bl-md shadow-sm border border-[#C4A882]/20"
               }`}
             >
               {!isSent && (
@@ -100,7 +100,7 @@ export const MessageList: React.FC<MessageListProps> = ({
                       className={`flex items-center gap-2 text-xs underline ${
                         isSent
                           ? "text-white/80 hover:text-white"
-                          : "text-[#8B7355] hover:text-[#A0926B]"
+                          : "text-[#008080] hover:text-[#A0926B]"
                       }`}
                       style={{ fontFamily: "'Inter', sans-serif" }}
                     >
@@ -124,7 +124,7 @@ export const MessageList: React.FC<MessageListProps> = ({
               )}
               <p
                 className={`text-[10px] mt-1 ${
-                  isSent ? "text-white/60" : "text-[#2D2A26]/40"
+                  isSent ? "text-white/60" : "text-[#1A1A2E]/40"
                 } text-right`}
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
@@ -146,7 +146,7 @@ export const MessageList: React.FC<MessageListProps> = ({
                 <span className="w-1.5 h-1.5 rounded-full bg-[#A0926B] animate-bounce [animation-delay:300ms]" />
               </div>
               <p
-                className="text-xs text-[#2D2A26]/50"
+                className="text-xs text-[#1A1A2E]/50"
                 style={{ fontFamily: "'Inter', sans-serif" }}
               >
                 {typingUserNames.length === 1

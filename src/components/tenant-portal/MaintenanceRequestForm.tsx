@@ -42,10 +42,10 @@ export const MaintenanceRequestForm: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] font-[Open_Sans]">
+    <div className="min-h-screen bg-[#f8f9fa] font-[Inter]">
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <header className="mb-8">
-          <h1 className="font-montserrat text-2xl sm:text-3xl font-bold text-[#091a2b]">
+          <h1 className="font-manrope text-2xl sm:text-3xl font-bold text-[#1A1A2E]">
             Maintenance Request
           </h1>
           <p className="text-gray-500 mt-1 text-sm">
@@ -64,7 +64,7 @@ export const MaintenanceRequestForm: React.FC = () => {
               aria-hidden="true"
             />
             <div>
-              <h3 className="font-montserrat font-semibold text-emerald-800">
+              <h3 className="font-manrope font-semibold text-emerald-800">
                 Request Submitted
               </h3>
               <p className="text-sm text-emerald-600">
@@ -103,8 +103,8 @@ export const MaintenanceRequestForm: React.FC = () => {
             className="bg-white rounded-2xl shadow-sm p-6"
           >
             <div className="flex items-center gap-2 mb-6">
-              <Wrench className="w-5 h-5 text-[#091a2b]" aria-hidden="true" />
-              <h2 className="font-montserrat text-lg font-semibold text-[#091a2b]">
+              <Wrench className="w-5 h-5 text-[#1A1A2E]" aria-hidden="true" />
+              <h2 className="font-manrope text-lg font-semibold text-[#1A1A2E]">
                 Describe the Issue
               </h2>
             </div>
@@ -124,7 +124,7 @@ export const MaintenanceRequestForm: React.FC = () => {
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder="e.g., Leaking kitchen faucet"
                   required
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#091a2b]/20 focus:border-[#091a2b] transition-colors"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A1A2E]/20 focus:border-[#1A1A2E] transition-colors"
                 />
               </div>
 
@@ -142,7 +142,7 @@ export const MaintenanceRequestForm: React.FC = () => {
                   placeholder="Describe the issue in detail..."
                   required
                   rows={5}
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#091a2b]/20 focus:border-[#091a2b] transition-colors resize-none"
+                  className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#1A1A2E]/20 focus:border-[#1A1A2E] transition-colors resize-none"
                 />
               </div>
 
@@ -164,7 +164,7 @@ export const MaintenanceRequestForm: React.FC = () => {
                   />
                   <label
                     htmlFor="request-images"
-                    className="flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-gray-200 rounded-xl text-sm text-gray-500 hover:border-[#091a2b]/30 hover:text-gray-700 cursor-pointer transition-colors"
+                    className="flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-gray-200 rounded-xl text-sm text-gray-500 hover:border-[#1A1A2E]/30 hover:text-gray-700 cursor-pointer transition-colors"
                   >
                     <Upload className="w-4 h-4" aria-hidden="true" />
                     {images.length > 0
@@ -190,7 +190,7 @@ export const MaintenanceRequestForm: React.FC = () => {
             <button
               type="submit"
               disabled={submitting || !title.trim() || !description.trim()}
-              className="mt-6 w-full bg-[#091a2b] text-white py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-6 w-full bg-[#1A1A2E] text-white py-3 rounded-xl text-sm font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {submitting ? "Submitting..." : "Submit Request"}
             </button>

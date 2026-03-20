@@ -1,21 +1,21 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&family=JetBrains+Mono&family=DM+Sans:wght@400;500;600;700&family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Nature-Inspired Warmth Color Palette */
-  --color-primary: #8B7355;
-  --color-primary-light: #A0926B;
-  --color-primary-dark: #6B5A43;
-  --color-secondary: #A0926B;
-  --color-accent: #C4A882;
-  --color-background: #FAF6F1;
-  --color-surface: #ffffff;
-  --color-surface-elevated: #ffffff;
-  --color-text-primary: #2D2A26;
-  --color-text-secondary: #6B5A43;
+  /* Professional Trust Color Palette */
+  --color-primary: #008080;
+  --color-primary-light: #33a3a3;
+  --color-primary-dark: #006666;
+  --color-secondary: #E0E0E0;
+  --color-accent: #FF6B35;
+  --color-background: #FFFFFF;
+  --color-surface: #FFFFFF;
+  --color-surface-elevated: #FFFFFF;
+  --color-text-primary: #1A1A2E;
+  --color-text-secondary: #6599ac;
   --color-text-muted: #94a3b8;
   --color-border: #cbd5e1;
   --color-success: #34d399;
@@ -23,17 +23,17 @@
   --color-error: #ef4444;
 
   /* RGB channel values for Tailwind opacity support */
-  --primary-rgb: 139 115 85;
-  --secondary-rgb: 160 146 107;
-  --accent-rgb: 196 168 130;
-  --background-rgb: 250 246 241;
-  --text-rgb: 45 42 38;
+  --primary-rgb: 0 128 128;
+  --secondary-rgb: 224 224 224;
+  --accent-rgb: 255 107 53;
+  --background-rgb: 255 255 255;
+  --text-rgb: 26 26 46;
 
   /* Typography */
-  --font-display: "DM Serif Display", serif;
-  --font-heading: "DM Serif Display", serif;
-  --font-body: "Inter", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
+  --font-display: 'Manrope', sans-serif;
+  --font-heading: 'Manrope', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 
   /* Spacing (8px grid system) */
   --spacing-unit: 8px;
@@ -68,8 +68,8 @@ body {
   font-family: "Inter", system-ui, -apple-system, sans-serif;
   line-height: 1.6;
   font-weight: 400;
-  color: #2D2A26;
-  background-color: #FAF6F1;
+  color: #1A1A2E;
+  background-color: #FFFFFF;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -80,8 +80,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "DM Serif Display", serif;
-  color: #2D2A26;
+  font-family: 'Manrope', sans-serif;
+  color: #1A1A2E;
   line-height: 1.2;
   letter-spacing: -0.01em;
 }

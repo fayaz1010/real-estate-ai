@@ -17,15 +17,15 @@ export const TrialProgressWidget: React.FC<TrialProgressWidgetProps> = ({
   return (
     <div
       className="rounded-xl border border-gray-200 bg-white p-6 shadow-sm"
-      style={{ fontFamily: "'Open Sans', sans-serif" }}
+      style={{ fontFamily: "'Inter', sans-serif" }}
     >
       <div className="flex items-center gap-2 mb-4">
-        <TrendingUp className="w-5 h-5" style={{ color: "#3b4876" }} />
+        <TrendingUp className="w-5 h-5" style={{ color: "#FF6B35" }} />
         <h3
           className="text-lg font-bold"
           style={{
-            fontFamily: "'Montserrat', sans-serif",
-            color: "#091a2b",
+            fontFamily: "'Manrope', sans-serif",
+            color: "#1A1A2E",
           }}
         >
           Trial Progress
@@ -45,7 +45,7 @@ export const TrialProgressWidget: React.FC<TrialProgressWidgetProps> = ({
             className="h-full rounded-full transition-all duration-500"
             style={{
               width: `${percentage}%`,
-              backgroundColor: "#3b4876",
+              backgroundColor: "#FF6B35",
             }}
           />
         </div>
@@ -61,12 +61,12 @@ export const TrialProgressWidget: React.FC<TrialProgressWidgetProps> = ({
             <div
               key={highlight.feature}
               className="flex items-center justify-between rounded-lg px-3 py-2"
-              style={{ backgroundColor: "#f1f3f4" }}
+              style={{ backgroundColor: "#FFFFFF" }}
             >
               <span className="text-sm text-gray-700">{highlight.feature}</span>
               <span
                 className="text-sm font-semibold"
-                style={{ color: "#3b4876" }}
+                style={{ color: "#FF6B35" }}
               >
                 {highlight.value}
               </span>

@@ -22,14 +22,14 @@ const metricCards = [
     label: "Total Properties",
     icon: Building2,
     format: (v: number) => v.toLocaleString(),
-    color: "#091a2b",
+    color: "#1A1A2E",
   },
   {
     key: "totalUnits" as const,
     label: "Total Units",
     icon: DoorClosed,
     format: (v: number) => v.toLocaleString(),
-    color: "#005163",
+    color: "#008080",
   },
   {
     key: "occupancyRate" as const,
@@ -43,7 +43,7 @@ const metricCards = [
     label: "Average Rent",
     icon: DollarSign,
     format: (v: number) => `$${v.toLocaleString()}`,
-    color: "#3b4876",
+    color: "#FF6B35",
   },
   {
     key: "totalRevenue" as const,
@@ -64,14 +64,14 @@ const metricCards = [
     label: "Net Operating Income",
     icon: PieChart,
     format: (v: number) => `$${v.toLocaleString()}`,
-    color: "#005163",
+    color: "#008080",
   },
   {
     key: "capRate" as const,
     label: "Cap Rate",
     icon: Percent,
     format: (v: number) => `${v}%`,
-    color: "#3b4876",
+    color: "#FF6B35",
   },
 ];
 
@@ -93,7 +93,7 @@ export const PortfolioOverview: React.FC<PortfolioOverviewProps> = ({
                 className="text-xs font-semibold uppercase tracking-wider"
                 style={{
                   color: "#5a6a7a",
-                  fontFamily: "Open Sans, sans-serif",
+                  fontFamily: "Inter, sans-serif",
                 }}
               >
                 {card.label}
@@ -107,7 +107,7 @@ export const PortfolioOverview: React.FC<PortfolioOverviewProps> = ({
             </div>
             <p
               className="text-2xl font-bold"
-              style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
+              style={{ color: "#1A1A2E", fontFamily: "Manrope, sans-serif" }}
             >
               {card.format(value)}
             </p>

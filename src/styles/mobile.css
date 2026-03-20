@@ -3,8 +3,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f1f3f4;
-  color: #091a2b;
+  background-color: #FFFFFF;
+  color: #1A1A2E;
 }
 
 .mobile-layout main {
@@ -80,15 +80,15 @@
 }
 
 .camera-btn-primary {
-  background-color: #091a2b;
+  background-color: #008080;
 }
 
 .camera-btn-accent {
-  background-color: #3b4876;
+  background-color: #FF6B35;
 }
 
 .camera-btn-secondary {
-  background-color: #005163;
+  background-color: #E0E0E0;
 }
 
 /* Photo Gallery */
@@ -97,7 +97,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 0.5rem;
   padding: 0.5rem;
-  background-color: #f1f3f4;
+  background-color: #FFFFFF;
   border-radius: 0.5rem;
 }
 

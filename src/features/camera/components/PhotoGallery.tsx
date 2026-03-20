@@ -90,14 +90,14 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
     return (
       <div
         className="flex flex-col items-center justify-center py-16 text-center"
-        style={{ fontFamily: "Open Sans, sans-serif" }}
+        style={{ fontFamily: "Inter, sans-serif" }}
       >
         <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
           <Maximize2 className="w-8 h-8 text-gray-400" />
         </div>
         <h3
           className="text-lg font-semibold mb-1"
-          style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
+          style={{ color: "#1A1A2E", fontFamily: "Manrope, sans-serif" }}
         >
           No Photos Yet
         </h3>
@@ -109,12 +109,12 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
   }
 
   return (
-    <div style={{ fontFamily: "Open Sans, sans-serif" }}>
+    <div style={{ fontFamily: "Inter, sans-serif" }}>
       {/* Header */}
       <div className="flex items-center justify-between mb-4">
         <h3
           className="text-lg font-semibold"
-          style={{ color: "#091a2b", fontFamily: "Montserrat, sans-serif" }}
+          style={{ color: "#1A1A2E", fontFamily: "Manrope, sans-serif" }}
         >
           Photos ({photos.length})
         </h3>
@@ -167,7 +167,7 @@ export const PhotoGallery: React.FC<PhotoGalleryProps> = ({
             {photo.annotations.length > 0 && (
               <div
                 className="absolute top-2 right-2 w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
-                style={{ backgroundColor: "#3b4876" }}
+                style={{ backgroundColor: "#FF6B35" }}
               >
                 {photo.annotations.length}
               </div>

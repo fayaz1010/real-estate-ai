@@ -112,26 +112,26 @@ export const TrialSignupPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen flex" style={{ backgroundColor: "#f1f3f4" }}>
+    <div className="min-h-screen flex" style={{ backgroundColor: "#FFFFFF" }}>
       {/* Left panel - branding */}
       <div
         className="hidden lg:flex lg:w-1/2 flex-col justify-center items-center p-12"
-        style={{ backgroundColor: "#091a2b" }}
+        style={{ backgroundColor: "#1A1A2E" }}
       >
         <div className="max-w-md text-center">
           <div className="flex justify-center mb-8">
             <div
               className="flex h-16 w-16 items-center justify-center rounded-2xl"
-              style={{ backgroundColor: "#3b4876" }}
+              style={{ backgroundColor: "#FF6B35" }}
             >
-              <Building className="h-8 w-8" style={{ color: "#f1f3f4" }} />
+              <Building className="h-8 w-8" style={{ color: "#FFFFFF" }} />
             </div>
           </div>
           <h1
             className="text-4xl font-bold mb-4"
             style={{
-              color: "#f1f3f4",
-              fontFamily: "'Montserrat', sans-serif",
+              color: "#FFFFFF",
+              fontFamily: "'Manrope', sans-serif",
             }}
           >
             Property Management,
@@ -141,8 +141,8 @@ export const TrialSignupPage: React.FC = () => {
           <p
             className="text-lg mb-10 opacity-80"
             style={{
-              color: "#f1f3f4",
-              fontFamily: "'Open Sans', sans-serif",
+              color: "#FFFFFF",
+              fontFamily: "'Inter', sans-serif",
             }}
           >
             Start your 14-day free trial and experience the future of property
@@ -158,15 +158,15 @@ export const TrialSignupPage: React.FC = () => {
                 >
                   <div
                     className="flex h-10 w-10 items-center justify-center rounded-lg"
-                    style={{ backgroundColor: "#3b487640" }}
+                    style={{ backgroundColor: "#FF6B3540" }}
                   >
-                    <Icon className="h-5 w-5" style={{ color: "#f1f3f4" }} />
+                    <Icon className="h-5 w-5" style={{ color: "#FFFFFF" }} />
                   </div>
                   <span
                     className="text-sm"
                     style={{
-                      color: "#f1f3f4",
-                      fontFamily: "'Open Sans', sans-serif",
+                      color: "#FFFFFF",
+                      fontFamily: "'Inter', sans-serif",
                     }}
                   >
                     {feature.text}
@@ -185,24 +185,24 @@ export const TrialSignupPage: React.FC = () => {
           <div className="lg:hidden flex justify-center mb-8">
             <div
               className="flex h-12 w-12 items-center justify-center rounded-xl"
-              style={{ backgroundColor: "#091a2b" }}
+              style={{ backgroundColor: "#1A1A2E" }}
             >
-              <Building className="h-6 w-6" style={{ color: "#f1f3f4" }} />
+              <Building className="h-6 w-6" style={{ color: "#FFFFFF" }} />
             </div>
           </div>
 
           <h2
             className="text-2xl font-bold text-center mb-2"
             style={{
-              color: "#091a2b",
-              fontFamily: "'Montserrat', sans-serif",
+              color: "#1A1A2E",
+              fontFamily: "'Manrope', sans-serif",
             }}
           >
             Start Your Free Trial
           </h2>
           <p
             className="text-center text-sm text-gray-500 mb-8"
-            style={{ fontFamily: "'Open Sans', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             14-day free trial. No credit card required.
           </p>
@@ -210,7 +210,7 @@ export const TrialSignupPage: React.FC = () => {
           {serverError && (
             <div
               className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700"
-              style={{ fontFamily: "'Open Sans', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               {serverError}
             </div>
@@ -224,8 +224,8 @@ export const TrialSignupPage: React.FC = () => {
                   htmlFor="trial-firstName"
                   className="block text-sm font-medium mb-1.5"
                   style={{
-                    color: "#091a2b",
-                    fontFamily: "'Open Sans', sans-serif",
+                    color: "#1A1A2E",
+                    fontFamily: "'Inter', sans-serif",
                   }}
                 >
                   First Name
@@ -238,8 +238,8 @@ export const TrialSignupPage: React.FC = () => {
                   placeholder="John"
                   className="w-full rounded-lg border px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{
-                    fontFamily: "'Open Sans', sans-serif",
-                    borderColor: errors.firstName ? "#ef4444" : "#091a2b30",
+                    fontFamily: "'Inter', sans-serif",
+                    borderColor: errors.firstName ? "#ef4444" : "#1A1A2E30",
                   }}
                 />
                 {errors.firstName && (
@@ -253,8 +253,8 @@ export const TrialSignupPage: React.FC = () => {
                   htmlFor="trial-lastName"
                   className="block text-sm font-medium mb-1.5"
                   style={{
-                    color: "#091a2b",
-                    fontFamily: "'Open Sans', sans-serif",
+                    color: "#1A1A2E",
+                    fontFamily: "'Inter', sans-serif",
                   }}
                 >
                   Last Name
@@ -267,8 +267,8 @@ export const TrialSignupPage: React.FC = () => {
                   placeholder="Doe"
                   className="w-full rounded-lg border px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{
-                    fontFamily: "'Open Sans', sans-serif",
-                    borderColor: errors.lastName ? "#ef4444" : "#091a2b30",
+                    fontFamily: "'Inter', sans-serif",
+                    borderColor: errors.lastName ? "#ef4444" : "#1A1A2E30",
                   }}
                 />
                 {errors.lastName && (
@@ -283,8 +283,8 @@ export const TrialSignupPage: React.FC = () => {
                 htmlFor="trial-email"
                 className="block text-sm font-medium mb-1.5"
                 style={{
-                  color: "#091a2b",
-                  fontFamily: "'Open Sans', sans-serif",
+                  color: "#1A1A2E",
+                  fontFamily: "'Inter', sans-serif",
                 }}
               >
                 Email Address
@@ -297,8 +297,8 @@ export const TrialSignupPage: React.FC = () => {
                 placeholder="john@example.com"
                 className="w-full rounded-lg border px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 style={{
-                  fontFamily: "'Open Sans', sans-serif",
-                  borderColor: errors.email ? "#ef4444" : "#091a2b30",
+                  fontFamily: "'Inter', sans-serif",
+                  borderColor: errors.email ? "#ef4444" : "#1A1A2E30",
                 }}
               />
               {errors.email && (
@@ -312,8 +312,8 @@ export const TrialSignupPage: React.FC = () => {
                 htmlFor="trial-password"
                 className="block text-sm font-medium mb-1.5"
                 style={{
-                  color: "#091a2b",
-                  fontFamily: "'Open Sans', sans-serif",
+                  color: "#1A1A2E",
+                  fontFamily: "'Inter', sans-serif",
                 }}
               >
                 Password
@@ -327,8 +327,8 @@ export const TrialSignupPage: React.FC = () => {
                   placeholder="At least 8 characters"
                   className="w-full rounded-lg border px-4 py-2.5 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                   style={{
-                    fontFamily: "'Open Sans', sans-serif",
-                    borderColor: errors.password ? "#ef4444" : "#091a2b30",
+                    fontFamily: "'Inter', sans-serif",
+                    borderColor: errors.password ? "#ef4444" : "#1A1A2E30",
                   }}
                 />
                 <button
@@ -362,7 +362,7 @@ export const TrialSignupPage: React.FC = () => {
                 />
                 <span
                   className="text-sm text-gray-600"
-                  style={{ fontFamily: "'Open Sans', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   I agree to the{" "}
                   <Link to="/terms" className="underline hover:text-gray-900">
@@ -387,8 +387,8 @@ export const TrialSignupPage: React.FC = () => {
               disabled={isSubmitting}
               className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3.5 text-base font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
               style={{
-                backgroundColor: "#091a2b",
-                fontFamily: "'Montserrat', sans-serif",
+                backgroundColor: "#1A1A2E",
+                fontFamily: "'Manrope', sans-serif",
               }}
             >
               {isSubmitting ? (
@@ -400,20 +400,20 @@ export const TrialSignupPage: React.FC = () => {
 
             <p
               className="text-center text-xs text-gray-400"
-              style={{ fontFamily: "'Open Sans', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               No credit card required. Cancel anytime.
             </p>
 
             <p
               className="text-center text-sm text-gray-600"
-              style={{ fontFamily: "'Open Sans', sans-serif" }}
+              style={{ fontFamily: "'Inter', sans-serif" }}
             >
               Already have an account?{" "}
               <Link
                 to="/auth/login"
                 className="font-semibold underline hover:text-gray-900"
-                style={{ color: "#091a2b" }}
+                style={{ color: "#1A1A2E" }}
               >
                 Sign in
               </Link>

@@ -157,12 +157,12 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <ModeIcon size={20} style={{ color: "#8B7355" }} />
+          <ModeIcon size={20} style={{ color: "#008080" }} />
           <span
             style={{
-              fontFamily: "'DM Serif Display', serif",
+              fontFamily: "'Manrope', sans-serif",
               fontSize: 18,
-              color: "#2D2A26",
+              color: "#1A1A2E",
             }}
           >
             {config.label}
@@ -175,7 +175,7 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
             style={{
               ...buttonBase,
               backgroundColor: "transparent",
-              color: "#2D2A26",
+              color: "#1A1A2E",
               padding: 8,
               minWidth: 44,
             }}
@@ -295,7 +295,7 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
               style={{
                 ...buttonBase,
                 flex: 1,
-                backgroundColor: cameraReady ? "#8B7355" : "#C4A882",
+                backgroundColor: cameraReady ? "#008080" : "#C4A882",
                 color: "#fff",
                 opacity: cameraReady ? 1 : 0.6,
               }}
@@ -309,8 +309,8 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
               aria-label="Switch camera"
               style={{
                 ...buttonBase,
-                backgroundColor: "#FAF6F1",
-                color: "#8B7355",
+                backgroundColor: "#FFFFFF",
+                color: "#008080",
                 border: "1px solid #C4A882",
                 padding: "12px 16px",
               }}
@@ -341,7 +341,7 @@ export const CameraCapture: React.FC<CameraCaptureProps> = ({
             style={{
               ...buttonBase,
               flex: 1,
-              backgroundColor: "#8B7355",
+              backgroundColor: "#008080",
               color: "#fff",
             }}
           >

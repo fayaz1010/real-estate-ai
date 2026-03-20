@@ -87,10 +87,10 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
           className="w-12 h-12 text-gray-300 mx-auto mb-3"
           aria-hidden="true"
         />
-        <p className="text-sm text-gray-500 font-['Open_Sans']">
+        <p className="text-sm text-gray-500 font-['Inter']">
           No upcoming bookings
         </p>
-        <p className="text-xs text-gray-400 font-['Open_Sans'] mt-1">
+        <p className="text-xs text-gray-400 font-['Inter'] mt-1">
           Create a new booking to get started.
         </p>
       </div>
@@ -99,7 +99,7 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
 
   return (
     <div>
-      <h3 className="text-lg font-bold text-[#091a2b] font-['Montserrat'] mb-4">
+      <h3 className="text-lg font-bold text-[#1A1A2E] font-['Manrope'] mb-4">
         Upcoming Bookings
       </h3>
       <div className="space-y-3">
@@ -126,11 +126,11 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-2">
                     <div>
-                      <h4 className="text-sm font-semibold text-[#091a2b] font-['Open_Sans'] truncate">
+                      <h4 className="text-sm font-semibold text-[#1A1A2E] font-['Inter'] truncate">
                         {booking.title ||
                           `${booking.type.charAt(0).toUpperCase() + booking.type.slice(1)} Booking`}
                       </h4>
-                      <div className="flex items-center gap-3 mt-1 text-xs text-gray-500 font-['Open_Sans']">
+                      <div className="flex items-center gap-3 mt-1 text-xs text-gray-500 font-['Inter']">
                         <span className="flex items-center gap-1">
                           <Clock className="w-3 h-3" aria-hidden="true" />
                           {start.toLocaleDateString("en-US", {
@@ -154,7 +154,7 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
                       </div>
                     </div>
                     <span
-                      className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold font-['Open_Sans'] ${
+                      className={`flex-shrink-0 inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-semibold font-['Inter'] ${
                         isConfirmed
                           ? "bg-green-100 text-green-700"
                           : "bg-yellow-100 text-yellow-700"
@@ -172,7 +172,7 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
 
                   {/* Attendees */}
                   {booking.attendees.length > 0 && (
-                    <div className="flex items-center gap-1 mt-2 text-xs text-gray-500 font-['Open_Sans']">
+                    <div className="flex items-center gap-1 mt-2 text-xs text-gray-500 font-['Inter']">
                       <Users className="w-3 h-3" aria-hidden="true" />
                       {booking.attendees.map((a) => a.name).join(", ")}
                     </div>
@@ -182,19 +182,19 @@ const UpcomingBookings: React.FC<UpcomingBookingsProps> = ({
                   <div className="flex items-center gap-2 mt-3">
                     <button
                       onClick={() => onViewDetails?.(booking)}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-[#005163] hover:text-[#091a2b] transition-colors font-['Open_Sans']"
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-[#008080] hover:text-[#1A1A2E] transition-colors font-['Inter']"
                     >
                       Details <ChevronRight className="w-3 h-3" />
                     </button>
                     <button
                       onClick={() => onReschedule?.(booking)}
-                      className="inline-flex items-center gap-1 text-xs font-semibold text-[#3b4876] hover:text-[#091a2b] transition-colors font-['Open_Sans']"
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-[#FF6B35] hover:text-[#1A1A2E] transition-colors font-['Inter']"
                     >
                       <CalendarCheck className="w-3 h-3" /> Reschedule
                     </button>
                     <button
                       onClick={() => handleCancel(booking.id)}
-                      className={`inline-flex items-center gap-1 text-xs font-semibold transition-colors font-['Open_Sans'] ${
+                      className={`inline-flex items-center gap-1 text-xs font-semibold transition-colors font-['Inter'] ${
                         cancellingId === booking.id
                           ? "text-red-600"
                           : "text-gray-400 hover:text-red-500"

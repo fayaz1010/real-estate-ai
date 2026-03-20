@@ -99,7 +99,7 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
       >
         <p
           className="text-red-700 font-medium"
-          style={{ fontFamily: "'Open Sans', sans-serif" }}
+          style={{ fontFamily: "'Inter', sans-serif" }}
         >
           {error}
         </p>
@@ -114,8 +114,8 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
     <th className="px-4 py-3 text-left">
       <button
         onClick={() => handleSort(field)}
-        className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider hover:text-[#091a2b] transition-colors"
-        style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
+        className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider hover:text-[#1A1A2E] transition-colors"
+        style={{ fontFamily: "'Manrope', sans-serif", color: "#1A1A2E" }}
       >
         {label}
         <ArrowDown
@@ -133,7 +133,7 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
         <label
           htmlFor="status-filter"
           className="text-sm font-semibold mr-3"
-          style={{ fontFamily: "'Montserrat', sans-serif", color: "#091a2b" }}
+          style={{ fontFamily: "'Manrope', sans-serif", color: "#1A1A2E" }}
         >
           Filter by Status:
         </label>
@@ -141,8 +141,8 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
           id="status-filter"
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#091a2b]"
-          style={{ fontFamily: "'Open Sans', sans-serif" }}
+          className="rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1A1A2E]"
+          style={{ fontFamily: "'Inter', sans-serif" }}
         >
           <option value="all">All</option>
           <option value="pending">Pending</option>
@@ -167,8 +167,8 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
                 <span
                   className="text-xs font-semibold uppercase tracking-wider"
                   style={{
-                    fontFamily: "'Montserrat', sans-serif",
-                    color: "#091a2b",
+                    fontFamily: "'Manrope', sans-serif",
+                    color: "#1A1A2E",
                   }}
                 >
                   Actions
@@ -182,7 +182,7 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
                 <td
                   colSpan={7}
                   className="px-4 py-12 text-center text-gray-500"
-                  style={{ fontFamily: "'Open Sans', sans-serif" }}
+                  style={{ fontFamily: "'Inter', sans-serif" }}
                 >
                   No screening requests found.
                 </td>
@@ -196,27 +196,27 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
                   <td
                     className="px-4 py-3 text-sm font-medium"
                     style={{
-                      fontFamily: "'Open Sans', sans-serif",
-                      color: "#091a2b",
+                      fontFamily: "'Inter', sans-serif",
+                      color: "#1A1A2E",
                     }}
                   >
                     {request.tenantName}
                   </td>
                   <td
                     className="px-4 py-3 text-sm text-gray-600"
-                    style={{ fontFamily: "'Open Sans', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     {request.email}
                   </td>
                   <td
                     className="px-4 py-3 text-sm text-gray-600"
-                    style={{ fontFamily: "'Open Sans', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     {request.phone}
                   </td>
                   <td
                     className="px-4 py-3 text-sm text-gray-600"
-                    style={{ fontFamily: "'Open Sans', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     {request.propertyId}
                   </td>
@@ -225,7 +225,7 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
                   </td>
                   <td
                     className="px-4 py-3 text-sm text-gray-600"
-                    style={{ fontFamily: "'Open Sans', sans-serif" }}
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     {formatDate(request.createdAt)}
                   </td>
@@ -234,8 +234,8 @@ export const ScreeningDashboard: React.FC<ScreeningDashboardProps> = ({
                       onClick={() => onViewReport?.(request.id)}
                       className="text-sm font-medium hover:underline transition-colors"
                       style={{
-                        fontFamily: "'Open Sans', sans-serif",
-                        color: "#091a2b",
+                        fontFamily: "'Inter', sans-serif",
+                        color: "#1A1A2E",
                       }}
                     >
                       View Report

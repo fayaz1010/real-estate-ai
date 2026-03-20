@@ -73,8 +73,8 @@ export const TrialSignupForm: React.FC = () => {
   }
 
   const inputStyle: React.CSSProperties = {
-    fontFamily: "'Open Sans', sans-serif",
-    borderColor: "#091a2b30",
+    fontFamily: "'Inter', sans-serif",
+    borderColor: "#1A1A2E30",
   };
 
   return (
@@ -84,7 +84,7 @@ export const TrialSignupForm: React.FC = () => {
         <label
           htmlFor="signup-name"
           className="block text-sm font-medium mb-1.5"
-          style={{ color: "#091a2b", fontFamily: "'Open Sans', sans-serif" }}
+          style={{ color: "#1A1A2E", fontFamily: "'Inter', sans-serif" }}
         >
           Full Name
         </label>
@@ -110,7 +110,7 @@ export const TrialSignupForm: React.FC = () => {
         <label
           htmlFor="signup-email"
           className="block text-sm font-medium mb-1.5"
-          style={{ color: "#091a2b", fontFamily: "'Open Sans', sans-serif" }}
+          style={{ color: "#1A1A2E", fontFamily: "'Inter', sans-serif" }}
         >
           Email Address
         </label>
@@ -136,7 +136,7 @@ export const TrialSignupForm: React.FC = () => {
         <label
           htmlFor="signup-password"
           className="block text-sm font-medium mb-1.5"
-          style={{ color: "#091a2b", fontFamily: "'Open Sans', sans-serif" }}
+          style={{ color: "#1A1A2E", fontFamily: "'Inter', sans-serif" }}
         >
           Password
         </label>
@@ -182,7 +182,7 @@ export const TrialSignupForm: React.FC = () => {
           />
           <span
             className="text-sm text-gray-600"
-            style={{ fontFamily: "'Open Sans', sans-serif" }}
+            style={{ fontFamily: "'Inter', sans-serif" }}
           >
             I agree to the{" "}
             <a href="/terms" className="underline hover:text-gray-900">
@@ -205,8 +205,8 @@ export const TrialSignupForm: React.FC = () => {
         disabled={isSubmitting}
         className="flex w-full items-center justify-center gap-2 rounded-lg px-6 py-3.5 text-base font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-60"
         style={{
-          backgroundColor: "#091a2b",
-          fontFamily: "'Montserrat', sans-serif",
+          backgroundColor: "#1A1A2E",
+          fontFamily: "'Manrope', sans-serif",
         }}
       >
         {isSubmitting ? (
@@ -218,7 +218,7 @@ export const TrialSignupForm: React.FC = () => {
 
       <p
         className="text-center text-xs text-gray-400"
-        style={{ fontFamily: "'Open Sans', sans-serif" }}
+        style={{ fontFamily: "'Inter', sans-serif" }}
       >
         No credit card required. Cancel anytime.
       </p>

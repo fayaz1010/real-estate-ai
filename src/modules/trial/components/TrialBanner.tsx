@@ -34,21 +34,21 @@ export const TrialBanner: React.FC<TrialBannerProps> = ({
     <div
       className={`w-full py-3 px-4 flex items-center justify-center gap-3 flex-wrap ${isExpiringSoon ? "animate-pulse" : ""}`}
       style={{
-        backgroundColor: "#091a2b",
-        fontFamily: "'Open Sans', sans-serif",
+        backgroundColor: "#1A1A2E",
+        fontFamily: "'Inter', sans-serif",
       }}
     >
-      <Clock className="w-4 h-4 flex-shrink-0" style={{ color: "#f1f3f4" }} />
-      <p className="text-sm font-medium" style={{ color: "#f1f3f4" }}>
+      <Clock className="w-4 h-4 flex-shrink-0" style={{ color: "#FFFFFF" }} />
+      <p className="text-sm font-medium" style={{ color: "#FFFFFF" }}>
         {statusText}
       </p>
       <Link
         to="/pricing"
         className="inline-flex items-center gap-1.5 rounded-md px-4 py-1.5 text-sm font-semibold transition-opacity hover:opacity-90"
         style={{
-          backgroundColor: "#3b4876",
-          color: "#f1f3f4",
-          fontFamily: "'Open Sans', sans-serif",
+          backgroundColor: "#FF6B35",
+          color: "#FFFFFF",
+          fontFamily: "'Inter', sans-serif",
         }}
       >
         Upgrade Now

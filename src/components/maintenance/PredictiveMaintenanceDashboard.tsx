@@ -48,8 +48,8 @@ const PredictiveMaintenanceDashboard: React.FC<
   }
 
   return (
-    <div className="p-6 bg-[#f1f3f4] min-h-screen">
-      <h2 className="text-2xl font-display font-bold text-[#091a2b] mb-6">
+    <div className="p-6 bg-[#FFFFFF] min-h-screen">
+      <h2 className="text-2xl font-display font-bold text-[#1A1A2E] mb-6">
         Predictive Maintenance Dashboard
       </h2>
       <RiskAssessmentCard

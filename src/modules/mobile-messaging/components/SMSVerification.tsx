@@ -157,13 +157,13 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({
   };
 
   return (
-    <div className="mx-auto max-w-md font-['Open_Sans']">
+    <div className="mx-auto max-w-md font-['Inter']">
       <div className="rounded-xl bg-white p-6 shadow-md">
         {/* Header */}
         <div className="mb-6 text-center">
-          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#005163]/10">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-[#008080]/10">
             <svg
-              className="h-8 w-8 text-[#005163]"
+              className="h-8 w-8 text-[#008080]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -176,10 +176,10 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({
               />
             </svg>
           </div>
-          <h2 className="text-xl font-semibold text-[#091a2b]">
+          <h2 className="text-xl font-semibold text-[#1A1A2E]">
             {step === "success" ? "Phone Verified" : "Verify Your Phone"}
           </h2>
-          <p className="mt-1 text-sm text-[#091a2b]/60">
+          <p className="mt-1 text-sm text-[#1A1A2E]/60">
             {step === "phone" &&
               "Enter your phone number to receive a verification code"}
             {step === "code" && `We sent a 6-digit code to ${phoneNumber}`}
@@ -200,7 +200,7 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({
           <div>
             <label
               htmlFor="phone-number"
-              className="mb-1.5 block text-sm font-medium text-[#091a2b]"
+              className="mb-1.5 block text-sm font-medium text-[#1A1A2E]"
             >
               Phone Number
             </label>
@@ -214,16 +214,16 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({
               }}
               onKeyDown={(e) => e.key === "Enter" && handleSendCode()}
               placeholder="+61 412 345 678"
-              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-[#091a2b] placeholder:text-gray-400 focus:border-[#005163] focus:outline-none focus:ring-2 focus:ring-[#005163]/20"
+              className="w-full rounded-lg border border-gray-300 px-4 py-3 text-[#1A1A2E] placeholder:text-gray-400 focus:border-[#008080] focus:outline-none focus:ring-2 focus:ring-[#008080]/20"
               disabled={isLoading}
             />
-            <p className="mt-1.5 text-xs text-[#091a2b]/50">
+            <p className="mt-1.5 text-xs text-[#1A1A2E]/50">
               Include country code (e.g., +61 for Australia)
             </p>
             <button
               onClick={handleSendCode}
               disabled={isLoading || !phoneNumber.trim()}
-              className="mt-4 w-full rounded-lg bg-[#005163] py-3 text-sm font-medium text-white transition-colors hover:bg-[#005163]/90 disabled:cursor-not-allowed disabled:opacity-50"
+              className="mt-4 w-full rounded-lg bg-[#008080] py-3 text-sm font-medium text-white transition-colors hover:bg-[#008080]/90 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -240,7 +240,7 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({
         {/* Code Verification Step */}
         {step === "code" && (
           <div>
-            <label className="mb-3 block text-center text-sm font-medium text-[#091a2b]">
+            <label className="mb-3 block text-center text-sm font-medium text-[#1A1A2E]">
               Verification Code
             </label>
             <div
@@ -259,7 +259,7 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({
                   value={digit}
                   onChange={(e) => handleCodeChange(index, e.target.value)}
                   onKeyDown={(e) => handleCodeKeyDown(index, e)}
-                  className="h-12 w-12 rounded-lg border border-gray-300 text-center text-lg font-semibold text-[#091a2b] focus:border-[#005163] focus:outline-none focus:ring-2 focus:ring-[#005163]/20"
+                  className="h-12 w-12 rounded-lg border border-gray-300 text-center text-lg font-semibold text-[#1A1A2E] focus:border-[#008080] focus:outline-none focus:ring-2 focus:ring-[#008080]/20"
                   disabled={isLoading}
                   aria-label={`Digit ${index + 1}`}
                 />
@@ -269,7 +269,7 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({
             <button
               onClick={handleVerifyCode}
               disabled={isLoading || code.some((d) => !d)}
-              className="w-full rounded-lg bg-[#005163] py-3 text-sm font-medium text-white transition-colors hover:bg-[#005163]/90 disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full rounded-lg bg-[#008080] py-3 text-sm font-medium text-white transition-colors hover:bg-[#008080]/90 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isLoading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -288,14 +288,14 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({
                   setCode(Array(CODE_LENGTH).fill(""));
                   setError(null);
                 }}
-                className="text-sm text-[#005163] hover:underline"
+                className="text-sm text-[#008080] hover:underline"
               >
                 Change number
               </button>
               <button
                 onClick={handleResend}
                 disabled={resendTimer > 0 || isLoading}
-                className="text-sm text-[#005163] hover:underline disabled:cursor-not-allowed disabled:text-gray-400 disabled:no-underline"
+                className="text-sm text-[#008080] hover:underline disabled:cursor-not-allowed disabled:text-gray-400 disabled:no-underline"
               >
                 {resendTimer > 0 ? `Resend in ${resendTimer}s` : "Resend code"}
               </button>
@@ -321,7 +321,7 @@ export const SMSVerification: React.FC<SMSVerificationProps> = ({
                 />
               </svg>
             </div>
-            <p className="text-sm text-[#091a2b]/60">
+            <p className="text-sm text-[#1A1A2E]/60">
               Redirecting you to the next step...
             </p>
           </div>

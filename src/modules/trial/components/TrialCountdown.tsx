@@ -30,13 +30,13 @@ const TimeUnit: React.FC<{ value: number; label: string }> = ({
   <div className="flex flex-col items-center">
     <span
       className="text-2xl font-bold tabular-nums"
-      style={{ color: "#091a2b", fontFamily: "'Open Sans', sans-serif" }}
+      style={{ color: "#1A1A2E", fontFamily: "'Inter', sans-serif" }}
     >
       {String(value).padStart(2, "0")}
     </span>
     <span
       className="text-xs text-gray-500 mt-1"
-      style={{ fontFamily: "'Open Sans', sans-serif" }}
+      style={{ fontFamily: "'Inter', sans-serif" }}
     >
       {label}
     </span>
@@ -46,7 +46,7 @@ const TimeUnit: React.FC<{ value: number; label: string }> = ({
 const Separator: React.FC = () => (
   <span
     className="text-xl font-bold self-start mt-0.5"
-    style={{ color: "#091a2b" }}
+    style={{ color: "#1A1A2E" }}
   >
     :
   </span>
@@ -78,7 +78,7 @@ export const TrialCountdown: React.FC<TrialCountdownProps> = ({
     return (
       <div
         className="text-center py-4"
-        style={{ fontFamily: "'Open Sans', sans-serif" }}
+        style={{ fontFamily: "'Inter', sans-serif" }}
       >
         <p className="text-sm font-semibold text-red-600">
           Your free trial has expired

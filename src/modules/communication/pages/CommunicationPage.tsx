@@ -22,7 +22,7 @@ const ConnectionIndicator: React.FC<{
     <div className="flex items-center gap-1.5 transition-opacity duration-300">
       <span className={`w-2 h-2 rounded-full ${color}`} />
       <span
-        className="text-[10px] text-[#2D2A26]/50"
+        className="text-[10px] text-[#1A1A2E]/50"
         style={{ fontFamily: "'Inter', sans-serif" }}
       >
         {label}
@@ -34,7 +34,7 @@ const ConnectionIndicator: React.FC<{
 const OnlineStatusDot: React.FC<{ isOnline: boolean }> = ({ isOnline }) => (
   <span
     className={`absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full border-2 border-white transition-colors duration-300 ${
-      isOnline ? "bg-green-500" : "bg-[#2D2A26]/20"
+      isOnline ? "bg-green-500" : "bg-[#1A1A2E]/20"
     }`}
   />
 );
@@ -53,14 +53,14 @@ const ConversationItem: React.FC<{
   return (
     <button
       onClick={() => onSelect(conversation.id)}
-      className={`w-full text-left px-4 py-3 border-b border-[#C4A882]/10 transition-colors duration-200 hover:bg-[#FAF6F1] ${
-        isActive ? "bg-[#FAF6F1] border-l-2 border-l-[#8B7355]" : ""
+      className={`w-full text-left px-4 py-3 border-b border-[#C4A882]/10 transition-colors duration-200 hover:bg-[#FFFFFF] ${
+        isActive ? "bg-[#FFFFFF] border-l-2 border-l-[#008080]" : ""
       }`}
     >
       <div className="flex items-center gap-3">
         {otherParticipant && (
           <div className="relative flex-shrink-0">
-            <div className="w-9 h-9 rounded-full bg-[#C4A882]/30 flex items-center justify-center text-[#8B7355] text-sm font-semibold">
+            <div className="w-9 h-9 rounded-full bg-[#C4A882]/30 flex items-center justify-center text-[#008080] text-sm font-semibold">
               {otherParticipant.name.charAt(0).toUpperCase()}
             </div>
             <OnlineStatusDot isOnline={participantOnline} />
@@ -69,20 +69,20 @@ const ConversationItem: React.FC<{
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between mb-0.5">
             <h3
-              className="text-sm font-semibold text-[#2D2A26] truncate"
-              style={{ fontFamily: "'DM Serif Display', serif" }}
+              className="text-sm font-semibold text-[#1A1A2E] truncate"
+              style={{ fontFamily: "'Manrope', serif" }}
             >
               {conversation.subject}
             </h3>
             {conversation.unreadCount > 0 && (
-              <span className="ml-2 flex-shrink-0 bg-[#8B7355] text-white text-[10px] font-bold rounded-full h-5 min-w-[20px] flex items-center justify-center px-1.5">
+              <span className="ml-2 flex-shrink-0 bg-[#008080] text-white text-[10px] font-bold rounded-full h-5 min-w-[20px] flex items-center justify-center px-1.5">
                 {conversation.unreadCount}
               </span>
             )}
           </div>
           {otherParticipant && (
             <p
-              className="text-xs text-[#2D2A26]/50 truncate"
+              className="text-xs text-[#1A1A2E]/50 truncate"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               {otherParticipant.name}
@@ -90,7 +90,7 @@ const ConversationItem: React.FC<{
           )}
           {conversation.lastMessage && (
             <p
-              className="text-xs text-[#2D2A26]/40 truncate mt-0.5"
+              className="text-xs text-[#1A1A2E]/40 truncate mt-0.5"
               style={{ fontFamily: "'Inter', sans-serif" }}
             >
               {conversation.lastMessage.content}
@@ -185,12 +185,12 @@ export const CommunicationPage: React.FC = () => {
   const currentUserId = user?.id || "";
 
   return (
-    <div className="min-h-screen bg-[#FAF6F1]">
+    <div className="min-h-screen bg-[#FFFFFF]">
       <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
         <div className="flex items-center justify-between mb-6">
           <h1
-            className="text-2xl font-bold text-[#2D2A26]"
-            style={{ fontFamily: "'DM Serif Display', serif" }}
+            className="text-2xl font-bold text-[#1A1A2E]"
+            style={{ fontFamily: "'Manrope', serif" }}
           >
             Messages
           </h1>
@@ -219,8 +219,8 @@ export const CommunicationPage: React.FC = () => {
           <div className="w-80 border-r border-[#C4A882]/20 flex flex-col bg-white">
             <div className="px-4 py-3 border-b border-[#C4A882]/20">
               <h2
-                className="text-sm font-semibold text-[#2D2A26]"
-                style={{ fontFamily: "'DM Serif Display', serif" }}
+                className="text-sm font-semibold text-[#1A1A2E]"
+                style={{ fontFamily: "'Manrope', serif" }}
               >
                 Conversations
               </h2>
@@ -228,12 +228,12 @@ export const CommunicationPage: React.FC = () => {
             <div className="flex-1 overflow-y-auto">
               {isLoadingConversations ? (
                 <div className="flex items-center justify-center p-8">
-                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-[#8B7355] border-t-transparent" />
+                  <div className="animate-spin rounded-full h-6 w-6 border-2 border-[#008080] border-t-transparent" />
                 </div>
               ) : conversations.length === 0 ? (
                 <div className="p-6 text-center">
                   <p
-                    className="text-sm text-[#2D2A26]/50"
+                    className="text-sm text-[#1A1A2E]/50"
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     No conversations yet
@@ -254,7 +254,7 @@ export const CommunicationPage: React.FC = () => {
           </div>
 
           {/* Message area */}
-          <div className="flex-1 flex flex-col bg-[#FAF6F1]">
+          <div className="flex-1 flex flex-col bg-[#FFFFFF]">
             {activeConversation ? (
               <>
                 {/* Header */}
@@ -262,13 +262,13 @@ export const CommunicationPage: React.FC = () => {
                   <div className="flex items-center justify-between">
                     <div>
                       <h2
-                        className="text-sm font-semibold text-[#2D2A26]"
-                        style={{ fontFamily: "'DM Serif Display', serif" }}
+                        className="text-sm font-semibold text-[#1A1A2E]"
+                        style={{ fontFamily: "'Manrope', serif" }}
                       >
                         {activeConversation.subject}
                       </h2>
                       <p
-                        className="text-xs text-[#2D2A26]/50"
+                        className="text-xs text-[#1A1A2E]/50"
                         style={{ fontFamily: "'Inter', sans-serif" }}
                       >
                         {activeConversation.participants
@@ -288,11 +288,11 @@ export const CommunicationPage: React.FC = () => {
                               className={`w-2 h-2 rounded-full transition-colors duration-300 ${
                                 isUserOnline(p.userId)
                                   ? "bg-green-500"
-                                  : "bg-[#2D2A26]/20"
+                                  : "bg-[#1A1A2E]/20"
                               }`}
                             />
                             <span
-                              className="text-[10px] text-[#2D2A26]/40"
+                              className="text-[10px] text-[#1A1A2E]/40"
                               style={{ fontFamily: "'Inter', sans-serif" }}
                             >
                               {isUserOnline(p.userId) ? "Online" : "Offline"}
@@ -322,7 +322,7 @@ export const CommunicationPage: React.FC = () => {
                 <div className="text-center">
                   <div className="w-16 h-16 rounded-full bg-[#C4A882]/20 flex items-center justify-center mx-auto mb-4">
                     <svg
-                      className="w-8 h-8 text-[#8B7355]"
+                      className="w-8 h-8 text-[#008080]"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -336,7 +336,7 @@ export const CommunicationPage: React.FC = () => {
                     </svg>
                   </div>
                   <p
-                    className="text-[#2D2A26]/50 text-sm"
+                    className="text-[#1A1A2E]/50 text-sm"
                     style={{ fontFamily: "'Inter', sans-serif" }}
                   >
                     Select a conversation to start messaging

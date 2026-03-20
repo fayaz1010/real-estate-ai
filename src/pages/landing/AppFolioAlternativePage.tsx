@@ -13,6 +13,8 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 
+import { PageMeta } from "../../components/seo";
+
 interface ComparisonRow {
   feature: string;
   appfolio: string | boolean;
@@ -143,6 +145,12 @@ const renderCellValue = (value: string | boolean) => {
 export const AppFolioAlternativePage: React.FC = () => {
   return (
     <main className="min-h-screen bg-white" role="main">
+      <PageMeta
+        title="Best AppFolio Alternative with AI | RealEstate AI"
+        description="Looking for an AppFolio alternative? RealEstate AI offers AI-powered features, lower pricing, and no minimum unit requirements. Compare and switch today."
+        keywords="AppFolio alternative, AppFolio competitor, better than AppFolio, AppFolio replacement, property management software alternative"
+        canonicalUrl="https://realestate-ai.com/landing/appfolio-alternative"
+      />
       {/* Hero Section */}
       <section
         className="relative pt-24 pb-20 bg-realestate-primary overflow-hidden"

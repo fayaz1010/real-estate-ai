@@ -125,18 +125,18 @@ export const PushNotificationManager: React.FC = () => {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#005163] border-t-transparent" />
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-[#008080] border-t-transparent" />
       </div>
     );
   }
 
   return (
-    <div className="mx-auto max-w-2xl font-['Open_Sans']">
+    <div className="mx-auto max-w-2xl font-['Inter']">
       <div className="rounded-xl bg-white p-6 shadow-md">
-        <h2 className="mb-1 text-xl font-semibold text-[#091a2b]">
+        <h2 className="mb-1 text-xl font-semibold text-[#1A1A2E]">
           Push Notifications
         </h2>
-        <p className="mb-6 text-sm text-[#091a2b]/60">
+        <p className="mb-6 text-sm text-[#1A1A2E]/60">
           Manage how you receive push notifications
         </p>
 
@@ -160,8 +160,8 @@ export const PushNotificationManager: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <p className="font-medium text-[#091a2b]">Not Supported</p>
-                <p className="text-sm text-[#091a2b]/60">
+                <p className="font-medium text-[#1A1A2E]">Not Supported</p>
+                <p className="text-sm text-[#1A1A2E]/60">
                   Your browser does not support push notifications.
                 </p>
               </div>
@@ -184,10 +184,10 @@ export const PushNotificationManager: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <p className="font-medium text-[#091a2b]">
+                <p className="font-medium text-[#1A1A2E]">
                   Notifications Enabled
                 </p>
-                <p className="text-sm text-[#091a2b]/60">
+                <p className="text-sm text-[#1A1A2E]/60">
                   You will receive push notifications for your selected
                   preferences.
                 </p>
@@ -211,10 +211,10 @@ export const PushNotificationManager: React.FC = () => {
                 </svg>
               </div>
               <div>
-                <p className="font-medium text-[#091a2b]">
+                <p className="font-medium text-[#1A1A2E]">
                   Notifications Blocked
                 </p>
-                <p className="text-sm text-[#091a2b]/60">
+                <p className="text-sm text-[#1A1A2E]/60">
                   Push notifications have been blocked. Please enable them in
                   your browser settings.
                 </p>
@@ -223,9 +223,9 @@ export const PushNotificationManager: React.FC = () => {
           ) : (
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#005163]/10">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#008080]/10">
                   <svg
-                    className="h-5 w-5 text-[#005163]"
+                    className="h-5 w-5 text-[#008080]"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -239,17 +239,17 @@ export const PushNotificationManager: React.FC = () => {
                   </svg>
                 </div>
                 <div>
-                  <p className="font-medium text-[#091a2b]">
+                  <p className="font-medium text-[#1A1A2E]">
                     Enable Notifications
                   </p>
-                  <p className="text-sm text-[#091a2b]/60">
+                  <p className="text-sm text-[#1A1A2E]/60">
                     Allow push notifications to stay updated.
                   </p>
                 </div>
               </div>
               <button
                 onClick={requestPermission}
-                className="shrink-0 rounded-lg bg-[#005163] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#005163]/90"
+                className="shrink-0 rounded-lg bg-[#008080] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#008080]/90"
               >
                 Enable
               </button>
@@ -278,13 +278,13 @@ export const PushNotificationManager: React.FC = () => {
           ).map((key) => (
             <div
               key={key}
-              className="flex items-center justify-between rounded-lg p-4 transition-colors hover:bg-[#f1f3f4]"
+              className="flex items-center justify-between rounded-lg p-4 transition-colors hover:bg-[#FFFFFF]"
             >
               <div className="mr-4">
-                <p className="font-medium text-[#091a2b]">
+                <p className="font-medium text-[#1A1A2E]">
                   {notificationLabels[key].title}
                 </p>
-                <p className="text-sm text-[#091a2b]/60">
+                <p className="text-sm text-[#1A1A2E]/60">
                   {notificationLabels[key].description}
                 </p>
               </div>
@@ -292,7 +292,7 @@ export const PushNotificationManager: React.FC = () => {
                 onClick={() => handleToggle(key)}
                 disabled={isSaving}
                 className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors duration-200 ${
-                  preferences[key] ? "bg-[#005163]" : "bg-gray-300"
+                  preferences[key] ? "bg-[#008080]" : "bg-gray-300"
                 } ${isSaving ? "opacity-50" : ""}`}
                 role="switch"
                 aria-checked={preferences[key]}

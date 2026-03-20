@@ -106,7 +106,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
     >
       <div
         className="rounded-2xl shadow-xl w-full max-w-lg mx-4 overflow-hidden"
-        style={{ backgroundColor: "#FAF6F1" }}
+        style={{ backgroundColor: "#FFFFFF" }}
       >
         {/* Header */}
         <div
@@ -115,7 +115,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
         >
           <h2
             className="font-bold text-lg"
-            style={{ fontFamily: "DM Serif Display, serif", color: "#8B7355" }}
+            style={{ fontFamily: "Manrope, sans-serif", color: "#008080" }}
           >
             New Maintenance Request
           </h2>
@@ -123,7 +123,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
             onClick={onCancel}
             aria-label="Close form"
             className="hover:opacity-70 transition-opacity"
-            style={{ color: "#8B7355" }}
+            style={{ color: "#008080" }}
           >
             <X className="w-5 h-5" />
           </button>
@@ -150,7 +150,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
             <label
               htmlFor="mf-property"
               className="block text-sm font-medium mb-1"
-              style={{ fontFamily: "Inter, sans-serif", color: "#2D2A26" }}
+              style={{ fontFamily: "Inter, sans-serif", color: "#1A1A2E" }}
             >
               Property <span className="text-red-500">*</span>
             </label>
@@ -167,7 +167,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
                 borderColor: validationErrors.propertyId
                   ? "#ef4444"
                   : "#C4A882",
-                color: "#2D2A26",
+                color: "#1A1A2E",
               }}
             >
               <option value="">Select a property</option>
@@ -189,7 +189,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
             <label
               htmlFor="mf-category"
               className="block text-sm font-medium mb-1"
-              style={{ fontFamily: "Inter, sans-serif", color: "#2D2A26" }}
+              style={{ fontFamily: "Inter, sans-serif", color: "#1A1A2E" }}
             >
               Category <span className="text-red-500">*</span>
             </label>
@@ -206,7 +206,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
                 borderColor: validationErrors.systemType
                   ? "#ef4444"
                   : "#C4A882",
-                color: "#2D2A26",
+                color: "#1A1A2E",
               }}
             >
               <option value="">Select a category</option>
@@ -228,7 +228,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
             <label
               htmlFor="mf-priority"
               className="block text-sm font-medium mb-1"
-              style={{ fontFamily: "Inter, sans-serif", color: "#2D2A26" }}
+              style={{ fontFamily: "Inter, sans-serif", color: "#1A1A2E" }}
             >
               Priority
             </label>
@@ -240,7 +240,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
               style={{
                 fontFamily: "Inter, sans-serif",
                 borderColor: "#C4A882",
-                color: "#2D2A26",
+                color: "#1A1A2E",
               }}
             >
               {MAINTENANCE_PRIORITIES.map((p) => (
@@ -256,7 +256,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
             <label
               htmlFor="mf-description"
               className="block text-sm font-medium mb-1"
-              style={{ fontFamily: "Inter, sans-serif", color: "#2D2A26" }}
+              style={{ fontFamily: "Inter, sans-serif", color: "#1A1A2E" }}
             >
               Description <span className="text-red-500">*</span>
             </label>
@@ -275,7 +275,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
                 borderColor: validationErrors.description
                   ? "#ef4444"
                   : "#C4A882",
-                color: "#2D2A26",
+                color: "#1A1A2E",
               }}
             />
             {validationErrors.description && (
@@ -292,14 +292,14 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
           <div>
             <label
               className="block text-sm font-medium mb-1"
-              style={{ fontFamily: "Inter, sans-serif", color: "#2D2A26" }}
+              style={{ fontFamily: "Inter, sans-serif", color: "#1A1A2E" }}
             >
               Attachment (optional)
             </label>
             {file ? (
               <div
                 className="flex items-center justify-between border rounded-lg px-3 py-2 text-sm"
-                style={{ borderColor: "#C4A882", color: "#2D2A26" }}
+                style={{ borderColor: "#C4A882", color: "#1A1A2E" }}
               >
                 <span className="truncate">{file.name}</span>
                 <button
@@ -307,7 +307,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
                   onClick={() => setFile(null)}
                   aria-label="Remove attachment"
                   className="ml-2 hover:opacity-70"
-                  style={{ color: "#8B7355" }}
+                  style={{ color: "#008080" }}
                 >
                   <X className="w-4 h-4" />
                 </button>
@@ -342,7 +342,7 @@ export const MaintenanceRequestForm: React.FC<MaintenanceRequestFormProps> = ({
               className="px-4 py-2 rounded-lg text-sm font-medium hover:opacity-80 transition-opacity"
               style={{
                 fontFamily: "Inter, sans-serif",
-                color: "#8B7355",
+                color: "#008080",
                 backgroundColor: "transparent",
               }}
             >

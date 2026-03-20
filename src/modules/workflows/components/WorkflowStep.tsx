@@ -179,8 +179,8 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
               Step {index + 1}
             </span>
             <h4
-              className="font-semibold text-sm text-[#091a2b]"
-              style={{ fontFamily: "Montserrat, sans-serif" }}
+              className="font-semibold text-sm text-[#1A1A2E]"
+              style={{ fontFamily: "Manrope, sans-serif" }}
             >
               {STEP_TYPE_LABELS[step.type]}
             </h4>
@@ -216,7 +216,7 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
                 <AlertCircle className="w-4 h-4 text-amber-600" />
                 <label
                   className="text-xs font-semibold text-amber-700 uppercase tracking-wider"
-                  style={{ fontFamily: "Montserrat, sans-serif" }}
+                  style={{ fontFamily: "Manrope, sans-serif" }}
                 >
                   Condition (optional)
                 </label>
@@ -226,12 +226,12 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
                 value={condition || ""}
                 onChange={(e) => onConditionChange?.(step.id, e.target.value)}
                 placeholder="e.g., {{tenant.creditScore}} >= 600"
-                className="w-full px-3 py-2 text-sm border border-amber-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                className="w-full px-3 py-2 text-sm border border-amber-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#008080] focus:border-transparent"
+                style={{ fontFamily: "Inter, sans-serif" }}
               />
               <p
                 className="text-xs text-amber-600 mt-1"
-                style={{ fontFamily: "Open Sans, sans-serif" }}
+                style={{ fontFamily: "Inter, sans-serif" }}
               >
                 Use template variables like {"{{tenant.creditScore}}"} with
                 comparison operators
@@ -243,7 +243,7 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
             <div key={field.key}>
               <label
                 className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1"
-                style={{ fontFamily: "Montserrat, sans-serif" }}
+                style={{ fontFamily: "Manrope, sans-serif" }}
               >
                 {field.label}
               </label>
@@ -254,8 +254,8 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
                     handleConfigChange(field.key, e.target.value)
                   }
                   rows={3}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent resize-none"
-                  style={{ fontFamily: "Open Sans, sans-serif" }}
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#008080] focus:border-transparent resize-none"
+                  style={{ fontFamily: "Inter, sans-serif" }}
                   placeholder={`Enter ${field.label.toLowerCase()}...`}
                 />
               ) : field.type === "select" ? (
@@ -264,8 +264,8 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
                   onChange={(e) =>
                     handleConfigChange(field.key, e.target.value)
                   }
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent"
-                  style={{ fontFamily: "Open Sans, sans-serif" }}
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#008080] focus:border-transparent"
+                  style={{ fontFamily: "Inter, sans-serif" }}
                 >
                   <option value="">Select {field.label.toLowerCase()}</option>
                   {field.options?.map((opt) => (
@@ -281,8 +281,8 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
                   onChange={(e) =>
                     handleConfigChange(field.key, e.target.value)
                   }
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#005163] focus:border-transparent"
-                  style={{ fontFamily: "Open Sans, sans-serif" }}
+                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:ring-2 focus:ring-[#008080] focus:border-transparent"
+                  style={{ fontFamily: "Inter, sans-serif" }}
                   placeholder={`Enter ${field.label.toLowerCase()}...`}
                 />
               )}
@@ -291,7 +291,7 @@ export const WorkflowStep: React.FC<WorkflowStepProps> = ({
 
           <p
             className="text-xs text-gray-400 italic"
-            style={{ fontFamily: "Open Sans, sans-serif" }}
+            style={{ fontFamily: "Inter, sans-serif" }}
           >
             Use {"{{variable.path}}"} for dynamic values (e.g.,{" "}
             {"{{tenant.email}}"}, {"{{property.address}}"})
