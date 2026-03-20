@@ -24,7 +24,11 @@ const startServer = async () => {
 
     // Verify email (SendGrid SMTP) connection
     const emailOk = await verifyEmailConnection();
-    console.log(emailOk ? "✅ Email service connected (SendGrid)" : "⚠️ Email service not verified (check SENDGRID_API_KEY)");
+    console.log(
+      emailOk
+        ? "✅ Email service connected (SendGrid)"
+        : "⚠️ Email service not verified (check SENDGRID_API_KEY)",
+    );
 
     // Initialize WebSocket server
     initWebSocket(server);

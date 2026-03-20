@@ -2,41 +2,23 @@
  * TypeScript types for the Property data model.
  */
 
-export enum PropertyType {
-  APARTMENT = "APARTMENT",
-  HOUSE = "HOUSE",
-  CONDO = "CONDO",
-  TOWNHOUSE = "TOWNHOUSE",
-  COMMERCIAL = "COMMERCIAL",
-}
-
-export enum Amenity {
-  POOL = "POOL",
-  GYM = "GYM",
-  PARKING = "PARKING",
-  WASHER_DRYER = "WASHER_DRYER",
-  DISHWASHER = "DISHWASHER",
-  BALCONY = "BALCONY",
-  PET_FRIENDLY = "PET_FRIENDLY",
-}
-
-export interface Property {
+export type Property = {
   id: string;
-  title: string;
-  description: string;
+  name: string;
   address: string;
   city: string;
   state: string;
-  zipCode: string;
-  propertyType: PropertyType;
+  zip: string;
+  description: string;
+  propertyType: string;
   bedrooms: number;
   bathrooms: number;
   squareFootage: number;
   rent: number;
   images: string[];
-  amenities: Amenity[];
-  isPublished: boolean;
+  amenities: string[];
+  latitude: number;
+  longitude: number;
   createdAt: Date;
   updatedAt: Date;
-  slug: string;
-}
+};

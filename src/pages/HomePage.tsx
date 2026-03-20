@@ -15,10 +15,15 @@ import {
   ArrowRight,
   ChevronLeft,
   ChevronRight,
+  ChevronDown,
   Zap,
   BarChart,
   PieChart,
   Activity,
+  FileText,
+  MessageSquare,
+  FolderOpen,
+  Target,
 } from "lucide-react";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
@@ -42,9 +47,9 @@ const HeroSection: React.FC = () => (
 
     <div className="section-container relative z-10">
       <div className="max-w-3xl mx-auto text-center animate-fade-in">
-        <h1 className="text-display text-4xl sm:text-5xl md:text-6xl text-white leading-tight mb-6">
-          Property Management,{" "}
-          <span className="text-realestate-accent">Powered by AI</span>
+        <h1 className="text-display text-4xl sm:text-5xl md:text-6xl lg:text-[72px] text-white leading-tight mb-6">
+          Property Management{" "}
+          <span className="text-realestate-accent">That Thinks Ahead</span>
         </h1>
 
         <p className="font-inter text-lg md:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
@@ -58,7 +63,7 @@ const HeroSection: React.FC = () => (
             to="/auth/register"
             className="btn-accent text-base md:text-lg px-8 py-4 rounded-lg shadow-realestate-lg inline-flex items-center gap-2 w-full sm:w-auto justify-center"
           >
-            Start Free 14-Day Trial — No Credit Card Required
+            Start Free Trial - No Credit Card Required
             <ArrowRight className="w-5 h-5" aria-hidden="true" />
           </Link>
 
@@ -142,7 +147,7 @@ const SocialProofBar: React.FC = () => {
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white shadow-realestate-sm border border-gray-100"
             >
               <Building
-                className="w-5 h-5 text-realestate-secondary"
+                className="w-5 h-5 text-gray-500"
                 aria-hidden="true"
               />
               <span className="font-space-grotesk font-semibold text-sm text-realestate-primary whitespace-nowrap">
@@ -157,39 +162,66 @@ const SocialProofBar: React.FC = () => {
 };
 
 /* ------------------------------------------------------------------ */
-/*  3. FEATURE CARDS                                                   */
+/*  3. FEATURE GRID (9 features from competitor analysis)              */
 /* ------------------------------------------------------------------ */
-const features = [
+const featureGridItems = [
+  {
+    icon: Building,
+    title: "Property Listings & Marketing",
+    description:
+      "Create professional listings, syndicate to major portals, and attract quality tenants faster.",
+  },
   {
     icon: Shield,
-    title: "AI Tenant Screening",
+    title: "Tenant Screening",
     description:
-      "Screen tenants in minutes with AI-powered background checks, credit analysis, and risk scoring. Make data-driven leasing decisions with confidence.",
-    accent: "bg-realestate-accent",
-    iconBg: "bg-realestate-accent/10",
-    iconColor: "text-realestate-accent",
+      "AI-powered background checks, credit analysis, and risk scoring in minutes.",
+  },
+  {
+    icon: FileText,
+    title: "Lease Management",
+    description:
+      "Digital lease creation, e-signatures, renewal tracking, and automated reminders.",
   },
   {
     icon: CreditCard,
-    title: "Smart Rent Collection",
+    title: "Online Rent Collection",
     description:
-      "Automated rent collection with online payments, late fee calculation, and real-time tracking. Never chase a payment again.",
-    accent: "bg-realestate-secondary",
-    iconBg: "bg-realestate-secondary/10",
-    iconColor: "text-realestate-secondary",
+      "Automated payments, late fee calculation, and real-time tracking across all units.",
   },
   {
     icon: Hammer,
-    title: "Predictive Maintenance",
+    title: "Maintenance Requests",
     description:
-      "AI predicts maintenance needs before they become costly repairs, saving you time and money while keeping tenants happy.",
-    accent: "bg-blue-500",
-    iconBg: "bg-blue-50",
-    iconColor: "text-blue-600",
+      "Streamlined request submission, vendor assignment, and status tracking for tenants and managers.",
+  },
+  {
+    icon: BarChart,
+    title: "Accounting & Financial Reporting",
+    description:
+      "Income/expense tracking, automated reports, and tax-ready financial statements.",
+  },
+  {
+    icon: MessageSquare,
+    title: "Tenant Communication",
+    description:
+      "Centralized messaging, announcements, and automated notifications across channels.",
+  },
+  {
+    icon: FolderOpen,
+    title: "Document Management",
+    description:
+      "Secure cloud storage, folder organization, and role-based access control for all property docs.",
+  },
+  {
+    icon: Target,
+    title: "CRM",
+    description:
+      "Track leads, manage contacts, and log all communications to convert prospects into tenants.",
   },
 ];
 
-const FeatureCards: React.FC = () => (
+const FeatureGrid: React.FC = () => (
   <section className="py-20 bg-white" aria-labelledby="features-heading">
     <div className="section-container">
       <div className="text-center mb-14">
@@ -203,28 +235,24 @@ const FeatureCards: React.FC = () => (
           Everything You Need to Manage Smarter
         </h2>
         <p className="font-inter text-gray-500 max-w-2xl mx-auto">
-          Manage smarter. Grow faster. Stress less. From screening to
-          scheduling, our AI handles the heavy lifting so you can focus on
-          growing your portfolio.
+          From screening to scheduling, our AI handles the heavy lifting so you
+          can focus on growing your portfolio.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {features.map((feature) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {featureGridItems.map((feature) => (
           <article
             key={feature.title}
             className="card-elevated group relative overflow-hidden"
           >
-            {/* Accent bar */}
             <div
-              className={`absolute top-0 left-0 w-full h-1 ${feature.accent}`}
+              className="absolute top-0 left-0 w-full h-1 bg-realestate-accent"
               aria-hidden="true"
             />
-            <div
-              className={`w-14 h-14 ${feature.iconBg} rounded-xl flex items-center justify-center mb-5`}
-            >
+            <div className="w-14 h-14 bg-realestate-accent/10 rounded-xl flex items-center justify-center mb-5">
               <feature.icon
-                className={`w-7 h-7 ${feature.iconColor}`}
+                className="w-7 h-7 text-realestate-accent"
                 aria-hidden="true"
               />
             </div>
@@ -643,84 +671,72 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
 );
 
 /* ------------------------------------------------------------------ */
-/*  7. PRICING PREVIEW                                                 */
+/*  7. PRICING TABLE (4 tiers per spec)                                */
 /* ------------------------------------------------------------------ */
 const tiers = [
   {
-    name: "Free",
+    name: "Starter",
     price: "$0",
     period: "/mo",
-    description: "Try it out, no commitment",
+    description: "Get started with the basics",
     features: [
-      "Up to 3 properties",
+      "Up to 5 units",
       "Basic tenant management",
       "Rent tracking",
-      "Limited reporting",
-    ],
-    highlighted: false,
-  },
-  {
-    name: "Starter",
-    price: "$29",
-    period: "/mo",
-    description: "For small landlords getting started",
-    features: [
-      "Up to 10 properties",
-      "Online rent collection",
       "Maintenance requests",
-      "Basic AI insights",
-      "Email support",
     ],
     highlighted: false,
   },
   {
     name: "Growth",
-    price: "$99",
-    period: "/mo",
+    price: "$125",
+    period: "/mo + $2/unit",
     description: "For growing portfolios",
     features: [
-      "Up to 50 properties",
-      "Full AI analytics",
-      "Automated screening",
+      "Up to 100 units",
+      "AI-powered analytics",
+      "Automated rent collection",
       "Financial reporting",
-      "API access",
-      "Priority support",
+      "Tenant screening",
+      "Document management",
     ],
     highlighted: true,
   },
   {
     name: "Professional",
-    price: "$249",
-    period: "/mo",
+    price: "$400",
+    period: "/mo + $1.50/unit",
     description: "For property management firms",
     features: [
-      "Up to 200 properties",
-      "Advanced AI predictions",
+      "Up to 300 units",
+      "Advanced AI insights",
+      "Owner portal",
+      "API access",
       "Custom workflows",
-      "White-label options",
-      "Dedicated account manager",
-      "Phone support",
+      "Priority support",
+      "Market reports",
     ],
     highlighted: false,
   },
   {
     name: "Enterprise",
-    price: "Custom",
-    period: "",
+    price: "$1,264+",
+    period: "/mo custom",
     description: "For large-scale operators",
     features: [
-      "Unlimited properties",
+      "Unlimited units",
+      "White-label options",
+      "Dedicated CSM",
       "Custom integrations",
       "SLA guarantees",
-      "On-premise option",
-      "Custom AI models",
-      "Dedicated success team",
+      "Advanced security",
+      "Data-driven market reports",
     ],
     highlighted: false,
   },
 ];
 
-const PricingPreview: React.FC = () => (
+const PricingTable: React.FC = () => (
   <section className="py-20 bg-white" aria-labelledby="pricing-heading">
     <div className="section-container">
       <div className="text-center mb-14">
@@ -734,11 +750,11 @@ const PricingPreview: React.FC = () => (
           Plans That Scale With You
         </h2>
         <p className="font-inter text-gray-500 max-w-xl mx-auto">
-          Start with a free 14-day trial. No hidden fees, cancel anytime.
+          Start with a free 14-day trial. No credit card required.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {tiers.map((tier) => (
           <div
             key={tier.name}
@@ -749,7 +765,7 @@ const PricingPreview: React.FC = () => (
             }`}
           >
             {tier.highlighted && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-realestate-accent text-realestate-primary text-xs font-bold px-3 py-1 rounded-full">
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-realestate-accent text-white text-xs font-bold px-3 py-1 rounded-full">
                 Most Popular
               </span>
             )}
@@ -793,16 +809,21 @@ const PricingPreview: React.FC = () => (
                 tier.highlighted ? "btn-accent" : "btn-outline"
               }`}
             >
-              {tier.name === "Enterprise" ? "Contact Sales" : "Get Started"}
+              {tier.name === "Enterprise"
+                ? "Contact Sales"
+                : "Start Free Trial"}
             </Link>
           </div>
         ))}
       </div>
 
-      <div className="text-center mt-8">
+      <div className="text-center mt-8 space-y-2">
+        <p className="font-inter text-sm text-realestate-accent font-semibold">
+          Save 20% with annual billing (2 months free)
+        </p>
         <Link
           to="/pricing"
-          className="font-inter text-sm text-realestate-secondary hover:text-realestate-primary transition-colors inline-flex items-center gap-1"
+          className="font-inter text-sm text-gray-500 hover:text-realestate-primary transition-colors inline-flex items-center gap-1"
         >
           View full pricing details
           <ArrowRight className="w-4 h-4" aria-hidden="true" />
@@ -813,7 +834,92 @@ const PricingPreview: React.FC = () => (
 );
 
 /* ------------------------------------------------------------------ */
-/*  8. CTA BANNER                                                      */
+/*  8. FAQ SECTION                                                     */
+/* ------------------------------------------------------------------ */
+const faqs = [
+  {
+    question: "How does RealEstate AI save me time on manual tasks?",
+    answer:
+      "Our AI automates rent collection, lease renewals, maintenance routing, and tenant communication. Property managers report saving 15+ hours per week by eliminating repetitive data entry and follow-ups.",
+  },
+  {
+    question: "Can I manage all my properties from one place?",
+    answer:
+      "Yes. RealEstate AI centralizes all property data, tenant records, financial reports, and communications in a single dashboard. No more switching between spreadsheets, emails, and separate tools.",
+  },
+  {
+    question: "Will RealEstate AI work as I grow my portfolio?",
+    answer:
+      "Absolutely. Our platform scales from 5 to 5,000+ units. As you grow, features like automated workflows, owner portals, and API integrations ensure your operations stay efficient without adding headcount.",
+  },
+  {
+    question: "How does tenant communication work?",
+    answer:
+      "Tenants can submit requests and receive updates via the tenant portal, email, or SMS. Automated notifications keep everyone informed about maintenance status, rent reminders, and lease updates without manual follow-up.",
+  },
+  {
+    question: "Are financial reports accurate and audit-ready?",
+    answer:
+      "Yes. Our accounting module tracks every transaction in real time and generates income statements, balance sheets, and tax-ready reports. Automated categorization reduces errors compared to manual bookkeeping.",
+  },
+];
+
+const FAQItem: React.FC<{ faq: (typeof faqs)[number] }> = ({ faq }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border border-gray-200 rounded-xl overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-gray-50 transition-colors"
+        aria-expanded={open}
+      >
+        <span className="font-space-grotesk font-semibold text-realestate-primary pr-4">
+          {faq.question}
+        </span>
+        <ChevronDown
+          className={`w-5 h-5 text-realestate-accent shrink-0 transition-transform duration-200 ${
+            open ? "rotate-180" : ""
+          }`}
+          aria-hidden="true"
+        />
+      </button>
+      {open && (
+        <div className="px-6 pb-5 animate-fade-in">
+          <p className="font-inter text-gray-600 leading-relaxed">
+            {faq.answer}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const FAQSection: React.FC = () => (
+  <section className="py-20 bg-[#F0F9FF]" aria-labelledby="faq-heading">
+    <div className="section-container">
+      <div className="text-center mb-14">
+        <p className="font-inter text-sm uppercase tracking-widest text-realestate-accent font-semibold mb-2">
+          FAQ
+        </p>
+        <h2
+          id="faq-heading"
+          className="text-display text-3xl md:text-4xl text-realestate-primary mb-4"
+        >
+          Frequently Asked Questions
+        </h2>
+      </div>
+
+      <div className="max-w-3xl mx-auto space-y-4">
+        {faqs.map((faq) => (
+          <FAQItem key={faq.question} faq={faq} />
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+/* ------------------------------------------------------------------ */
+/*  9. CTA BANNER                                                      */
 /* ------------------------------------------------------------------ */
 const CTABanner: React.FC = () => (
   <section
@@ -838,11 +944,11 @@ const CTABanner: React.FC = () => (
         to="/auth/register"
         className="btn-accent text-base md:text-lg px-10 py-4 rounded-lg shadow-realestate-lg inline-flex items-center gap-2"
       >
-        Start Your Free 14-Day Trial
+        Start Free Trial - No Credit Card Required
         <ArrowRight className="w-5 h-5" aria-hidden="true" />
       </Link>
       <p className="text-gray-400 text-sm mt-4 font-inter">
-        No credit card required. Setup takes less than 2 minutes.
+        14-day free trial. Setup takes less than 2 minutes.
       </p>
     </div>
   </section>
@@ -855,18 +961,19 @@ const HomePage: React.FC = () => {
   return (
     <>
       <PageMeta
-        title="AI-Powered Property Management"
+        title="Property Management That Thinks Ahead | RealEstate AI"
         description="RealEstate AI is an AI-powered property management platform that automates tenant screening, rent collection, maintenance predictions, and more. Start your free 14-day trial today."
-        keywords="property management, AI, tenant screening, rent collection, predictive maintenance, landlord software"
+        keywords="property management software, real estate management software, rental property management software, tenant management software, landlord software, property management platform, AI property management, best property management software for small landlords, property management software pricing"
         canonicalUrl="https://realestate-ai.com/"
       />
       <HeroSection />
       <SocialProofBar />
-      <FeatureCards />
+      <FeatureGrid />
       <AIShowcase />
       <HowItWorks />
       <TestimonialCarousel />
-      <PricingPreview />
+      <PricingTable />
+      <FAQSection />
       <CTABanner />
     </>
   );

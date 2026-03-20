@@ -15,11 +15,11 @@ module.exports = {
         "tenant-accent": "#3b4876",
         "tenant-bg": "#f1f3f4",
         "tenant-text": "#091a2b",
-        // Legacy aliases for existing components
-        "realestate-primary": "#2C3E50",
-        "realestate-secondary": "#8B7355",
-        "realestate-accent": "#C9956B",
-        "realestate-background": "#FAF6F1",
+        // Professional Trust palette
+        "realestate-primary": "#008080",
+        "realestate-secondary": "#E0E0E0",
+        "realestate-accent": "#FF6B35",
+        "realestate-background": "#FFFFFF",
         "realestate-text": "#1A1A2E",
         "realestate-surface": "#FFFFFF",
         "realestate-text-secondary": "#6599ac",
@@ -32,13 +32,14 @@ module.exports = {
       fontFamily: {
         display: ['var(--font-display)'],
         body: ['var(--font-body)'],
-        montserrat: ["Montserrat", "DM Serif Display", "serif"],
-        "open-sans": ["Open Sans", "Inter", "sans-serif"],
-        "roboto-mono": ["JetBrains Mono", "monospace"],
-        // Legacy aliases pointing to design system fonts
-        "space-grotesk": ["DM Serif Display", "serif"],
+        manrope: ["Manrope", "sans-serif"],
         inter: ["Inter", "sans-serif"],
         mono: ["JetBrains Mono", "monospace"],
+        // Legacy aliases pointing to design system fonts
+        montserrat: ["Manrope", "sans-serif"],
+        "open-sans": ["Inter", "sans-serif"],
+        "roboto-mono": ["JetBrains Mono", "monospace"],
+        "space-grotesk": ["Manrope", "sans-serif"],
       },
       borderRadius: {
         "realestate-sm": "0.125rem",

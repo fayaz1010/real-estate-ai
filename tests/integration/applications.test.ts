@@ -1012,7 +1012,9 @@ describe("Tenant Applications Integration Tests", () => {
 
     it("should not create lease from rejected application", () => {
       expect(rejectedApplication.status).toBe("REJECTED");
-      const canCreateLease = rejectedApplication.status === "APPROVED" || rejectedApplication.status === "APPROVED_WITH_CONDITIONS";
+      const canCreateLease =
+        rejectedApplication.status === "APPROVED" ||
+        rejectedApplication.status === "APPROVED_WITH_CONDITIONS";
       expect(canCreateLease).toBe(false);
     });
 
@@ -1023,7 +1025,9 @@ describe("Tenant Applications Integration Tests", () => {
         conditions: ["Additional deposit required"],
       };
 
-      const canCreateLease = conditionalApp.status === "APPROVED" || conditionalApp.status === "APPROVED_WITH_CONDITIONS";
+      const canCreateLease =
+        conditionalApp.status === "APPROVED" ||
+        conditionalApp.status === "APPROVED_WITH_CONDITIONS";
       expect(canCreateLease).toBe(true);
     });
   });
@@ -1100,16 +1104,30 @@ describe("Tenant Applications Integration Tests", () => {
     });
 
     it("should preserve data from previous steps during autosave", async () => {
-      mockPrisma.application.findUnique.mockResolvedValue(applicationWithDetails);
+      mockPrisma.application.findUnique.mockResolvedValue(
+        applicationWithDetails,
+      );
       mockPrisma.application.update.mockResolvedValue({
         ...applicationWithDetails,
-        references: [{ name: "Jane Ref", phone: "+1111111111", relationship: "Former landlord" }],
+        references: [
+          {
+            name: "Jane Ref",
+            phone: "+1111111111",
+            relationship: "Former landlord",
+          },
+        ],
       });
 
       const res = await request(app)
         .patch("/api/applications/app-1")
         .send({
-          references: [{ name: "Jane Ref", phone: "+1111111111", relationship: "Former landlord" }],
+          references: [
+            {
+              name: "Jane Ref",
+              phone: "+1111111111",
+              relationship: "Former landlord",
+            },
+          ],
         });
 
       expect(res.status).toBe(200);

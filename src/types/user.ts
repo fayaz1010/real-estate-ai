@@ -9,70 +9,25 @@ export enum UserRole {
   PROPERTY_MANAGER = "PROPERTY_MANAGER",
   BUSINESS = "BUSINESS",
   ADMIN = "ADMIN",
+  SUPER_ADMIN = "SUPER_ADMIN",
 }
 
-export interface TenantProfile {
-  currentAddress: string;
-  moveInDate: string;
-  preferredLocation: string;
-  budget: number;
-  pets: boolean;
-  employmentStatus: string;
-}
-
-export interface LandlordProfile {
-  companyName: string;
-  totalProperties: number;
-  businessLicense: string;
-  preferredContactMethod: string;
-}
-
-export interface AgentProfile {
-  agencyName: string;
-  licenseNumber: string;
-  specializations: string[];
-  yearsOfExperience: number;
-  bio: string;
-}
-
-export interface PropertyManagerProfile {
-  companyName: string;
-  managedProperties: number;
-  certifications: string[];
-  serviceAreas: string[];
-}
-
-export interface BusinessProfile {
-  businessName: string;
-  businessType: string;
-  taxId: string;
-  website: string;
-}
-
-export interface AdminProfile {
-  department: string;
-  accessLevel: number;
-}
-
-export interface UserProfile {
-  tenantProfile?: TenantProfile;
-  landlordProfile?: LandlordProfile;
-  agentProfile?: AgentProfile;
-  propertyManagerProfile?: PropertyManagerProfile;
-  businessProfile?: BusinessProfile;
-  adminProfile?: AdminProfile;
-}
-
-export interface User {
+export type User = {
   id: string;
+  email: string;
+  password?: string;
   firstName: string;
   lastName: string;
-  email: string;
-  password: string;
-  role: UserRole;
-  profile: UserProfile;
+  role:
+    | "TENANT"
+    | "LANDLORD"
+    | "AGENT"
+    | "PROPERTY_MANAGER"
+    | "BUSINESS"
+    | "ADMIN"
+    | "SUPER_ADMIN";
+  emailVerified: boolean;
+  image?: string;
   createdAt: Date;
   updatedAt: Date;
-  emailVerified: boolean;
-  twoFactorEnabled: boolean;
-}
+};

@@ -109,7 +109,7 @@ export function securityMiddleware(): Router {
 
   // Error handler for security middleware failures
   router.use(
-    (err: Error, _req: Request, res: Response, next: NextFunction) => {
+    (err: Error, _req: Request, res: Response, _next: NextFunction) => {
       logger.error("Security middleware error", {
         error: err.message,
         stack: err.stack,

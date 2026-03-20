@@ -155,13 +155,6 @@ jest.mock("otplib", () => ({
 
 // ─── Mock Auth Middleware ───────────────────────────────────────────────────
 
-const TEST_USER = {
-  userId: "user-1",
-  email: "test@example.com",
-  role: "TENANT",
-  id: "user-1",
-};
-
 jest.mock("../../backend/src/middleware/auth", () => ({
   authenticate: (
     req: Record<string, unknown>,
@@ -1087,7 +1080,12 @@ describe("Authentication Integration Tests", () => {
     it("should distinguish tenant from admin roles", () => {
       const tenantRoles = ["TENANT"];
       const adminRoles = ["ADMIN", "SUPER_ADMIN"];
-      const managementRoles = ["LANDLORD", "AGENT", "PROPERTY_MANAGER", "BUSINESS"];
+      const managementRoles = [
+        "LANDLORD",
+        "AGENT",
+        "PROPERTY_MANAGER",
+        "BUSINESS",
+      ];
 
       expect(tenantRoles).not.toContain("ADMIN");
       expect(adminRoles).not.toContain("TENANT");
@@ -1133,9 +1131,13 @@ describe("Authentication Integration Tests", () => {
         SUPER_ADMIN: 5,
       };
 
-      expect(roleHierarchy["SUPER_ADMIN"]).toBeGreaterThan(roleHierarchy["ADMIN"]);
+      expect(roleHierarchy["SUPER_ADMIN"]).toBeGreaterThan(
+        roleHierarchy["ADMIN"],
+      );
       expect(roleHierarchy["ADMIN"]).toBeGreaterThan(roleHierarchy["TENANT"]);
-      expect(roleHierarchy["LANDLORD"]).toBeGreaterThan(roleHierarchy["TENANT"]);
+      expect(roleHierarchy["LANDLORD"]).toBeGreaterThan(
+        roleHierarchy["TENANT"],
+      );
     });
   });
 });

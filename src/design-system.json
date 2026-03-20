@@ -1,0 +1,728 @@
+{
+  "personality": "Efficient, Intelligent",
+  "aesthetic_direction": "The design system aims for a modern, clean, and trustworthy aesthetic. It leverages ample white space, clear typography, and subtle animations to create a user-friendly experience. The focus is on providing accurate information and efficient tools, reflecting the AI-powered nature of the platform. The design avoids unnecessary ornamentation, prioritizing functionality and ease of use. We use the 'Professional Trust' color palette to convey authority and reliability.",
+  "page_inventory": [
+    {
+      "route": "/",
+      "name": "Homepage",
+      "purpose": "Primary landing page that communicates the value proposition, builds trust, and drives trial signups.",
+      "layout": "marketing",
+      "key_components": ["HeroSection", "SocialProof", "FeatureCards", "TestimonialsCarousel", "PricingPreview", "CTASection", "Footer"],
+      "conversion_role": "awareness_to_interest",
+      "content_requirements": ["Heroic 72px+ headline with tagline", "Interactive property dashboard preview", "Unit count social proof ('Trusted by managers of 50,000+ units')", "G2/Capterra review badges", "ROI statistics", "Feature overview grid", "Pricing tier preview", "Start Free Trial CTA"]
+    },
+    {
+      "route": "/property-listings",
+      "name": "Property Listings",
+      "purpose": "Browse and search all managed properties with filtering, sorting, and map view.",
+      "layout": "app_with_sidebar",
+      "key_components": ["PropertySearchBar", "FilterPanel", "PropertyGrid", "MapToggle", "PropertyCard", "Pagination"],
+      "conversion_role": "activation",
+      "content_requirements": ["Search with autocomplete", "Filter by price, type, bedrooms, status", "Grid and list view toggle", "Map view integration", "Property thumbnail cards with key metrics", "Bulk actions toolbar"]
+    },
+    {
+      "route": "/property/:id",
+      "name": "Property Details",
+      "purpose": "Comprehensive single property view with financials, tenants, maintenance history, and AI insights.",
+      "layout": "app_detail",
+      "key_components": ["PropertyHeader", "ImageGallery", "PropertyMetrics", "TenantList", "MaintenanceHistory", "FinancialSummary", "AIInsightsPanel", "DocumentList"],
+      "conversion_role": "activation",
+      "content_requirements": ["Property photo gallery", "Key metrics dashboard (occupancy, revenue, expenses)", "Tenant information cards", "Maintenance request timeline", "Financial performance charts", "AI-generated insights and recommendations", "Document attachments"]
+    },
+    {
+      "route": "/scheduling",
+      "name": "Scheduling",
+      "purpose": "Manage property viewings, inspections, and maintenance appointments with calendar interface.",
+      "layout": "app_with_sidebar",
+      "key_components": ["CalendarView", "EventForm", "AvailabilitySlots", "NotificationSettings", "SmartScheduler"],
+      "conversion_role": "activation",
+      "content_requirements": ["Weekly/monthly calendar view", "Drag-and-drop scheduling", "Automated reminder settings", "Conflict detection", "Smart time-slot suggestions", "Integration with Google Calendar"]
+    },
+    {
+      "route": "/booking",
+      "name": "Booking",
+      "purpose": "Allow tenants and prospects to book property viewings and inspections online.",
+      "layout": "app_clean",
+      "key_components": ["BookingWidget", "PropertySelector", "TimeSlotPicker", "ConfirmationModal", "BookingHistory"],
+      "conversion_role": "activation",
+      "content_requirements": ["Property selection with search", "Available time slots display", "Booking confirmation with details", "Email/SMS confirmation", "Booking management (cancel/reschedule)", "Public booking link generation"]
+    },
+    {
+      "route": "/google-maps",
+      "name": "Google Maps Integration",
+      "purpose": "Interactive map view of all properties with neighborhood insights and proximity searches.",
+      "layout": "app_full_width",
+      "key_components": ["GoogleMap", "PropertyMarkers", "NeighborhoodOverlay", "ProximitySearch", "MapFilters"],
+      "conversion_role": "activation",
+      "content_requirements": ["Interactive Google Maps with property pins", "Cluster markers for dense areas", "Neighborhood data overlays (schools, transit, amenities)", "Radius search functionality", "Street view integration", "Property info popups on marker click"]
+    },
+    {
+      "route": "/lead-generation",
+      "name": "Lead Generation",
+      "purpose": "Capture and manage prospective tenant leads with automated follow-up workflows.",
+      "layout": "app_with_sidebar",
+      "key_components": ["LeadCaptureForms", "LeadPipeline", "AutomatedFollowUp", "LeadScoring", "ConversionMetrics"],
+      "conversion_role": "activation",
+      "content_requirements": ["Customizable lead capture forms", "Lead pipeline kanban board", "Lead scoring with AI", "Automated email/SMS sequences", "Source tracking and attribution", "Conversion funnel analytics"]
+    },
+    {
+      "route": "/crm",
+      "name": "CRM",
+      "purpose": "Manage relationships with tenants, owners, vendors, and prospects in a unified contact hub.",
+      "layout": "app_with_sidebar",
+      "key_components": ["ContactList", "ContactDetail", "ActivityTimeline", "CommunicationLog", "TagManager", "SegmentBuilder"],
+      "conversion_role": "activation",
+      "content_requirements": ["Unified contact directory", "Contact profiles with full history", "Activity timeline per contact", "Communication log (emails, calls, messages)", "Custom tags and segments", "Bulk communication tools", "Relationship mapping"]
+    },
+    {
+      "route": "/property-valuation",
+      "name": "Property Valuation",
+      "purpose": "AI-powered property valuation tool using market data, comps, and predictive models.",
+      "layout": "app_with_sidebar",
+      "key_components": ["ValuationForm", "ComparableProperties", "ValuationReport", "MarketTrends", "AIConfidenceScore"],
+      "conversion_role": "consideration",
+      "content_requirements": ["Property details input form", "Comparable property analysis", "AI-generated valuation with confidence score", "Market trend charts", "Downloadable valuation report", "Historical price tracking"]
+    },
+    {
+      "route": "/market-analysis",
+      "name": "Market Analysis",
+      "purpose": "Real-time market intelligence dashboard with rental trends, demand forecasting, and competitive analysis.",
+      "layout": "app_dashboard",
+      "key_components": ["MarketOverview", "RentalTrendCharts", "DemandHeatmap", "CompetitiveAnalysis", "MarketReportGenerator"],
+      "conversion_role": "consideration",
+      "content_requirements": ["Market overview with key indicators", "Rental price trend charts by area", "Demand heatmap visualization", "Vacancy rate tracking", "Competitor pricing comparison", "Downloadable market reports", "Custom area analysis"]
+    },
+    {
+      "route": "/predictive-analytics",
+      "name": "Predictive Analytics",
+      "purpose": "AI-driven predictions for maintenance needs, tenant churn, rent optimization, and portfolio performance.",
+      "layout": "app_dashboard",
+      "key_components": ["PredictionDashboard", "MaintenanceForecast", "ChurnRiskIndicator", "RentOptimizer", "PortfolioProjections"],
+      "conversion_role": "activation",
+      "content_requirements": ["Prediction summary cards", "Maintenance prediction timeline with urgency scores", "Tenant churn risk scores with recommended actions", "Rent price optimization suggestions", "Portfolio performance projections", "Alert configuration for predictions"]
+    },
+    {
+      "route": "/ai-chatbots",
+      "name": "AI Chatbots",
+      "purpose": "Configure and manage AI-powered chatbots for tenant communication, FAQ handling, and lead capture.",
+      "layout": "app_with_sidebar",
+      "key_components": ["ChatbotBuilder", "ConversationFlows", "ChatPreview", "AnalyticsDashboard", "IntegrationSettings"],
+      "conversion_role": "activation",
+      "content_requirements": ["Visual chatbot flow builder", "Pre-built conversation templates", "Live chat preview", "Chatbot performance analytics", "Integration with website and messaging platforms", "Custom response training"]
+    },
+    {
+      "route": "/virtual-tours",
+      "name": "Virtual Tours",
+      "purpose": "Create and manage 360-degree virtual property tours for remote viewing.",
+      "layout": "app_with_sidebar",
+      "key_components": ["TourUploader", "TourEditor", "TourViewer", "TourGallery", "ShareLinks"],
+      "conversion_role": "activation",
+      "content_requirements": ["360-degree photo/video upload", "Tour hotspot editor", "Embeddable tour viewer", "Tour gallery management", "Shareable tour links", "Tour view analytics"]
+    },
+    {
+      "route": "/automated-marketing",
+      "name": "Automated Marketing",
+      "purpose": "Create and manage automated marketing campaigns for vacant properties across multiple channels.",
+      "layout": "app_with_sidebar",
+      "key_components": ["CampaignBuilder", "ChannelManager", "ListingTemplates", "PerformanceMetrics", "AutoSyndication"],
+      "conversion_role": "activation",
+      "content_requirements": ["Multi-channel campaign builder", "Listing template editor", "Auto-syndication to rental sites", "Email marketing automation", "Social media posting scheduler", "Campaign performance analytics"]
+    },
+    {
+      "route": "/document-management",
+      "name": "Document Management",
+      "purpose": "Centralized document storage, e-signatures, and template management for leases and property documents.",
+      "layout": "app_with_sidebar",
+      "key_components": ["DocumentLibrary", "DocumentUploader", "TemplateEditor", "ESignatureFlow", "VersionHistory"],
+      "conversion_role": "activation",
+      "content_requirements": ["Document library with folder organization", "Drag-and-drop upload", "Lease and agreement templates", "E-signature workflow", "Version history and audit trail", "Document search and tagging", "Bulk document operations"]
+    },
+    {
+      "route": "/interactive-demo",
+      "name": "Interactive Demo",
+      "purpose": "Guided interactive product demo that showcases key features without requiring signup.",
+      "layout": "marketing_immersive",
+      "key_components": ["DemoWalkthrough", "FeatureShowcase", "InteractivePropertyDashboard", "SampleDataView", "TrialCTA"],
+      "conversion_role": "consideration_to_trial",
+      "content_requirements": ["Step-by-step guided demo", "Interactive sample dashboard with real-looking data", "Feature highlight tooltips", "Click-through property management workflows", "CTA to start free trial after each section", "2-minute video demo option"]
+    },
+    {
+      "route": "/pricing-calculator",
+      "name": "Pricing Calculator",
+      "purpose": "Dynamic pricing calculator that shows cost based on unit count and selected tier.",
+      "layout": "marketing",
+      "key_components": ["UnitSlider", "TierSelector", "PriceBreakdown", "FeatureComparison", "AnnualToggle", "ROISavings"],
+      "conversion_role": "consideration_to_trial",
+      "content_requirements": ["Unit count slider/input", "Tier comparison cards", "Dynamic price calculation", "Annual vs monthly toggle with 20% discount badge", "Feature comparison matrix", "ROI savings estimate", "Start Free Trial CTA per tier"]
+    },
+    {
+      "route": "/onboarding-wizard",
+      "name": "Onboarding Wizard",
+      "purpose": "Step-by-step guided onboarding flow for new users to set up their account and first property.",
+      "layout": "app_wizard",
+      "key_components": ["ProgressBar", "PropertySetupForm", "TenantImporter", "RentCollectionSetup", "TenantInvite", "DashboardPreview"],
+      "conversion_role": "onboarding_to_activation",
+      "content_requirements": ["5-step wizard with progress bar", "Step 1: Add first property (guided wizard with sample data option)", "Step 2: Import tenants (CSV upload or manual)", "Step 3: Set up rent collection (connect bank)", "Step 4: Send first tenant invite", "Step 5: View AI-generated property dashboard", "Milestone checklist", "Live onboarding call offer for Growth+ tiers"]
+    },
+    {
+      "route": "/feature-comparison",
+      "name": "Feature Comparison",
+      "purpose": "Detailed feature-by-feature comparison across pricing tiers and against competitors.",
+      "layout": "marketing",
+      "key_components": ["ComparisonTable", "TierTabs", "CompetitorSelector", "FeatureTooltips", "CTABanner"],
+      "conversion_role": "consideration",
+      "content_requirements": ["Feature comparison matrix by tier", "Competitor comparison (AppFolio, Buildium, Yardi)", "Checkmark/cross feature availability", "Feature detail tooltips", "Category grouping (AI, Management, Reporting, etc.)", "CTA to start trial"]
+    },
+    {
+      "route": "/roi-calculator",
+      "name": "ROI Calculator",
+      "purpose": "Calculate potential return on investment and time savings from using RealEstate AI.",
+      "layout": "marketing",
+      "key_components": ["ROIInputForm", "SavingsBreakdown", "TimelineProjection", "ComparisonChart", "PersonalizedReport"],
+      "conversion_role": "consideration_to_trial",
+      "content_requirements": ["Input fields for current portfolio size and expenses", "Dynamic ROI calculation", "Time savings estimate", "Cost comparison vs manual management", "Projected savings timeline chart", "Downloadable personalized report", "CTA: See How Much You'd Save"]
+    },
+    {
+      "route": "/checkout",
+      "name": "Checkout",
+      "purpose": "Secure payment page for subscription plan purchase with Stripe integration.",
+      "layout": "app_minimal",
+      "key_components": ["PlanSummary", "BillingForm", "StripeElements", "AnnualToggle", "OrderConfirmation"],
+      "conversion_role": "conversion",
+      "content_requirements": ["Selected plan summary", "Annual/monthly billing toggle with Save 20% badge", "Stripe payment form", "Coupon code input", "Order summary with breakdown", "Security badges and trust indicators", "Money-back guarantee notice"]
+    },
+    {
+      "route": "/property-management-software",
+      "name": "Property Management Software",
+      "purpose": "SEO landing page targeting 'property management software' keyword with product overview and conversion elements.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "FeatureGrid", "TestimonialSection", "PricingPreview", "FAQAccordion", "CTASection"],
+      "conversion_role": "awareness_to_interest",
+      "content_requirements": ["H1 targeting 'Property Management Software'", "Product overview with screenshots", "Key feature highlights", "Customer testimonials", "Pricing preview", "FAQ section", "Start Free Trial CTA", "Schema.org structured data"]
+    },
+    {
+      "route": "/landlord-software",
+      "name": "Landlord Software",
+      "purpose": "SEO landing page targeting 'landlord software' keyword focused on independent landlord needs.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "PainPointSection", "SolutionShowcase", "PricingPreview", "FAQAccordion", "CTASection"],
+      "conversion_role": "awareness_to_interest",
+      "content_requirements": ["H1 targeting 'Landlord Software'", "Pain points of manual property management", "Feature solutions for landlords", "Time and cost savings statistics", "Starter plan highlight (free)", "FAQ section", "CTA: Try Managing [X] Units Free"]
+    },
+    {
+      "route": "/real-estate-management-software",
+      "name": "Real Estate Management Software",
+      "purpose": "SEO landing page targeting 'real estate management software' keyword.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "IndustryOverview", "FeatureGrid", "CaseStudy", "PricingPreview", "CTASection"],
+      "conversion_role": "awareness_to_interest",
+      "content_requirements": ["H1 targeting 'Real Estate Management Software'", "Industry landscape overview", "Comprehensive feature grid", "Case study with ROI numbers", "Pricing preview", "CTA: Start Free Trial"]
+    },
+    {
+      "route": "/rental-property-management-software",
+      "name": "Rental Property Management Software",
+      "purpose": "SEO landing page targeting 'rental property management software' keyword with rental-specific features.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "RentalFeatures", "AutomationShowcase", "TestimonialSection", "PricingPreview", "CTASection"],
+      "conversion_role": "awareness_to_interest",
+      "content_requirements": ["H1 targeting 'Rental Property Management Software'", "Rental-specific feature highlights (rent collection, tenant screening, lease management)", "Automation workflow examples", "Landlord testimonials", "Pricing comparison", "CTA: Start Free Trial"]
+    },
+    {
+      "route": "/tenant-management-software",
+      "name": "Tenant Management Software",
+      "purpose": "SEO landing page targeting 'tenant management software' keyword focused on tenant lifecycle.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "TenantLifecycle", "ScreeningFeature", "CommunicationFeature", "PricingPreview", "CTASection"],
+      "conversion_role": "awareness_to_interest",
+      "content_requirements": ["H1 targeting 'Tenant Management Software'", "Tenant lifecycle management overview", "Screening and application workflow", "Communication automation features", "Tenant portal preview", "CTA: Start Free Trial"]
+    },
+    {
+      "route": "/property-management-platform",
+      "name": "Property Management Platform",
+      "purpose": "SEO landing page targeting 'property management platform' keyword emphasizing all-in-one capabilities.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "PlatformOverview", "IntegrationShowcase", "FeatureGrid", "PricingPreview", "CTASection"],
+      "conversion_role": "awareness_to_interest",
+      "content_requirements": ["H1 targeting 'Property Management Platform'", "All-in-one platform benefits", "Integration ecosystem", "Feature category grid", "Platform architecture diagram", "CTA: Start Free Trial"]
+    },
+    {
+      "route": "/ai-property-management",
+      "name": "AI Property Management",
+      "purpose": "SEO landing page targeting 'AI property management' keyword showcasing AI-native capabilities.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "AIFeatureShowcase", "PredictiveAnalyticsPreview", "AutomationDemo", "PricingPreview", "CTASection"],
+      "conversion_role": "awareness_to_interest",
+      "content_requirements": ["H1 targeting 'AI Property Management'", "AI capabilities overview", "Predictive analytics demo", "Automated communication examples", "Smart scheduling showcase", "Competitive advantage vs legacy platforms", "CTA: Start Free Trial"]
+    },
+    {
+      "route": "/best-property-management-software-for-small-landlords",
+      "name": "Best Property Management Software for Small Landlords",
+      "purpose": "SEO landing page targeting small landlord segment with comparison content.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "SmallLandlordPains", "SoftwareComparison", "StarterPlanHighlight", "TestimonialSection", "CTASection"],
+      "conversion_role": "awareness_to_interest",
+      "content_requirements": ["H1 targeting 'Best Property Management Software for Small Landlords 2026'", "Small landlord pain points", "Software comparison table", "Free Starter plan highlight", "Small landlord testimonials", "Scaling path from Starter to Growth", "CTA: Start Free — No Credit Card Required"]
+    },
+    {
+      "route": "/property-management-software-pricing",
+      "name": "Property Management Software Pricing",
+      "purpose": "SEO landing page targeting 'property management software pricing' with detailed pricing information.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "PricingTable", "FeatureComparison", "CostCalculator", "FAQAccordion", "CTASection"],
+      "conversion_role": "consideration",
+      "content_requirements": ["H1 targeting 'Property Management Software Pricing'", "Detailed pricing table with all tiers", "Feature comparison by tier", "Interactive cost calculator", "Annual discount highlight", "Competitor pricing comparison", "FAQ about billing", "CTA: Start Free Trial"]
+    },
+    {
+      "route": "/appfolio-alternative-with-ai",
+      "name": "AppFolio Alternative with AI",
+      "purpose": "SEO comparison landing page positioning RealEstate AI as a superior AI-native alternative to AppFolio.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "ComparisonTable", "AIAdvantages", "MigrationGuide", "TestimonialSection", "CTASection"],
+      "conversion_role": "consideration",
+      "content_requirements": ["H1 targeting 'AppFolio Alternative with AI'", "Side-by-side feature comparison", "AI capability advantages", "Migration path from AppFolio", "Switcher testimonials", "Pricing comparison", "CTA: Switch to AI-Powered Management"]
+    },
+    {
+      "route": "/free-rental-property-management-software",
+      "name": "Free Rental Property Management Software",
+      "purpose": "SEO landing page targeting free software seekers highlighting the Starter tier.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "FreeFeatures", "StarterPlanDetail", "UpgradePath", "FAQAccordion", "CTASection"],
+      "conversion_role": "awareness_to_trial",
+      "content_requirements": ["H1 targeting 'Free Rental Property Management Software'", "Free Starter plan features (up to 5 units)", "No credit card required messaging", "Feature limitations and upgrade path", "Comparison with other free options", "FAQ about free tier", "CTA: Start Free — Manage Up to 5 Units"]
+    },
+    {
+      "route": "/how-to-automate-rent-collection",
+      "name": "How to Automate Rent Collection",
+      "purpose": "SEO educational content page about rent collection automation with product tie-in.",
+      "layout": "seo_content",
+      "key_components": ["ArticleHero", "StepByStepGuide", "ProductFeatureCallout", "RelatedArticles", "CTASection"],
+      "conversion_role": "awareness_to_interest",
+      "content_requirements": ["H1 targeting 'How to Automate Rent Collection'", "Step-by-step automation guide", "Benefits of automated rent collection", "Product feature callout showing RealEstate AI solution", "Statistics on late payments and automation impact", "Related articles", "CTA: Automate Your Rent Collection"]
+    },
+    {
+      "route": "/property-management-software-comparison",
+      "name": "Property Management Software Comparison",
+      "purpose": "SEO comparison hub page comparing RealEstate AI with major competitors.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "ComparisonMatrix", "VendorProfiles", "WinnerBadges", "PricingComparison", "CTASection"],
+      "conversion_role": "consideration",
+      "content_requirements": ["H1 targeting 'Property Management Software Comparison'", "Multi-vendor comparison matrix", "Category winner badges", "Detailed vendor profiles", "Pricing comparison", "Methodology note", "CTA: See Why RealEstate AI Wins"]
+    },
+    {
+      "route": "/ai-powered-tenant-screening",
+      "name": "AI-Powered Tenant Screening",
+      "purpose": "SEO landing page showcasing AI-powered tenant screening capabilities.",
+      "layout": "seo_landing",
+      "key_components": ["SEOHero", "ScreeningWorkflow", "AIScoreExplainer", "ComplianceSection", "PricingCallout", "CTASection"],
+      "conversion_role": "awareness_to_interest",
+      "content_requirements": ["H1 targeting 'AI-Powered Tenant Screening'", "Screening workflow visualization", "AI Smart Score explanation", "Fair housing compliance assurance", "Background check details", "Application-to-approval timeline", "CTA: Screen Tenants Smarter"]
+    },
+    {
+      "route": "/rental-yield-calculator",
+      "name": "Rental Yield Calculator",
+      "purpose": "SEO tool page with interactive rental yield calculator to attract landlord traffic.",
+      "layout": "seo_tool",
+      "key_components": ["CalculatorForm", "ResultsDisplay", "YieldExplanation", "MarketComparison", "CTASection"],
+      "conversion_role": "awareness_to_interest",
+      "content_requirements": ["H1 targeting 'Rental Yield Calculator'", "Interactive calculator inputs (purchase price, rental income, expenses)", "Gross and net yield results", "Yield benchmarks by market", "Educational content on rental yield", "CTA: Optimize Your Rental Yields with AI"]
+    },
+    {
+      "route": "/property-management-roi-calculator",
+      "name": "Property Management ROI Calculator",
+      "purpose": "SEO tool page with ROI calculator showing savings from using property management software.",
+      "layout": "seo_tool",
+      "key_components": ["ROICalculatorForm", "SavingsBreakdown", "TimelinProjection", "DownloadReport", "CTASection"],
+      "conversion_role": "consideration_to_trial",
+      "content_requirements": ["H1 targeting 'Property Management ROI Calculator'", "Input fields for portfolio details", "Dynamic ROI calculation", "Annual savings projection", "Time savings estimate", "Downloadable personalized report", "CTA: Start Saving Today"]
+    }
+  ],
+  "user_flows": [
+    {
+      "name": "New User Trial Signup to Activation",
+      "description": "A prospective user discovers RealEstate AI, signs up for a free trial, and completes onboarding to manage their first property.",
+      "steps": [
+        { "step": 1, "page": "/", "action": "User lands on homepage, reads value proposition", "conversion_event": "page_view" },
+        { "step": 2, "page": "/interactive-demo", "action": "User explores interactive demo to see features in action", "conversion_event": "demo_started" },
+        { "step": 3, "page": "/pricing-calculator", "action": "User calculates pricing for their portfolio size", "conversion_event": "pricing_calculated" },
+        { "step": 4, "page": "/", "action": "User clicks 'Start Free Trial — No Credit Card Required'", "conversion_event": "trial_signup" },
+        { "step": 5, "page": "/onboarding-wizard", "action": "User adds first property with guided wizard", "conversion_event": "property_added" },
+        { "step": 6, "page": "/onboarding-wizard", "action": "User imports tenants via CSV or manual entry", "conversion_event": "tenants_imported" },
+        { "step": 7, "page": "/onboarding-wizard", "action": "User sets up rent collection and connects bank", "conversion_event": "rent_collection_setup" },
+        { "step": 8, "page": "/onboarding-wizard", "action": "User sends first tenant invite", "conversion_event": "tenant_invited" },
+        { "step": 9, "page": "/property/:id", "action": "User views AI-generated property dashboard", "conversion_event": "activation_complete" }
+      ]
+    },
+    {
+      "name": "Tenant Screening and Lease Signing",
+      "description": "A landlord receives a tenant application, runs AI-powered screening, approves the tenant, and executes a lease.",
+      "steps": [
+        { "step": 1, "page": "/lead-generation", "action": "Lead submits application through listing", "conversion_event": "application_received" },
+        { "step": 2, "page": "/crm", "action": "Landlord reviews lead details and history", "conversion_event": "lead_reviewed" },
+        { "step": 3, "page": "/ai-powered-tenant-screening", "action": "AI Smart Score evaluates the applicant", "conversion_event": "screening_completed" },
+        { "step": 4, "page": "/scheduling", "action": "Landlord schedules property viewing with approved applicant", "conversion_event": "viewing_scheduled" },
+        { "step": 5, "page": "/document-management", "action": "Landlord generates lease from template and sends for e-signature", "conversion_event": "lease_sent" },
+        { "step": 6, "page": "/document-management", "action": "Tenant signs lease electronically", "conversion_event": "lease_executed" },
+        { "step": 7, "page": "/property/:id", "action": "Tenant is added to property with move-in date", "conversion_event": "tenant_onboarded" }
+      ]
+    },
+    {
+      "name": "Predictive Maintenance Resolution",
+      "description": "AI predicts a maintenance issue, landlord is alerted, schedules repair, and resolves the issue proactively.",
+      "steps": [
+        { "step": 1, "page": "/predictive-analytics", "action": "AI flags predicted HVAC failure with 85% confidence", "conversion_event": "prediction_generated" },
+        { "step": 2, "page": "/property/:id", "action": "Landlord reviews property details and maintenance history", "conversion_event": "issue_reviewed" },
+        { "step": 3, "page": "/scheduling", "action": "Landlord schedules preventive maintenance appointment", "conversion_event": "maintenance_scheduled" },
+        { "step": 4, "page": "/ai-chatbots", "action": "Automated message notifies tenant of upcoming maintenance", "conversion_event": "tenant_notified" },
+        { "step": 5, "page": "/property/:id", "action": "Vendor completes repair, landlord marks resolved", "conversion_event": "maintenance_resolved" },
+        { "step": 6, "page": "/predictive-analytics", "action": "AI updates prediction model with resolution data", "conversion_event": "model_updated" }
+      ]
+    },
+    {
+      "name": "Starter to Growth Tier Upgrade",
+      "description": "A free-tier user hits the 5-unit limit, explores upgrade options, and converts to a paid plan.",
+      "steps": [
+        { "step": 1, "page": "/property-listings", "action": "User attempts to add 6th property, sees upgrade prompt", "conversion_event": "limit_reached" },
+        { "step": 2, "page": "/pricing-calculator", "action": "User explores pricing for their growing portfolio", "conversion_event": "pricing_explored" },
+        { "step": 3, "page": "/roi-calculator", "action": "User calculates ROI of upgrading to Growth tier", "conversion_event": "roi_calculated" },
+        { "step": 4, "page": "/feature-comparison", "action": "User compares Growth vs Professional features", "conversion_event": "features_compared" },
+        { "step": 5, "page": "/checkout", "action": "User selects Growth plan with annual billing (20% off)", "conversion_event": "plan_selected" },
+        { "step": 6, "page": "/checkout", "action": "User completes Stripe payment", "conversion_event": "payment_completed" },
+        { "step": 7, "page": "/property-listings", "action": "User adds additional properties with unlocked features", "conversion_event": "expansion_activated" }
+      ]
+    }
+  ],
+  "feature_specs": [
+    {
+      "id": "ai-powered-insights",
+      "name": "AI-Powered Insights for Property Valuation and Market Analysis",
+      "description": "AI engine that analyzes market data, comparable sales, and rental trends to provide accurate property valuations and actionable market intelligence. Includes confidence scoring, trend predictions, and automated report generation.",
+      "ui_approach": "Dashboard-style interface with interactive charts, AI confidence indicators, and drill-down capability. Uses progressive disclosure to show summary insights first with detailed analysis available on demand.",
+      "components_needed": ["ValuationForm", "ComparableProperties", "ValuationReport", "MarketTrends", "AIConfidenceScore", "TrendChart", "HeatmapVisualization", "ReportGenerator"],
+      "pages_used_on": ["/property-valuation", "/market-analysis", "/property/:id", "/predictive-analytics"],
+      "tier": "Growth",
+      "priority": "high"
+    },
+    {
+      "id": "predictive-maintenance",
+      "name": "Predictive Maintenance Scheduling",
+      "description": "Machine learning model that analyzes maintenance history, property age, equipment lifecycles, and seasonal patterns to predict potential issues before they become emergencies. Automatically generates preventive maintenance schedules.",
+      "ui_approach": "Timeline-based visualization with urgency color coding (green/yellow/red). Prediction cards show confidence percentage, estimated cost, and recommended action date. Integrates with scheduling system for one-click appointment creation.",
+      "components_needed": ["PredictionDashboard", "MaintenanceForecast", "UrgencyIndicator", "PredictionCard", "MaintenanceTimeline", "CostEstimator", "ScheduleLink"],
+      "pages_used_on": ["/predictive-analytics", "/property/:id", "/scheduling"],
+      "tier": "Growth",
+      "priority": "high"
+    },
+    {
+      "id": "automated-tenant-communication",
+      "name": "Automated Tenant Communication",
+      "description": "Multi-channel communication automation system that handles routine tenant interactions including rent reminders, maintenance updates, lease renewal notices, and welcome messages. Supports email, SMS, and in-app messaging with customizable templates.",
+      "ui_approach": "Template builder with drag-and-drop blocks, trigger configuration panel, and conversation preview. Communication log shows full history per tenant with channel indicators. Automation rules use a visual flow builder.",
+      "components_needed": ["TemplateBuilder", "TriggerConfig", "CommunicationLog", "AutomationFlowBuilder", "ChannelSelector", "MessagePreview", "ScheduledMessages"],
+      "pages_used_on": ["/ai-chatbots", "/crm", "/property/:id", "/automated-marketing"],
+      "tier": "Growth",
+      "priority": "high"
+    },
+    {
+      "id": "smart-scheduling",
+      "name": "Smart Scheduling and Booking",
+      "description": "AI-optimized scheduling system that automatically finds optimal time slots for property viewings, inspections, and maintenance based on landlord availability, tenant preferences, travel distances, and property priorities. Includes public booking links for self-service scheduling.",
+      "ui_approach": "Calendar interface with AI-suggested time slots highlighted. Smart conflict detection with alternative suggestions. Public booking widget that can be embedded on listing pages. Mobile-optimized touch interactions for on-the-go scheduling.",
+      "components_needed": ["SmartCalendar", "AISlotSuggester", "BookingWidget", "ConflictDetector", "AvailabilityManager", "PublicBookingPage", "TravelTimeOptimizer"],
+      "pages_used_on": ["/scheduling", "/booking", "/property/:id"],
+      "tier": "Starter",
+      "priority": "high"
+    },
+    {
+      "id": "tenant-screening",
+      "name": "Tenant Screening",
+      "description": "Comprehensive tenant screening service with AI Smart Score that evaluates credit history, background checks, rental history, income verification, and references. Provides a composite risk score with detailed breakdown and fair housing compliance.",
+      "ui_approach": "Application review interface with AI Smart Score prominently displayed as a circular gauge. Detailed breakdown in expandable sections. Compliance checklist sidebar. Approve/deny workflow with automated notifications.",
+      "components_needed": ["SmartScoreGauge", "ScreeningBreakdown", "ApplicationReview", "ComplianceChecklist", "ApprovalWorkflow", "BackgroundCheckStatus", "ReferenceVerification"],
+      "pages_used_on": ["/ai-powered-tenant-screening", "/crm", "/lead-generation", "/property/:id"],
+      "tier": "Growth",
+      "priority": "high"
+    },
+    {
+      "id": "online-rent-collection",
+      "name": "Online Rent Collection",
+      "description": "Automated rent collection system with Stripe integration supporting ACH, credit/debit cards, and recurring payments. Features automatic late fee calculation, payment reminders, receipt generation, and financial reconciliation.",
+      "ui_approach": "Clean payment dashboard showing collection status per property with color-coded indicators (paid, pending, late, overdue). Tenant-facing payment portal with saved payment methods and autopay setup. Real-time payment notifications.",
+      "components_needed": ["PaymentDashboard", "CollectionStatus", "TenantPaymentPortal", "AutopaySetup", "LateFeeCalculator", "ReceiptGenerator", "PaymentHistory", "ReconciliationView"],
+      "pages_used_on": ["/property/:id", "/property-listings", "/checkout"],
+      "tier": "Starter",
+      "priority": "critical"
+    },
+    {
+      "id": "document-management",
+      "name": "Document Management",
+      "description": "Centralized document storage and management system with lease template builder, e-signature workflows, version control, and automated document generation. Supports all property-related documents including leases, inspection reports, and compliance certificates.",
+      "ui_approach": "File manager interface with folder tree navigation, drag-and-drop upload, and document preview. Template editor with variable fields for lease generation. E-signature flow with signing order and status tracking. Full-text search across all documents.",
+      "components_needed": ["DocumentLibrary", "FolderTree", "DocumentUploader", "TemplateEditor", "ESignatureFlow", "VersionHistory", "DocumentPreview", "SearchBar"],
+      "pages_used_on": ["/document-management", "/property/:id"],
+      "tier": "Growth",
+      "priority": "high"
+    },
+    {
+      "id": "crm-system",
+      "name": "CRM",
+      "description": "Unified customer relationship management system for managing all contacts including tenants, prospects, owners, and vendors. Features contact profiles with full interaction history, segmentation, automated follow-ups, and communication tracking.",
+      "ui_approach": "Contact list with search, filters, and custom views. Detail view shows full contact profile with activity timeline, communication log, associated properties, and documents. Kanban view for lead pipeline management.",
+      "components_needed": ["ContactList", "ContactDetail", "ActivityTimeline", "CommunicationLog", "LeadPipeline", "SegmentBuilder", "TagManager", "BulkActions"],
+      "pages_used_on": ["/crm", "/lead-generation", "/property/:id"],
+      "tier": "Growth",
+      "priority": "high"
+    },
+    {
+      "id": "accounting-financial-reporting",
+      "name": "Accounting and Financial Reporting",
+      "description": "Comprehensive accounting module with income/expense tracking, automated categorization, financial statements (P&L, balance sheet, cash flow), tax report generation, and owner statements. Integrates with rent collection for automatic entries.",
+      "ui_approach": "Financial dashboard with summary cards (total revenue, expenses, NOI) and trend charts. Transaction list with category filters and search. Report builder with customizable date ranges and property grouping. Export to PDF/CSV/Excel.",
+      "components_needed": ["FinancialDashboard", "TransactionList", "ReportBuilder", "ChartWidgets", "OwnerStatement", "TaxReport", "CategoryManager", "ExportToolbar"],
+      "pages_used_on": ["/property/:id", "/property-listings", "/market-analysis"],
+      "tier": "Growth",
+      "priority": "high"
+    }
+  ],
+  "colors": {
+    "primary": "#008080",
+    "primary_light": "#339999",
+    "primary_dark": "#006666",
+    "secondary": "#E0E0E0",
+    "accent": "#FF6B35",
+    "background": "#FFFFFF",
+    "surface": "#F7F7F7",
+    "surface_elevated": "#FFFFFF",
+    "text_primary": "#1A1A2E",
+    "text_secondary": "#4D4D4D",
+    "text_muted": "#7A7A7A",
+    "border": "#D4D4D4",
+    "success": "#28A745",
+    "warning": "#FFC107",
+    "error": "#DC3545"
+  },
+  "typography": {
+    "display": { "font": "Manrope", "weight": "700", "tracking": "-0.02em" },
+    "heading": { "font": "Manrope", "weight": "600", "tracking": "-0.01em" },
+    "body": { "font": "Inter", "weight": "400", "lineHeight": "1.6" },
+    "mono": { "font": "JetBrains Mono", "weight": "400" },
+    "scale": {
+      "xs": "0.75rem",
+      "sm": "0.875rem",
+      "base": "1rem",
+      "lg": "1.125rem",
+      "xl": "1.25rem",
+      "2xl": "1.5rem",
+      "3xl": "1.875rem",
+      "4xl": "2.25rem",
+      "5xl": "3rem",
+      "6xl": "3.75rem"
+    },
+    "google_fonts_import": "@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Manrope:wght@600;700&family=JetBrains+Mono&display=swap');"
+  },
+  "spacing": {
+    "unit": "8px",
+    "scale": {
+      "1": "0.25rem",
+      "2": "0.5rem",
+      "3": "0.75rem",
+      "4": "1rem",
+      "6": "1.5rem",
+      "8": "2rem",
+      "12": "3rem",
+      "16": "4rem",
+      "24": "6rem"
+    }
+  },
+  "borders": {
+    "radius_sm": "0.25rem",
+    "radius_md": "0.5rem",
+    "radius_lg": "0.75rem",
+    "radius_full": "9999px",
+    "width": "1px",
+    "style": "solid"
+  },
+  "shadows": {
+    "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+    "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+    "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+    "style": "Subtle, layered soft shadows to add depth and separation."
+  },
+  "animations": {
+    "entrance": { "type": "fade-in", "duration": "300ms", "easing": "ease-out" },
+    "hover": { "type": "scale", "duration": "200ms" },
+    "page_transition": { "type": "slide-left" },
+    "micro_interactions": [
+      "Button ripple effect",
+      "Input field focus glow",
+      "Card elevation on hover"
+    ]
+  },
+  "layout": {
+    "max_width": "1280px",
+    "grid": "12-column grid system with responsive breakpoints",
+    "hero_style": "Large heroic typography (72px+) with custom property photography, creative taglines, and subtle parallax. Split-screen layout with value proposition on left and interactive property preview or dashboard demo on right.",
+    "card_style": "Rounded corners, subtle shadow, clean typography, and consistent spacing.",
+    "navigation_style": "Clean top navigation supporting user journeys rather than simple task lists. Collapsible sidebar for dashboard views with drag-and-dock customization. Logical page hierarchy with breadcrumbs for deep property management workflows."
+  },
+  "tailwind_extend": {
+    "colors": {
+      "primary": "#008080",
+      "primary-light": "#339999",
+      "primary-dark": "#006666",
+      "secondary": "#E0E0E0",
+      "accent": "#FF6B35",
+      "background": "#FFFFFF",
+      "surface": "#F7F7F7",
+      "surface-elevated": "#FFFFFF",
+      "text-primary": "#1A1A2E",
+      "text-secondary": "#4D4D4D",
+      "text-muted": "#7A7A7A",
+      "border": "#D4D4D4",
+      "success": "#28A745",
+      "warning": "#FFC107",
+      "error": "#DC3545"
+    },
+    "fontFamily": {
+      "display": ["Manrope", "sans-serif"],
+      "body": ["Inter", "sans-serif"],
+      "mono": ["JetBrains Mono", "monospace"]
+    },
+    "borderRadius": {
+      "sm": "0.25rem",
+      "md": "0.5rem",
+      "lg": "0.75rem"
+    },
+    "boxShadow": {
+      "sm": "0 1px 2px 0 rgba(0, 0, 0, 0.05)",
+      "md": "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+      "lg": "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+    }
+  },
+  "css_variables": ":root {\n  --color-primary: #008080;\n  --color-primary-light: #339999;\n  --color-primary-dark: #006666;\n  --color-secondary: #E0E0E0;\n  --color-accent: #FF6B35;\n  --color-background: #FFFFFF;\n  --color-surface: #F7F7F7;\n  --color-surface-elevated: #FFFFFF;\n  --color-text-primary: #1A1A2E;\n  --color-text-secondary: #4D4D4D;\n  --color-text-muted: #7A7A7A;\n  --color-border: #D4D4D4;\n  --color-success: #28A745;\n  --color-warning: #FFC107;\n  --color-error: #DC3545;\n}",
+  "asset_prompts": [
+    {
+      "id": "hero-home",
+      "type": "hero image for homepage",
+      "style": "hero",
+      "dimensions": "1600x900",
+      "prompt": "A clean and modern hero image for a real estate management platform. The scene depicts a bright, airy office space with a diverse team collaborating around a large touchscreen displaying property data and analytics dashboards. The color palette is dominated by teal (#008080) and white, with orange (#FF6B35) accents on UI elements and data highlights. The mood is collaborative, efficient, and trustworthy. Natural light streams through floor-to-ceiling windows overlooking a city skyline with residential buildings. The composition is balanced and professional, conveying the platform's ability to streamline property management with AI-powered intelligence. The viewer should feel confident and empowered to manage their real estate portfolio effectively.",
+      "save_as": "public/assets/generated/hero-home.png"
+    },
+    {
+      "id": "og-image",
+      "type": "Open Graph social sharing image",
+      "style": "social",
+      "dimensions": "1200x630",
+      "prompt": "A professional Open Graph image for RealEstate AI, a property management platform. Clean white background with the RealEstate AI logo prominently centered. Below the logo, the tagline 'Property Management That Thinks Ahead' in Manrope font. A subtle teal (#008080) gradient bar at the bottom. On the right side, a simplified illustration of a property dashboard showing charts and AI insights with teal and orange (#FF6B35) accent colors. The overall feel is modern, trustworthy, and tech-forward. Text is large and legible at small sizes for social media preview thumbnails.",
+      "save_as": "public/assets/generated/og-image.png"
+    },
+    {
+      "id": "property-listing",
+      "type": "representative property listing card image",
+      "style": "product",
+      "dimensions": "800x600",
+      "prompt": "A beautifully photographed modern residential property exterior for use in a property listing card. The image shows a well-maintained two-story home with a manicured lawn, clean architectural lines, and warm lighting suggesting a sunset golden hour. The style is professional real estate photography with enhanced colors and clarity. The composition leaves space at the bottom for an overlay showing property details (price, bedrooms, square footage) in the platform's design language with a teal (#008080) accent bar and white text on a semi-transparent dark overlay. The mood is aspirational yet attainable, targeting small-to-medium landlords.",
+      "save_as": "public/assets/generated/property-listing.png"
+    },
+    {
+      "id": "dashboard-preview",
+      "type": "product screenshot for marketing pages",
+      "style": "product",
+      "dimensions": "1400x900",
+      "prompt": "A polished product screenshot of the RealEstate AI dashboard interface. The screen shows a clean, modern dashboard with a collapsible teal (#008080) sidebar navigation on the left. The main content area displays a property portfolio overview with summary cards (total units, occupancy rate, monthly revenue, pending maintenance) at the top. Below, an AI insights panel with a teal gradient header shows predictive maintenance alerts and rent optimization suggestions. Charts display rental income trends and occupancy rates. The design uses the Professional Trust palette: white background, teal primary, orange (#FF6B35) for action buttons and alerts. Typography is clean Inter/Manrope. The interface looks data-rich yet uncluttered, demonstrating the platform's AI-native intelligence.",
+      "save_as": "public/assets/generated/dashboard-preview.png"
+    },
+    {
+      "id": "ai-insights-illustration",
+      "type": "feature illustration for AI capabilities section",
+      "style": "illustration",
+      "dimensions": "800x800",
+      "prompt": "A modern, minimal illustration representing AI-powered property management insights. The composition features a stylized property building in the center with flowing data streams connecting to surrounding icons: a brain symbol for AI predictions, a wrench for maintenance forecasting, a chart trending upward for market analysis, a shield for tenant screening, and a calendar for smart scheduling. The color palette uses teal (#008080) as the primary color with orange (#FF6B35) highlights on key elements. The background is clean white with subtle geometric patterns. The style is flat design with slight gradients, professional yet approachable. The illustration conveys intelligence, automation, and modern technology working seamlessly for property managers.",
+      "save_as": "public/assets/generated/ai-insights-illustration.png"
+    }
+  ],
+  "mobile_design": {
+    "navigation": {
+      "type": "tab_bar",
+      "sections": [
+        { "label": "Dashboard", "icon": "home", "route": "/" },
+        { "label": "Properties", "icon": "building", "route": "/property-listings" },
+        { "label": "Schedule", "icon": "calendar", "route": "/scheduling" },
+        { "label": "Messages", "icon": "message-circle", "route": "/crm" },
+        { "label": "More", "icon": "menu", "route": "/more" }
+      ]
+    },
+    "touch_targets": {
+      "minimum_size": "44px",
+      "button_height": "48px",
+      "list_item_height": "56px",
+      "spacing_between_targets": "8px"
+    },
+    "typography_scale": {
+      "base": "16px",
+      "heading": "24px",
+      "small": "13px",
+      "large_heading": "28px",
+      "caption": "11px"
+    },
+    "app_icon_description": "A rounded square (iOS superellipse) app icon with a teal (#008080) gradient background transitioning from darker teal at the top-left to lighter teal (#339999) at the bottom-right. In the center, a minimalist white house/building silhouette with a subtle AI circuit pattern integrated into the roof line, symbolizing intelligent property management. A small orange (#FF6B35) dot sits at the top-right corner of the building, representing AI activity and smart insights. The design is clean, modern, and instantly recognizable at small sizes. The icon conveys trust, technology, and real estate in a single glance.",
+    "splash_screen_description": "A clean white background with the RealEstate AI logo centered vertically. The logo consists of a teal (#008080) building icon with the AI circuit motif, positioned above the wordmark 'RealEstate AI' in Manrope Bold. Below the wordmark, a subtle loading animation — three teal dots pulsing sequentially — indicates the app is loading. A very subtle teal gradient wash appears at the bottom 20% of the screen. The overall feel is minimal, professional, and fast, setting the tone for an efficient property management experience.",
+    "color_adjustments": {
+      "dark_mode": {
+        "background": "#0D1117",
+        "surface": "#161B22",
+        "surface_elevated": "#1C2128",
+        "text_primary": "#F0F6FC",
+        "text_secondary": "#8B949E",
+        "border": "#30363D",
+        "primary": "#00A3A3",
+        "accent": "#FF8C5A"
+      },
+      "oled_black": {
+        "background": "#000000",
+        "surface": "#0D1117"
+      },
+      "outdoor_contrast": {
+        "note": "Increase text contrast ratio to minimum 7:1 for outdoor readability. Use bolder font weights (600+) for body text. Add subtle text shadows on overlaid content."
+      }
+    },
+    "gesture_patterns": [
+      "swipe to navigate between property cards",
+      "pull to refresh property listings and dashboard data",
+      "long press for quick actions menu on property cards",
+      "swipe left on list items to reveal delete/archive actions",
+      "pinch to zoom on maps and property photos",
+      "double tap to like/favorite a property"
+    ],
+    "mobile_asset_prompts": [
+      {
+        "id": "app-icon",
+        "type": "app icon",
+        "dimensions": "1024x1024",
+        "prompt": "A mobile app icon for RealEstate AI property management platform. Rounded square shape with a teal (#008080) gradient background from top-left dark (#006666) to bottom-right light (#339999). Center features a minimalist white building silhouette with clean geometric lines and a subtle circuit pattern in the roofline suggesting AI intelligence. A small orange (#FF6B35) glowing dot in the upper-right of the building represents active AI monitoring. The design is simple, bold, and recognizable at 29px. No text. Professional and modern aesthetic matching iOS/Android design guidelines.",
+        "save_as": "public/assets/generated/app-icon.png"
+      },
+      {
+        "id": "splash-screen",
+        "type": "splash/launch screen",
+        "dimensions": "1290x2796",
+        "prompt": "A mobile splash screen for RealEstate AI app. Clean white (#FFFFFF) background. Centered vertically: the RealEstate AI logo — a teal (#008080) building icon with circuit motif above the wordmark 'RealEstate AI' in Manrope Bold dark text (#1A1A2E). Below the wordmark at 60% vertical position, three small teal dots in a horizontal row suggesting a loading animation. The bottom 15% has a very subtle teal gradient wash fading from transparent to 5% opacity teal. Minimal, professional, and fast-feeling. No other decorative elements.",
+        "save_as": "public/assets/generated/splash-screen.png"
+      },
+      {
+        "id": "store-screenshot-1",
+        "type": "app store screenshot",
+        "dimensions": "1290x2796",
+        "prompt": "An App Store screenshot for RealEstate AI showing the main dashboard on an iPhone. The screenshot has a teal (#008080) background frame with white text at the top reading 'AI-Powered Property Management' in Manrope Bold. Below, a realistic iPhone mockup displays the app dashboard: portfolio summary cards (8 units, 95% occupancy, $12,400 revenue), an AI insights notification about predicted maintenance, and a mini chart showing rental income trends. The app uses the Professional Trust palette — white background, teal accents, orange (#FF6B35) action buttons. The screenshot demonstrates the app's clean interface and AI intelligence at a glance.",
+        "save_as": "public/assets/generated/store-screenshot-1.png"
+      },
+      {
+        "id": "store-screenshot-2",
+        "type": "app store screenshot",
+        "dimensions": "1290x2796",
+        "prompt": "An App Store screenshot for RealEstate AI showing the AI Tenant Screening feature on an iPhone. Teal (#008080) background frame with white text at the top reading 'Smart Tenant Screening' in Manrope Bold. The iPhone mockup shows the screening results screen: a large circular AI Smart Score gauge (showing 87/100 in teal), breakdown categories (credit, background, income, references) with progress bars, and an approve/deny action bar at the bottom with teal approve and red deny buttons. The design is clean, data-rich, and professional using the Professional Trust palette.",
+        "save_as": "public/assets/generated/store-screenshot-2.png"
+      }
+    ]
+  }
+}

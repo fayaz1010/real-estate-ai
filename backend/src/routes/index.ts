@@ -5,6 +5,7 @@ import accountingRoutes from "../modules/accounting/accounting.routes";
 import aiRoutes from "../modules/ai/ai.routes";
 import applicationRoutes from "../modules/applications/application.routes";
 import authRoutes from "../modules/auth/auth.routes";
+import billingRoutes from "../modules/billing/billing.routes";
 import contactRoutes from "../modules/contact/contact.routes";
 import inspectionRoutes from "../modules/inspections/inspection.routes";
 import leaseRoutes from "../modules/leases/lease.routes";
@@ -32,6 +33,7 @@ router.use("/applications", applicationRoutes);
 router.use("/notifications", notificationRoutes);
 router.use("/leases", leaseRoutes);
 router.use("/payments", paymentRoutes);
+router.use("/billing", billingRoutes);
 router.use("/accounting", accountingRoutes);
 router.use("/bookings", bookingRoutes);
 router.use("/trial", trialRoutes);
@@ -63,6 +65,7 @@ router.get("/", (req, res) => {
       maintenance: "/api/maintenance",
       admin: "/api/admin",
       tenants: "/api/tenants",
+      billing: "/api/billing",
     },
   });
 });

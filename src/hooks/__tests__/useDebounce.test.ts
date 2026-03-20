@@ -2,11 +2,11 @@ import { renderHook, act } from "@testing-library/react";
 
 import { useDebounce } from "../useDebounce";
 
-vi.useFakeTimers();
+jest.useFakeTimers();
 
 describe("useDebounce", () => {
   afterEach(() => {
-    vi.clearAllTimers();
+    jest.clearAllTimers();
   });
 
   it("returns initial value immediately", () => {
@@ -23,7 +23,7 @@ describe("useDebounce", () => {
     rerender({ value: "world", delay: 500 });
 
     act(() => {
-      vi.advanceTimersByTime(300);
+      jest.advanceTimersByTime(300);
     });
 
     expect(result.current).toBe("hello");
@@ -38,7 +38,7 @@ describe("useDebounce", () => {
     rerender({ value: "world", delay: 500 });
 
     act(() => {
-      vi.advanceTimersByTime(500);
+      jest.advanceTimersByTime(500);
     });
 
     expect(result.current).toBe("world");
@@ -52,19 +52,19 @@ describe("useDebounce", () => {
 
     rerender({ value: "b", delay: 500 });
     act(() => {
-      vi.advanceTimersByTime(300);
+      jest.advanceTimersByTime(300);
     });
 
     rerender({ value: "c", delay: 500 });
     act(() => {
-      vi.advanceTimersByTime(300);
+      jest.advanceTimersByTime(300);
     });
 
     // 'b' should have been cancelled, still showing 'a'
     expect(result.current).toBe("a");
 
     act(() => {
-      vi.advanceTimersByTime(200);
+      jest.advanceTimersByTime(200);
     });
 
     // Now 'c' should have resolved
@@ -79,12 +79,12 @@ describe("useDebounce", () => {
     rerender({ value: "world" });
 
     act(() => {
-      vi.advanceTimersByTime(499);
+      jest.advanceTimersByTime(499);
     });
     expect(result.current).toBe("hello");
 
     act(() => {
-      vi.advanceTimersByTime(1);
+      jest.advanceTimersByTime(1);
     });
     expect(result.current).toBe("world");
   });
@@ -98,7 +98,7 @@ describe("useDebounce", () => {
     rerender({ value: 42 });
 
     act(() => {
-      vi.advanceTimersByTime(300);
+      jest.advanceTimersByTime(300);
     });
 
     expect(result.current).toBe(42);

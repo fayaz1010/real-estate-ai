@@ -118,7 +118,9 @@ export const verifyEmailConnection = async (): Promise<boolean> => {
   } catch (error: unknown) {
     const message =
       error instanceof Error ? error.message : "Unknown verification error";
-    logger.error(`[EmailService] SMTP connection verification failed: ${message}`);
+    logger.error(
+      `[EmailService] SMTP connection verification failed: ${message}`,
+    );
     return false;
   }
 };

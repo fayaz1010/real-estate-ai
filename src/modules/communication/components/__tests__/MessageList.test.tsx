@@ -34,8 +34,8 @@ const mockMessages: Message[] = [
 
 describe("MessageList", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
-    Element.prototype.scrollIntoView = vi.fn();
+    jest.clearAllMocks();
+    Element.prototype.scrollIntoView = jest.fn();
   });
 
   it("renders all messages", () => {

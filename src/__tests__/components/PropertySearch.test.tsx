@@ -5,7 +5,7 @@ import { render } from "../test-utils";
 
 // ─── Mock lucide-react icons ────────────────────────────────────────────────
 
-vi.mock("lucide-react", () => {
+jest.mock("lucide-react", () => {
   const actual: Record<string, unknown> = {};
   const icons = [
     "Search",
@@ -46,52 +46,52 @@ vi.mock("lucide-react", () => {
 
 // ─── Mock API Client ────────────────────────────────────────────────────────
 
-const mockApiGet = vi.fn();
-const mockApiPost = vi.fn();
-vi.mock("@/api/client", () => ({
+const mockApiGet = jest.fn();
+const mockApiPost = jest.fn();
+jest.mock("@/api/client", () => ({
   __esModule: true,
   default: {
     get: (...args: unknown[]) => mockApiGet(...args),
     post: (...args: unknown[]) => mockApiPost(...args),
-    patch: vi.fn(),
-    delete: vi.fn(),
+    patch: jest.fn(),
+    delete: jest.fn(),
     interceptors: {
-      request: { use: vi.fn() },
-      response: { use: vi.fn() },
+      request: { use: jest.fn() },
+      response: { use: jest.fn() },
     },
   },
 }));
 
 // ─── Mock Google Maps ────────────────────────────────────────────────────────
 
-vi.mock("@react-google-maps/api", () => ({
+jest.mock("@react-google-maps/api", () => ({
   useJsApiLoader: () => ({ isLoaded: false }),
 }));
 
 // ─── Mock browsing history hook ──────────────────────────────────────────────
 
-vi.mock("@/hooks/useBrowsingHistory", () => ({
+jest.mock("@/hooks/useBrowsingHistory", () => ({
   useBrowsingHistory: () => ({
-    saveRecentSearch: vi.fn(),
+    saveRecentSearch: jest.fn(),
     recentSearches: [],
     recentlyViewed: [],
-    clearHistory: vi.fn(),
+    clearHistory: jest.fn(),
   }),
 }));
 
 // ─── Mock Redux store ────────────────────────────────────────────────────────
 
-const mockDispatch = vi.fn();
-const mockSelector = vi.fn();
+const mockDispatch = jest.fn();
+const mockSelector = jest.fn();
 
-vi.mock("react-redux", () => ({
+jest.mock("react-redux", () => ({
   useDispatch: () => mockDispatch,
   useSelector: (selector: (state: unknown) => unknown) =>
     mockSelector(selector),
   Provider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
-vi.mock("@/store", () => ({
+jest.mock("@/store", () => ({
   useAppDispatch: () => mockDispatch,
   useAppSelector: (selector: (state: unknown) => unknown) =>
     mockSelector(selector),
@@ -103,13 +103,18 @@ import { SearchBar } from "@/modules/properties/components/PropertySearch/Search
 
 describe("SearchBar - Full Text Search Integration", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    jest.clearAllMocks();
     mockDispatch.mockReturnValue({ unwrap: () => Promise.resolve() });
     // Default selector returns for search slice
     mockSelector.mockImplementation((selector: (state: unknown) => unknown) => {
       const mockState = {
         search: {
-          filters: { page: 1, limit: 20, sortBy: "relevant", sortOrder: "desc" },
+          filters: {
+            page: 1,
+            limit: 20,
+            sortBy: "relevant",
+            sortOrder: "desc",
+          },
           results: [],
           isSearching: false,
           error: null,

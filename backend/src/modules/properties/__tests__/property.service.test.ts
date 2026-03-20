@@ -42,46 +42,58 @@ describe("PropertyService", () => {
 
   describe("buildTsQueryString", () => {
     it("should convert a single word to prefix query", () => {
-      const result = (service as any).buildTsQueryString("apartment");
+      const result = (
+        service as unknown as Record<string, (s: string) => string>
+      ).buildTsQueryString("apartment");
       expect(result).toBe("apartment:*");
     });
 
     it("should AND multiple words with prefix matching", () => {
-      const result = (service as any).buildTsQueryString("luxury apartment");
+      const result = (
+        service as unknown as Record<string, (s: string) => string>
+      ).buildTsQueryString("luxury apartment");
       expect(result).toBe("luxury:* & apartment:*");
     });
 
     it("should handle case-insensitive input", () => {
-      const result = (service as any).buildTsQueryString("New York");
+      const result = (
+        service as unknown as Record<string, (s: string) => string>
+      ).buildTsQueryString("New York");
       expect(result).toBe("New:* & York:*");
     });
 
     it("should strip special characters", () => {
-      const result = (service as any).buildTsQueryString(
-        "test@#$%^ query!&*()",
-      );
+      const result = (
+        service as unknown as Record<string, (s: string) => string>
+      ).buildTsQueryString("test@#$%^ query!&*()");
       expect(result).toBe("test:* & query:*");
     });
 
     it("should return empty string for empty input", () => {
-      const result = (service as any).buildTsQueryString("");
+      const result = (
+        service as unknown as Record<string, (s: string) => string>
+      ).buildTsQueryString("");
       expect(result).toBe("");
     });
 
     it("should return empty string for only special characters", () => {
-      const result = (service as any).buildTsQueryString("@#$%^");
+      const result = (
+        service as unknown as Record<string, (s: string) => string>
+      ).buildTsQueryString("@#$%^");
       expect(result).toBe("");
     });
 
     it("should handle extra whitespace", () => {
-      const result = (service as any).buildTsQueryString(
-        "  luxury   apartment  ",
-      );
+      const result = (
+        service as unknown as Record<string, (s: string) => string>
+      ).buildTsQueryString("  luxury   apartment  ");
       expect(result).toBe("luxury:* & apartment:*");
     });
 
     it("should handle partial match terms", () => {
-      const result = (service as any).buildTsQueryString("apt");
+      const result = (
+        service as unknown as Record<string, (s: string) => string>
+      ).buildTsQueryString("apt");
       expect(result).toBe("apt:*");
     });
   });
@@ -104,12 +116,10 @@ describe("PropertyService", () => {
     it("should delegate to fullTextSearch when search query is provided", async () => {
       mockQueryRawUnsafe
         .mockResolvedValueOnce([{ count: BigInt(1) }]) // count query
-        .mockResolvedValueOnce([
-          { id: "1", title: "Luxury Apartment" },
-        ]); // main query
+        .mockResolvedValueOnce([{ id: "1", title: "Luxury Apartment" }]); // main query
       mockFindManyImages.mockResolvedValue([]);
 
-      const result = await service.getAll({
+      await service.getAll({
         page: 1,
         limit: 20,
         search: "luxury",

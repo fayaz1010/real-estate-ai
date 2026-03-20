@@ -854,7 +854,15 @@ describe("Payments Integration Tests", () => {
 
   describe("Free Tier", () => {
     it("should verify Free plan at $0/mo", () => {
-      const freePlan = { monthly: 0, properties: 3, features: ["Basic tenant management", "Rent tracking", "Limited reporting"] };
+      const freePlan = {
+        monthly: 0,
+        properties: 3,
+        features: [
+          "Basic tenant management",
+          "Rent tracking",
+          "Limited reporting",
+        ],
+      };
       expect(freePlan.monthly).toBe(0);
       expect(freePlan.properties).toBe(3);
     });
@@ -865,7 +873,11 @@ describe("Payments Integration Tests", () => {
     });
 
     it("should include basic features in Free plan", () => {
-      const freeFeatures = ["Basic tenant management", "Rent tracking", "Limited reporting"];
+      const freeFeatures = [
+        "Basic tenant management",
+        "Rent tracking",
+        "Limited reporting",
+      ];
       expect(freeFeatures).toContain("Basic tenant management");
       expect(freeFeatures).toContain("Rent tracking");
       expect(freeFeatures).toContain("Limited reporting");

@@ -1001,6 +1001,30 @@ const AppContent: React.FC = () => {
             path="/appfolio-alternative"
             element={<Navigate to="/landing/appfolio-alternative" replace />}
           />
+          <Route
+            path="/ai-property-management"
+            element={<Navigate to="/landing/ai-property-management" replace />}
+          />
+          <Route
+            path="/rent-collection"
+            element={<Navigate to="/landing/rent-collection" replace />}
+          />
+          <Route
+            path="/tenant-screening"
+            element={<Navigate to="/landing/tenant-screening" replace />}
+          />
+          <Route
+            path="/pricing-comparison"
+            element={<Navigate to="/landing/pricing-comparison" replace />}
+          />
+          <Route
+            path="/automation"
+            element={<Navigate to="/landing/automate-management" replace />}
+          />
+          <Route
+            path="/general-pms"
+            element={<Navigate to="/landing/property-management" replace />}
+          />
 
           {/* Catch-all */}
           <Route path="*" element={<Navigate to="/" replace />} />

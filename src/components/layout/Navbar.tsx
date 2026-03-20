@@ -19,29 +19,24 @@ const navLinks: NavLink[] = [
         description: "Browse and manage your properties",
       },
       {
-        label: "Virtual Tours",
-        href: "/virtual-tours",
-        description: "Immersive 3D property tours",
+        label: "Tenant Screening",
+        href: "/landing/tenant-screening",
+        description: "AI-powered background checks",
       },
       {
-        label: "AI Chatbots",
-        href: "/ai-chatbots",
-        description: "24/7 automated tenant support",
+        label: "Lease Management",
+        href: "/leases",
+        description: "Digital leases and renewals",
       },
       {
-        label: "Lead Generation",
-        href: "/lead-generation",
-        description: "Capture and nurture leads",
+        label: "Online Rent Collection",
+        href: "/payments",
+        description: "Automated payment processing",
       },
       {
-        label: "CRM",
-        href: "/crm",
-        description: "Manage tenant relationships",
-      },
-      {
-        label: "Document Management",
-        href: "/document-management",
-        description: "Secure digital documents",
+        label: "Maintenance Requests",
+        href: "/maintenance",
+        description: "Track and resolve issues fast",
       },
     ],
   },
@@ -50,34 +45,34 @@ const navLinks: NavLink[] = [
     href: "/solutions",
     children: [
       {
-        label: "Market Analysis",
-        href: "/market-analysis",
-        description: "AI-powered market intelligence",
+        label: "Accounting & Reporting",
+        href: "/accounting",
+        description: "Financial tracking and reports",
       },
       {
-        label: "Property Valuation",
+        label: "Tenant Communication",
+        href: "/communication",
+        description: "Centralized messaging hub",
+      },
+      {
+        label: "Document Management",
+        href: "/document-management",
+        description: "Secure digital documents",
+      },
+      {
+        label: "CRM",
+        href: "/crm",
+        description: "Manage tenant relationships",
+      },
+      {
+        label: "AI Property Valuation",
         href: "/property-valuation",
         description: "Instant AI valuations",
-      },
-      {
-        label: "Predictive Analytics",
-        href: "/predictive-analytics",
-        description: "Forecast returns and risk",
-      },
-      {
-        label: "Automated Marketing",
-        href: "/automated-marketing",
-        description: "Marketing that runs itself",
       },
       {
         label: "Scheduling & Booking",
         href: "/booking",
         description: "Online viewing bookings",
-      },
-      {
-        label: "Google Maps",
-        href: "/google-maps",
-        description: "Interactive property maps",
       },
     ],
   },
@@ -109,7 +104,7 @@ const DropdownMenu: React.FC<{
         onClick={() => setOpen(!open)}
         className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 inline-flex items-center gap-1 ${
           scrolled || !isHomepage
-            ? "text-realestate-secondary hover:text-realestate-primary hover:bg-gray-50"
+            ? "text-gray-600 hover:text-realestate-primary hover:bg-gray-50"
             : "text-white/80 hover:text-white hover:bg-white/10"
         }`}
       >
@@ -214,7 +209,7 @@ export const Navbar: React.FC = () => {
                         ? "text-realestate-primary bg-gray-100"
                         : "text-white bg-white/20"
                       : scrolled || !isHomepage
-                        ? "text-realestate-secondary hover:text-realestate-primary hover:bg-gray-50"
+                        ? "text-gray-600 hover:text-realestate-primary hover:bg-gray-50"
                         : "text-white/80 hover:text-white hover:bg-white/10"
                   }`}
                 >
@@ -229,7 +224,7 @@ export const Navbar: React.FC = () => {
               to="/auth/login"
               className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                 scrolled || !isHomepage
-                  ? "text-realestate-secondary hover:text-realestate-primary"
+                  ? "text-gray-600 hover:text-realestate-primary"
                   : "text-white/90 hover:text-white"
               }`}
             >
@@ -282,7 +277,7 @@ export const Navbar: React.FC = () => {
                     <Link
                       key={child.href}
                       to={child.href}
-                      className="block px-6 py-2.5 rounded-lg text-sm font-medium text-realestate-secondary hover:text-realestate-primary hover:bg-gray-50 transition-colors"
+                      className="block px-6 py-2.5 rounded-lg text-sm font-medium text-gray-600 hover:text-realestate-primary hover:bg-gray-50 transition-colors"
                       role="menuitem"
                     >
                       {child.label}
@@ -296,7 +291,7 @@ export const Navbar: React.FC = () => {
                   className={`block px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                     isActive(link.href)
                       ? "text-realestate-primary bg-gray-50"
-                      : "text-realestate-secondary hover:text-realestate-primary hover:bg-gray-50"
+                      : "text-gray-600 hover:text-realestate-primary hover:bg-gray-50"
                   }`}
                   role="menuitem"
                 >
@@ -307,7 +302,7 @@ export const Navbar: React.FC = () => {
             <div className="pt-3 border-t border-gray-100 space-y-2">
               <Link
                 to="/auth/login"
-                className="block px-4 py-3 rounded-lg text-sm font-medium text-realestate-secondary hover:text-realestate-primary hover:bg-gray-50"
+                className="block px-4 py-3 rounded-lg text-sm font-medium text-gray-600 hover:text-realestate-primary hover:bg-gray-50"
                 role="menuitem"
               >
                 Sign In

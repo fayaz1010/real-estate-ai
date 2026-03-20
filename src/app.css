@@ -1,22 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono&display=swap');
 
 :root {
-  /* Nature-Inspired Warmth Color Palette */
-  --primary-color: #8B7355;
-  --secondary-color: #A0926B;
-  --accent-color: #C4A882;
-  --background-color: #FAF6F1;
-  --text-color: #2D2A26;
+  /* Professional Trust Color Palette */
+  --primary-color: #008080;
+  --secondary-color: #E0E0E0;
+  --accent-color: #FF6B35;
+  --background-color: #FFFFFF;
+  --text-color: #1A1A2E;
 
   /* RGB channel values for Tailwind opacity support */
-  --primary-rgb: 139 115 85;
-  --secondary-rgb: 160 146 107;
-  --accent-rgb: 196 168 130;
-  --background-rgb: 250 246 241;
-  --text-rgb: 45 42 38;
+  --primary-rgb: 0 128 128;
+  --secondary-rgb: 224 224 224;
+  --accent-rgb: 255 107 53;
+  --background-rgb: 255 255 255;
+  --text-rgb: 26 26 46;
 
   /* Typography */
-  --font-display: 'DM Serif Display', serif;
+  --font-display: 'Manrope', sans-serif;
   --font-body: 'Inter', sans-serif;
 
   /* Spacing (8px grid system) */
@@ -64,6 +64,24 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text-color);
   line-height: 1.2;
   margin-top: 0;
+}
+
+code, pre code {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* ===== Professional Trust Utility Classes ===== */
+
+.primary-button {
+  @apply bg-primary text-white rounded-md py-2 px-4;
+}
+
+.accent-button {
+  @apply bg-accent text-white rounded-md py-2 px-4;
+}
+
+.secondary-button {
+  @apply bg-secondary text-text rounded-md py-2 px-4;
 }
 
 /* ===== Touch-Friendly Elements ===== */
