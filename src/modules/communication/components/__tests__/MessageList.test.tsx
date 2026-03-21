@@ -90,7 +90,7 @@ describe("MessageList", () => {
       .getByText("Sure, how can I help?")
       .closest("div[class*='max-w']");
 
-    expect(sentMessage?.className).toContain("bg-[#8B7355]");
+    expect(sentMessage?.className).toContain("bg-[#008080]");
     expect(sentMessage?.className).toContain("text-white");
     expect(receivedMessage?.className).toContain("bg-white");
   });

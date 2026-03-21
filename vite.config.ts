@@ -26,6 +26,27 @@ export default defineConfig({
   build: {
     outDir: "dist",
     sourcemap: true,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          "vendor-react": ["react", "react-dom", "react-router-dom"],
+          "vendor-redux": [
+            "@reduxjs/toolkit",
+            "react-redux",
+          ],
+          "vendor-sentry": [
+            "@sentry/react",
+          ],
+          "vendor-stripe": [
+            "@stripe/react-stripe-js",
+            "@stripe/stripe-js",
+          ],
+          "vendor-charts": ["recharts"],
+          "vendor-maps": ["@react-google-maps/api"],
+          "vendor-ui": ["lucide-react", "zod"],
+        },
+      },
+    },
   },
   optimizeDeps: {
     include: ["react", "react-dom", "react-router-dom", "react-redux"],
